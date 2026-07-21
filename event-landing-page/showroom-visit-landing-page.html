@@ -11,10 +11,16 @@ HOW TO USE
    Buttons / List / Custom HTML), so it stays fully editable.
 5. Replace every [PLACEHOLDER] and every image marked "replace via Add
    Media" before publishing.
-6. Install the companion functions.php snippet (functions-snippet.php)
-   and event-landing.css first — this page uses a custom TenTechnology
-   colour palette (registered via add_theme_support) and a few small
-   CSS rules that core blocks can't express on their own. See README.md.
+
+This file is fully self-contained: all TenTechnology colours and the
+handful of CSS rules core blocks can't express on their own (button
+hover state, orange numbered-list markers, the registration card's
+shadow, etc.) are embedded directly below in a single <style> block, so
+no functions.php edit or separate stylesheet is required. Just paste
+this one file in and publish. (A functions.php snippet is still
+available in functions-snippet.php as an optional extra — it makes the
+five brand colours show up as named swatches in the editor's Color
+picker UI — but it is not needed for the page to look correct.)
 
 PLACEHOLDERS TO REPLACE BEFORE GOING LIVE
   - [EVENT DATE]         e.g. "Wednesday 17 September 2026"
@@ -31,8 +37,143 @@ self-contained (scoped CSS + vanilla JS under the .kubus-event-reg
 namespace) so it will not inherit or clash with the page's block styles.
 Its FORM_ENDPOINT_URL still needs to be pointed at your backend — see the
 comment block at the top of that widget.
+
+NOTE ON <style>/<script> IN CUSTOM HTML BLOCKS
+WordPress only strips <style> and <script> tags from Custom HTML block
+content for users WITHOUT the unfiltered_html capability (by default:
+Editors/Authors on single-site, or any role on multisite). Admins on a
+standard single-site install have unfiltered_html and are unaffected —
+both Section 0's embedded styles and Section 6's widget script will save
+and render exactly as pasted. If this page will be maintained by a
+non-admin role, either grant that role unfiltered_html, or move the
+Section 0 styles into a real enqueued stylesheet (event-landing.css,
+already provided) and the widget's <script> into an enqueued .js file.
 ============================================================================
 -->
+
+<!-- ======================= 0. EMBEDDED STYLES (self-contained, no functions.php required) ======================= -->
+<!-- wp:html -->
+<style>
+  /* ==========================================================================
+     TenTechnology brand colour utility classes
+     ==========================================================================
+     Gutenberg's Group/Heading/Paragraph blocks below reference these colours
+     by slug (e.g. backgroundColor:"tentech-navy"), which only renders if the
+     theme has registered a matching palette (normally via functions.php /
+     theme.json). Defining the same classes here makes the page render
+     correctly on ANY theme, with zero setup — this is exactly the CSS
+     WordPress would auto-generate from the optional functions-snippet.php
+     palette registration, just declared locally so this one file is
+     completely self-contained. */
+  .has-tentech-navy-background-color.has-background { background-color: #0B1A2B; }
+  .has-tentech-orange-background-color.has-background { background-color: #C97A3D; }
+  .has-tentech-callout-background-color.has-background { background-color: #E7ECF3; }
+  .has-white-background-color.has-background { background-color: #FFFFFF; }
+
+  .has-tentech-navy-color.has-text-color { color: #0B1A2B; }
+  .has-tentech-orange-color.has-text-color { color: #C97A3D; }
+  .has-tentech-callout-color.has-text-color { color: #E7ECF3; }
+  .has-tentech-charcoal-color.has-text-color { color: #16233A; }
+  .has-tentech-muted-color.has-text-color { color: #6B7280; }
+  .has-white-color.has-text-color { color: #FFFFFF; }
+
+  /* ==========================================================================
+     Page-specific rules core block settings can't express
+     ========================================================================== */
+
+  /* Header logo lockup — sensible max width on large screens without
+     hardcoding a fixed width that fights the block's own resize handles. */
+  .tentech-logo img {
+    max-width: 220px;
+    height: auto;
+  }
+
+  /* Hero section */
+  .tentech-hero .wp-block-column {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .tentech-hero-graphic img {
+    width: 100%;
+    height: auto;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 782px) {
+    .tentech-hero-graphic-col {
+      display: none;
+    }
+    .tentech-hero h1 {
+      font-size: 32px !important;
+    }
+  }
+
+  /* Primary CTA button — core Buttons block has no hover-state control in
+     the editor UI, so the hover/focus treatment lives here. Kept subtle
+     (no colour change, just a lift) to match the restrained tone of the
+     email CTAs. */
+  .tentech-cta-primary .wp-block-button__link {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .tentech-cta-primary .wp-block-button__link:hover,
+  .tentech-cta-primary .wp-block-button__link:focus-visible {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px -8px rgba(201, 122, 61, 0.55);
+  }
+
+  /* "What to Expect" numbered agenda list — colours the ordered-list
+     numerals orange to match the brand's numbered callouts. Core List
+     block has no per-item numeral colour setting. */
+  .tentech-agenda-list {
+    padding-left: 1.4em;
+  }
+
+  .tentech-agenda-list li {
+    padding-left: 0.4em;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .tentech-agenda-list li::marker {
+    color: #C97A3D;
+    font-weight: 700;
+  }
+
+  /* Registration widget card wrapper — gives the embedded Custom HTML
+     widget a card container consistent with the rest of the page (soft
+     shadow + rounded corners) without doubling up on the widget's own
+     internal padding/border-radius, which are already handled inside its
+     own <style> block further down the page. */
+  .tentech-registration-card {
+    border-radius: 16px;
+    box-shadow: 0 30px 60px -30px rgba(11, 26, 43, 0.25);
+    overflow: hidden;
+  }
+
+  /* Footer link row */
+  .tentech-footer-links a {
+    color: #E7ECF3;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .tentech-footer-links a:hover,
+  .tentech-footer-links a:focus-visible {
+    color: #FFFFFF;
+  }
+
+  /* Accessibility: consistent focus ring on the page's own links/buttons */
+  .tentech-hero a:focus-visible,
+  .tentech-footer a:focus-visible {
+    outline: 2px solid #C97A3D;
+    outline-offset: 2px;
+  }
+</style>
+<!-- /wp:html -->
 
 <!-- ======================= 1. HEADER ======================= -->
 <!-- wp:group {"align":"full","backgroundColor":"white","style":{"spacing":{"padding":{"top":"48px","bottom":"40px","left":"32px","right":"32px"}}},"layout":{"type":"constrained"}} -->

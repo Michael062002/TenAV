@@ -1,17 +1,22 @@
 # TenTechnology — Showroom Visit landing page
 
-Three files, all in this folder:
+## The one file you need
+**`showroom-visit-landing-page.html`** is fully self-contained. All the
+TenTechnology brand colours and the handful of CSS rules core blocks can't
+express on their own (button hover state, orange numbered-list markers, the
+registration card's shadow, etc.) are embedded in a `<style>` block at the
+very top of the page (Section 0), inside a Custom HTML block. No theme
+edits, no `functions.php` changes, nothing to enqueue.
 
+**Install:** create a new WP Page → block editor → (⋮) menu → **Code
+editor** → paste the whole file in → switch back to the visual editor →
+save/preview. That's it.
+
+## Optional extra
 | File | What it is |
 |---|---|
-| `showroom-visit-landing-page.html` | Full Gutenberg block markup. Paste it into a new WP Page via the block editor's **Code editor** view (⋮ menu → Code editor), then switch back to the visual editor. |
-| `event-landing.css` | Small companion stylesheet for the handful of things core blocks can't do (button hover state, orange numbered-list markers, the registration card's shadow, footer link colours). |
-| `functions-snippet.php` | Registers the TenTechnology colour palette in the block editor and enqueues `event-landing.css`. Add its contents to your theme's `functions.php`. |
-
-## Install order
-1. Copy `event-landing.css` into your active theme's root folder (same level as `style.css`).
-2. Add the contents of `functions-snippet.php` to your theme's `functions.php`.
-3. Create the Page, paste in `showroom-visit-landing-page.html` via Code editor, save/preview.
+| `functions-snippet.php` | Registers the five TenTechnology colours as named swatches in the block editor's Color picker UI, so whoever edits this page later sees "TenTechnology Navy" etc. instead of a raw hex value when they change a section's background. Purely a nicety for editing — the page renders correctly with or without it. |
+| `event-landing.css` | The same CSS that's now embedded in Section 0 of the HTML file, kept here standalone in case you'd rather load it as a real enqueued stylesheet instead of an inline `<style>` block. Not required. |
 
 ## What's already wired in
 - Your registration widget (`kubuseventregistration.html`) is embedded as-is in Section 6's Custom HTML block — nothing was changed in its markup, CSS, or JS. You still need to set `FORM_ENDPOINT_URL` inside it before going live (see the comment block at the top of that section).
