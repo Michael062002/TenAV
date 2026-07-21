@@ -1,0 +1,288 @@
+<!-- =====================================================================
+     TenAV — "Infrastructure → Port → Outcome" diagram
+     Small standalone component for a WordPress Custom HTML block.
+     Self-contained: no external CSS/JS/fonts/CDNs. Class prefix: .tenav-pd-
+     ===================================================================== -->
+<style>
+  .tenav-pd, .tenav-pd *, .tenav-pd *::before, .tenav-pd *::after{ box-sizing:border-box; }
+  .tenav-pd{
+    --navy:#0E2530;
+    --navy-2:#16303D;
+    --navy-3:#1D3D4C;
+    --orange:#CC7A3E;
+    --orange-light:#E7A874;
+    --white:#FFFFFF;
+    --dim:rgba(255,255,255,.68);
+    --faint:rgba(255,255,255,.36);
+    --line:rgba(255,255,255,.55);
+    --radius:28px;
+    --ease:cubic-bezier(.22,.8,.24,1);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Inter",Roboto,Helvetica,Arial,sans-serif;
+    padding:clamp(20px,4vw,48px) clamp(12px,3vw,24px);
+  }
+  .tenav-pd h3,.tenav-pd p{margin:0;padding:0;}
+  .tenav-pd button{font-family:inherit;background:none;border:0;color:inherit;cursor:pointer;}
+  .tenav-pd svg{display:block;}
+  .tenav-pd :focus-visible{outline:2.5px solid var(--orange-light);outline-offset:3px;border-radius:6px;}
+
+  .tenav-pd-card{
+    position:relative;
+    max-width:1080px;margin:0 auto;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(204,122,63,.10), transparent 45%),
+      var(--navy);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:var(--radius);
+    padding:clamp(28px,4.5vw,56px) clamp(20px,4vw,52px);
+    box-shadow:0 30px 70px rgba(4,14,19,.45);
+    overflow:hidden;
+    display:flex;flex-direction:column;gap:32px;
+  }
+
+  .tenav-pd-heading{
+    font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--orange);margin-bottom:18px;
+  }
+  .tenav-pd-col--right .tenav-pd-heading{text-align:right;}
+
+  .tenav-pd-list{display:flex;flex-direction:column;gap:14px;width:100%;}
+  .tenav-pd-row{
+    display:flex;align-items:center;gap:8px;
+    padding:6px 8px;border-radius:10px;
+    text-align:left;width:100%;
+    transition:background .28s var(--ease), transform .28s var(--ease);
+  }
+  .tenav-pd-label{
+    font-size:14.5px;font-weight:600;color:var(--dim);white-space:nowrap;
+    transition:color .28s var(--ease);
+  }
+  .tenav-pd-leader{
+    flex:1;height:0;border-bottom:1px dotted var(--faint);
+    margin:0 2px;min-width:16px;
+    transition:border-color .28s var(--ease);
+  }
+  .tenav-pd-dot{
+    flex:none;width:7px;height:7px;border-radius:50%;
+    background:var(--white);box-shadow:0 0 0 4px rgba(255,255,255,.08);
+    transition:background .28s var(--ease), box-shadow .28s var(--ease), transform .28s var(--ease);
+  }
+  .tenav-pd-row:hover,.tenav-pd-row:focus-visible{ background:rgba(255,255,255,.05); transform:translateY(-1px); }
+  .tenav-pd-row:hover .tenav-pd-label,.tenav-pd-row:focus-visible .tenav-pd-label{ color:var(--white); }
+  .tenav-pd-row:hover .tenav-pd-leader,.tenav-pd-row:focus-visible .tenav-pd-leader{ border-color:rgba(231,168,116,.6); }
+  .tenav-pd-row:hover .tenav-pd-dot,.tenav-pd-row:focus-visible .tenav-pd-dot{
+    background:var(--orange-light); box-shadow:0 0 0 5px rgba(231,168,116,.22); transform:scale(1.15);
+  }
+
+  /* ---------- centre port ---------- */
+  .tenav-pd-port{ display:flex;align-items:center;justify-content:center; position:relative; }
+  .tenav-pd-porticon-wrap{ position:relative; width:132px;height:132px; display:flex;align-items:center;justify-content:center; }
+  .tenav-pd-glow{
+    position:absolute;inset:-20px;border-radius:50%;
+    background:radial-gradient(circle, rgba(204,122,63,.42), transparent 68%);
+    animation:tenavPdGlow 3.4s ease-in-out infinite;
+  }
+  .tenav-pd-ring{
+    position:absolute;inset:2px;border-radius:30px;
+    border:1.5px solid rgba(231,168,116,.4);
+    animation:tenavPdPing 3s var(--ease) infinite;
+  }
+  .tenav-pd-porticon{ position:relative;z-index:2;width:118px;height:118px; filter:drop-shadow(0 16px 26px rgba(0,0,0,.45)); }
+  .tenav-pd-pin{ animation:tenavPdPin 2.6s var(--ease) infinite; }
+  .tenav-pd-pin:nth-child(1){animation-delay:.05s;} .tenav-pd-pin:nth-child(2){animation-delay:.1s;}
+  .tenav-pd-pin:nth-child(3){animation-delay:.15s;} .tenav-pd-pin:nth-child(4){animation-delay:.2s;}
+  .tenav-pd-pin:nth-child(5){animation-delay:.25s;} .tenav-pd-pin:nth-child(6){animation-delay:.3s;}
+  .tenav-pd-pin:nth-child(7){animation-delay:.35s;} .tenav-pd-pin:nth-child(8){animation-delay:.4s;}
+  .tenav-pd-port.tenav-pd-active .tenav-pd-glow{ animation-duration:1.4s; }
+
+  @keyframes tenavPdGlow{ 0%,100%{opacity:.55;transform:scale(1);} 50%{opacity:1;transform:scale(1.07);} }
+  @keyframes tenavPdPing{ 0%{opacity:.6;transform:scale(.92);} 80%,100%{opacity:0;transform:scale(1.16);} }
+  @keyframes tenavPdPin{ 0%,100%{opacity:.75;} 50%{opacity:1;} }
+
+  /* ---------- trace lines (desktop) ---------- */
+  .tenav-pd svg.tenav-pd-trace{ display:none; }
+  .tenav-pd-col{ position:relative; }
+
+  /* ---------- mobile spine ---------- */
+  .tenav-pd-spine{
+    width:2px;height:28px;margin:2px auto 0;
+    background:linear-gradient(rgba(255,255,255,.05), var(--orange));
+    position:relative;
+  }
+  .tenav-pd-spine--top{ background:linear-gradient(var(--orange), rgba(255,255,255,.05)); margin:0 auto 2px; }
+  .tenav-pd-spine::after{
+    content:"";position:absolute;left:50%;top:0;width:6px;height:6px;border-radius:50%;
+    background:var(--orange-light);transform:translateX(-50%);
+    box-shadow:0 0 0 4px rgba(231,168,116,.2);
+    animation:tenavPdDot 2.4s linear infinite;
+  }
+  @keyframes tenavPdDot{ 0%{top:0;opacity:0;} 15%{opacity:1;} 85%{opacity:1;} 100%{top:100%;opacity:0;} }
+
+  /* ---------- scroll entrance ---------- */
+  .tenav-pd-js .tenav-pd-row{ opacity:0; transform:translateX(var(--tenav-pd-slide,-14px)); transition:opacity .5s var(--ease), transform .5s var(--ease); transition-delay:var(--d,0ms); }
+  .tenav-pd-js .tenav-pd-col--right .tenav-pd-row{ --tenav-pd-slide:14px; }
+  .tenav-pd-js .tenav-pd-in .tenav-pd-row{ opacity:1; transform:translateX(0); }
+  .tenav-pd-js .tenav-pd-porticon-wrap{ opacity:0; transform:scale(.82); transition:opacity .6s var(--ease), transform .6s var(--ease); transition-delay:120ms; }
+  .tenav-pd-js .tenav-pd-in .tenav-pd-porticon-wrap{ opacity:1; transform:scale(1); }
+
+  /* ===================== DESKTOP ===================== */
+  @media (min-width:760px){
+    .tenav-pd-card{ display:grid; grid-template-columns:1fr minmax(150px,190px) 1fr; align-items:center; gap:0 6px; }
+    .tenav-pd-spine{ display:none; }
+    .tenav-pd-list{ width:70%; }
+    .tenav-pd-col--right .tenav-pd-list{ width:70%; margin-left:auto; }
+    .tenav-pd-col--right .tenav-pd-row{ flex-direction:row-reverse; text-align:right; }
+
+    .tenav-pd svg.tenav-pd-trace{
+      display:block; position:absolute; inset:0; width:100%; height:100%;
+      overflow:visible; pointer-events:none;
+    }
+    .tenav-pd-trace line{
+      stroke:var(--line); stroke-width:1.4; stroke-linecap:round;
+      stroke-dasharray:220; stroke-dashoffset:220;
+      transition:stroke-dashoffset .8s var(--ease), stroke .3s var(--ease), stroke-width .3s var(--ease), opacity .3s var(--ease);
+    }
+    .tenav-pd-js .tenav-pd-in .tenav-pd-trace line{ stroke-dashoffset:0; }
+    .tenav-pd-trace line:nth-of-type(1){ transition-delay:.5s; } /* trunk */
+    .tenav-pd-trace line:nth-of-type(2){ transition-delay:.05s; }
+    .tenav-pd-trace line:nth-of-type(3){ transition-delay:.15s; }
+    .tenav-pd-trace line:nth-of-type(4){ transition-delay:.25s; }
+    .tenav-pd-trace line:nth-of-type(5){ transition-delay:.35s; }
+    .tenav-pd-trace line:nth-of-type(6){ transition-delay:.45s; }
+    .tenav-pd-trace line:nth-of-type(7){ transition-delay:.65s; } /* connector */
+    .tenav-pd-trace line.tenav-pd-line-active{ stroke:var(--orange-light); stroke-width:2; opacity:1; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .tenav-pd *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+    .tenav-pd-js .tenav-pd-row, .tenav-pd-js .tenav-pd-porticon-wrap{ opacity:1; transform:none; }
+    .tenav-pd-js .tenav-pd-trace line{ stroke-dashoffset:0; }
+  }
+</style>
+
+<section class="tenav-pd" aria-label="How TenAV connects infrastructure to outcomes">
+  <div class="tenav-pd-card" data-tenav-pd>
+
+    <div class="tenav-pd-col tenav-pd-col--left">
+      <h3 class="tenav-pd-heading">Infrastructure</h3>
+      <div class="tenav-pd-list">
+        <button type="button" class="tenav-pd-row" data-line="0" style="--d:60ms"><span class="tenav-pd-label">Structured Cabling</span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-dot" aria-hidden="true"></span></button>
+        <button type="button" class="tenav-pd-row" data-line="1" style="--d:110ms"><span class="tenav-pd-label">Network</span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-dot" aria-hidden="true"></span></button>
+        <button type="button" class="tenav-pd-row" data-line="2" style="--d:160ms"><span class="tenav-pd-label">Switching</span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-dot" aria-hidden="true"></span></button>
+        <button type="button" class="tenav-pd-row" data-line="3" style="--d:210ms"><span class="tenav-pd-label">Security</span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-dot" aria-hidden="true"></span></button>
+        <button type="button" class="tenav-pd-row" data-line="4" style="--d:260ms"><span class="tenav-pd-label">Power</span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-dot" aria-hidden="true"></span></button>
+      </div>
+      <div class="tenav-pd-spine tenav-pd-spine--bottom" aria-hidden="true"></div>
+      <svg class="tenav-pd-trace" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="84" y1="10" x2="84" y2="90"/>
+        <line data-line="0" x1="70" y1="10" x2="84" y2="10"/>
+        <line data-line="1" x1="70" y1="30" x2="84" y2="30"/>
+        <line data-line="2" x1="70" y1="50" x2="84" y2="50"/>
+        <line data-line="3" x1="70" y1="70" x2="84" y2="70"/>
+        <line data-line="4" x1="70" y1="90" x2="84" y2="90"/>
+        <line x1="84" y1="50" x2="114" y2="50"/>
+      </svg>
+    </div>
+
+    <div class="tenav-pd-port">
+      <div class="tenav-pd-porticon-wrap">
+        <span class="tenav-pd-glow" aria-hidden="true"></span>
+        <span class="tenav-pd-ring" aria-hidden="true"></span>
+        <svg class="tenav-pd-porticon" viewBox="0 0 240 240" role="img" aria-label="A network port, representing the connection point between infrastructure and outcome">
+          <defs>
+            <linearGradient id="tenavPdPinGrad" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stop-color="#CC7A3E"/>
+              <stop offset="1" stop-color="#E7A874"/>
+            </linearGradient>
+          </defs>
+          <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
+          <rect x="14" y="14" width="212" height="212" rx="32" fill="none" stroke="#16303D" stroke-width="6"/>
+          <rect x="104" y="94" width="32" height="22" rx="4" fill="#12262F"/>
+          <rect x="62" y="110" width="116" height="92" rx="14" fill="#12262F"/>
+          <g fill="url(#tenavPdPinGrad)">
+            <rect class="tenav-pd-pin" x="70" y="92" width="7" height="20" rx="2.5"/>
+            <rect class="tenav-pd-pin" x="83" y="78" width="7" height="34" rx="2.5"/>
+            <rect class="tenav-pd-pin" x="96" y="70" width="7" height="42" rx="2.5"/>
+            <rect class="tenav-pd-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
+            <rect class="tenav-pd-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
+            <rect class="tenav-pd-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
+            <rect class="tenav-pd-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
+            <rect class="tenav-pd-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tenav-pd-col tenav-pd-col--right">
+      <h3 class="tenav-pd-heading">Outcome</h3>
+      <div class="tenav-pd-spine tenav-pd-spine--top" aria-hidden="true"></div>
+      <div class="tenav-pd-list">
+        <button type="button" class="tenav-pd-row" data-line="0" style="--d:60ms"><span class="tenav-pd-dot" aria-hidden="true"></span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-label">Meeting Rooms</span></button>
+        <button type="button" class="tenav-pd-row" data-line="1" style="--d:110ms"><span class="tenav-pd-dot" aria-hidden="true"></span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-label">Video Conferencing</span></button>
+        <button type="button" class="tenav-pd-row" data-line="2" style="--d:160ms"><span class="tenav-pd-dot" aria-hidden="true"></span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-label">Collaboration</span></button>
+        <button type="button" class="tenav-pd-row" data-line="3" style="--d:210ms"><span class="tenav-pd-dot" aria-hidden="true"></span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-label">User Experience</span></button>
+        <button type="button" class="tenav-pd-row" data-line="4" style="--d:260ms"><span class="tenav-pd-dot" aria-hidden="true"></span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-label">Ongoing Support</span></button>
+      </div>
+      <svg class="tenav-pd-trace" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="16" y1="10" x2="16" y2="90"/>
+        <line data-line="0" x1="30" y1="10" x2="16" y2="10"/>
+        <line data-line="1" x1="30" y1="30" x2="16" y2="30"/>
+        <line data-line="2" x1="30" y1="50" x2="16" y2="50"/>
+        <line data-line="3" x1="30" y1="70" x2="16" y2="70"/>
+        <line data-line="4" x1="30" y1="90" x2="16" y2="90"/>
+        <line x1="16" y1="50" x2="-14" y2="50"/>
+      </svg>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function(){
+  var card = document.querySelector('.tenav-pd-card[data-tenav-pd]');
+  if(!card || card.dataset.tenavPdInit) return;
+  card.dataset.tenavPdInit = '1';
+  var section = card.closest('.tenav-pd');
+  section.classList.add('tenav-pd-js');
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          card.classList.add('tenav-pd-in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.3});
+    io.observe(card);
+  } else {
+    card.classList.add('tenav-pd-in');
+  }
+
+  var portEl = card.querySelector('.tenav-pd-port');
+  var rows = card.querySelectorAll('.tenav-pd-row');
+  rows.forEach(function(row){
+    var col = row.closest('.tenav-pd-col');
+    var idx = row.getAttribute('data-line');
+    var trace = col.querySelector('.tenav-pd-trace');
+    var tap = trace ? trace.querySelector('line[data-line="' + idx + '"]') : null;
+    var shared = trace ? trace.querySelectorAll('line:not([data-line])') : [];
+
+    function activate(){
+      if(tap) tap.classList.add('tenav-pd-line-active');
+      shared.forEach(function(l){ l.classList.add('tenav-pd-line-active'); });
+      if(portEl) portEl.classList.add('tenav-pd-active');
+    }
+    function deactivate(){
+      if(tap) tap.classList.remove('tenav-pd-line-active');
+      shared.forEach(function(l){ l.classList.remove('tenav-pd-line-active'); });
+      if(portEl) portEl.classList.remove('tenav-pd-active');
+    }
+    row.addEventListener('mouseenter', activate);
+    row.addEventListener('mouseleave', deactivate);
+    row.addEventListener('focus', activate);
+    row.addEventListener('blur', deactivate);
+  });
+})();
+</script>
