@@ -115,9 +115,20 @@
 
   /* ---------- ecosystem diagram ---------- */
   .tenav-ecosystem{
+    --eco-navy:#0d1f24;
+    --eco-orange:#b96e36;
+    --eco-orange-light:#d99361;
     margin-top:clamp(48px,6vw,84px);
+    margin-left:calc(-1 * clamp(20px,4.5vw,48px));
+    margin-right:calc(-1 * clamp(20px,4.5vw,48px));
+    padding:clamp(32px,4.5vw,56px) clamp(24px,4.5vw,56px);
     display:flex;flex-direction:column;gap:36px;
     position:relative;
+    background:
+      radial-gradient(circle at 14% 10%, rgba(185,110,54,.12), transparent 45%),
+      var(--eco-navy);
+    border-radius:var(--tenav-r-lg);
+    box-shadow:0 30px 70px rgba(4,14,19,.28);
   }
   .tenav-rail{position:relative;}
   .tenav-rail-head{
@@ -125,10 +136,10 @@
   }
   .tenav-rail-title{
     font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--tenav-dark);
+    color:var(--eco-orange);
   }
   .tenav-rail-sub{
-    font-size:13px;color:var(--tenav-faint);margin-top:2px;
+    font-size:13px;color:rgba(255,255,255,.42);margin-top:2px;
   }
   .tenav-rail-nodes{
     display:grid;grid-template-columns:1fr 1fr;gap:10px;
@@ -137,11 +148,11 @@
   .tenav-node{
     display:flex;flex-direction:column;gap:2px;
     text-align:left;
-    background:var(--tenav-white);
-    border:1px solid var(--tenav-border);
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.09);
     border-radius:var(--tenav-r-md);
     padding:12px 14px;
-    box-shadow:var(--tenav-shadow-sm);
+    box-shadow:none;
     transition:transform .32s var(--tenav-ease), box-shadow .32s var(--tenav-ease), border-color .32s var(--tenav-ease), background .32s var(--tenav-ease);
     width:100%;
   }
@@ -149,37 +160,37 @@
   .tenav-node-icon{
     flex:none;width:34px;height:34px;border-radius:10px;
     display:flex;align-items:center;justify-content:center;
-    background:var(--tenav-blue-soft);
-    color:var(--tenav-blue-deep);
+    background:rgba(185,110,54,.16);
+    color:var(--eco-orange-light);
     transition:background .32s var(--tenav-ease), color .32s var(--tenav-ease), transform .32s var(--tenav-ease);
   }
   .tenav-node-icon svg{width:18px;height:18px;}
-  .tenav-node-label{font-size:14.5px;font-weight:700;letter-spacing:-.01em;}
+  .tenav-node-label{font-size:14.5px;font-weight:700;letter-spacing:-.01em;color:#fff;}
   .tenav-node-detail{
     max-height:0;opacity:0;overflow:hidden;
-    font-size:12.5px;color:var(--tenav-muted);line-height:1.4;
+    font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.4;
     transition:max-height .38s var(--tenav-ease), opacity .3s ease, margin-top .3s ease;
   }
   .tenav-node:hover,.tenav-node:focus-visible{
     transform:translateY(-3px);
-    border-color:rgba(42,196,244,.5);
-    box-shadow:var(--tenav-shadow-md), 0 0 0 4px var(--tenav-blue-soft);
-    background:var(--tenav-white);
+    border-color:rgba(185,110,54,.55);
+    box-shadow:0 12px 26px rgba(0,0,0,.3), 0 0 0 4px rgba(185,110,54,.16);
+    background:rgba(255,255,255,.07);
   }
   .tenav-node:hover .tenav-node-icon,.tenav-node:focus-visible .tenav-node-icon{
-    background:var(--tenav-blue);color:var(--tenav-dark);transform:scale(1.06);
+    background:var(--eco-orange);color:#fff;transform:scale(1.06);
   }
   .tenav-node:hover .tenav-node-detail,.tenav-node:focus-visible .tenav-node-detail{
     max-height:60px;opacity:1;margin-top:6px;
   }
   .tenav-node.tenav-line-active{
-    border-color:rgba(42,196,244,.6);
-    box-shadow:var(--tenav-shadow-md), 0 0 0 4px var(--tenav-blue-soft);
+    border-color:rgba(185,110,54,.6);
+    box-shadow:0 12px 26px rgba(0,0,0,.3), 0 0 0 4px rgba(185,110,54,.16);
   }
   @keyframes tenavNodeRipple{
-    0%{ box-shadow:var(--tenav-shadow-sm); border-color:var(--tenav-border); transform:translateY(0); }
-    35%{ box-shadow:var(--tenav-shadow-md), 0 0 0 6px var(--tenav-blue-soft-2); border-color:rgba(42,196,244,.6); transform:translateY(-3px); }
-    100%{ box-shadow:var(--tenav-shadow-sm); border-color:var(--tenav-border); transform:translateY(0); }
+    0%{ box-shadow:none; border-color:rgba(255,255,255,.09); transform:translateY(0); }
+    35%{ box-shadow:0 12px 26px rgba(0,0,0,.32), 0 0 0 6px rgba(185,110,54,.22); border-color:rgba(185,110,54,.6); transform:translateY(-3px); }
+    100%{ box-shadow:none; border-color:rgba(255,255,255,.09); transform:translateY(0); }
   }
   .tenav-node.tenav-ripple{ animation:tenavNodeRipple .9s var(--tenav-ease); }
 
@@ -190,12 +201,6 @@
     display:flex;flex-direction:column;align-items:center;gap:16px;
     position:relative;z-index:2;
   }
-  .tenav-port-flowtag{
-    display:inline-flex;align-items:center;gap:6px;
-    font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--tenav-blue-deep);
-  }
-  .tenav-port-flowtag svg{width:13px;height:13px;}
   .tenav-port-visual{
     position:relative;width:192px;height:192px;
     display:flex;align-items:center;justify-content:center;
@@ -207,18 +212,18 @@
   }
   .tenav-port-hub{
     position:absolute;inset:-28px;border-radius:50%;
-    background:radial-gradient(circle at 32% 26%, #ffffff, #eef7fc 55%, #e2f2fb 100%);
-    border:1px solid rgba(42,196,244,.16);
-    box-shadow:0 22px 46px rgba(15,90,120,.14), inset 0 1px 0 rgba(255,255,255,.7);
+    background:radial-gradient(circle at 32% 26%, #16303a, #0f2329 60%, #0c1a1e 100%);
+    border:1px solid rgba(185,110,54,.2);
+    box-shadow:0 20px 50px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.05);
     transition:box-shadow .45s var(--tenav-ease), border-color .45s var(--tenav-ease);
   }
   .tenav-port-visual:hover .tenav-port-hub,.tenav-port-visual:focus-visible .tenav-port-hub{
-    box-shadow:0 32px 66px rgba(15,90,120,.24), inset 0 1px 0 rgba(255,255,255,.8);
-    border-color:rgba(42,196,244,.34);
+    box-shadow:0 28px 64px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
+    border-color:rgba(185,110,54,.4);
   }
   .tenav-port-glow{
     position:absolute;inset:-18px;border-radius:50%;
-    background:radial-gradient(circle, rgba(42,196,244,.38), transparent 68%);
+    background:radial-gradient(circle, rgba(185,110,54,.45), transparent 68%);
     filter:blur(2px);
     animation:tenavGlow 3.2s ease-in-out infinite;
     transition:opacity .4s ease;
@@ -228,7 +233,7 @@
   }
   .tenav-port-ring{
     position:absolute;inset:6px;border-radius:34px;
-    border:1.5px solid rgba(42,196,244,.45);
+    border:1.5px solid rgba(185,110,54,.5);
     animation:tenavPing 2.8s var(--tenav-ease) infinite;
   }
   .tenav-port-ring.tenav-ring-2{animation-delay:1.4s;}
@@ -250,8 +255,8 @@
   .tenav-pin:nth-child(7){animation-delay:.35s;} .tenav-pin:nth-child(8){animation-delay:.4s;}
 
   .tenav-port-caption{text-align:center;max-width:280px;}
-  .tenav-port-caption h3{font-size:18px;font-weight:800;letter-spacing:-.01em;}
-  .tenav-port-caption p{font-size:13.5px;color:var(--tenav-muted);margin-top:6px;line-height:1.5;}
+  .tenav-port-caption h3{font-size:18px;font-weight:800;letter-spacing:-.01em;color:#fff;}
+  .tenav-port-caption p{font-size:13.5px;color:rgba(255,255,255,.55);margin-top:6px;line-height:1.5;}
 
   @keyframes tenavGlow{
     0%,100%{opacity:.55;transform:scale(1);}
@@ -270,13 +275,13 @@
   /* mobile connector spine */
   .tenav-spine{
     width:2px;height:32px;margin:0 auto;
-    background:linear-gradient(var(--tenav-border-2), var(--tenav-blue));
+    background:linear-gradient(rgba(255,255,255,.08), var(--eco-orange));
     position:relative;
   }
   .tenav-spine::after{
     content:"";position:absolute;left:50%;top:0;width:6px;height:6px;border-radius:50%;
-    background:var(--tenav-blue);transform:translateX(-50%);
-    box-shadow:0 0 0 4px var(--tenav-blue-soft);
+    background:var(--eco-orange-light);transform:translateX(-50%);
+    box-shadow:0 0 0 4px rgba(185,110,54,.25);
     animation:tenavDot 2.2s linear infinite;
   }
   @keyframes tenavDot{
@@ -472,25 +477,31 @@
       overflow:visible;pointer-events:none;z-index:1;
     }
     .tenav-flow-line{
-      fill:none;stroke-width:1.6;stroke-linecap:round;
-      stroke-dasharray:4 7;
-      opacity:.55;
-      filter:drop-shadow(0 1px 2px rgba(42,196,244,.2));
-      animation:tenavDash 3.4s linear infinite;
-      transition:opacity .3s ease, stroke-width .3s ease, filter .3s ease;
+      fill:none;stroke:rgba(255,255,255,.38);stroke-width:1.5;stroke-linecap:round;
+      opacity:1;
+      transition:stroke .3s ease, stroke-width .3s ease, filter .3s ease;
     }
-    .tenav-flow-line[data-rail="infra"]{ stroke:url(#tenavFlowGradIn); }
-    .tenav-flow-line[data-rail="exp"]{ stroke:url(#tenavFlowGradOut); animation-direction:reverse; }
     .tenav-flow-line.tenav-line-active{
-      opacity:1;stroke-width:2.6;
-      filter:drop-shadow(0 2px 8px rgba(42,196,244,.55));
+      stroke:var(--eco-orange-light);stroke-width:2.4;
+      filter:drop-shadow(0 0 6px rgba(185,110,54,.6));
     }
     @keyframes tenavLineRipple{
-      0%{ opacity:.55;stroke-width:1.6; }
-      35%{ opacity:1;stroke-width:2.8;filter:drop-shadow(0 0 7px rgba(42,196,244,.65)); }
-      100%{ opacity:.55;stroke-width:1.6; }
+      0%{ stroke:rgba(255,255,255,.38);stroke-width:1.5; }
+      35%{ stroke:var(--eco-orange-light);stroke-width:2.6;filter:drop-shadow(0 0 7px rgba(185,110,54,.65)); }
+      100%{ stroke:rgba(255,255,255,.38);stroke-width:1.5; }
     }
     .tenav-flow-line.tenav-ripple{ animation:tenavLineRipple .9s var(--tenav-ease); }
+    .tenav-flow-dot{
+      fill:rgba(255,255,255,.55);
+      transition:fill .3s ease, r .3s ease;
+    }
+    .tenav-flow-dot.tenav-line-active{ fill:var(--eco-orange-light); }
+    @keyframes tenavDotRipple{
+      0%{ fill:rgba(255,255,255,.55); }
+      35%{ fill:var(--eco-orange-light); }
+      100%{ fill:rgba(255,255,255,.55); }
+    }
+    .tenav-flow-dot.tenav-ripple{ animation:tenavDotRipple .9s var(--tenav-ease); }
     .tenav-spine{display:none;}
     .tenav-port-col{padding:0 10px;}
     .tenav-port-visual{width:260px;height:260px;}
@@ -499,7 +510,6 @@
     .tenav-port-ring{inset:12px;border-radius:48px;}
     .tenav-port-svg{width:228px;height:228px;}
   }
-  @keyframes tenavDash{to{stroke-dashoffset:-44;}}
 
   @media (min-width:1080px){
     .tenav-stats-card{grid-template-columns:.9fr 1.7fr;align-items:center;text-align:left;}
@@ -562,16 +572,6 @@
 
     <div class="tenav-ecosystem">
       <svg class="tenav-flow-overlay" aria-hidden="true">
-        <defs>
-          <linearGradient id="tenavFlowGradIn" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#2AC4F4" stop-opacity=".15"/>
-            <stop offset="1" stop-color="#0B7FA6" stop-opacity=".9"/>
-          </linearGradient>
-          <linearGradient id="tenavFlowGradOut" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0" stop-color="#0B7FA6" stop-opacity=".9"/>
-            <stop offset="1" stop-color="#2AC4F4" stop-opacity=".15"/>
-          </linearGradient>
-        </defs>
         <path class="tenav-flow-line" data-rail="infra" data-line="0"/>
         <path class="tenav-flow-line" data-rail="infra" data-line="1"/>
         <path class="tenav-flow-line" data-rail="infra" data-line="2"/>
@@ -584,6 +584,18 @@
         <path class="tenav-flow-line" data-rail="exp" data-line="3"/>
         <path class="tenav-flow-line" data-rail="exp" data-line="4"/>
         <path class="tenav-flow-line" data-rail="exp" data-line="5"/>
+        <circle class="tenav-flow-dot" data-rail="infra" data-line="0" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="infra" data-line="1" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="infra" data-line="2" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="infra" data-line="3" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="infra" data-line="4" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="infra" data-line="5" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="exp" data-line="0" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="exp" data-line="1" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="exp" data-line="2" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="exp" data-line="3" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="exp" data-line="4" r="3.2"/>
+        <circle class="tenav-flow-dot" data-rail="exp" data-line="5" r="3.2"/>
       </svg>
       <!-- infrastructure rail -->
       <div class="tenav-rail tenav-rail--infra tenav-reveal" style="--tenav-d:80ms">
@@ -621,7 +633,6 @@
 
       <!-- centre port : hero centrepiece -->
       <div class="tenav-port-col tenav-reveal" style="--tenav-d:160ms">
-        <span class="tenav-port-flowtag">Infrastructure <svg><use href="#tenav-i-arrow-r"/></svg></span>
         <div class="tenav-port-visual" tabindex="0" role="button" aria-label="TenAV network port — the connection point between infrastructure and technology experience. Hover or focus to see the connections light up.">
           <span class="tenav-port-hub" aria-hidden="true"></span>
           <span class="tenav-port-glow" aria-hidden="true"></span>
@@ -630,8 +641,8 @@
           <svg class="tenav-port-svg" viewBox="0 0 240 240" aria-hidden="true">
             <defs>
               <linearGradient id="tenavPinGrad" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0" stop-color="#0E9FCC"/>
-                <stop offset="1" stop-color="#2AC4F4"/>
+                <stop offset="0" stop-color="#b96e36"/>
+                <stop offset="1" stop-color="#e0a06c"/>
               </linearGradient>
             </defs>
             <rect x="16" y="16" width="208" height="208" rx="30" fill="#1A1A1A"/>
@@ -651,7 +662,6 @@
             </g>
           </svg>
         </div>
-        <span class="tenav-port-flowtag">Experience <svg><use href="#tenav-i-arrow-r"/></svg></span>
         <div class="tenav-port-caption">
           <h3>One Port. One Provider.</h3>
           <p>TenAV designs, builds and supports every connection either side — so nothing falls through the gap between suppliers.</p>
@@ -853,6 +863,9 @@
   function lineEl(rail, idx){
     return overlay.querySelector('.tenav-flow-line[data-rail="' + rail + '"][data-line="' + idx + '"]');
   }
+  function dotEl(rail, idx){
+    return overlay.querySelector('.tenav-flow-dot[data-rail="' + rail + '"][data-line="' + idx + '"]');
+  }
 
   function buildEcosystemLines(){
     if(window.innerWidth < ECO_BREAKPOINT) return;
@@ -871,6 +884,7 @@
       var idx = node.getAttribute('data-line');
       var line = lineEl(rail, idx);
       if(!line) return;
+      var dot = dotEl(rail, idx);
       var nRect = node.getBoundingClientRect();
       var nodeY = nRect.top + nRect.height / 2 - ecoRect.top;
       var nodeX, hubX;
@@ -884,6 +898,7 @@
       var c1x = nodeX + (hubX - nodeX) * 0.55;
       var c2x = nodeX + (hubX - nodeX) * 0.45;
       line.setAttribute('d', 'M ' + nodeX + ' ' + nodeY + ' C ' + c1x + ' ' + nodeY + ' ' + c2x + ' ' + hubY + ' ' + hubX + ' ' + hubY);
+      if(dot){ dot.setAttribute('cx', nodeX); dot.setAttribute('cy', nodeY); }
     });
   }
 
@@ -912,12 +927,15 @@
     var rail = node.getAttribute('data-rail');
     var lineIndex = node.getAttribute('data-line');
     var line = lineEl(rail, lineIndex);
+    var dot = dotEl(rail, lineIndex);
     function activate(){
       if(line) line.classList.add('tenav-line-active');
+      if(dot) dot.classList.add('tenav-line-active');
       node.classList.add('tenav-line-active');
     }
     function deactivate(){
       if(line) line.classList.remove('tenav-line-active');
+      if(dot) dot.classList.remove('tenav-line-active');
       node.classList.remove('tenav-line-active');
     }
     node.addEventListener('mouseenter', activate);
@@ -945,6 +963,7 @@
           ['infra','exp'].forEach(function(rail){
             pulse(root.querySelector('.tenav-node[data-rail="' + rail + '"][data-line="' + idx + '"]'));
             pulse(lineEl(rail, idx));
+            pulse(dotEl(rail, idx));
           });
         }, step * 60);
       });
