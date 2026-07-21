@@ -1,0 +1,105 @@
+/* ============================================================================
+   event-landing.css
+   Companion stylesheet for the TenTechnology "Showroom Visit" landing page.
+   Only covers things core Gutenberg block settings can't express — the page's
+   colours/backgrounds/spacing are all set via block attributes so the client
+   can keep editing content in the block editor without breaking the design.
+   Enqueued from functions.php — see functions-snippet.php.
+   ============================================================================ */
+
+/* --- Header logo lockup -----------------------------------------------
+   Keeps the logo a sensible width on very large screens without needing
+   to hardcode a fixed image width that fights the "Resize" handles. */
+.tentech-logo img {
+  max-width: 220px;
+  height: auto;
+}
+
+/* --- Hero section -------------------------------------------------------
+   Core Columns blocks already stack on mobile; this just tidies spacing
+   and hides the decorative graphic on small screens so the headline gets
+   full width and doesn't compete with a shrunken image. */
+.tentech-hero .wp-block-column {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.tentech-hero-graphic img {
+  width: 100%;
+  height: auto;
+  opacity: 0.9;
+}
+
+@media (max-width: 782px) {
+  .tentech-hero-graphic-col {
+    display: none;
+  }
+  .tentech-hero h1 {
+    font-size: 32px !important;
+  }
+}
+
+/* --- Primary CTA button ---------------------------------------------------
+   The core Buttons block has no hover-state control in the editor UI, so
+   the hover/focus treatment lives here. Kept subtle (no colour change,
+   just a lift) to match the restrained tone of the email CTAs. */
+.tentech-cta-primary .wp-block-button__link {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tentech-cta-primary .wp-block-button__link:hover,
+.tentech-cta-primary .wp-block-button__link:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px -8px rgba(201, 122, 61, 0.55);
+}
+
+/* --- "What to Expect" numbered agenda list ---------------------------------
+   Colours the ordered-list numerals orange to match the brand's numbered
+   callouts. Core List block has no per-item numeral colour setting. */
+.tentech-agenda-list {
+  padding-left: 1.4em;
+}
+
+.tentech-agenda-list li {
+  padding-left: 0.4em;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.tentech-agenda-list li::marker {
+  color: #c97a3d;
+  font-weight: 700;
+}
+
+/* --- Registration widget card wrapper --------------------------------------
+   Gives the embedded Custom HTML widget a card container consistent with
+   the rest of the page (soft shadow + rounded corners matching the CTA
+   button radius) without doubling up on the widget's own internal padding
+   or border-radius, which are already handled inside the widget's own
+   <style> block. */
+.tentech-registration-card {
+  border-radius: 16px;
+  box-shadow: 0 30px 60px -30px rgba(11, 26, 43, 0.25);
+  overflow: hidden;
+}
+
+/* --- Footer link row --------------------------------------------------- */
+.tentech-footer-links a {
+  color: #e7ecf3;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tentech-footer-links a:hover,
+.tentech-footer-links a:focus-visible {
+  color: #ffffff;
+}
+
+/* --- Accessibility: consistent focus ring across the page's own links/buttons --- */
+.tentech-hero a:focus-visible,
+.tentech-footer a:focus-visible {
+  outline: 2px solid #c97a3d;
+  outline-offset: 2px;
+}
