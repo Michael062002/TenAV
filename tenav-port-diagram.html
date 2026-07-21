@@ -8,13 +8,12 @@
   .tenav-pd{
     --navy:#0E2530;
     --navy-2:#16303D;
-    --navy-3:#1D3D4C;
     --orange:#CC7A3E;
     --orange-light:#E7A874;
     --white:#FFFFFF;
-    --dim:rgba(255,255,255,.68);
-    --faint:rgba(255,255,255,.36);
-    --line:rgba(255,255,255,.55);
+    --dim:rgba(255,255,255,.7);
+    --faint:rgba(255,255,255,.34);
+    --line:rgba(255,255,255,.5);
     --radius:28px;
     --ease:cubic-bezier(.22,.8,.24,1);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Inter",Roboto,Helvetica,Arial,sans-serif;
@@ -29,7 +28,7 @@
     position:relative;
     max-width:1080px;margin:0 auto;
     background:
-      radial-gradient(circle at 12% 8%, rgba(204,122,63,.10), transparent 45%),
+      radial-gradient(circle at 12% 0%, rgba(204,122,63,.12), transparent 45%),
       var(--navy);
     border:1px solid rgba(255,255,255,.06);
     border-radius:var(--radius);
@@ -40,67 +39,72 @@
   }
 
   .tenav-pd-heading{
-    font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-    color:var(--orange);margin-bottom:18px;
+    font-size:clamp(21px,2.6vw,28px);font-weight:700;letter-spacing:-.01em;
+    color:var(--orange);margin-bottom:16px;
   }
   .tenav-pd-col--right .tenav-pd-heading{text-align:right;}
 
-  .tenav-pd-list{display:flex;flex-direction:column;gap:14px;width:100%;}
+  .tenav-pd-list{ display:flex;flex-direction:column;gap:15px; align-items:flex-start; }
+
   .tenav-pd-row{
-    display:flex;align-items:center;gap:8px;
-    padding:6px 8px;border-radius:10px;
-    text-align:left;width:100%;
-    transition:background .28s var(--ease), transform .28s var(--ease);
+    display:flex;align-items:center;
+    padding:5px 8px;border-radius:10px;
+    transition:background .25s var(--ease), transform .25s var(--ease);
   }
   .tenav-pd-label{
-    font-size:14.5px;font-weight:600;color:var(--dim);white-space:nowrap;
-    transition:color .28s var(--ease);
+    font-size:15.5px;font-weight:600;color:var(--dim);white-space:nowrap;
+    transition:color .25s var(--ease);
   }
   .tenav-pd-leader{
-    flex:1;height:0;border-bottom:1px dotted var(--faint);
-    margin:0 2px;min-width:16px;
-    transition:border-color .28s var(--ease);
+    width:22px;flex:none;height:0;border-bottom:1px dotted var(--faint);
+    margin:0 8px;align-self:center;
+    transition:border-color .25s var(--ease), width .25s var(--ease);
   }
   .tenav-pd-dot{
     flex:none;width:7px;height:7px;border-radius:50%;
     background:var(--white);box-shadow:0 0 0 4px rgba(255,255,255,.08);
-    transition:background .28s var(--ease), box-shadow .28s var(--ease), transform .28s var(--ease);
+    transition:background .25s var(--ease), box-shadow .25s var(--ease), transform .25s var(--ease);
   }
-  .tenav-pd-row:hover,.tenav-pd-row:focus-visible{ background:rgba(255,255,255,.05); transform:translateY(-1px); }
+  .tenav-pd-row:hover,.tenav-pd-row:focus-visible{ background:rgba(255,255,255,.06); }
+  .tenav-pd-col--left .tenav-pd-row:hover,.tenav-pd-col--left .tenav-pd-row:focus-visible{ transform:translateX(4px); }
+  .tenav-pd-col--right .tenav-pd-row:hover,.tenav-pd-col--right .tenav-pd-row:focus-visible{ transform:translateX(-4px); }
   .tenav-pd-row:hover .tenav-pd-label,.tenav-pd-row:focus-visible .tenav-pd-label{ color:var(--white); }
-  .tenav-pd-row:hover .tenav-pd-leader,.tenav-pd-row:focus-visible .tenav-pd-leader{ border-color:rgba(231,168,116,.6); }
+  .tenav-pd-row:hover .tenav-pd-leader,.tenav-pd-row:focus-visible .tenav-pd-leader{ border-color:rgba(231,168,116,.75); }
   .tenav-pd-row:hover .tenav-pd-dot,.tenav-pd-row:focus-visible .tenav-pd-dot{
-    background:var(--orange-light); box-shadow:0 0 0 5px rgba(231,168,116,.22); transform:scale(1.15);
+    background:var(--orange-light); box-shadow:0 0 0 6px rgba(231,168,116,.28); transform:scale(1.35);
   }
 
   /* ---------- centre port ---------- */
-  .tenav-pd-port{ display:flex;align-items:center;justify-content:center; position:relative; }
+  .tenav-pd-port{ display:flex;align-items:center;justify-content:center; position:relative; z-index:1; }
   .tenav-pd-porticon-wrap{ position:relative; width:132px;height:132px; display:flex;align-items:center;justify-content:center; }
   .tenav-pd-glow{
     position:absolute;inset:-20px;border-radius:50%;
     background:radial-gradient(circle, rgba(204,122,63,.42), transparent 68%);
     animation:tenavPdGlow 3.4s ease-in-out infinite;
+    transition:opacity .3s ease;
   }
   .tenav-pd-ring{
     position:absolute;inset:2px;border-radius:30px;
     border:1.5px solid rgba(231,168,116,.4);
     animation:tenavPdPing 3s var(--ease) infinite;
   }
-  .tenav-pd-porticon{ position:relative;z-index:2;width:118px;height:118px; filter:drop-shadow(0 16px 26px rgba(0,0,0,.45)); }
+  .tenav-pd-porticon{ position:relative;z-index:2;width:118px;height:118px; filter:drop-shadow(0 16px 26px rgba(0,0,0,.45)); transition:transform .35s var(--ease); }
   .tenav-pd-pin{ animation:tenavPdPin 2.6s var(--ease) infinite; }
   .tenav-pd-pin:nth-child(1){animation-delay:.05s;} .tenav-pd-pin:nth-child(2){animation-delay:.1s;}
   .tenav-pd-pin:nth-child(3){animation-delay:.15s;} .tenav-pd-pin:nth-child(4){animation-delay:.2s;}
   .tenav-pd-pin:nth-child(5){animation-delay:.25s;} .tenav-pd-pin:nth-child(6){animation-delay:.3s;}
   .tenav-pd-pin:nth-child(7){animation-delay:.35s;} .tenav-pd-pin:nth-child(8){animation-delay:.4s;}
-  .tenav-pd-port.tenav-pd-active .tenav-pd-glow{ animation-duration:1.4s; }
+  .tenav-pd-port.tenav-pd-active .tenav-pd-glow{ animation-duration:1.1s; opacity:1; }
+  .tenav-pd-port.tenav-pd-active .tenav-pd-ring{ animation-duration:1.3s; }
+  .tenav-pd-port.tenav-pd-active .tenav-pd-porticon{ transform:scale(1.05); }
 
   @keyframes tenavPdGlow{ 0%,100%{opacity:.55;transform:scale(1);} 50%{opacity:1;transform:scale(1.07);} }
   @keyframes tenavPdPing{ 0%{opacity:.6;transform:scale(.92);} 80%,100%{opacity:0;transform:scale(1.16);} }
   @keyframes tenavPdPin{ 0%,100%{opacity:.75;} 50%{opacity:1;} }
 
-  /* ---------- trace lines (desktop) ---------- */
+  /* ---------- trace overlay (desktop) ---------- */
   .tenav-pd svg.tenav-pd-trace{ display:none; }
-  .tenav-pd-col{ position:relative; }
+  .tenav-pd-col{ position:relative; z-index:1; }
 
   /* ---------- mobile spine ---------- */
   .tenav-pd-spine{
@@ -121,46 +125,80 @@
   .tenav-pd-js .tenav-pd-row{ opacity:0; transform:translateX(var(--tenav-pd-slide,-14px)); transition:opacity .5s var(--ease), transform .5s var(--ease); transition-delay:var(--d,0ms); }
   .tenav-pd-js .tenav-pd-col--right .tenav-pd-row{ --tenav-pd-slide:14px; }
   .tenav-pd-js .tenav-pd-in .tenav-pd-row{ opacity:1; transform:translateX(0); }
-  .tenav-pd-js .tenav-pd-porticon-wrap{ opacity:0; transform:scale(.82); transition:opacity .6s var(--ease), transform .6s var(--ease); transition-delay:120ms; }
+  .tenav-pd-js .tenav-pd-porticon-wrap{ opacity:0; transform:scale(.8); transition:opacity .6s var(--ease), transform .6s var(--ease); transition-delay:150ms; }
   .tenav-pd-js .tenav-pd-in .tenav-pd-porticon-wrap{ opacity:1; transform:scale(1); }
 
   /* ===================== DESKTOP ===================== */
   @media (min-width:760px){
-    .tenav-pd-card{ display:grid; grid-template-columns:1fr minmax(150px,190px) 1fr; align-items:center; gap:0 6px; }
+    .tenav-pd-card{ display:grid; grid-template-columns:1fr minmax(150px,190px) 1fr; align-items:center; gap:0; }
     .tenav-pd-spine{ display:none; }
-    .tenav-pd-list{ width:70%; }
-    .tenav-pd-col--right .tenav-pd-list{ width:70%; margin-left:auto; }
-    .tenav-pd-col--right .tenav-pd-row{ flex-direction:row-reverse; text-align:right; }
+    .tenav-pd-col--right .tenav-pd-list{ align-items:flex-end; }
 
     .tenav-pd svg.tenav-pd-trace{
       display:block; position:absolute; inset:0; width:100%; height:100%;
-      overflow:visible; pointer-events:none;
+      overflow:visible; pointer-events:none; z-index:0;
     }
-    .tenav-pd-trace line{
-      stroke:var(--line); stroke-width:1.4; stroke-linecap:round;
-      stroke-dasharray:220; stroke-dashoffset:220;
-      transition:stroke-dashoffset .8s var(--ease), stroke .3s var(--ease), stroke-width .3s var(--ease), opacity .3s var(--ease);
+    .tenav-pd-trace .tenav-pd-tap,
+    .tenav-pd-trace .tenav-pd-trunk,
+    .tenav-pd-trace .tenav-pd-connector{
+      fill:none; stroke:var(--line); stroke-width:1.4; stroke-linecap:round;
+      transition:stroke-dashoffset .8s var(--ease), stroke .3s ease, stroke-width .3s ease, opacity .3s ease;
+      opacity:.8;
+      animation:tenavPdShimmer 5s ease-in-out infinite;
     }
-    .tenav-pd-js .tenav-pd-in .tenav-pd-trace line{ stroke-dashoffset:0; }
-    .tenav-pd-trace line:nth-of-type(1){ transition-delay:.5s; } /* trunk */
-    .tenav-pd-trace line:nth-of-type(2){ transition-delay:.05s; }
-    .tenav-pd-trace line:nth-of-type(3){ transition-delay:.15s; }
-    .tenav-pd-trace line:nth-of-type(4){ transition-delay:.25s; }
-    .tenav-pd-trace line:nth-of-type(5){ transition-delay:.35s; }
-    .tenav-pd-trace line:nth-of-type(6){ transition-delay:.45s; }
-    .tenav-pd-trace line:nth-of-type(7){ transition-delay:.65s; } /* connector */
-    .tenav-pd-trace line.tenav-pd-line-active{ stroke:var(--orange-light); stroke-width:2; opacity:1; }
+    .tenav-pd-trace .tenav-pd-tap.tenav-pd-line-active,
+    .tenav-pd-trace .tenav-pd-trunk.tenav-pd-line-active,
+    .tenav-pd-trace .tenav-pd-connector.tenav-pd-line-active{
+      stroke:var(--orange-light); stroke-width:2.4; opacity:1; animation:none;
+    }
+    .tenav-pd-guide{ fill:none; stroke:none; }
+    .tenav-pd-pulse{ fill:var(--orange-light); filter:drop-shadow(0 0 5px rgba(231,168,116,.95)); opacity:0; }
+    .tenav-pd-pulse.tenav-pd-pulse-on{ opacity:1; }
+    .tenav-pd-idle-pulse{ fill:rgba(255,255,255,.6); filter:drop-shadow(0 0 3px rgba(255,255,255,.5)); }
   }
+  @keyframes tenavPdShimmer{ 0%,100%{opacity:.6;} 50%{opacity:.9;} }
 
   @media (prefers-reduced-motion:reduce){
     .tenav-pd *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
     .tenav-pd-js .tenav-pd-row, .tenav-pd-js .tenav-pd-porticon-wrap{ opacity:1; transform:none; }
-    .tenav-pd-js .tenav-pd-trace line{ stroke-dashoffset:0; }
+    .tenav-pd-idle-pulse, .tenav-pd-pulse{ display:none; }
   }
 </style>
 
 <section class="tenav-pd" aria-label="How TenAV connects infrastructure to outcomes">
   <div class="tenav-pd-card" data-tenav-pd>
+
+    <svg class="tenav-pd-trace" aria-hidden="true">
+      <line class="tenav-pd-trunk" data-side="left"/>
+      <path class="tenav-pd-tap" data-side="left" data-line="0"/>
+      <path class="tenav-pd-tap" data-side="left" data-line="1"/>
+      <path class="tenav-pd-tap" data-side="left" data-line="2"/>
+      <path class="tenav-pd-tap" data-side="left" data-line="3"/>
+      <path class="tenav-pd-tap" data-side="left" data-line="4"/>
+      <path class="tenav-pd-connector" data-side="left"/>
+      <path class="tenav-pd-guide" data-side="left" data-line="0"/>
+      <path class="tenav-pd-guide" data-side="left" data-line="1"/>
+      <path class="tenav-pd-guide" data-side="left" data-line="2"/>
+      <path class="tenav-pd-guide" data-side="left" data-line="3"/>
+      <path class="tenav-pd-guide" data-side="left" data-line="4"/>
+      <circle class="tenav-pd-idle-pulse" data-side="left" r="2.5"/>
+      <circle class="tenav-pd-pulse" data-side="left" r="3.5"/>
+
+      <line class="tenav-pd-trunk" data-side="right"/>
+      <path class="tenav-pd-tap" data-side="right" data-line="0"/>
+      <path class="tenav-pd-tap" data-side="right" data-line="1"/>
+      <path class="tenav-pd-tap" data-side="right" data-line="2"/>
+      <path class="tenav-pd-tap" data-side="right" data-line="3"/>
+      <path class="tenav-pd-tap" data-side="right" data-line="4"/>
+      <path class="tenav-pd-connector" data-side="right"/>
+      <path class="tenav-pd-guide" data-side="right" data-line="0"/>
+      <path class="tenav-pd-guide" data-side="right" data-line="1"/>
+      <path class="tenav-pd-guide" data-side="right" data-line="2"/>
+      <path class="tenav-pd-guide" data-side="right" data-line="3"/>
+      <path class="tenav-pd-guide" data-side="right" data-line="4"/>
+      <circle class="tenav-pd-idle-pulse" data-side="right" r="2.5"/>
+      <circle class="tenav-pd-pulse" data-side="right" r="3.5"/>
+    </svg>
 
     <div class="tenav-pd-col tenav-pd-col--left">
       <h3 class="tenav-pd-heading">Infrastructure</h3>
@@ -172,15 +210,6 @@
         <button type="button" class="tenav-pd-row" data-line="4" style="--d:260ms"><span class="tenav-pd-label">Power</span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-dot" aria-hidden="true"></span></button>
       </div>
       <div class="tenav-pd-spine tenav-pd-spine--bottom" aria-hidden="true"></div>
-      <svg class="tenav-pd-trace" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <line x1="84" y1="10" x2="84" y2="90"/>
-        <line data-line="0" x1="70" y1="10" x2="84" y2="10"/>
-        <line data-line="1" x1="70" y1="30" x2="84" y2="30"/>
-        <line data-line="2" x1="70" y1="50" x2="84" y2="50"/>
-        <line data-line="3" x1="70" y1="70" x2="84" y2="70"/>
-        <line data-line="4" x1="70" y1="90" x2="84" y2="90"/>
-        <line x1="84" y1="50" x2="114" y2="50"/>
-      </svg>
     </div>
 
     <div class="tenav-pd-port">
@@ -222,15 +251,6 @@
         <button type="button" class="tenav-pd-row" data-line="3" style="--d:210ms"><span class="tenav-pd-dot" aria-hidden="true"></span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-label">User Experience</span></button>
         <button type="button" class="tenav-pd-row" data-line="4" style="--d:260ms"><span class="tenav-pd-dot" aria-hidden="true"></span><span class="tenav-pd-leader" aria-hidden="true"></span><span class="tenav-pd-label">Ongoing Support</span></button>
       </div>
-      <svg class="tenav-pd-trace" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <line x1="16" y1="10" x2="16" y2="90"/>
-        <line data-line="0" x1="30" y1="10" x2="16" y2="10"/>
-        <line data-line="1" x1="30" y1="30" x2="16" y2="30"/>
-        <line data-line="2" x1="30" y1="50" x2="16" y2="50"/>
-        <line data-line="3" x1="30" y1="70" x2="16" y2="70"/>
-        <line data-line="4" x1="30" y1="90" x2="16" y2="90"/>
-        <line x1="16" y1="50" x2="-14" y2="50"/>
-      </svg>
     </div>
 
   </div>
@@ -245,44 +265,200 @@
   section.classList.add('tenav-pd-js');
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var trace = card.querySelector('.tenav-pd-trace');
+  var leftRows = Array.prototype.slice.call(card.querySelectorAll('.tenav-pd-col--left .tenav-pd-row'));
+  var rightRows = Array.prototype.slice.call(card.querySelectorAll('.tenav-pd-col--right .tenav-pd-row'));
+  var portWrap = card.querySelector('.tenav-pd-porticon-wrap');
+  var portEl = card.querySelector('.tenav-pd-port');
+  var R = 12;
+  var built = false;
 
-  if('IntersectionObserver' in window && !reduceMotion){
+  function centerOf(el){
+    var r = el.getBoundingClientRect();
+    var cr = card.getBoundingClientRect();
+    return { x: r.left + r.width / 2 - cr.left, y: r.top + r.height / 2 - cr.top };
+  }
+
+  function els(side){
+    return {
+      trunk: trace.querySelector('.tenav-pd-trunk[data-side="' + side + '"]'),
+      connector: trace.querySelector('.tenav-pd-connector[data-side="' + side + '"]'),
+      taps: [0,1,2,3,4].map(function(i){ return trace.querySelector('.tenav-pd-tap[data-side="' + side + '"][data-line="' + i + '"]'); }),
+      guides: [0,1,2,3,4].map(function(i){ return trace.querySelector('.tenav-pd-guide[data-side="' + side + '"][data-line="' + i + '"]'); }),
+      idle: trace.querySelector('.tenav-pd-idle-pulse[data-side="' + side + '"]'),
+      pulse: trace.querySelector('.tenav-pd-pulse[data-side="' + side + '"]')
+    };
+  }
+  var leftEls = els('left');
+  var rightEls = els('right');
+
+  function prep(el, revealed){
+    if(!el) return;
+    var len = 300;
+    try { len = el.getTotalLength() || 300; } catch(e){}
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = revealed ? 0 : len;
+  }
+
+  function layoutSide(rows, g, dir){
+    var dots = rows.map(function(row){ return centerOf(row.querySelector('.tenav-pd-dot')); });
+    var portRect = portWrap.getBoundingClientRect();
+    var cardRect = card.getBoundingClientRect();
+    var portLeftX = portRect.left - cardRect.left;
+    var portRightX = portRect.right - cardRect.left;
+    var portCenterX = portRect.left + portRect.width / 2 - cardRect.left;
+    var revealed = card.classList.contains('tenav-pd-in');
+
+    var trunkX;
+    if(dir === 1){
+      var maxX = Math.max.apply(null, dots.map(function(d){ return d.x; }));
+      trunkX = Math.min(maxX + 30, portLeftX - 22);
+    } else {
+      var minX = Math.min.apply(null, dots.map(function(d){ return d.x; }));
+      trunkX = Math.max(minX - 30, portRightX + 22);
+    }
+
+    var top = dots[0], bottom = dots[4], mid = dots[2];
+    g.trunk.setAttribute('x1', trunkX); g.trunk.setAttribute('y1', top.y);
+    g.trunk.setAttribute('x2', trunkX); g.trunk.setAttribute('y2', bottom.y);
+    prep(g.trunk, revealed);
+
+    g.connector.setAttribute('d', 'M ' + trunkX + ' ' + mid.y + ' H ' + portCenterX);
+    prep(g.connector, revealed);
+
+    dots.forEach(function(d, i){
+      var tapD;
+      if(i === 0){
+        tapD = dir === 1
+          ? 'M ' + d.x + ' ' + d.y + ' H ' + (trunkX - R) + ' Q ' + trunkX + ' ' + d.y + ' ' + trunkX + ' ' + (d.y + R)
+          : 'M ' + d.x + ' ' + d.y + ' H ' + (trunkX + R) + ' Q ' + trunkX + ' ' + d.y + ' ' + trunkX + ' ' + (d.y + R);
+      } else if(i === 4){
+        tapD = dir === 1
+          ? 'M ' + d.x + ' ' + d.y + ' H ' + (trunkX - R) + ' Q ' + trunkX + ' ' + d.y + ' ' + trunkX + ' ' + (d.y - R)
+          : 'M ' + d.x + ' ' + d.y + ' H ' + (trunkX + R) + ' Q ' + trunkX + ' ' + d.y + ' ' + trunkX + ' ' + (d.y - R);
+      } else {
+        tapD = 'M ' + d.x + ' ' + d.y + ' H ' + trunkX;
+      }
+      g.taps[i].setAttribute('d', tapD);
+      prep(g.taps[i], revealed);
+      g.guides[i].setAttribute('d', 'M ' + d.x + ' ' + d.y + ' H ' + trunkX + ' V ' + mid.y + ' H ' + portCenterX);
+    });
+  }
+
+  function buildDiagram(){
+    if(window.innerWidth < 760) return;
+    var w = card.clientWidth, h = card.clientHeight;
+    if(!w || !h) return;
+    trace.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    layoutSide(leftRows, leftEls, 1);
+    layoutSide(rightRows, rightEls, -1);
+    built = true;
+  }
+
+  buildDiagram();
+  window.addEventListener('load', buildDiagram);
+  var resizeT;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeT);
+    resizeT = setTimeout(buildDiagram, 150);
+  });
+
+  function reveal(){
+    card.classList.add('tenav-pd-in');
+    if(!built) buildDiagram();
+    [leftEls, rightEls].forEach(function(g){
+      var all = [g.trunk].concat(g.taps, [g.connector]);
+      all.forEach(function(el, i){
+        if(!el) return;
+        setTimeout(function(){ el.style.strokeDashoffset = '0'; }, i * 70);
+      });
+    });
+  }
+
+  if('IntersectionObserver' in window && window.innerWidth >= 760){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         if(entry.isIntersecting){
-          card.classList.add('tenav-pd-in');
+          if(reduceMotion){
+            card.classList.add('tenav-pd-in');
+            [leftEls, rightEls].forEach(function(g){
+              [g.trunk].concat(g.taps, [g.connector]).forEach(function(el){ if(el) el.style.strokeDashoffset = '0'; });
+            });
+          } else {
+            reveal();
+          }
           io.unobserve(entry.target);
         }
       });
-    }, {threshold:.3});
+    }, { threshold: .3 });
     io.observe(card);
   } else {
     card.classList.add('tenav-pd-in');
   }
 
-  var portEl = card.querySelector('.tenav-pd-port');
-  var rows = card.querySelectorAll('.tenav-pd-row');
-  rows.forEach(function(row){
-    var col = row.closest('.tenav-pd-col');
+  function wireRow(row, g){
     var idx = row.getAttribute('data-line');
-    var trace = col.querySelector('.tenav-pd-trace');
-    var tap = trace ? trace.querySelector('line[data-line="' + idx + '"]') : null;
-    var shared = trace ? trace.querySelectorAll('line:not([data-line])') : [];
+    var tap = g.taps[idx];
+    var guide = g.guides[idx];
+    var rafId = null;
 
-    function activate(){
-      if(tap) tap.classList.add('tenav-pd-line-active');
-      shared.forEach(function(l){ l.classList.add('tenav-pd-line-active'); });
-      if(portEl) portEl.classList.add('tenav-pd-active');
+    function setActive(on){
+      [tap, g.trunk, g.connector].forEach(function(el){ if(el) el.classList.toggle('tenav-pd-line-active', on); });
+      if(portEl) portEl.classList.toggle('tenav-pd-active', on);
+      if(on) startPulse(); else stopPulse();
     }
-    function deactivate(){
-      if(tap) tap.classList.remove('tenav-pd-line-active');
-      shared.forEach(function(l){ l.classList.remove('tenav-pd-line-active'); });
-      if(portEl) portEl.classList.remove('tenav-pd-active');
+    function startPulse(){
+      if(reduceMotion || !guide || !g.pulse || window.innerWidth < 760) return;
+      var len;
+      try { len = guide.getTotalLength(); } catch(e){ return; }
+      if(!len) return;
+      g.pulse.classList.add('tenav-pd-pulse-on');
+      var duration = 850, start = null;
+      function frame(ts){
+        if(start === null) start = ts;
+        var t = ((ts - start) % duration) / duration;
+        var p = guide.getPointAtLength(t * len);
+        g.pulse.setAttribute('cx', p.x);
+        g.pulse.setAttribute('cy', p.y);
+        rafId = requestAnimationFrame(frame);
+      }
+      rafId = requestAnimationFrame(frame);
     }
-    row.addEventListener('mouseenter', activate);
-    row.addEventListener('mouseleave', deactivate);
-    row.addEventListener('focus', activate);
-    row.addEventListener('blur', deactivate);
-  });
+    function stopPulse(){
+      if(rafId) cancelAnimationFrame(rafId);
+      rafId = null;
+      if(g.pulse) g.pulse.classList.remove('tenav-pd-pulse-on');
+    }
+    row.addEventListener('mouseenter', function(){ setActive(true); });
+    row.addEventListener('mouseleave', function(){ setActive(false); });
+    row.addEventListener('focus', function(){ setActive(true); });
+    row.addEventListener('blur', function(){ setActive(false); });
+  }
+  leftRows.forEach(function(row){ wireRow(row, leftEls); });
+  rightRows.forEach(function(row){ wireRow(row, rightEls); });
+
+  function startIdle(g){
+    if(reduceMotion) return;
+    var duration = 2800, start = null;
+    function frame(ts){
+      if(window.innerWidth >= 760 && g.connector && g.idle){
+        if(start === null) start = ts;
+        var len;
+        try { len = g.connector.getTotalLength(); } catch(e){ len = 0; }
+        if(len){
+          var t = ((ts - start) % duration) / duration;
+          var p = g.connector.getPointAtLength(t * len);
+          g.idle.setAttribute('cx', p.x);
+          g.idle.setAttribute('cy', p.y);
+        }
+      } else {
+        start = null;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  startIdle(leftEls);
+  startIdle(rightEls);
 })();
 </script>
