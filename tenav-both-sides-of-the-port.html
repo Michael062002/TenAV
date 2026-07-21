@@ -117,6 +117,7 @@
   .tenav-ecosystem{
     margin-top:clamp(48px,6vw,84px);
     display:flex;flex-direction:column;gap:36px;
+    position:relative;
   }
   .tenav-rail{position:relative;}
   .tenav-rail-head{
@@ -175,12 +176,18 @@
     border-color:rgba(42,196,244,.6);
     box-shadow:var(--tenav-shadow-md), 0 0 0 4px var(--tenav-blue-soft);
   }
+  @keyframes tenavNodeRipple{
+    0%{ box-shadow:var(--tenav-shadow-sm); border-color:var(--tenav-border); transform:translateY(0); }
+    35%{ box-shadow:var(--tenav-shadow-md), 0 0 0 6px var(--tenav-blue-soft-2); border-color:rgba(42,196,244,.6); transform:translateY(-3px); }
+    100%{ box-shadow:var(--tenav-shadow-sm); border-color:var(--tenav-border); transform:translateY(0); }
+  }
+  .tenav-node.tenav-ripple{ animation:tenavNodeRipple .9s var(--tenav-ease); }
 
-  .tenav-section svg.tenav-rail-flow{display:none;} /* svg connector lines: desktop only */
+  .tenav-section svg.tenav-flow-overlay{display:none;} /* precision connector overlay: desktop only */
 
-  /* ---------- centre port ---------- */
+  /* ---------- centre port : hero centrepiece ---------- */
   .tenav-port-col{
-    display:flex;flex-direction:column;align-items:center;gap:18px;
+    display:flex;flex-direction:column;align-items:center;gap:16px;
     position:relative;z-index:2;
   }
   .tenav-port-flowtag{
@@ -190,14 +197,34 @@
   }
   .tenav-port-flowtag svg{width:13px;height:13px;}
   .tenav-port-visual{
-    position:relative;width:168px;height:168px;
+    position:relative;width:192px;height:192px;
     display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    transition:transform .45s var(--tenav-ease);
+  }
+  .tenav-port-visual:hover,.tenav-port-visual:focus-visible{
+    transform:translateY(-8px);
+  }
+  .tenav-port-hub{
+    position:absolute;inset:-28px;border-radius:50%;
+    background:radial-gradient(circle at 32% 26%, #ffffff, #eef7fc 55%, #e2f2fb 100%);
+    border:1px solid rgba(42,196,244,.16);
+    box-shadow:0 22px 46px rgba(15,90,120,.14), inset 0 1px 0 rgba(255,255,255,.7);
+    transition:box-shadow .45s var(--tenav-ease), border-color .45s var(--tenav-ease);
+  }
+  .tenav-port-visual:hover .tenav-port-hub,.tenav-port-visual:focus-visible .tenav-port-hub{
+    box-shadow:0 32px 66px rgba(15,90,120,.24), inset 0 1px 0 rgba(255,255,255,.8);
+    border-color:rgba(42,196,244,.34);
   }
   .tenav-port-glow{
     position:absolute;inset:-18px;border-radius:50%;
     background:radial-gradient(circle, rgba(42,196,244,.38), transparent 68%);
     filter:blur(2px);
     animation:tenavGlow 3.2s ease-in-out infinite;
+    transition:opacity .4s ease;
+  }
+  .tenav-port-visual:hover .tenav-port-glow,.tenav-port-visual:focus-visible .tenav-port-glow{
+    animation-duration:1.3s;opacity:1;
   }
   .tenav-port-ring{
     position:absolute;inset:6px;border-radius:34px;
@@ -205,7 +232,17 @@
     animation:tenavPing 2.8s var(--tenav-ease) infinite;
   }
   .tenav-port-ring.tenav-ring-2{animation-delay:1.4s;}
-  .tenav-port-svg{position:relative;z-index:2;width:150px;height:150px;filter:drop-shadow(0 14px 26px rgba(26,26,26,.18));}
+  .tenav-port-visual:hover .tenav-port-ring,.tenav-port-visual:focus-visible .tenav-port-ring{
+    animation-duration:1.5s;
+  }
+  .tenav-port-svg{
+    position:relative;z-index:2;width:168px;height:168px;
+    filter:drop-shadow(0 14px 26px rgba(26,26,26,.18));
+    transition:filter .45s var(--tenav-ease);
+  }
+  .tenav-port-visual:hover .tenav-port-svg,.tenav-port-visual:focus-visible .tenav-port-svg{
+    filter:drop-shadow(0 24px 40px rgba(15,90,120,.32));
+  }
   .tenav-pin{animation:tenavPin 2.6s var(--tenav-ease) infinite;}
   .tenav-pin:nth-child(1){animation-delay:.05s;} .tenav-pin:nth-child(2){animation-delay:.1s;}
   .tenav-pin:nth-child(3){animation-delay:.15s;} .tenav-pin:nth-child(4){animation-delay:.2s;}
@@ -215,10 +252,6 @@
   .tenav-port-caption{text-align:center;max-width:280px;}
   .tenav-port-caption h3{font-size:18px;font-weight:800;letter-spacing:-.01em;}
   .tenav-port-caption p{font-size:13.5px;color:var(--tenav-muted);margin-top:6px;line-height:1.5;}
-
-  .tenav-port-stub{
-    display:none; /* shown on desktop between rail and port */
-  }
 
   @keyframes tenavGlow{
     0%,100%{opacity:.55;transform:scale(1);}
@@ -424,8 +457,8 @@
   @media (min-width:980px){
     .tenav-ecosystem{
       display:grid;
-      grid-template-columns:minmax(220px,300px) minmax(200px,240px) minmax(220px,300px);
-      align-items:center;gap:0;
+      grid-template-columns:minmax(200px,1fr) minmax(290px,320px) minmax(200px,1fr);
+      align-items:center;gap:0 40px;
     }
     .tenav-rail{height:100%;}
     .tenav-rail-nodes{
@@ -434,27 +467,37 @@
       gap:14px;
     }
     .tenav-node{padding:14px 16px;}
-    .tenav-section svg.tenav-rail-flow{
+    .tenav-section svg.tenav-flow-overlay{
       display:block;position:absolute;inset:0;width:100%;height:100%;
-      overflow:visible;pointer-events:none;
+      overflow:visible;pointer-events:none;z-index:1;
     }
-    .tenav-rail--exp .tenav-rail-flow{left:auto;}
     .tenav-flow-line{
-      fill:none;stroke:var(--tenav-blue);stroke-width:1.4;
-      vector-effect:non-scaling-stroke;
-      stroke-dasharray:5 6;
-      opacity:.4;
-      animation:tenavDash 2.6s linear infinite;
-      transition:opacity .3s ease, stroke-width .3s ease;
+      fill:none;stroke-width:1.6;stroke-linecap:round;
+      stroke-dasharray:4 7;
+      opacity:.55;
+      filter:drop-shadow(0 1px 2px rgba(42,196,244,.2));
+      animation:tenavDash 3.4s linear infinite;
+      transition:opacity .3s ease, stroke-width .3s ease, filter .3s ease;
     }
-    .tenav-flow-line.tenav-line-active{opacity:.95;stroke-width:2.2;}
+    .tenav-flow-line[data-rail="infra"]{ stroke:url(#tenavFlowGradIn); }
+    .tenav-flow-line[data-rail="exp"]{ stroke:url(#tenavFlowGradOut); animation-direction:reverse; }
+    .tenav-flow-line.tenav-line-active{
+      opacity:1;stroke-width:2.6;
+      filter:drop-shadow(0 2px 8px rgba(42,196,244,.55));
+    }
+    @keyframes tenavLineRipple{
+      0%{ opacity:.55;stroke-width:1.6; }
+      35%{ opacity:1;stroke-width:2.8;filter:drop-shadow(0 0 7px rgba(42,196,244,.65)); }
+      100%{ opacity:.55;stroke-width:1.6; }
+    }
+    .tenav-flow-line.tenav-ripple{ animation:tenavLineRipple .9s var(--tenav-ease); }
     .tenav-spine{display:none;}
-    .tenav-port-stub{
-      display:block;height:1.5px;width:100%;
-      background:repeating-linear-gradient(90deg, var(--tenav-blue) 0 6px, transparent 6px 12px);
-      opacity:.5;
-    }
-    .tenav-port-col{padding:0 6px;}
+    .tenav-port-col{padding:0 10px;}
+    .tenav-port-visual{width:260px;height:260px;}
+    .tenav-port-hub{inset:-14px;}
+    .tenav-port-glow{inset:-26px;}
+    .tenav-port-ring{inset:12px;border-radius:48px;}
+    .tenav-port-svg{width:228px;height:228px;}
   }
   @keyframes tenavDash{to{stroke-dashoffset:-44;}}
 
@@ -518,20 +561,36 @@
     </div>
 
     <div class="tenav-ecosystem">
+      <svg class="tenav-flow-overlay" aria-hidden="true">
+        <defs>
+          <linearGradient id="tenavFlowGradIn" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#2AC4F4" stop-opacity=".15"/>
+            <stop offset="1" stop-color="#0B7FA6" stop-opacity=".9"/>
+          </linearGradient>
+          <linearGradient id="tenavFlowGradOut" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#0B7FA6" stop-opacity=".9"/>
+            <stop offset="1" stop-color="#2AC4F4" stop-opacity=".15"/>
+          </linearGradient>
+        </defs>
+        <path class="tenav-flow-line" data-rail="infra" data-line="0"/>
+        <path class="tenav-flow-line" data-rail="infra" data-line="1"/>
+        <path class="tenav-flow-line" data-rail="infra" data-line="2"/>
+        <path class="tenav-flow-line" data-rail="infra" data-line="3"/>
+        <path class="tenav-flow-line" data-rail="infra" data-line="4"/>
+        <path class="tenav-flow-line" data-rail="infra" data-line="5"/>
+        <path class="tenav-flow-line" data-rail="exp" data-line="0"/>
+        <path class="tenav-flow-line" data-rail="exp" data-line="1"/>
+        <path class="tenav-flow-line" data-rail="exp" data-line="2"/>
+        <path class="tenav-flow-line" data-rail="exp" data-line="3"/>
+        <path class="tenav-flow-line" data-rail="exp" data-line="4"/>
+        <path class="tenav-flow-line" data-rail="exp" data-line="5"/>
+      </svg>
       <!-- infrastructure rail -->
       <div class="tenav-rail tenav-rail--infra tenav-reveal" style="--tenav-d:80ms">
         <div class="tenav-rail-head">
           <div class="tenav-rail-title">Infrastructure Side</div>
           <div class="tenav-rail-sub">What carries your network</div>
         </div>
-        <svg class="tenav-rail-flow" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path class="tenav-flow-line" data-line="0" d="M0,8.33 C55,8.33 45,50 100,50"/>
-          <path class="tenav-flow-line" data-line="1" d="M0,25 C55,25 45,50 100,50"/>
-          <path class="tenav-flow-line" data-line="2" d="M0,41.67 C55,41.67 45,50 100,50"/>
-          <path class="tenav-flow-line" data-line="3" d="M0,58.33 C55,58.33 45,50 100,50"/>
-          <path class="tenav-flow-line" data-line="4" d="M0,75 C55,75 45,50 100,50"/>
-          <path class="tenav-flow-line" data-line="5" d="M0,91.67 C55,91.67 45,50 100,50"/>
-        </svg>
         <div class="tenav-rail-nodes">
           <button type="button" class="tenav-node" data-rail="infra" data-line="0">
             <span class="tenav-node-top"><span class="tenav-node-icon"><svg><use href="#tenav-i-cable"/></svg></span><span class="tenav-node-label">Structured Cabling</span></span>
@@ -560,11 +619,11 @@
         </div>
       </div>
 
-      <!-- centre port -->
+      <!-- centre port : hero centrepiece -->
       <div class="tenav-port-col tenav-reveal" style="--tenav-d:160ms">
-        <span class="tenav-port-stub"></span>
         <span class="tenav-port-flowtag">Infrastructure <svg><use href="#tenav-i-arrow-r"/></svg></span>
-        <div class="tenav-port-visual" role="img" aria-label="A network port illustration, representing the connection point between infrastructure and technology experience">
+        <div class="tenav-port-visual" tabindex="0" role="button" aria-label="TenAV network port — the connection point between infrastructure and technology experience. Hover or focus to see the connections light up.">
+          <span class="tenav-port-hub" aria-hidden="true"></span>
           <span class="tenav-port-glow" aria-hidden="true"></span>
           <span class="tenav-port-ring" aria-hidden="true"></span>
           <span class="tenav-port-ring tenav-ring-2" aria-hidden="true"></span>
@@ -579,6 +638,7 @@
             <rect x="36" y="36" width="168" height="168" rx="18" fill="#FFFFFF"/>
             <rect x="104" y="94" width="32" height="22" rx="4" fill="#1A1A1A"/>
             <rect x="62" y="110" width="116" height="92" rx="14" fill="#1A1A1A"/>
+            <rect x="104" y="202" width="32" height="26" rx="4" fill="#1A1A1A"/>
             <g fill="url(#tenavPinGrad)">
               <rect class="tenav-pin" x="70" y="92" width="7" height="20" rx="2.5"/>
               <rect class="tenav-pin" x="83" y="78" width="7" height="34" rx="2.5"/>
@@ -592,7 +652,6 @@
           </svg>
         </div>
         <span class="tenav-port-flowtag">Experience <svg><use href="#tenav-i-arrow-r"/></svg></span>
-        <span class="tenav-port-stub"></span>
         <div class="tenav-port-caption">
           <h3>One Port. One Provider.</h3>
           <p>TenAV designs, builds and supports every connection either side — so nothing falls through the gap between suppliers.</p>
@@ -605,14 +664,6 @@
           <div class="tenav-rail-title">Experience Side</div>
           <div class="tenav-rail-sub">What your people use every day</div>
         </div>
-        <svg class="tenav-rail-flow" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-          <path class="tenav-flow-line" data-line="0" d="M100,8.33 C45,8.33 55,50 0,50"/>
-          <path class="tenav-flow-line" data-line="1" d="M100,25 C45,25 55,50 0,50"/>
-          <path class="tenav-flow-line" data-line="2" d="M100,41.67 C45,41.67 55,50 0,50"/>
-          <path class="tenav-flow-line" data-line="3" d="M100,58.33 C45,58.33 55,50 0,50"/>
-          <path class="tenav-flow-line" data-line="4" d="M100,75 C45,75 55,50 0,50"/>
-          <path class="tenav-flow-line" data-line="5" d="M100,91.67 C45,91.67 55,50 0,50"/>
-        </svg>
         <div class="tenav-rail-nodes">
           <button type="button" class="tenav-node" data-rail="exp" data-line="0">
             <span class="tenav-node-top"><span class="tenav-node-icon"><svg><use href="#tenav-i-meeting"/></svg></span><span class="tenav-node-label">Meeting Rooms</span></span>
@@ -792,13 +843,75 @@
     statEls.forEach(function(el){ statObserver.observe(el); });
   }
 
+  /* ---------- precision connector geometry (measured, not guessed) ---------- */
+  var ecosystem = root.querySelector('.tenav-ecosystem');
+  var overlay = root.querySelector('.tenav-flow-overlay');
+  var portVisual = root.querySelector('.tenav-port-visual');
+  var flowNodes = root.querySelectorAll('.tenav-node[data-rail]');
+  var ECO_BREAKPOINT = 980;
+
+  function lineEl(rail, idx){
+    return overlay.querySelector('.tenav-flow-line[data-rail="' + rail + '"][data-line="' + idx + '"]');
+  }
+
+  function buildEcosystemLines(){
+    if(window.innerWidth < ECO_BREAKPOINT) return;
+    var ecoRect = ecosystem.getBoundingClientRect();
+    var w = ecosystem.clientWidth, h = ecosystem.clientHeight;
+    if(!w || !h) return;
+    overlay.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+
+    var portRect = portVisual.getBoundingClientRect();
+    var hubLeftX = portRect.left - ecoRect.left;
+    var hubRightX = portRect.right - ecoRect.left;
+    var hubY = portRect.top + portRect.height / 2 - ecoRect.top;
+
+    flowNodes.forEach(function(node){
+      var rail = node.getAttribute('data-rail');
+      var idx = node.getAttribute('data-line');
+      var line = lineEl(rail, idx);
+      if(!line) return;
+      var nRect = node.getBoundingClientRect();
+      var nodeY = nRect.top + nRect.height / 2 - ecoRect.top;
+      var nodeX, hubX;
+      if(rail === 'infra'){
+        nodeX = nRect.right - ecoRect.left;
+        hubX = hubLeftX;
+      } else {
+        nodeX = nRect.left - ecoRect.left;
+        hubX = hubRightX;
+      }
+      var c1x = nodeX + (hubX - nodeX) * 0.55;
+      var c2x = nodeX + (hubX - nodeX) * 0.45;
+      line.setAttribute('d', 'M ' + nodeX + ' ' + nodeY + ' C ' + c1x + ' ' + nodeY + ' ' + c2x + ' ' + hubY + ' ' + hubX + ' ' + hubY);
+    });
+  }
+
+  buildEcosystemLines();
+  window.addEventListener('load', buildEcosystemLines);
+  var ecoResizeT;
+  window.addEventListener('resize', function(){
+    clearTimeout(ecoResizeT);
+    ecoResizeT = setTimeout(buildEcosystemLines, 150);
+  });
+  /* rails fade/slide in on scroll (.tenav-reveal): re-measure once that settles */
+  if('IntersectionObserver' in window){
+    var ecoRevealObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          setTimeout(buildEcosystemLines, reduceMotion ? 0 : 620);
+          ecoRevealObserver.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.15});
+    ecoRevealObserver.observe(ecosystem);
+  }
+
   /* ---------- hover-linked ecosystem connectors ---------- */
-  var nodes = root.querySelectorAll('.tenav-node[data-rail]');
-  nodes.forEach(function(node){
+  flowNodes.forEach(function(node){
     var rail = node.getAttribute('data-rail');
     var lineIndex = node.getAttribute('data-line');
-    var railEl = root.querySelector('.tenav-rail--' + (rail === 'infra' ? 'infra' : 'exp'));
-    var line = railEl ? railEl.querySelector('.tenav-flow-line[data-line="' + lineIndex + '"]') : null;
+    var line = lineEl(rail, lineIndex);
     function activate(){
       if(line) line.classList.add('tenav-line-active');
       node.classList.add('tenav-line-active');
@@ -812,6 +925,34 @@
     node.addEventListener('focus', activate);
     node.addEventListener('blur', deactivate);
   });
+
+  /* ---------- centre port: ripple outward on hover/focus ---------- */
+  if(portVisual){
+    var rippleOrder = [2,3,1,4,0,5];
+    var rippleRunning = false;
+    function pulse(el){
+      if(!el) return;
+      el.classList.remove('tenav-ripple');
+      void el.offsetWidth;
+      el.classList.add('tenav-ripple');
+      setTimeout(function(){ el.classList.remove('tenav-ripple'); }, 900);
+    }
+    function triggerRipple(){
+      if(reduceMotion || rippleRunning || window.innerWidth < ECO_BREAKPOINT) return;
+      rippleRunning = true;
+      rippleOrder.forEach(function(idx, step){
+        setTimeout(function(){
+          ['infra','exp'].forEach(function(rail){
+            pulse(root.querySelector('.tenav-node[data-rail="' + rail + '"][data-line="' + idx + '"]'));
+            pulse(lineEl(rail, idx));
+          });
+        }, step * 60);
+      });
+      setTimeout(function(){ rippleRunning = false; }, rippleOrder.length * 60 + 900);
+    }
+    portVisual.addEventListener('mouseenter', triggerRipple);
+    portVisual.addEventListener('focus', triggerRipple);
+  }
 
   /* ---------- comparison toggle (accessible tabs) ---------- */
   var toggle = root.querySelector('.tenav-toggle');
