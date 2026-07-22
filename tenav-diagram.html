@@ -49,9 +49,11 @@ body::after {
 /* ── Panel ── */
 .panel {
   position: relative;
-  width: min(960px, 100%);
+  width: fit-content;
+  max-width: min(960px, 100%);
   padding: 2.8rem 3.5rem;
   border: 1px solid var(--w10);
+  border-radius: 16px;
 }
 
 /* ── Diagram grid ── */
@@ -238,13 +240,42 @@ body::after {
 }
 
 /* ── Responsive ── */
-@media (max-width: 620px) {
-  .panel { padding: 2rem 1.5rem; }
-  .diagram {
-    grid-template-columns: 1fr 130px 1fr;
-    gap: 0 1.5rem;
+@media (max-width: 700px) {
+  html, body { align-items: flex-start; padding: 1.25rem 1rem; }
+
+  .panel {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.6rem 1.25rem;
+    border-radius: 12px;
   }
-  .phone-wrap svg { width:120px !important; height:120px !important; }
+
+  .diagram {
+    grid-template-columns: 1fr;
+    gap: 1.4rem 0;
+    min-height: unset;
+  }
+
+  /* On mobile the left column reads left-to-right like the right */
+  .col--left .item { flex-direction: row; }
+  .col--left .item .item-chevron { transform: none; }
+  .col--left .item.open .item-chevron { transform: rotate(90deg); color: var(--copper); }
+
+  /* Center icon: smaller and centered */
+  .center-wrap { margin: 0.4rem auto; }
+  .phone-wrap svg { width: 96px !important; height: 96px !important; }
+
+  /* Activate all dots via CSS since there are no lines on mobile */
+  .item-dot-core { background: var(--copper) !important; }
+  .item-dot-ring {
+    border-color: var(--copper) !important;
+    animation: ringPulse 2.4s ease-in-out infinite !important;
+  }
+
+  /* Hide bezier lines — don't work in stacked layout */
+  .lines-svg { display: none; }
+
+  .col-head { margin-bottom: 1rem; }
 }
 
 /* ── Reduced motion ── */
