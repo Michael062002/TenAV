@@ -1,0 +1,578 @@
+<!--- TenAV Infrastructure → Outcome diagram --->
+<title>TenAV — Infrastructure to Outcome</title>
+
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Design tokens ── */
+:root {
+  --bg:         #0d1f24;
+  --copper:     #b96e36;
+  --copper-a:   rgba(185,110,54,0.20);
+  --steel:      #3d5461;
+  --surface-2:  #0f2a32;
+  --white:      #ffffff;
+  --w60:        rgba(255,255,255,0.60);
+  --w35:        rgba(255,255,255,0.35);
+  --w18:        rgba(255,255,255,0.18);
+  --w10:        rgba(255,255,255,0.10);
+  --font: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ── Base ── */
+html, body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+
+/* Scanline texture — evokes AV broadcast screens */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0, transparent 3px,
+    rgba(0,0,0,0.052) 3px, rgba(0,0,0,0.052) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ── Panel ── */
+.panel {
+  position: relative;
+  width: min(960px, 100%);
+  padding: 2.8rem 3.5rem;
+  border: 1px solid var(--w10);
+}
+
+/* ── Diagram grid ── */
+.diagram {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 180px 1fr;
+  gap: 0 3.5rem;
+  align-items: center;
+  min-height: 290px;
+}
+
+/* ── Columns ── */
+.col { display: flex; flex-direction: column; position: relative; z-index: 1; }
+
+.col-head {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 1.4rem;
+  opacity: 0;
+}
+.col--left  .col-head { animation: fromLeft  0.5s ease forwards 0.30s; }
+.col--right .col-head { animation: fromRight 0.5s ease forwards 0.55s; }
+
+/* ── Items ── */
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--w10);
+  opacity: 0;
+  position: relative;
+  cursor: pointer;
+}
+.item:last-child { border-bottom: none; }
+/* Left col: DOM order = dot|content|chevron → reversed visually = chevron|content|dot */
+.col--left .item { flex-direction: row-reverse; }
+
+.item-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.item-dot-core {
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background: var(--white);
+  transition: background 0.4s ease;
+}
+.item-dot-ring {
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  transition: border-color 0.4s ease;
+}
+.item-dot.live .item-dot-core { background: var(--copper); }
+.item-dot.live .item-dot-ring {
+  border-color: var(--copper);
+  animation: ringPulse 2.4s ease-in-out infinite;
+}
+
+.item-content { flex: 1; min-width: 0; }
+
+.item-label {
+  display: block;
+  font-size: 0.83rem;
+  font-weight: 300;
+  letter-spacing: 0.025em;
+  line-height: 1.2;
+  color: var(--white);
+}
+
+.item-sub {
+  font-size: 0.71rem;
+  color: var(--w60);
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.28s ease;
+  margin-top: 0;
+}
+.item.open .item-sub { max-height: 36px; opacity: 1; margin-top: 0.22rem; }
+
+.item-chevron {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  color: var(--w35);
+  line-height: 1.2;
+  margin-top: 3px;
+  transition: transform 0.28s ease, color 0.28s ease;
+  user-select: none;
+}
+/* Left col chevron faces left (›  rotated 180°) */
+.col--left  .item .item-chevron { transform: rotate(180deg); }
+/* On open, both sides point down */
+.col--left  .item.open .item-chevron { transform: rotate(90deg); color: var(--copper); }
+.col--right .item.open .item-chevron { transform: rotate(90deg); color: var(--copper); }
+
+/* ── Center card ── */
+.center-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.42s;
+}
+
+.phone-wrap {
+  position: relative;
+  animation: phoneRing 5s ease-in-out infinite 3.5s;
+}
+/* Copper glow pulse */
+.phone-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  pointer-events: none;
+  animation: copperGlow 3.5s ease-in-out infinite 2s;
+}
+
+/* ── Lines SVG layer — sits below column content ── */
+.lines-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 0;
+}
+
+/* ── Keyframes ── */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0);   }
+}
+@keyframes fromLeft {
+  from { opacity:0; transform:translateX(-10px); }
+  to   { opacity:1; transform:translateX(0);     }
+}
+@keyframes fromRight {
+  from { opacity:0; transform:translateX(10px); }
+  to   { opacity:1; transform:translateX(0);    }
+}
+@keyframes itemFromLeft {
+  from { opacity:0; transform:translateX(-10px); }
+  to   { opacity:1; transform:translateX(0);     }
+}
+@keyframes itemFromRight {
+  from { opacity:0; transform:translateX(10px); }
+  to   { opacity:1; transform:translateX(0);    }
+}
+@keyframes cardIn {
+  from { opacity:0; transform:scale(0.86); }
+  to   { opacity:1; transform:scale(1);    }
+}
+@keyframes copperGlow {
+  0%,100% { box-shadow: 0 0  0 0   rgba(185,110,54,0);    }
+  50%     { box-shadow: 0 0 24px 6px rgba(185,110,54,0.18); }
+}
+@keyframes ringPulse {
+  0%,100% { transform:scale(1);   opacity:0.7; }
+  60%     { transform:scale(2.4); opacity:0;   }
+}
+@keyframes phoneRing {
+  0%,80%,100% { transform:rotate(0deg); }
+  82%  { transform:rotate(-7deg) translateX(-1px); }
+  85%  { transform:rotate( 7deg) translateX( 1px); }
+  88%  { transform:rotate(-4deg); }
+  91%  { transform:rotate( 4deg); }
+  94%  { transform:rotate(-2deg); }
+  97%  { transform:rotate( 0deg); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 620px) {
+  .panel { padding: 2rem 1.5rem; }
+  .diagram {
+    grid-template-columns: 1fr 130px 1fr;
+    gap: 0 1.5rem;
+  }
+  .phone-wrap svg { width:120px !important; height:120px !important; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .col-head, .item, .center-wrap { opacity:1 !important; }
+}
+</style>
+
+<div class="panel">
+
+  <!-- Diagram -->
+  <div class="diagram" id="diagram">
+
+    <!-- Left: Infrastructure -->
+    <div class="col col--left">
+      <h2 class="col-head">Infrastructure</h2>
+      <div class="item" id="li0">
+        <div class="item-dot" id="ld0"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Structured Cabling</span>
+          <div class="item-sub">Cat6A, fibre &amp; trunking</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+      <div class="item" id="li1">
+        <div class="item-dot" id="ld1"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Network</span>
+          <div class="item-sub">LAN/WAN routing &amp; QoS</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+      <div class="item" id="li2">
+        <div class="item-dot" id="ld2"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Switching</span>
+          <div class="item-sub">Managed VLANs &amp; PoE</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+      <div class="item" id="li3">
+        <div class="item-dot" id="ld3"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Security</span>
+          <div class="item-sub">Firewall &amp; access control</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+      <div class="item" id="li4">
+        <div class="item-dot" id="ld4"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Power</span>
+          <div class="item-sub">UPS, PDU &amp; redundancy</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+    </div>
+
+    <!-- Center card -->
+    <div class="center-wrap" id="centerWrap">
+      <div class="phone-wrap">
+        <!--
+          Geometry extracted from the provided SVG:
+          viewBox 0 0 810 810, content group translate(37,37), 736×736 coordinate space.
+          Outer dark bg + white border (12,12)→(724,724), white fill + steel border (54,54)→(682,682),
+          dark cross body (3 overlapping rects), then 8 copper prong/ear bars on top.
+        -->
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 810 810"
+             width="163" height="163"
+             preserveAspectRatio="xMidYMid meet">
+          <g transform="translate(37,37)">
+            <!-- Dark background -->
+            <rect x="12" y="12" width="712" height="712" rx="11.24" fill="#0d1f24"/>
+            <!-- Outer white border -->
+            <rect x="12" y="12" width="712" height="712" rx="11.24" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+            <!-- White inner fill -->
+            <rect x="54" y="54" width="628" height="628" rx="11.25" fill="#ffffff"/>
+            <!-- Inner steel border -->
+            <rect x="54" y="54" width="628" height="628" rx="11.25" fill="none" stroke="#3d5461" stroke-width="1.5"/>
+            <!-- Dark body cross shape (paints over white) -->
+            <rect x="264" y="116" width="188" height="503" fill="#0d1f24"/>
+            <rect x="223" y="173" width="270" height="388" fill="#0d1f24"/>
+            <rect x="114" y="223" width="488" height="290" fill="#0d1f24"/>
+            <!-- 4 top prong bars -->
+            <rect x="280" y="136" width="27" height="156" fill="#b96e36"/>
+            <rect x="323" y="136" width="27" height="156" fill="#b96e36"/>
+            <rect x="366" y="136" width="27" height="156" fill="#b96e36"/>
+            <rect x="409" y="136" width="27" height="156" fill="#b96e36"/>
+            <!-- Side bars -->
+            <rect x="237" y="188" width="27" height="104" fill="#b96e36"/>
+            <rect x="452" y="188" width="27" height="104" fill="#b96e36"/>
+            <!-- Ear brackets -->
+            <rect x="198" y="249" width="23" height="43" fill="#b96e36"/>
+            <rect x="495" y="249" width="23" height="43" fill="#b96e36"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Right: Outcome -->
+    <div class="col col--right">
+      <h2 class="col-head">Outcome</h2>
+      <div class="item" id="ri0">
+        <div class="item-dot" id="rd0"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Meeting Rooms</span>
+          <div class="item-sub">Boardrooms &amp; huddle spaces</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+      <div class="item" id="ri1">
+        <div class="item-dot" id="rd1"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Video Conferencing</span>
+          <div class="item-sub">Zoom, Teams &amp; Webex</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+      <div class="item" id="ri2">
+        <div class="item-dot" id="rd2"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Collaboration</span>
+          <div class="item-sub">Digital whiteboards &amp; sharing</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+      <div class="item" id="ri3">
+        <div class="item-dot" id="rd3"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">User Experience</span>
+          <div class="item-sub">Intuitive, reliable AV control</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+      <div class="item" id="ri4">
+        <div class="item-dot" id="rd4"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
+        <div class="item-content">
+          <span class="item-label">Ongoing Support</span>
+          <div class="item-sub">24/7 monitoring &amp; training</div>
+        </div>
+        <span class="item-chevron">›</span>
+      </div>
+    </div>
+
+    <!-- Connection lines SVG overlay -->
+    <svg class="lines-svg" id="linesSvg" aria-hidden="true"></svg>
+
+  </div><!-- /diagram -->
+
+</div><!-- /panel -->
+
+<script>
+(function () {
+  'use strict';
+
+  var lineGen      = 0;   // incremented to invalidate stale particle loops
+  var liveEntries  = [];  // [{path, dot}] — kept across accordion toggles
+  var trackFrame   = null;
+  var resizeTimer;
+
+  /* ── Stagger item entry animations ── */
+  for (var i = 0; i < 5; i++) {
+    document.getElementById('li' + i).style.animation =
+      'itemFromLeft 0.4s ease forwards ' + (0.36 + i * 0.095) + 's';
+    document.getElementById('ri' + i).style.animation =
+      'itemFromRight 0.4s ease forwards ' + (0.58 + i * 0.095) + 's';
+  }
+
+  /* ── Read current dot/card positions and return computed d-strings ── */
+  function computeDs() {
+    var diag  = document.getElementById('diagram');
+    var cwrap = document.getElementById('centerWrap');
+    var dR = diag.getBoundingClientRect();
+    var cR = cwrap.getBoundingClientRect();
+    var cl   = { x: cR.left - dR.left, y: cR.top - dR.top, w: cR.width, h: cR.height };
+    var ccy  = cl.y + cl.h / 2;
+    var spread = 13;
+    var ds = [];
+
+    for (var i = 0; i < 5; i++) {
+      var r = document.getElementById('ld' + i).getBoundingClientRect();
+      var sx = r.right  - dR.left, sy = r.top + r.height / 2 - dR.top;
+      var ex = cl.x,               ey = ccy + (i - 2) * spread;
+      var mx = sx + (ex - sx) * 0.55;
+      ds.push('M '+sx+' '+sy+' C '+mx+' '+sy+' '+mx+' '+ey+' '+ex+' '+ey);
+    }
+    for (var i = 0; i < 5; i++) {
+      var r = document.getElementById('rd' + i).getBoundingClientRect();
+      var sx = cl.x + cl.w,        sy = ccy + (i - 2) * spread;
+      var ex = r.left - dR.left,   ey = r.top + r.height / 2 - dR.top;
+      var mx = sx + (ex - sx) * 0.45;
+      ds.push('M '+sx+' '+sy+' C '+mx+' '+sy+' '+mx+' '+ey+' '+ex+' '+ey);
+    }
+    return ds;
+  }
+
+  /* ── Build lines — creates path elements (initial load + resize) ── */
+  function buildLines(instant) {
+    lineGen++;
+    var gen = lineGen;
+    liveEntries = [];
+
+    var svg = document.getElementById('linesSvg');
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+    var dots = [];
+    for (var i = 0; i < 5; i++) dots.push(document.getElementById('ld' + i));
+    for (var i = 0; i < 5; i++) dots.push(document.getElementById('rd' + i));
+
+    var ds = computeDs();
+    ds.forEach(function(d, i) {
+      var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      p.setAttribute('d', d);
+      p.setAttribute('fill', 'none');
+      p.setAttribute('stroke', 'rgba(255,255,255,0.40)');
+      p.setAttribute('stroke-width', '1.5');
+      p.setAttribute('stroke-linecap', 'round');
+      p.setAttribute('stroke-dasharray', '320');
+      p.setAttribute('stroke-dashoffset', '320');
+      svg.appendChild(p);
+      liveEntries.push({ path: p, dot: dots[i] });
+    });
+
+    if (instant || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      liveEntries.forEach(function(e) {
+        e.path.setAttribute('stroke-dashoffset', '0');
+        e.dot.classList.add('live');
+        loopParticle(svg, e.path, gen);
+      });
+      return;
+    }
+
+    liveEntries.forEach(function(e, idx) {
+      setTimeout(function() {
+        if (gen !== lineGen) return;
+        e.path.style.transition = 'stroke-dashoffset 0.65s cubic-bezier(0.4,0,0.2,1)';
+        e.path.setAttribute('stroke-dashoffset', '0');
+        e.dot.classList.add('live');
+        setTimeout(function() { loopParticle(svg, e.path, gen); }, 700);
+      }, 1300 + idx * 125);
+    });
+  }
+
+  /* ── Smoothly track dot positions every frame for `duration` ms ──
+     Reuses existing path elements — no clear, no flash.               */
+  function trackLines(duration) {
+    if (!liveEntries.length) return;
+    if (trackFrame) { cancelAnimationFrame(trackFrame); trackFrame = null; }
+
+    var start = performance.now();
+    var gen   = lineGen;
+
+    function frame(now) {
+      if (gen !== lineGen) { trackFrame = null; return; }
+      var ds = computeDs();
+      liveEntries.forEach(function(e, i) { e.path.setAttribute('d', ds[i]); });
+      if (now - start < duration) {
+        trackFrame = requestAnimationFrame(frame);
+      } else {
+        trackFrame = null;
+      }
+    }
+    trackFrame = requestAnimationFrame(frame);
+  }
+
+  /* ── Particle flowing along a path ── */
+  function loopParticle(svg, path, gen) {
+    if (gen !== lineGen) return;
+    var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('r', '3.5');
+    c.setAttribute('fill', '#b96e36');
+    c.style.opacity = '0';
+    svg.appendChild(c);
+
+    var dur = 950 + Math.random() * 350;
+    var t0  = performance.now();
+    var len;
+    try { len = path.getTotalLength(); } catch(e) { len = 260; }
+
+    function tick(now) {
+      if (gen !== lineGen) {
+        if (svg.contains(c)) svg.removeChild(c);
+        return;
+      }
+      var p = Math.min((now - t0) / dur, 1);
+      var e = p < 0.5 ? 2 * p * p : -1 + (4 - 2 * p) * p;
+      try {
+        var pt = path.getPointAtLength(e * len);
+        c.setAttribute('cx', pt.x);
+        c.setAttribute('cy', pt.y);
+        c.style.opacity = p < 0.10 ? (p / 0.10).toFixed(3)
+                        : p > 0.82 ? ((1 - p) / 0.18).toFixed(3)
+                        : '1';
+      } catch(_) {}
+
+      if (p < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        if (svg.contains(c)) svg.removeChild(c);
+        setTimeout(function() { loopParticle(svg, path, gen); }, 1600 + Math.random() * 3800);
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ── Accordion toggle — track lines for the exact CSS transition duration ── */
+  document.querySelectorAll('.item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      item.classList.toggle('open');
+      trackLines(350); /* matches the 300ms CSS max-height transition + buffer */
+    });
+  });
+
+  /* ── Init and resize ── */
+  function init() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() { buildLines(false); }, 420);
+  }
+
+  init();
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() { buildLines(true); }, 300);
+  });
+})();
+</script>
