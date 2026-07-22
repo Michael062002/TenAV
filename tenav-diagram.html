@@ -167,10 +167,29 @@ html, body {
 /* ── Center card ── */
 .center-wrap {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.6rem;
   opacity: 0;
   animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.42s;
+}
+
+.flip-hint {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--copper);
+  text-align: center;
+  user-select: none;
+  animation: flipHintPulse 2.8s ease-in-out infinite 2.5s;
+  opacity: 0.8;
+}
+
+@keyframes flipHintPulse {
+  0%, 100% { opacity: 0.55; transform: translateY(0); }
+  50%       { opacity: 1;    transform: translateY(-2px); }
 }
 
 .phone-wrap {
@@ -456,6 +475,7 @@ html, body {
 
         </div>
       </div>
+      <div class="flip-hint" id="flipHint">↺ &nbsp;tap for glossary</div>
     </div>
 
     <!-- Right: Outcome -->
@@ -666,7 +686,12 @@ html, body {
 
   /* ── Center icon flip ── */
   document.getElementById('phoneWrap').addEventListener('click', function() {
-    document.getElementById('cardInner').classList.toggle('flipped');
+    var inner = document.getElementById('cardInner');
+    var hint  = document.getElementById('flipHint');
+    inner.classList.toggle('flipped');
+    hint.innerHTML = inner.classList.contains('flipped')
+      ? '↺ &nbsp;tap to flip back'
+      : '↺ &nbsp;tap for glossary';
   });
 
   /* ── Accordion toggle — track lines for the exact CSS transition duration ── */
