@@ -37,7 +37,7 @@ html, body {
   position: relative;
   width: fit-content;
   max-width: min(960px, 100%);
-  padding: 2.8rem 3.5rem;
+  padding: clamp(1.4rem, 3.5vw, 2.8rem) clamp(1.4rem, 4.5vw, 3.5rem);
   background: var(--bg);
   border: 1px solid var(--w10);
   border-radius: 16px;
@@ -62,22 +62,22 @@ html, body {
 .diagram {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 180px 1fr;
-  gap: 0 3.5rem;
+  grid-template-columns: 1fr clamp(120px, 18vw, 180px) 1fr;
+  gap: 0 clamp(1.2rem, 3.5vw, 3.5rem);
   align-items: center;
-  min-height: 290px;
+  min-height: clamp(220px, 30vw, 290px);
 }
 
 /* ── Columns ── */
 .col { display: flex; flex-direction: column; position: relative; z-index: 1; }
 
 .col-head {
-  font-size: 0.68rem;
+  font-size: clamp(0.58rem, 1vw, 0.68rem);
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--copper);
-  margin-bottom: 1.4rem;
+  margin-bottom: clamp(0.9rem, 2vw, 1.4rem);
   opacity: 0;
 }
 .col--left  .col-head { animation: fromLeft  0.5s ease forwards 0.30s; }
@@ -129,7 +129,7 @@ html, body {
 
 .item-label {
   display: block;
-  font-size: 0.83rem;
+  font-size: clamp(0.72rem, 1.2vw, 0.83rem);
   font-weight: 300;
   letter-spacing: 0.025em;
   line-height: 1.2;
@@ -137,7 +137,7 @@ html, body {
 }
 
 .item-sub {
-  font-size: 0.71rem;
+  font-size: clamp(0.62rem, 1vw, 0.71rem);
   color: var(--w60);
   letter-spacing: 0.01em;
   line-height: 1.35;
@@ -194,9 +194,9 @@ html, body {
 
 .phone-wrap {
   position: relative;
-  width: 163px;
-  height: 163px;
-  perspective: 700px;
+  width: clamp(100px, 15vw, 163px);
+  height: clamp(100px, 15vw, 163px);
+  perspective: clamp(400px, 60vw, 700px);
   cursor: pointer;
   animation: phoneRing 5s ease-in-out infinite 3.5s;
 }
@@ -351,10 +351,9 @@ html, body {
   .col--left .item .item-chevron { transform: none; }
   .col--left .item.open .item-chevron { transform: rotate(90deg); color: var(--copper); }
 
-  /* Center icon: smaller and centered */
+  /* Center icon: centered; clamp handles size */
   .center-wrap { margin: 0.4rem auto; }
-  .phone-wrap { width: 96px !important; height: 96px !important; }
-  .phone-wrap svg { width: 96px !important; height: 96px !important; }
+  .phone-wrap { width: clamp(80px, 28vw, 110px); height: clamp(80px, 28vw, 110px); }
 
   /* Activate all dots via CSS since there are no lines on mobile */
   .item-dot-core { background: var(--copper) !important; }
@@ -438,8 +437,9 @@ html, body {
           <div class="card-front">
             <svg xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 810 810"
-                 width="163" height="163"
-                 preserveAspectRatio="xMidYMid meet">
+                 width="100%" height="100%"
+                 preserveAspectRatio="xMidYMid meet"
+                 style="display:block">
               <g transform="translate(37,37)">
                 <rect x="12" y="12" width="712" height="712" rx="11.24" fill="#0d1f24"/>
                 <rect x="12" y="12" width="712" height="712" rx="11.24" fill="none" stroke="#ffffff" stroke-width="1.5"/>
