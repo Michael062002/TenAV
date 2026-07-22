@@ -1,51 +1,46 @@
-<!--- TenAV Infrastructure → Outcome diagram --->
-<title>TenAV — Infrastructure to Outcome</title>
+<!--- TenAV Infrastructure → Outcome diagram — Elementor-safe embed --->
 
 <style>
-/* ── Reset ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-/* ── Design tokens ── */
-:root {
-  --bg:         #0d1f24;
-  --copper:     #b96e36;
-  --copper-a:   rgba(185,110,54,0.20);
-  --steel:      #3d5461;
-  --surface-2:  #0f2a32;
-  --white:      #ffffff;
-  --w60:        rgba(255,255,255,0.60);
-  --w35:        rgba(255,255,255,0.35);
-  --w18:        rgba(255,255,255,0.18);
-  --w10:        rgba(255,255,255,0.10);
-  --font: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+/* ── Scoped reset: only affects elements inside this block ── */
+#tnav-block *, #tnav-block *::before, #tnav-block *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
 }
 
-/* ── Base ── */
-html, body {
-  min-height: 100vh;
-  background: transparent;
-  color: var(--white);
-  font-family: var(--font);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1.25rem;
+/* ── Design tokens scoped to this block — do not touch :root ── */
+#tnav-block {
+  --tnav-bg:       #0d1f24;
+  --tnav-copper:   #b96e36;
+  --tnav-steel:    #3d5461;
+  --tnav-white:    #ffffff;
+  --tnav-w60:      rgba(255,255,255,0.60);
+  --tnav-w35:      rgba(255,255,255,0.35);
+  --tnav-w18:      rgba(255,255,255,0.18);
+  --tnav-w10:      rgba(255,255,255,0.10);
+  --tnav-font:     -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+
+  /* Block wrapper — neutral, lets Elementor control outer layout */
+  display: block;
+  line-height: normal;
+  font-family: var(--tnav-font);
+  color: var(--tnav-white);
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ── Panel ── */
-.panel {
+#tnav-block .tnav-panel {
   position: relative;
   width: fit-content;
   max-width: min(960px, 100%);
   padding: clamp(1.4rem, 3.5vw, 2.8rem) clamp(1.4rem, 4.5vw, 3.5rem);
-  background: var(--bg);
-  border: 1px solid var(--w10);
+  background: var(--tnav-bg);
+  border: 1px solid var(--tnav-w10);
   border-radius: 16px;
   overflow: hidden;
+  font-family: var(--tnav-font);
 }
 
-/* Scanline texture on the panel itself */
-.panel::after {
+/* Scanline texture — contained within the panel */
+#tnav-block .tnav-panel::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -55,11 +50,11 @@ html, body {
     rgba(0,0,0,0.052) 3px, rgba(0,0,0,0.052) 4px
   );
   pointer-events: none;
-  z-index: 999;
+  z-index: 10;
 }
 
 /* ── Diagram grid ── */
-.diagram {
+#tnav-block .tnav-diagram {
   position: relative;
   display: grid;
   grid-template-columns: 1fr clamp(120px, 18vw, 180px) 1fr;
@@ -69,76 +64,82 @@ html, body {
 }
 
 /* ── Columns ── */
-.col { display: flex; flex-direction: column; position: relative; z-index: 1; }
+#tnav-block .tnav-col {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
 
-.col-head {
+#tnav-block .tnav-col-head {
   font-size: clamp(0.58rem, 1vw, 0.68rem);
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--tnav-copper);
   margin-bottom: clamp(0.9rem, 2vw, 1.4rem);
   opacity: 0;
+  font-family: var(--tnav-font);
 }
-.col--left  .col-head { animation: fromLeft  0.5s ease forwards 0.30s; }
-.col--right .col-head { animation: fromRight 0.5s ease forwards 0.55s; }
+#tnav-block .tnav-col--left  .tnav-col-head { animation: tnav-fromLeft  0.5s ease forwards 0.30s; }
+#tnav-block .tnav-col--right .tnav-col-head { animation: tnav-fromRight 0.5s ease forwards 0.55s; }
 
 /* ── Items ── */
-.item {
+#tnav-block .tnav-item {
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
   padding: 0.6rem 0;
-  border-bottom: 1px solid var(--w10);
+  border-bottom: 1px solid var(--tnav-w10);
   opacity: 0;
   position: relative;
   cursor: pointer;
 }
-.item:last-child { border-bottom: none; }
-/* Left col: DOM order = dot|content|chevron → reversed visually = chevron|content|dot */
-.col--left .item { flex-direction: row-reverse; }
+#tnav-block .tnav-item:last-child { border-bottom: none; }
+#tnav-block .tnav-col--left .tnav-item { flex-direction: row-reverse; }
 
-.item-dot {
+#tnav-block .tnav-item-dot {
   position: relative;
   width: 8px;
   height: 8px;
   flex-shrink: 0;
   margin-top: 3px;
 }
-.item-dot-core {
+#tnav-block .tnav-item-dot-core {
   position: absolute;
   inset: 1px;
   border-radius: 50%;
-  background: var(--white);
+  background: var(--tnav-white);
   transition: background 0.4s ease;
 }
-.item-dot-ring {
+#tnav-block .tnav-item-dot-ring {
   position: absolute;
   inset: -5px;
   border-radius: 50%;
   border: 1.5px solid transparent;
   transition: border-color 0.4s ease;
 }
-.item-dot.live .item-dot-core { background: var(--copper); }
-.item-dot.live .item-dot-ring {
-  border-color: var(--copper);
-  animation: ringPulse 2.4s ease-in-out infinite;
+#tnav-block .tnav-item-dot.live .tnav-item-dot-core { background: var(--tnav-copper); }
+#tnav-block .tnav-item-dot.live .tnav-item-dot-ring {
+  border-color: var(--tnav-copper);
+  animation: tnav-ringPulse 2.4s ease-in-out infinite;
 }
 
-.item-content { flex: 1; min-width: 0; }
+#tnav-block .tnav-item-content { flex: 1; min-width: 0; }
 
-.item-label {
+#tnav-block .tnav-item-label {
   display: block;
   font-size: clamp(0.72rem, 1.2vw, 0.83rem);
   font-weight: 300;
   letter-spacing: 0.025em;
   line-height: 1.2;
-  color: var(--white);
+  color: var(--tnav-white);
+  font-family: var(--tnav-font);
 }
 
-.item-sub {
+#tnav-block .tnav-item-sub {
   font-size: clamp(0.62rem, 1vw, 0.71rem);
-  color: var(--w60);
+  color: var(--tnav-w60);
   letter-spacing: 0.01em;
   line-height: 1.35;
   max-height: 0;
@@ -146,92 +147,86 @@ html, body {
   opacity: 0;
   transition: max-height 0.3s ease, opacity 0.28s ease;
   margin-top: 0;
+  font-family: var(--tnav-font);
 }
-.item.open .item-sub { max-height: 36px; opacity: 1; margin-top: 0.22rem; }
+#tnav-block .tnav-item.open .tnav-item-sub { max-height: 36px; opacity: 1; margin-top: 0.22rem; }
 
-.item-chevron {
+#tnav-block .tnav-item-chevron {
   flex-shrink: 0;
   font-size: 0.72rem;
-  color: var(--w35);
+  color: var(--tnav-w35);
   line-height: 1.2;
   margin-top: 3px;
   transition: transform 0.28s ease, color 0.28s ease;
   user-select: none;
 }
-/* Left col chevron faces left (›  rotated 180°) */
-.col--left  .item .item-chevron { transform: rotate(180deg); }
-/* On open, both sides point down */
-.col--left  .item.open .item-chevron { transform: rotate(90deg); color: var(--copper); }
-.col--right .item.open .item-chevron { transform: rotate(90deg); color: var(--copper); }
+#tnav-block .tnav-col--left  .tnav-item .tnav-item-chevron { transform: rotate(180deg); }
+#tnav-block .tnav-col--left  .tnav-item.open .tnav-item-chevron { transform: rotate(90deg); color: var(--tnav-copper); }
+#tnav-block .tnav-col--right .tnav-item.open .tnav-item-chevron { transform: rotate(90deg); color: var(--tnav-copper); }
 
 /* ── Center card ── */
-.center-wrap {
+#tnav-block .tnav-center-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
   opacity: 0;
-  animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.42s;
+  animation: tnav-cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.42s;
 }
 
-.flip-hint {
+#tnav-block .tnav-flip-hint {
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--tnav-copper);
   text-align: center;
   user-select: none;
-  animation: flipHintPulse 2.8s ease-in-out infinite 2.5s;
+  animation: tnav-flipHintPulse 2.8s ease-in-out infinite 2.5s;
   opacity: 0.8;
+  font-family: var(--tnav-font);
 }
 
-@keyframes flipHintPulse {
-  0%, 100% { opacity: 0.55; transform: translateY(0); }
-  50%       { opacity: 1;    transform: translateY(-2px); }
-}
-
-.phone-wrap {
+#tnav-block .tnav-phone-wrap {
   position: relative;
   width: clamp(100px, 15vw, 163px);
   height: clamp(100px, 15vw, 163px);
   perspective: clamp(400px, 60vw, 700px);
   cursor: pointer;
-  animation: phoneRing 5s ease-in-out infinite 3.5s;
+  animation: tnav-phoneRing 5s ease-in-out infinite 3.5s;
 }
-/* Copper glow pulse */
-.phone-wrap::before {
+#tnav-block .tnav-phone-wrap::before {
   content: '';
   position: absolute;
   inset: -2px;
   border-radius: 14px;
   pointer-events: none;
   z-index: 2;
-  animation: copperGlow 3.5s ease-in-out infinite 2s;
+  animation: tnav-copperGlow 3.5s ease-in-out infinite 2s;
 }
 
 /* ── Card flip ── */
-.card-inner {
+#tnav-block .tnav-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.card-inner.flipped { transform: rotateY(180deg); }
+#tnav-block .tnav-card-inner.flipped { transform: rotateY(180deg); }
 
-.card-front,
-.card-back {
+#tnav-block .tnav-card-front,
+#tnav-block .tnav-card-back {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
-.card-back {
+#tnav-block .tnav-card-back {
   transform: rotateY(180deg);
-  background: var(--bg);
+  background: var(--tnav-bg);
   border: 1.5px solid rgba(185,110,54,0.45);
   border-radius: 12px;
   padding: 0.72rem 0.9rem 0.6rem;
@@ -239,44 +234,49 @@ html, body {
   flex-direction: column;
   gap: 0;
 }
-.gloss-title {
+#tnav-block .tnav-gloss-title {
   font-size: 0.56rem;
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--copper);
+  color: var(--tnav-copper);
   margin-bottom: 0.42rem;
+  font-family: var(--tnav-font);
 }
-.gloss-list {
+#tnav-block .tnav-gloss-list {
   display: flex;
   flex-direction: column;
   gap: 0.26rem;
   flex: 1;
+  list-style: none;
 }
-.gloss-row { display: flex; align-items: baseline; gap: 0.45rem; }
-.gloss-row dt {
+#tnav-block .tnav-gloss-row { display: flex; align-items: baseline; gap: 0.45rem; }
+#tnav-block .tnav-gloss-row dt {
   font-size: 0.6rem;
   font-weight: 700;
-  color: var(--copper);
+  color: var(--tnav-copper);
   flex-shrink: 0;
   min-width: 34px;
+  font-family: var(--tnav-font);
 }
-.gloss-row dd {
+#tnav-block .tnav-gloss-row dd {
   font-size: 0.57rem;
-  color: var(--w60);
+  color: var(--tnav-w60);
   line-height: 1.2;
   margin: 0;
+  font-family: var(--tnav-font);
 }
-.gloss-hint {
+#tnav-block .tnav-gloss-hint {
   font-size: 0.5rem;
-  color: var(--w35);
+  color: var(--tnav-w35);
   text-align: center;
   margin-top: 0.45rem;
   letter-spacing: 0.04em;
+  font-family: var(--tnav-font);
 }
 
-/* ── Lines SVG layer — sits below column content ── */
-.lines-svg {
+/* ── Lines SVG ── */
+#tnav-block .tnav-lines-svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -286,40 +286,36 @@ html, body {
   z-index: 0;
 }
 
-/* ── Keyframes ── */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(6px); }
-  to   { opacity:1; transform:translateY(0);   }
-}
-@keyframes fromLeft {
+/* ── Keyframes: all prefixed tnav- to avoid collision ── */
+@keyframes tnav-fromLeft {
   from { opacity:0; transform:translateX(-10px); }
   to   { opacity:1; transform:translateX(0);     }
 }
-@keyframes fromRight {
+@keyframes tnav-fromRight {
   from { opacity:0; transform:translateX(10px); }
   to   { opacity:1; transform:translateX(0);    }
 }
-@keyframes itemFromLeft {
+@keyframes tnav-itemFromLeft {
   from { opacity:0; transform:translateX(-10px); }
   to   { opacity:1; transform:translateX(0);     }
 }
-@keyframes itemFromRight {
+@keyframes tnav-itemFromRight {
   from { opacity:0; transform:translateX(10px); }
   to   { opacity:1; transform:translateX(0);    }
 }
-@keyframes cardIn {
+@keyframes tnav-cardIn {
   from { opacity:0; transform:scale(0.86); }
   to   { opacity:1; transform:scale(1);    }
 }
-@keyframes copperGlow {
-  0%,100% { box-shadow: 0 0  0 0   rgba(185,110,54,0);    }
+@keyframes tnav-copperGlow {
+  0%,100% { box-shadow: 0 0  0 0   rgba(185,110,54,0);     }
   50%     { box-shadow: 0 0 24px 6px rgba(185,110,54,0.18); }
 }
-@keyframes ringPulse {
+@keyframes tnav-ringPulse {
   0%,100% { transform:scale(1);   opacity:0.7; }
   60%     { transform:scale(2.4); opacity:0;   }
 }
-@keyframes phoneRing {
+@keyframes tnav-phoneRing {
   0%,80%,100% { transform:rotate(0deg); }
   82%  { transform:rotate(-7deg) translateX(-1px); }
   85%  { transform:rotate( 7deg) translateX( 1px); }
@@ -328,113 +324,106 @@ html, body {
   94%  { transform:rotate(-2deg); }
   97%  { transform:rotate( 0deg); }
 }
+@keyframes tnav-flipHintPulse {
+  0%, 100% { opacity: 0.55; transform: translateY(0); }
+  50%      { opacity: 1;    transform: translateY(-2px); }
+}
 
-/* ── Responsive ── */
+/* ── Mobile ── */
 @media (max-width: 700px) {
-  html, body { align-items: flex-start; padding: 1.25rem 1rem; }
-
-  .panel {
+  #tnav-block .tnav-panel {
     width: 100%;
     max-width: 100%;
     padding: 1.6rem 1.25rem;
     border-radius: 12px;
   }
-
-  .diagram {
+  #tnav-block .tnav-diagram {
     grid-template-columns: 1fr;
     gap: 1.4rem 0;
     min-height: unset;
   }
-
-  /* On mobile the left column reads left-to-right like the right */
-  .col--left .item { flex-direction: row; }
-  .col--left .item .item-chevron { transform: none; }
-  .col--left .item.open .item-chevron { transform: rotate(90deg); color: var(--copper); }
-
-  /* Center icon: centered; clamp handles size */
-  .center-wrap { margin: 0.4rem auto; }
-  .phone-wrap { width: clamp(80px, 28vw, 110px); height: clamp(80px, 28vw, 110px); }
-
-  /* Activate all dots via CSS since there are no lines on mobile */
-  .item-dot-core { background: var(--copper) !important; }
-  .item-dot-ring {
-    border-color: var(--copper) !important;
-    animation: ringPulse 2.4s ease-in-out infinite !important;
+  #tnav-block .tnav-col--left .tnav-item { flex-direction: row; }
+  #tnav-block .tnav-col--left .tnav-item .tnav-item-chevron { transform: none; }
+  #tnav-block .tnav-col--left .tnav-item.open .tnav-item-chevron { transform: rotate(90deg); color: var(--tnav-copper); }
+  #tnav-block .tnav-center-wrap { margin: 0.4rem auto; }
+  #tnav-block .tnav-phone-wrap { width: clamp(80px, 28vw, 110px); height: clamp(80px, 28vw, 110px); }
+  #tnav-block .tnav-item-dot-core { background: var(--tnav-copper) !important; }
+  #tnav-block .tnav-item-dot-ring {
+    border-color: var(--tnav-copper) !important;
+    animation: tnav-ringPulse 2.4s ease-in-out infinite !important;
   }
-
-  /* Hide bezier lines — don't work in stacked layout */
-  .lines-svg { display: none; }
-
-  .col-head { margin-bottom: 1rem; }
+  #tnav-block .tnav-lines-svg { display: none; }
+  #tnav-block .tnav-col-head { margin-bottom: 1rem; }
 }
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  #tnav-block *, #tnav-block *::before, #tnav-block *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
-  .col-head, .item, .center-wrap { opacity:1 !important; }
+  #tnav-block .tnav-col-head,
+  #tnav-block .tnav-item,
+  #tnav-block .tnav-center-wrap { opacity: 1 !important; }
 }
 </style>
 
-<div class="panel">
+<div id="tnav-block">
+<div class="tnav-panel">
 
-  <!-- Diagram -->
-  <div class="diagram" id="diagram">
+  <div class="tnav-diagram" id="tnav-diagram">
 
     <!-- Left: Infrastructure -->
-    <div class="col col--left">
-      <h2 class="col-head">Infrastructure</h2>
-      <div class="item" id="li0">
-        <div class="item-dot" id="ld0"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Structured Cabling</span>
-          <div class="item-sub">Cat6A, fibre &amp; trunking</div>
+    <div class="tnav-col tnav-col--left">
+      <h2 class="tnav-col-head">Infrastructure</h2>
+      <div class="tnav-item" id="tnav-li0">
+        <div class="tnav-item-dot" id="tnav-ld0"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Structured Cabling</span>
+          <div class="tnav-item-sub">Cat6A, fibre &amp; trunking</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
-      <div class="item" id="li1">
-        <div class="item-dot" id="ld1"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Wi-Fi &amp; Connectivity</span>
-          <div class="item-sub">LAN, WAN &amp; wireless</div>
+      <div class="tnav-item" id="tnav-li1">
+        <div class="tnav-item-dot" id="tnav-ld1"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Wi-Fi &amp; Connectivity</span>
+          <div class="tnav-item-sub">LAN, WAN &amp; wireless</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
-      <div class="item" id="li2">
-        <div class="item-dot" id="ld2"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Network Infrastructure</span>
-          <div class="item-sub">Switching, routing &amp; PoE</div>
+      <div class="tnav-item" id="tnav-li2">
+        <div class="tnav-item-dot" id="tnav-ld2"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Network Infrastructure</span>
+          <div class="tnav-item-sub">Switching, routing &amp; PoE</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
-      <div class="item" id="li3">
-        <div class="item-dot" id="ld3"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Cyber Security</span>
-          <div class="item-sub">Firewall &amp; access control</div>
+      <div class="tnav-item" id="tnav-li3">
+        <div class="tnav-item-dot" id="tnav-ld3"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Cyber Security</span>
+          <div class="tnav-item-sub">Firewall &amp; access control</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
-      <div class="item" id="li4">
-        <div class="item-dot" id="ld4"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Data Centre &amp; Cloud</span>
-          <div class="item-sub">Server, storage &amp; virtualisation</div>
+      <div class="tnav-item" id="tnav-li4">
+        <div class="tnav-item-dot" id="tnav-ld4"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Data Centre &amp; Cloud</span>
+          <div class="tnav-item-sub">Server, storage &amp; virtualisation</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
     </div>
 
     <!-- Center card -->
-    <div class="center-wrap" id="centerWrap">
-      <div class="phone-wrap" id="phoneWrap">
-        <div class="card-inner" id="cardInner">
+    <div class="tnav-center-wrap" id="tnav-centerWrap">
+      <div class="tnav-phone-wrap" id="tnav-phoneWrap">
+        <div class="tnav-card-inner" id="tnav-cardInner">
 
-          <!-- Front: network port icon -->
-          <div class="card-front">
+          <div class="tnav-card-front">
             <svg xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 810 810"
                  width="100%" height="100%"
@@ -460,113 +449,112 @@ html, body {
             </svg>
           </div>
 
-          <!-- Back: acronym glossary -->
-          <div class="card-back">
-            <span class="gloss-title">Acronyms</span>
-            <dl class="gloss-list">
-              <div class="gloss-row"><dt>Cat6A</dt><dd>Category 6 Augmented</dd></div>
-              <div class="gloss-row"><dt>LAN</dt><dd>Local Area Network</dd></div>
-              <div class="gloss-row"><dt>WAN</dt><dd>Wide Area Network</dd></div>
-              <div class="gloss-row"><dt>PoE</dt><dd>Power over Ethernet</dd></div>
-              <div class="gloss-row"><dt>AV</dt><dd>Audio Visual</dd></div>
+          <div class="tnav-card-back">
+            <span class="tnav-gloss-title">Acronyms</span>
+            <dl class="tnav-gloss-list">
+              <div class="tnav-gloss-row"><dt>Cat6A</dt><dd>Category 6 Augmented</dd></div>
+              <div class="tnav-gloss-row"><dt>LAN</dt><dd>Local Area Network</dd></div>
+              <div class="tnav-gloss-row"><dt>WAN</dt><dd>Wide Area Network</dd></div>
+              <div class="tnav-gloss-row"><dt>PoE</dt><dd>Power over Ethernet</dd></div>
+              <div class="tnav-gloss-row"><dt>AV</dt><dd>Audio Visual</dd></div>
             </dl>
-            <span class="gloss-hint">tap to flip back</span>
+            <span class="tnav-gloss-hint">tap to flip back</span>
           </div>
 
         </div>
       </div>
-      <div class="flip-hint" id="flipHint">↺ &nbsp;tap for glossary</div>
+      <div class="tnav-flip-hint" id="tnav-flipHint">↺ &nbsp;tap for glossary</div>
     </div>
 
     <!-- Right: Outcome -->
-    <div class="col col--right">
-      <h2 class="col-head">Outcome</h2>
-      <div class="item" id="ri0">
-        <div class="item-dot" id="rd0"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Meeting Rooms</span>
-          <div class="item-sub">Boardrooms &amp; huddle spaces</div>
+    <div class="tnav-col tnav-col--right">
+      <h2 class="tnav-col-head">Outcome</h2>
+      <div class="tnav-item" id="tnav-ri0">
+        <div class="tnav-item-dot" id="tnav-rd0"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Meeting Rooms</span>
+          <div class="tnav-item-sub">Boardrooms &amp; huddle spaces</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
-      <div class="item" id="ri1">
-        <div class="item-dot" id="rd1"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Video Conferencing</span>
-          <div class="item-sub">Zoom, Teams &amp; Webex</div>
+      <div class="tnav-item" id="tnav-ri1">
+        <div class="tnav-item-dot" id="tnav-rd1"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Video Conferencing</span>
+          <div class="tnav-item-sub">Zoom, Teams &amp; Webex</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
-      <div class="item" id="ri2">
-        <div class="item-dot" id="rd2"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Collaboration</span>
-          <div class="item-sub">Digital whiteboards &amp; sharing</div>
+      <div class="tnav-item" id="tnav-ri2">
+        <div class="tnav-item-dot" id="tnav-rd2"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Collaboration</span>
+          <div class="tnav-item-sub">Digital whiteboards &amp; sharing</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
-      <div class="item" id="ri3">
-        <div class="item-dot" id="rd3"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">User Experience</span>
-          <div class="item-sub">Intuitive, reliable AV control</div>
+      <div class="tnav-item" id="tnav-ri3">
+        <div class="tnav-item-dot" id="tnav-rd3"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">User Experience</span>
+          <div class="tnav-item-sub">Intuitive, reliable AV control</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
-      <div class="item" id="ri4">
-        <div class="item-dot" id="rd4"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
-        <div class="item-content">
-          <span class="item-label">Ongoing Support</span>
-          <div class="item-sub">24/7 monitoring &amp; training</div>
+      <div class="tnav-item" id="tnav-ri4">
+        <div class="tnav-item-dot" id="tnav-rd4"><div class="tnav-item-dot-core"></div><div class="tnav-item-dot-ring"></div></div>
+        <div class="tnav-item-content">
+          <span class="tnav-item-label">Ongoing Support</span>
+          <div class="tnav-item-sub">24/7 monitoring &amp; training</div>
         </div>
-        <span class="item-chevron">›</span>
+        <span class="tnav-item-chevron">›</span>
       </div>
     </div>
 
-    <!-- Connection lines SVG overlay -->
-    <svg class="lines-svg" id="linesSvg" aria-hidden="true"></svg>
+    <svg class="tnav-lines-svg" id="tnav-linesSvg" aria-hidden="true"></svg>
 
-  </div><!-- /diagram -->
+  </div>
 
-</div><!-- /panel -->
+</div>
+</div>
 
 <script>
 (function () {
   'use strict';
 
-  var lineGen      = 0;   // incremented to invalidate stale particle loops
-  var liveEntries  = [];  // [{path, dot}] — kept across accordion toggles
-  var trackFrame   = null;
+  var lineGen     = 0;
+  var liveEntries = [];
+  var trackFrame  = null;
   var resizeTimer;
+
+  var block = document.getElementById('tnav-block');
 
   /* ── Stagger item entry animations ── */
   for (var i = 0; i < 5; i++) {
-    document.getElementById('li' + i).style.animation =
-      'itemFromLeft 0.4s ease forwards ' + (0.36 + i * 0.095) + 's';
-    document.getElementById('ri' + i).style.animation =
-      'itemFromRight 0.4s ease forwards ' + (0.58 + i * 0.095) + 's';
+    document.getElementById('tnav-li' + i).style.animation =
+      'tnav-itemFromLeft 0.4s ease forwards ' + (0.36 + i * 0.095) + 's';
+    document.getElementById('tnav-ri' + i).style.animation =
+      'tnav-itemFromRight 0.4s ease forwards ' + (0.58 + i * 0.095) + 's';
   }
 
-  /* ── Read current dot/card positions and return computed d-strings ── */
   function computeDs() {
-    var diag  = document.getElementById('diagram');
-    var cwrap = document.getElementById('centerWrap');
+    var diag  = document.getElementById('tnav-diagram');
+    var cwrap = document.getElementById('tnav-centerWrap');
     var dR = diag.getBoundingClientRect();
     var cR = cwrap.getBoundingClientRect();
     var cl   = { x: cR.left - dR.left, y: cR.top - dR.top, w: cR.width, h: cR.height };
     var ccy  = cl.y + cl.h / 2;
     var spread = 13;
     var ds = [];
-
     for (var i = 0; i < 5; i++) {
-      var r = document.getElementById('ld' + i).getBoundingClientRect();
+      var r = document.getElementById('tnav-ld' + i).getBoundingClientRect();
       var sx = r.right  - dR.left, sy = r.top + r.height / 2 - dR.top;
       var ex = cl.x,               ey = ccy + (i - 2) * spread;
       var mx = sx + (ex - sx) * 0.55;
       ds.push('M '+sx+' '+sy+' C '+mx+' '+sy+' '+mx+' '+ey+' '+ex+' '+ey);
     }
     for (var i = 0; i < 5; i++) {
-      var r = document.getElementById('rd' + i).getBoundingClientRect();
+      var r = document.getElementById('tnav-rd' + i).getBoundingClientRect();
       var sx = cl.x + cl.w,        sy = ccy + (i - 2) * spread;
       var ex = r.left - dR.left,   ey = r.top + r.height / 2 - dR.top;
       var mx = sx + (ex - sx) * 0.45;
@@ -575,19 +563,15 @@ html, body {
     return ds;
   }
 
-  /* ── Build lines — creates path elements (initial load + resize) ── */
   function buildLines(instant) {
     lineGen++;
     var gen = lineGen;
     liveEntries = [];
-
-    var svg = document.getElementById('linesSvg');
+    var svg = document.getElementById('tnav-linesSvg');
     while (svg.firstChild) svg.removeChild(svg.firstChild);
-
     var dots = [];
-    for (var i = 0; i < 5; i++) dots.push(document.getElementById('ld' + i));
-    for (var i = 0; i < 5; i++) dots.push(document.getElementById('rd' + i));
-
+    for (var i = 0; i < 5; i++) dots.push(document.getElementById('tnav-ld' + i));
+    for (var i = 0; i < 5; i++) dots.push(document.getElementById('tnav-rd' + i));
     var ds = computeDs();
     ds.forEach(function(d, i) {
       var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -601,7 +585,6 @@ html, body {
       svg.appendChild(p);
       liveEntries.push({ path: p, dot: dots[i] });
     });
-
     if (instant || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       liveEntries.forEach(function(e) {
         e.path.setAttribute('stroke-dashoffset', '0');
@@ -610,7 +593,6 @@ html, body {
       });
       return;
     }
-
     liveEntries.forEach(function(e, idx) {
       setTimeout(function() {
         if (gen !== lineGen) return;
@@ -622,29 +604,21 @@ html, body {
     });
   }
 
-  /* ── Smoothly track dot positions every frame for `duration` ms ──
-     Reuses existing path elements — no clear, no flash.               */
   function trackLines(duration) {
     if (!liveEntries.length) return;
     if (trackFrame) { cancelAnimationFrame(trackFrame); trackFrame = null; }
-
     var start = performance.now();
     var gen   = lineGen;
-
     function frame(now) {
       if (gen !== lineGen) { trackFrame = null; return; }
       var ds = computeDs();
       liveEntries.forEach(function(e, i) { e.path.setAttribute('d', ds[i]); });
-      if (now - start < duration) {
-        trackFrame = requestAnimationFrame(frame);
-      } else {
-        trackFrame = null;
-      }
+      if (now - start < duration) { trackFrame = requestAnimationFrame(frame); }
+      else { trackFrame = null; }
     }
     trackFrame = requestAnimationFrame(frame);
   }
 
-  /* ── Particle flowing along a path ── */
   function loopParticle(svg, path, gen) {
     if (gen !== lineGen) return;
     var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -652,31 +626,22 @@ html, body {
     c.setAttribute('fill', '#b96e36');
     c.style.opacity = '0';
     svg.appendChild(c);
-
     var dur = 950 + Math.random() * 350;
     var t0  = performance.now();
     var len;
     try { len = path.getTotalLength(); } catch(e) { len = 260; }
-
     function tick(now) {
-      if (gen !== lineGen) {
-        if (svg.contains(c)) svg.removeChild(c);
-        return;
-      }
+      if (gen !== lineGen) { if (svg.contains(c)) svg.removeChild(c); return; }
       var p = Math.min((now - t0) / dur, 1);
       var e = p < 0.5 ? 2 * p * p : -1 + (4 - 2 * p) * p;
       try {
         var pt = path.getPointAtLength(e * len);
-        c.setAttribute('cx', pt.x);
-        c.setAttribute('cy', pt.y);
+        c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y);
         c.style.opacity = p < 0.10 ? (p / 0.10).toFixed(3)
-                        : p > 0.82 ? ((1 - p) / 0.18).toFixed(3)
-                        : '1';
+                        : p > 0.82 ? ((1 - p) / 0.18).toFixed(3) : '1';
       } catch(_) {}
-
-      if (p < 1) {
-        requestAnimationFrame(tick);
-      } else {
+      if (p < 1) { requestAnimationFrame(tick); }
+      else {
         if (svg.contains(c)) svg.removeChild(c);
         setTimeout(function() { loopParticle(svg, path, gen); }, 1600 + Math.random() * 3800);
       }
@@ -685,20 +650,20 @@ html, body {
   }
 
   /* ── Center icon flip ── */
-  document.getElementById('phoneWrap').addEventListener('click', function() {
-    var inner = document.getElementById('cardInner');
-    var hint  = document.getElementById('flipHint');
+  document.getElementById('tnav-phoneWrap').addEventListener('click', function() {
+    var inner = document.getElementById('tnav-cardInner');
+    var hint  = document.getElementById('tnav-flipHint');
     inner.classList.toggle('flipped');
     hint.innerHTML = inner.classList.contains('flipped')
       ? '↺ &nbsp;tap to flip back'
       : '↺ &nbsp;tap for glossary';
   });
 
-  /* ── Accordion toggle — track lines for the exact CSS transition duration ── */
-  document.querySelectorAll('.item').forEach(function(item) {
+  /* ── Accordion toggle ── */
+  block.querySelectorAll('.tnav-item').forEach(function(item) {
     item.addEventListener('click', function() {
       item.classList.toggle('open');
-      trackLines(350); /* matches the 300ms CSS max-height transition + buffer */
+      trackLines(350);
     });
   });
 
@@ -707,7 +672,6 @@ html, body {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function() { buildLines(false); }, 420);
   }
-
   init();
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimer);
