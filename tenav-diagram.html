@@ -18,8 +18,9 @@
   --tnav-w10:      rgba(255,255,255,0.10);
   --tnav-font:     -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
-  /* Block wrapper — neutral, lets Elementor control outer layout */
+  /* Block wrapper — fills Elementor column, lets Elementor control outer layout */
   display: block;
+  width: 100%;
   line-height: normal;
   font-family: var(--tnav-font);
   color: var(--tnav-white);
@@ -29,8 +30,8 @@
 /* ── Panel ── */
 #tnav-block .tnav-panel {
   position: relative;
-  width: fit-content;
-  max-width: min(960px, 100%);
+  width: 100%;
+  max-width: 960px;
   padding: clamp(1.4rem, 3.5vw, 2.8rem) clamp(1.4rem, 4.5vw, 3.5rem);
   background: var(--tnav-bg);
   border: 1px solid var(--tnav-w10);
