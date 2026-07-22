@@ -1,15 +1,36 @@
-<!--- TenAV Hero Header — Elementor-safe embed --->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TenAV — One Team, One Point of Accountability</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
+/* ── Global reset (standalone page only) ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: #060f13; }
+
+body {
+  min-height: 100dvh;
+  background: #060f13;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.tnav-page {
+  width: 100%;
+  max-width: 1280px;
+}
+
 /* ═══════════════════════════════════════════════
    HERO WRAPPER  —  scoped to #tnav-hero
 ═══════════════════════════════════════════════ */
-
-#tnav-hero *, #tnav-hero *::before, #tnav-hero *::after {
-  box-sizing: border-box; margin: 0; padding: 0;
-}
 
 #tnav-hero {
   display: block;
@@ -42,6 +63,7 @@
   z-index: 0;
 }
 
+/* ── Two-column grid ── */
 #tnav-hero .tnav-hg {
   position: relative;
   z-index: 1;
@@ -55,35 +77,35 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(2.5rem, 5cqi, 4rem) clamp(1.8rem, 3.5cqi, 2.8rem);
+  padding: clamp(2rem, 5cqi, 4rem) clamp(1.5rem, 3.5cqi, 2.8rem);
   border-right: 1px solid rgba(255,255,255,0.07);
 }
 
 #tnav-hero .tnav-eyebrow {
-  font-size: clamp(0.56rem, 0.95cqi, 0.66rem);
+  font-size: clamp(0.6rem, 1cqi, 0.68rem);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: #b96e36;
-  margin-bottom: clamp(0.85rem, 1.8cqi, 1.25rem);
+  margin-bottom: clamp(0.8rem, 1.8cqi, 1.25rem);
   line-height: 1.5;
 }
 
 #tnav-hero .tnav-headline {
-  font-size: clamp(1.5rem, 3.6cqi, 2.85rem);
+  font-size: clamp(1.6rem, 3.6cqi, 2.85rem);
   font-weight: 800;
   line-height: 1.07;
   letter-spacing: -0.025em;
   color: #ffffff;
   text-wrap: balance;
-  margin-bottom: clamp(0.9rem, 1.8cqi, 1.35rem);
+  margin-bottom: clamp(0.85rem, 1.8cqi, 1.35rem);
 }
 
 #tnav-hero .tnav-body {
-  font-size: clamp(0.8rem, 1.35cqi, 0.93rem);
+  font-size: clamp(0.875rem, 1.35cqi, 0.95rem);
   font-weight: 400;
-  line-height: 1.72;
-  color: rgba(255,255,255,0.56);
+  line-height: 1.7;
+  color: rgba(255,255,255,0.58);
   margin-bottom: clamp(1.6rem, 3cqi, 2.5rem);
   max-width: 34ch;
 }
@@ -91,17 +113,17 @@
 #tnav-hero .tnav-cta {
   display: inline-flex;
   align-items: center;
-  gap: 0.42rem;
+  gap: 0.4rem;
   align-self: flex-start;
   font-family: inherit;
-  font-size: clamp(0.76rem, 1.25cqi, 0.86rem);
+  font-size: clamp(0.8rem, 1.25cqi, 0.88rem);
   font-weight: 600;
-  letter-spacing: 0.015em;
+  letter-spacing: 0.01em;
   color: #ffffff;
   background: #b96e36;
   border: none;
-  border-radius: 7px;
-  padding: clamp(0.62rem, 1.15cqi, 0.78rem) clamp(1.15rem, 2.3cqi, 1.65rem);
+  border-radius: 8px;
+  padding: clamp(0.65rem, 1.15cqi, 0.8rem) clamp(1.2rem, 2.3cqi, 1.65rem);
   text-decoration: none;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease;
@@ -120,34 +142,46 @@
 #tnav-hero .tnav-cta:hover .tnav-cta-arr { transform: translateX(3px); }
 
 /* ── Diagram column ── */
-#tnav-hero .tnav-hd { display: flex; min-width: 0; }
+#tnav-hero .tnav-hd            { display: flex; min-width: 0; }
 #tnav-hero .tnav-hd > #tnav-block { flex: 1; min-width: 0; }
 
-/* Strip inner panel's own border + radius — the hero panel owns those */
+/* Strip inner panel's border/radius — outer hero panel owns those */
 #tnav-hero .tnav-hd > #tnav-block .tnav-panel {
   border-radius: 0;
   border: none;
 }
 
-/* ── Stacked layout (narrow container) ── */
+/* ── Stacked / mobile layout ── */
 @container (max-width: 680px) {
-  #tnav-hero .tnav-hg { grid-template-columns: 1fr; }
+  #tnav-hero .tnav-hg {
+    grid-template-columns: 1fr;
+  }
   #tnav-hero .tnav-ht {
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,0.07);
-    padding: 2rem 1.5rem;
+    padding: clamp(1.75rem, 6vw, 2.5rem) clamp(1.25rem, 5vw, 2rem);
   }
-  #tnav-hero .tnav-body { max-width: none; }
+  #tnav-hero .tnav-body {
+    max-width: none;
+  }
+  #tnav-hero .tnav-cta {
+    align-self: stretch;
+    justify-content: center;
+  }
+}
+
+/* ── Very narrow (≤ 380px) ── */
+@container (max-width: 380px) {
+  #tnav-hero .tnav-headline { font-size: 1.5rem; }
+  #tnav-hero .tnav-eyebrow  { font-size: 0.6rem; letter-spacing: 0.13em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #tnav-hero .tnav-cta,
-  #tnav-hero .tnav-cta-arr { transition: none; }
+  #tnav-hero .tnav-cta, #tnav-hero .tnav-cta-arr { transition: none; }
 }
 
 /* ═══════════════════════════════════════════════
    DIAGRAM COMPONENT  —  scoped to #tnav-block
-   (original — unchanged)
 ═══════════════════════════════════════════════ */
 
 #tnav-block *, #tnav-block *::before, #tnav-block *::after {
@@ -155,15 +189,14 @@
 }
 
 #tnav-block {
-  --tnav-bg:       #0d1f24;
-  --tnav-copper:   #b96e36;
-  --tnav-steel:    #3d5461;
-  --tnav-white:    #ffffff;
-  --tnav-w60:      rgba(255,255,255,0.60);
-  --tnav-w35:      rgba(255,255,255,0.35);
-  --tnav-w18:      rgba(255,255,255,0.18);
-  --tnav-w10:      rgba(255,255,255,0.10);
-  --tnav-font:     -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --tnav-bg:     #0d1f24;
+  --tnav-copper: #b96e36;
+  --tnav-steel:  #3d5461;
+  --tnav-white:  #ffffff;
+  --tnav-w60:    rgba(255,255,255,0.60);
+  --tnav-w35:    rgba(255,255,255,0.35);
+  --tnav-w10:    rgba(255,255,255,0.10);
+  --tnav-font:   -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
 
   display: block;
   width: 100%;
@@ -177,7 +210,6 @@
 #tnav-block .tnav-panel {
   position: relative;
   width: 100%;
-  max-width: 100%;
   padding: clamp(2.5rem, 6cqi, 5.5rem) clamp(2rem, 6cqi, 5rem);
   background: var(--tnav-bg);
   border: 1px solid var(--tnav-w10);
@@ -469,11 +501,10 @@
   50%      { opacity: 1;    transform: translateY(-2px); }
 }
 
+/* ── Diagram narrow layout ── */
 @container (max-width: 620px) {
   #tnav-block .tnav-panel {
-    width: 100%;
-    max-width: 100%;
-    padding: 1.6rem 1.25rem;
+    padding: 1.75rem 1.25rem;
     border-radius: 12px;
   }
   #tnav-block .tnav-diagram {
@@ -485,14 +516,14 @@
   #tnav-block .tnav-col--left .tnav-item .tnav-item-chevron { transform: none; }
   #tnav-block .tnav-col--left .tnav-item.open .tnav-item-chevron { transform: rotate(90deg); color: var(--tnav-copper); }
   #tnav-block .tnav-center-wrap { margin: 0.4rem auto; }
-  #tnav-block .tnav-phone-wrap { width: clamp(100px, 32cqi, 150px); height: clamp(100px, 32cqi, 150px); }
+  #tnav-block .tnav-phone-wrap  { width: clamp(100px, 32cqi, 150px); height: clamp(100px, 32cqi, 150px); }
   #tnav-block .tnav-item-dot-core { background: var(--tnav-copper) !important; }
   #tnav-block .tnav-item-dot-ring {
     border-color: var(--tnav-copper) !important;
     animation: tnav-ringPulse 2.4s ease-in-out infinite !important;
   }
-  #tnav-block .tnav-lines-svg { display: none; }
-  #tnav-block .tnav-col-head { margin-bottom: 1rem; }
+  #tnav-block .tnav-lines-svg  { display: none; }
+  #tnav-block .tnav-col-head   { margin-bottom: 1rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -505,6 +536,10 @@
   #tnav-block .tnav-center-wrap { opacity: 1 !important; }
 }
 </style>
+</head>
+
+<body>
+<div class="tnav-page">
 
 <div id="tnav-hero">
   <div class="tnav-hp">
@@ -525,10 +560,9 @@
       <div class="tnav-hd">
         <div id="tnav-block">
           <div class="tnav-panel">
-
             <div class="tnav-diagram" id="tnav-diagram">
 
-              <!-- Left: Infrastructure -->
+              <!-- Infrastructure -->
               <div class="tnav-col tnav-col--left">
                 <h2 class="tnav-col-head">Infrastructure</h2>
                 <div class="tnav-item" id="tnav-li0">
@@ -577,13 +611,8 @@
               <div class="tnav-center-wrap" id="tnav-centerWrap">
                 <div class="tnav-phone-wrap" id="tnav-phoneWrap">
                   <div class="tnav-card-inner" id="tnav-cardInner">
-
                     <div class="tnav-card-front">
-                      <svg xmlns="http://www.w3.org/2000/svg"
-                           viewBox="0 0 810 810"
-                           width="100%" height="100%"
-                           preserveAspectRatio="xMidYMid meet"
-                           style="display:block">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 810 810" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="display:block">
                         <g transform="translate(37,37)">
                           <rect x="12" y="12" width="712" height="712" rx="11.24" fill="#0d1f24"/>
                           <rect x="12" y="12" width="712" height="712" rx="11.24" fill="none" stroke="#ffffff" stroke-width="1.5"/>
@@ -603,7 +632,6 @@
                         </g>
                       </svg>
                     </div>
-
                     <div class="tnav-card-back">
                       <span class="tnav-gloss-title">Acronyms</span>
                       <dl class="tnav-gloss-list">
@@ -615,13 +643,12 @@
                       </dl>
                       <span class="tnav-gloss-hint">tap to flip back</span>
                     </div>
-
                   </div>
                 </div>
                 <div class="tnav-flip-hint" id="tnav-flipHint">&#8635; &nbsp;tap for glossary</div>
               </div>
 
-              <!-- Right: Outcome -->
+              <!-- Outcome -->
               <div class="tnav-col tnav-col--right">
                 <h2 class="tnav-col-head">Outcome</h2>
                 <div class="tnav-item" id="tnav-ri0">
@@ -669,7 +696,6 @@
               <svg class="tnav-lines-svg" id="tnav-linesSvg" aria-hidden="true"></svg>
 
             </div>
-
           </div>
         </div>
       </div>
@@ -677,6 +703,8 @@
     </div>
   </div>
 </div>
+
+</div><!-- /.tnav-page -->
 
 <script>
 (function () {
@@ -732,7 +760,7 @@
     for (var i = 0; i < 5; i++) dots.push(document.getElementById('tnav-ld' + i));
     for (var i = 0; i < 5; i++) dots.push(document.getElementById('tnav-rd' + i));
     var ds = computeDs();
-    ds.forEach(function(d, i) {
+    ds.forEach(function(d, idx) {
       var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       p.setAttribute('d', d);
       p.setAttribute('fill', 'none');
@@ -742,7 +770,7 @@
       p.setAttribute('stroke-dasharray', '320');
       p.setAttribute('stroke-dashoffset', '320');
       svg.appendChild(p);
-      liveEntries.push({ path: p, dot: dots[i] });
+      liveEntries.push({ path: p, dot: dots[idx] });
     });
     if (instant || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       liveEntries.forEach(function(e) {
@@ -835,3 +863,6 @@
   });
 })();
 </script>
+
+</body>
+</html>
