@@ -175,6 +175,10 @@ html, body {
 
 .phone-wrap {
   position: relative;
+  width: 163px;
+  height: 163px;
+  perspective: 700px;
+  cursor: pointer;
   animation: phoneRing 5s ease-in-out infinite 3.5s;
 }
 /* Copper glow pulse */
@@ -184,7 +188,72 @@ html, body {
   inset: -2px;
   border-radius: 14px;
   pointer-events: none;
+  z-index: 2;
   animation: copperGlow 3.5s ease-in-out infinite 2s;
+}
+
+/* ── Card flip ── */
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-inner.flipped { transform: rotateY(180deg); }
+
+.card-front,
+.card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background: var(--bg);
+  border: 1.5px solid rgba(185,110,54,0.45);
+  border-radius: 12px;
+  padding: 0.72rem 0.9rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.gloss-title {
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 0.42rem;
+}
+.gloss-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.26rem;
+  flex: 1;
+}
+.gloss-row { display: flex; align-items: baseline; gap: 0.45rem; }
+.gloss-row dt {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--copper);
+  flex-shrink: 0;
+  min-width: 34px;
+}
+.gloss-row dd {
+  font-size: 0.57rem;
+  color: var(--w60);
+  line-height: 1.2;
+  margin: 0;
+}
+.gloss-hint {
+  font-size: 0.5rem;
+  color: var(--w35);
+  text-align: center;
+  margin-top: 0.45rem;
+  letter-spacing: 0.04em;
 }
 
 /* ── Lines SVG layer — sits below column content ── */
@@ -265,6 +334,7 @@ html, body {
 
   /* Center icon: smaller and centered */
   .center-wrap { margin: 0.4rem auto; }
+  .phone-wrap { width: 96px !important; height: 96px !important; }
   .phone-wrap svg { width: 96px !important; height: 96px !important; }
 
   /* Activate all dots via CSS since there are no lines on mobile */
@@ -309,23 +379,23 @@ html, body {
       <div class="item" id="li1">
         <div class="item-dot" id="ld1"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
         <div class="item-content">
-          <span class="item-label">Network</span>
-          <div class="item-sub">LAN/WAN routing &amp; QoS</div>
+          <span class="item-label">Wi-Fi &amp; Connectivity</span>
+          <div class="item-sub">LAN, WAN &amp; wireless</div>
         </div>
         <span class="item-chevron">›</span>
       </div>
       <div class="item" id="li2">
         <div class="item-dot" id="ld2"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
         <div class="item-content">
-          <span class="item-label">Switching</span>
-          <div class="item-sub">Managed VLANs &amp; PoE</div>
+          <span class="item-label">Network Infrastructure</span>
+          <div class="item-sub">Switching, routing &amp; PoE</div>
         </div>
         <span class="item-chevron">›</span>
       </div>
       <div class="item" id="li3">
         <div class="item-dot" id="ld3"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
         <div class="item-content">
-          <span class="item-label">Security</span>
+          <span class="item-label">Cyber Security</span>
           <div class="item-sub">Firewall &amp; access control</div>
         </div>
         <span class="item-chevron">›</span>
@@ -333,8 +403,8 @@ html, body {
       <div class="item" id="li4">
         <div class="item-dot" id="ld4"><div class="item-dot-core"></div><div class="item-dot-ring"></div></div>
         <div class="item-content">
-          <span class="item-label">Power</span>
-          <div class="item-sub">UPS, PDU &amp; redundancy</div>
+          <span class="item-label">Data Centre &amp; Cloud</span>
+          <div class="item-sub">Server, storage &amp; virtualisation</div>
         </div>
         <span class="item-chevron">›</span>
       </div>
@@ -342,43 +412,49 @@ html, body {
 
     <!-- Center card -->
     <div class="center-wrap" id="centerWrap">
-      <div class="phone-wrap">
-        <!--
-          Geometry extracted from the provided SVG:
-          viewBox 0 0 810 810, content group translate(37,37), 736×736 coordinate space.
-          Outer dark bg + white border (12,12)→(724,724), white fill + steel border (54,54)→(682,682),
-          dark cross body (3 overlapping rects), then 8 copper prong/ear bars on top.
-        -->
-        <svg xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 810 810"
-             width="163" height="163"
-             preserveAspectRatio="xMidYMid meet">
-          <g transform="translate(37,37)">
-            <!-- Dark background -->
-            <rect x="12" y="12" width="712" height="712" rx="11.24" fill="#0d1f24"/>
-            <!-- Outer white border -->
-            <rect x="12" y="12" width="712" height="712" rx="11.24" fill="none" stroke="#ffffff" stroke-width="1.5"/>
-            <!-- White inner fill -->
-            <rect x="54" y="54" width="628" height="628" rx="11.25" fill="#ffffff"/>
-            <!-- Inner steel border -->
-            <rect x="54" y="54" width="628" height="628" rx="11.25" fill="none" stroke="#3d5461" stroke-width="1.5"/>
-            <!-- Dark body cross shape (paints over white) -->
-            <rect x="264" y="116" width="188" height="503" fill="#0d1f24"/>
-            <rect x="223" y="173" width="270" height="388" fill="#0d1f24"/>
-            <rect x="114" y="223" width="488" height="290" fill="#0d1f24"/>
-            <!-- 4 top prong bars -->
-            <rect x="280" y="136" width="27" height="156" fill="#b96e36"/>
-            <rect x="323" y="136" width="27" height="156" fill="#b96e36"/>
-            <rect x="366" y="136" width="27" height="156" fill="#b96e36"/>
-            <rect x="409" y="136" width="27" height="156" fill="#b96e36"/>
-            <!-- Side bars -->
-            <rect x="237" y="188" width="27" height="104" fill="#b96e36"/>
-            <rect x="452" y="188" width="27" height="104" fill="#b96e36"/>
-            <!-- Ear brackets -->
-            <rect x="198" y="249" width="23" height="43" fill="#b96e36"/>
-            <rect x="495" y="249" width="23" height="43" fill="#b96e36"/>
-          </g>
-        </svg>
+      <div class="phone-wrap" id="phoneWrap">
+        <div class="card-inner" id="cardInner">
+
+          <!-- Front: network port icon -->
+          <div class="card-front">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 810 810"
+                 width="163" height="163"
+                 preserveAspectRatio="xMidYMid meet">
+              <g transform="translate(37,37)">
+                <rect x="12" y="12" width="712" height="712" rx="11.24" fill="#0d1f24"/>
+                <rect x="12" y="12" width="712" height="712" rx="11.24" fill="none" stroke="#ffffff" stroke-width="1.5"/>
+                <rect x="54" y="54" width="628" height="628" rx="11.25" fill="#ffffff"/>
+                <rect x="54" y="54" width="628" height="628" rx="11.25" fill="none" stroke="#3d5461" stroke-width="1.5"/>
+                <rect x="264" y="116" width="188" height="503" fill="#0d1f24"/>
+                <rect x="223" y="173" width="270" height="388" fill="#0d1f24"/>
+                <rect x="114" y="223" width="488" height="290" fill="#0d1f24"/>
+                <rect x="280" y="136" width="27" height="156" fill="#b96e36"/>
+                <rect x="323" y="136" width="27" height="156" fill="#b96e36"/>
+                <rect x="366" y="136" width="27" height="156" fill="#b96e36"/>
+                <rect x="409" y="136" width="27" height="156" fill="#b96e36"/>
+                <rect x="237" y="188" width="27" height="104" fill="#b96e36"/>
+                <rect x="452" y="188" width="27" height="104" fill="#b96e36"/>
+                <rect x="198" y="249" width="23" height="43" fill="#b96e36"/>
+                <rect x="495" y="249" width="23" height="43" fill="#b96e36"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Back: acronym glossary -->
+          <div class="card-back">
+            <span class="gloss-title">Acronyms</span>
+            <dl class="gloss-list">
+              <div class="gloss-row"><dt>Cat6A</dt><dd>Category 6 Augmented</dd></div>
+              <div class="gloss-row"><dt>LAN</dt><dd>Local Area Network</dd></div>
+              <div class="gloss-row"><dt>WAN</dt><dd>Wide Area Network</dd></div>
+              <div class="gloss-row"><dt>PoE</dt><dd>Power over Ethernet</dd></div>
+              <div class="gloss-row"><dt>AV</dt><dd>Audio Visual</dd></div>
+            </dl>
+            <span class="gloss-hint">tap to flip back</span>
+          </div>
+
+        </div>
       </div>
     </div>
 
@@ -587,6 +663,11 @@ html, body {
     }
     requestAnimationFrame(tick);
   }
+
+  /* ── Center icon flip ── */
+  document.getElementById('phoneWrap').addEventListener('click', function() {
+    document.getElementById('cardInner').classList.toggle('flipped');
+  });
 
   /* ── Accordion toggle — track lines for the exact CSS transition duration ── */
   document.querySelectorAll('.item').forEach(function(item) {
