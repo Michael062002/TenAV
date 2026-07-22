@@ -23,7 +23,7 @@
 /* ── Base ── */
 html, body {
   min-height: 100vh;
-  background: var(--bg);
+  background: transparent;
   color: var(--white);
   font-family: var(--font);
   display: flex;
@@ -32,10 +32,22 @@ html, body {
   padding: 2rem 1.25rem;
 }
 
-/* Scanline texture — evokes AV broadcast screens */
-body::after {
+/* ── Panel ── */
+.panel {
+  position: relative;
+  width: fit-content;
+  max-width: min(960px, 100%);
+  padding: 2.8rem 3.5rem;
+  background: var(--bg);
+  border: 1px solid var(--w10);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Scanline texture on the panel itself */
+.panel::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: repeating-linear-gradient(
     180deg,
@@ -44,16 +56,6 @@ body::after {
   );
   pointer-events: none;
   z-index: 999;
-}
-
-/* ── Panel ── */
-.panel {
-  position: relative;
-  width: fit-content;
-  max-width: min(960px, 100%);
-  padding: 2.8rem 3.5rem;
-  border: 1px solid var(--w10);
-  border-radius: 16px;
 }
 
 /* ── Diagram grid ── */
