@@ -58,10 +58,11 @@
 #tnav-block .tnav-diagram {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr clamp(150px, 22vw, 260px) 1fr;
-  gap: 0 clamp(1.5rem, 5vw, 5.5rem);
+  grid-template-columns: 1fr clamp(130px, 18vw, 220px) 1fr;
+  gap: 0 clamp(1.2rem, 3.5vw, 4rem);
   align-items: center;
-  min-height: clamp(440px, 58vw, 700px);
+  align-content: center;
+  min-height: clamp(440px, 55vw, 680px);
 }
 
 /* ── Columns ── */
@@ -75,7 +76,7 @@
 #tnav-block .tnav-col-head {
   font-size: clamp(0.65rem, 1.4vw, 1rem);
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--tnav-copper);
   margin-bottom: clamp(1rem, 2.5vw, 2rem);
