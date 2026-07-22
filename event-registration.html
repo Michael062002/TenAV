@@ -6,97 +6,118 @@
   <title>Event Registration — TenAV</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    body { margin: 0; padding: 32px 16px; min-height: 100vh; background: #f0f1f0; }
+    body { margin: 0; padding: 40px 20px; min-height: 100vh; background: #e5e7e5; }
   </style>
 </head>
 <body>
 
 <div class="kubus-event-reg" id="kubusEventReg">
   <div class="ker-card">
-    <div class="ker-header">
-      <span class="ker-badge">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 9h16M9 4v16" stroke="currentColor" stroke-width="1.6"/></svg>
-        Event Registration
-      </span>
-      <h2 class="ker-title">Register Your Interest</h2>
-      <p class="ker-subtitle">Select your preferred Wednesday event date and time slot, and a member of the team will be in touch to confirm the details.</p>
-    </div>
+    <div class="ker-layout">
 
-    <form class="ker-form" id="kerForm" novalidate>
-      <p class="ker-required-note">Fields marked <span class="ker-req" aria-hidden="true">*</span> are required.</p>
-
-      <div class="ker-grid">
-        <div class="ker-field">
-          <label class="ker-label" for="kerName">Customer Name <span class="ker-req" aria-hidden="true">*</span></label>
-          <div class="ker-input-wrap">
-            <svg class="ker-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 20c1.4-4 4.2-6 7.5-6s6.1 2 7.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            <input class="ker-input" type="text" id="kerName" name="customerName" autocomplete="name" required aria-required="true" />
-          </div>
-          <p class="ker-error" id="kerName-error" role="alert" hidden></p>
+      <!-- ── Sidebar ── -->
+      <aside class="ker-sidebar">
+        <div class="ker-sidebar-top">
+          <span class="ker-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M4 9h16M9 4v16" stroke="currentColor" stroke-width="1.8"/></svg>
+            Event Registration
+          </span>
+          <h2 class="ker-title">Register Your Interest</h2>
+          <p class="ker-subtitle">Select your preferred Wednesday event date and time slot — a member of our team will confirm the details within 24 hours.</p>
         </div>
-        <div class="ker-field">
-          <label class="ker-label" for="kerOrg">Organisation <span class="ker-req" aria-hidden="true">*</span></label>
-          <div class="ker-input-wrap">
-            <svg class="ker-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20V5.5C4 4.7 4.7 4 5.5 4h7c.8 0 1.5.7 1.5 1.5V20" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 10.5h4.5c.8 0 1.5.7 1.5 1.5v8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 8h2M7 11h2M7 14h2M15.5 14h1.5M15.5 17h1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            <input class="ker-input" type="text" id="kerOrg" name="organisation" autocomplete="organization" required aria-required="true" />
-          </div>
-          <p class="ker-error" id="kerOrg-error" role="alert" hidden></p>
+        <div class="ker-steps">
+          <p class="ker-steps-label">What happens next</p>
+          <ol class="ker-steps-list">
+            <li>Submit your preferred date &amp; time slot</li>
+            <li>Our team checks availability</li>
+            <li>We confirm your booking by email</li>
+          </ol>
         </div>
-      </div>
+      </aside>
 
-      <div class="ker-field">
-        <label class="ker-label" for="kerEmail">Email Address <span class="ker-req" aria-hidden="true">*</span></label>
-        <div class="ker-input-wrap">
-          <svg class="ker-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 7l7.5 6 7.5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <input class="ker-input" type="email" id="kerEmail" name="email" autocomplete="email" required aria-required="true" />
+      <!-- ── Form body ── -->
+      <div class="ker-body">
+
+        <form class="ker-form" id="kerForm" novalidate>
+          <p class="ker-required-note">Fields marked <span class="ker-req" aria-hidden="true">*</span> are required.</p>
+
+          <div class="ker-grid">
+            <div class="ker-field">
+              <label class="ker-label" for="kerName">Customer Name <span class="ker-req" aria-hidden="true">*</span></label>
+              <div class="ker-input-wrap">
+                <svg class="ker-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 20c1.4-4 4.2-6 7.5-6s6.1 2 7.5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                <input class="ker-input" type="text" id="kerName" name="customerName" autocomplete="name" required aria-required="true" />
+              </div>
+              <p class="ker-error" id="kerName-error" role="alert" hidden></p>
+            </div>
+            <div class="ker-field">
+              <label class="ker-label" for="kerOrg">Organisation <span class="ker-req" aria-hidden="true">*</span></label>
+              <div class="ker-input-wrap">
+                <svg class="ker-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20V5.5C4 4.7 4.7 4 5.5 4h7c.8 0 1.5.7 1.5 1.5V20" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 10.5h4.5c.8 0 1.5.7 1.5 1.5v8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 8h2M7 11h2M7 14h2M15.5 14h1.5M15.5 17h1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                <input class="ker-input" type="text" id="kerOrg" name="organisation" autocomplete="organization" required aria-required="true" />
+              </div>
+              <p class="ker-error" id="kerOrg-error" role="alert" hidden></p>
+            </div>
+          </div>
+
+          <div class="ker-field">
+            <label class="ker-label" for="kerEmail">Email Address <span class="ker-req" aria-hidden="true">*</span></label>
+            <div class="ker-input-wrap">
+              <svg class="ker-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 7l7.5 6 7.5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <input class="ker-input" type="email" id="kerEmail" name="email" autocomplete="email" required aria-required="true" />
+            </div>
+            <p class="ker-error" id="kerEmail-error" role="alert" hidden></p>
+          </div>
+
+          <div class="ker-date-section">
+            <div class="ker-date-header">
+              <span class="ker-date-label" id="kerDateLabel">Select an Event Date <span class="ker-req" aria-hidden="true">*</span></span>
+              <span class="ker-date-hint">Pick a month, then a Wednesday</span>
+            </div>
+            <div class="ker-month-strip" id="kerMonthPills" role="radiogroup" aria-label="Event month"></div>
+            <div class="ker-date-grid" id="kerDateCards" role="radiogroup" aria-labelledby="kerDateLabel"></div>
+            <p class="ker-selected-date" id="kerSelectedDateLabel">No date selected yet.</p>
+            <input type="hidden" id="kerEventDate" name="eventDate" required aria-required="true" />
+            <p class="ker-error" id="kerEventDate-error" role="alert" hidden></p>
+          </div>
+
+          <div class="ker-grid">
+            <fieldset class="ker-field ker-fieldset">
+              <legend class="ker-label">Preferred Time Slot <span class="ker-req" aria-hidden="true">*</span></legend>
+              <div class="ker-pill-group" role="radiogroup" aria-required="true">
+                <label class="ker-pill"><input type="radio" name="timeSlot" value="AM" required aria-required="true" /><span>AM</span></label>
+                <label class="ker-pill"><input type="radio" name="timeSlot" value="PM" required aria-required="true" /><span>PM</span></label>
+              </div>
+              <p class="ker-error" id="kerTimeSlot-error" role="alert" hidden></p>
+            </fieldset>
+            <fieldset class="ker-field ker-fieldset">
+              <legend class="ker-label">Customer Relationship <span class="ker-req" aria-hidden="true">*</span></legend>
+              <div class="ker-pill-group" role="radiogroup" aria-required="true">
+                <label class="ker-pill"><input type="radio" name="customerRelationship" value="Kubus" required aria-required="true" /><span>Kubus</span></label>
+                <label class="ker-pill"><input type="radio" name="customerRelationship" value="Tentech" required aria-required="true" /><span>Tentech</span></label>
+              </div>
+              <p class="ker-error" id="kerCustomerRelationship-error" role="alert" hidden></p>
+            </fieldset>
+          </div>
+
+          <p class="ker-form-error" id="kerFormError" role="alert" hidden></p>
+
+          <button type="submit" class="ker-submit" id="kerSubmit">
+            Submit Registration
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+
+        <div class="ker-confirmation" id="kerConfirmation" hidden tabindex="-1">
+          <div class="ker-confirmation-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Thank you for registering your interest.</h3>
+          <p>We have received your details and a member of the team will be in touch shortly.</p>
+          <button type="button" class="ker-reset-link" id="kerResetBtn">Submit another registration</button>
         </div>
-        <p class="ker-error" id="kerEmail-error" role="alert" hidden></p>
+
       </div>
-
-      <div class="ker-field">
-        <span class="ker-label ker-label--eyebrow" id="kerDateLabel">Select an Event Date <span class="ker-req" aria-hidden="true">*</span></span>
-        <p class="ker-hint">Step 1: choose a month. Step 2: choose a Wednesday.</p>
-        <div class="ker-month-pills" id="kerMonthPills" role="radiogroup" aria-label="Event month"></div>
-        <div class="ker-date-grid" id="kerDateCards" role="radiogroup" aria-labelledby="kerDateLabel"></div>
-        <p class="ker-selected-date" id="kerSelectedDateLabel">No date selected yet.</p>
-        <input type="hidden" id="kerEventDate" name="eventDate" required aria-required="true" />
-        <p class="ker-error" id="kerEventDate-error" role="alert" hidden></p>
-      </div>
-
-      <div class="ker-grid">
-        <fieldset class="ker-field ker-fieldset">
-          <legend class="ker-label">Preferred Time Slot <span class="ker-req" aria-hidden="true">*</span></legend>
-          <div class="ker-pill-group" role="radiogroup" aria-required="true">
-            <label class="ker-pill"><input type="radio" name="timeSlot" value="AM" required aria-required="true" /><span>AM</span></label>
-            <label class="ker-pill"><input type="radio" name="timeSlot" value="PM" required aria-required="true" /><span>PM</span></label>
-          </div>
-          <p class="ker-error" id="kerTimeSlot-error" role="alert" hidden></p>
-        </fieldset>
-        <fieldset class="ker-field ker-fieldset">
-          <legend class="ker-label">Customer Relationship <span class="ker-req" aria-hidden="true">*</span></legend>
-          <div class="ker-pill-group" role="radiogroup" aria-required="true">
-            <label class="ker-pill"><input type="radio" name="customerRelationship" value="Kubus" required aria-required="true" /><span>Kubus</span></label>
-            <label class="ker-pill"><input type="radio" name="customerRelationship" value="Tentech" required aria-required="true" /><span>Tentech</span></label>
-          </div>
-          <p class="ker-error" id="kerCustomerRelationship-error" role="alert" hidden></p>
-        </fieldset>
-      </div>
-
-      <p class="ker-form-error" id="kerFormError" role="alert" hidden></p>
-
-      <button type="submit" class="ker-submit" id="kerSubmit">
-        Submit Registration
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </form>
-
-    <div class="ker-confirmation" id="kerConfirmation" hidden tabindex="-1">
-      <div class="ker-confirmation-icon">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <h3>Thank you for registering your interest.</h3>
-      <p>We have received your details and a member of the team will be in touch shortly.</p>
-      <button type="button" class="ker-reset-link" id="kerResetBtn">Submit another registration</button>
     </div>
   </div>
 </div>
@@ -105,279 +126,562 @@
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
 
   .kubus-event-reg {
-    --ker-navy: #0e1f29;
-    --ker-orange: #b96e36;
+    --ker-navy:        #0e1f29;
+    --ker-orange:      #b96e36;
     --ker-orange-dark: #9c5a29;
-    --ker-green: #91a79e;
-    --ker-green-dark: #6c8079;
-    --ker-bg: #f6f7f6;
-    --ker-card: #ffffff;
-    --ker-border: #e0e3e1;
-    --ker-border-strong: #c7ccc9;
-    --ker-text: #0e1f29;
-    --ker-text-muted: #5b625f;
-    --ker-danger: #b3392a;
-    --ker-radius-lg: 20px;
-    --ker-radius-sm: 9px;
-    --ker-shadow: 0 20px 50px -16px rgba(14,31,41,0.32);
-    --ker-font: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --ker-green:       #91a79e;
+    --ker-green-dark:  #6c8079;
+    --ker-bg:          #f5f6f5;
+    --ker-card:        #ffffff;
+    --ker-border:      #e0e3e1;
+    --ker-border-hi:   #c7ccc9;
+    --ker-text:        #0e1f29;
+    --ker-muted:       #5b625f;
+    --ker-danger:      #b3392a;
+    --ker-r:           18px;
+    --ker-r-sm:        9px;
+    --ker-shadow:      0 28px 70px -20px rgba(14,31,41,.38), 0 4px 18px -4px rgba(14,31,41,.08);
+    --ker-font:        "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
     font-family: var(--ker-font);
     color: var(--ker-text);
     box-sizing: border-box;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0;
+    width: 100%;
   }
   .kubus-event-reg *, .kubus-event-reg *::before, .kubus-event-reg *::after { box-sizing: inherit; }
 
+  /* ── Card shell ── */
   .kubus-event-reg .ker-card {
-    background: var(--ker-card);
-    border-radius: var(--ker-radius-lg);
+    border-radius: var(--ker-r);
     box-shadow: var(--ker-shadow);
     border: 1px solid var(--ker-border);
     overflow: hidden;
   }
 
-  .kubus-event-reg .ker-header {
+  /* ── Split layout ── */
+  .kubus-event-reg .ker-layout {
+    display: flex;
+    align-items: stretch;
+  }
+
+  /* ── Sidebar ── */
+  .kubus-event-reg .ker-sidebar {
+    flex: 0 0 30%;
+    min-width: 220px;
+    max-width: 340px;
     background: var(--ker-navy);
-    border-bottom: 3px solid var(--ker-orange);
-    padding: 32px 36px 28px;
-    color: #ffffff;
+    border-right: 3px solid var(--ker-orange);
+    padding: 44px 36px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
   }
+  /* decorative circles */
+  .kubus-event-reg .ker-sidebar::before {
+    content: "";
+    position: absolute;
+    right: -72px; bottom: -72px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(185,110,54,.12);
+    pointer-events: none;
+  }
+  .kubus-event-reg .ker-sidebar::after {
+    content: "";
+    position: absolute;
+    left: -52px; top: -52px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.03);
+    pointer-events: none;
+  }
+
   .kubus-event-reg .ker-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.22);
-    color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
-    text-transform: uppercase; padding: 5px 11px; border-radius: 999px; margin-bottom: 12px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    color: rgba(255,255,255,.9);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 20px;
   }
-  .kubus-event-reg .ker-title { margin: 0 0 8px; font-size: 24px; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; }
-  .kubus-event-reg .ker-subtitle { margin: 0; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.75); max-width: 50ch; }
 
-  .kubus-event-reg .ker-form { padding: 28px 36px 36px; }
-  .kubus-event-reg .ker-required-note { margin: 0 0 20px; font-size: 12.5px; color: var(--ker-text-muted); }
+  .kubus-event-reg .ker-title {
+    position: relative;
+    margin: 0 0 14px;
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: #fff;
+  }
+
+  .kubus-event-reg .ker-subtitle {
+    position: relative;
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: rgba(255,255,255,.65);
+  }
+
+  .kubus-event-reg .ker-steps {
+    position: relative;
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,.1);
+  }
+
+  .kubus-event-reg .ker-steps-label {
+    margin: 0 0 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ker-orange);
+  }
+
+  .kubus-event-reg .ker-steps-list {
+    margin: 0; padding: 0; list-style: none;
+    counter-reset: ker-step;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .kubus-event-reg .ker-steps-list li {
+    counter-increment: ker-step;
+    position: relative;
+    padding-left: 30px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(255,255,255,.6);
+  }
+  .kubus-event-reg .ker-steps-list li::before {
+    content: counter(ker-step);
+    position: absolute; left: 0; top: 1px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--ker-orange);
+    color: #fff;
+    font-size: 10px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  /* ── Body ── */
+  .kubus-event-reg .ker-body {
+    flex: 1; min-width: 0;
+    background: var(--ker-card);
+    display: flex; flex-direction: column;
+  }
+
+  .kubus-event-reg .ker-form {
+    flex: 1;
+    padding: 36px 44px 44px;
+  }
+
+  .kubus-event-reg .ker-required-note {
+    margin: 0 0 22px;
+    font-size: 12.5px;
+    color: var(--ker-muted);
+  }
   .kubus-event-reg .ker-req { color: var(--ker-orange); }
-  .kubus-event-reg .ker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .kubus-event-reg .ker-field { margin-bottom: 18px; }
-  .kubus-event-reg .ker-fieldset { border: 0; padding: 0; margin-top: 0; }
-  .kubus-event-reg .ker-label { display: block; font-size: 13px; font-weight: 600; color: var(--ker-navy); margin-bottom: 7px; }
-  .kubus-event-reg .ker-label--eyebrow { text-transform: uppercase; letter-spacing: 0.04em; font-size: 12px; }
-  .kubus-event-reg .ker-hint { margin: -4px 0 10px; font-size: 12.5px; color: var(--ker-text-muted); }
 
+  /* 2-col grid */
+  .kubus-event-reg .ker-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .kubus-event-reg .ker-field { margin-bottom: 20px; }
+  .kubus-event-reg .ker-fieldset { border: 0; padding: 0; margin: 0; }
+
+  .kubus-event-reg .ker-label {
+    display: block;
+    font-size: 13px; font-weight: 600;
+    color: var(--ker-navy);
+    margin-bottom: 8px;
+  }
+
+  /* Inputs */
   .kubus-event-reg .ker-input-wrap { position: relative; }
-  .kubus-event-reg .ker-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ker-text-muted); pointer-events: none; }
+  .kubus-event-reg .ker-icon {
+    position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--ker-muted); pointer-events: none;
+  }
   .kubus-event-reg .ker-input {
     width: 100%; font-family: inherit; font-size: 14px;
-    padding: 10px 12px 10px 36px;
-    border-radius: var(--ker-radius-sm); border: 1.5px solid var(--ker-border);
+    padding: 10px 12px 10px 35px;
+    border-radius: var(--ker-r-sm);
+    border: 1.5px solid var(--ker-border);
     background: var(--ker-bg); color: var(--ker-text);
-    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    transition: border-color .14s, box-shadow .14s, background .14s;
   }
-  .kubus-event-reg .ker-input:hover { border-color: var(--ker-border-strong); }
-  .kubus-event-reg .ker-input:focus { outline: none; border-color: var(--ker-green); background: #fff; box-shadow: 0 0 0 3px rgba(145,167,158,0.22); }
-  .kubus-event-reg .ker-input[aria-invalid="true"] { border-color: var(--ker-danger); box-shadow: 0 0 0 3px rgba(179,57,42,0.1); }
+  .kubus-event-reg .ker-input:hover { border-color: var(--ker-border-hi); }
+  .kubus-event-reg .ker-input:focus {
+    outline: none;
+    border-color: var(--ker-orange);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(185,110,54,.13);
+  }
+  .kubus-event-reg .ker-input[aria-invalid="true"] {
+    border-color: var(--ker-danger);
+    box-shadow: 0 0 0 3px rgba(179,57,42,.1);
+  }
 
-  .kubus-event-reg .ker-error { margin: 6px 0 0; font-size: 12px; color: var(--ker-danger); font-weight: 500; }
+  .kubus-event-reg .ker-error { margin: 5px 0 0; font-size: 12px; color: var(--ker-danger); font-weight: 500; }
   .kubus-event-reg .ker-form-error {
-    margin: 0 0 16px; padding: 10px 13px; border-radius: var(--ker-radius-sm);
-    background: #fbeeeb; border: 1px solid rgba(179,57,42,0.3); color: #8a2c20; font-size: 13px; font-weight: 500;
+    margin: 0 0 16px; padding: 10px 14px;
+    border-radius: var(--ker-r-sm);
+    background: #fbeeeb; border: 1px solid rgba(179,57,42,.25);
+    color: #8a2c20; font-size: 13px; font-weight: 500;
   }
 
-  .kubus-event-reg .ker-pill-group { display: flex; gap: 8px; flex-wrap: wrap; }
-  .kubus-event-reg .ker-pill {
-    position: relative; flex: 1 1 auto; min-width: 80px; text-align: center;
-    border: 1.5px solid var(--ker-border); border-radius: var(--ker-radius-sm);
-    padding: 9px 14px; font-size: 13.5px; font-weight: 600; color: var(--ker-text);
-    background: var(--ker-bg); cursor: pointer;
-    transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
+  /* ── Date section ── */
+  .kubus-event-reg .ker-date-section { margin-bottom: 20px; }
+
+  .kubus-event-reg .ker-date-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px;
   }
-  .kubus-event-reg .ker-pill input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
-  .kubus-event-reg .ker-pill:hover { border-color: var(--ker-border-strong); }
-  .kubus-event-reg .ker-pill:has(input:checked) { border-color: var(--ker-green); background: rgba(145,167,158,0.16); color: var(--ker-green-dark); }
-  .kubus-event-reg .ker-pill:has(input:focus-visible) { box-shadow: 0 0 0 3px rgba(145,167,158,0.3); }
+  .kubus-event-reg .ker-date-label {
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .06em;
+    color: var(--ker-navy);
+  }
+  .kubus-event-reg .ker-date-hint {
+    font-size: 12px; color: var(--ker-muted);
+  }
 
-  .kubus-event-reg .ker-month-pills { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 12px; }
-  .kubus-event-reg .ker-month-pills .ker-pill { min-width: 76px; padding: 8px 12px; font-size: 13px; }
+  /* Month tab strip */
+  .kubus-event-reg .ker-month-strip {
+    display: flex;
+    border: 1.5px solid var(--ker-border);
+    border-radius: var(--ker-r-sm);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .kubus-event-reg .ker-month-tab {
+    position: relative; flex: 1; text-align: center;
+    padding: 9px 10px;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    color: var(--ker-muted); background: var(--ker-bg);
+    border: none; border-right: 1.5px solid var(--ker-border);
+    cursor: pointer;
+    transition: background .12s, color .12s;
+  }
+  .kubus-event-reg .ker-month-tab:last-child { border-right: none; }
+  .kubus-event-reg .ker-month-tab input {
+    position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none;
+  }
+  .kubus-event-reg .ker-month-tab:hover { background: #eff0ef; color: var(--ker-text); }
+  .kubus-event-reg .ker-month-tab:has(input:checked) {
+    background: var(--ker-navy); color: #fff; border-right-color: var(--ker-navy);
+  }
+  .kubus-event-reg .ker-month-tab:has(input:focus-visible) {
+    outline: 2px solid var(--ker-orange); outline-offset: -2px;
+  }
 
-  .kubus-event-reg .ker-date-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  /* Date cards */
+  .kubus-event-reg .ker-date-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
   .kubus-event-reg .ker-date-card {
     position: relative; display: flex; align-items: center; gap: 9px;
-    border: 1.5px solid var(--ker-border); border-radius: var(--ker-radius-sm);
-    padding: 10px 12px; font-size: 13px; font-weight: 600; color: var(--ker-text);
-    background: var(--ker-bg); cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    border: 1.5px solid var(--ker-border); border-radius: var(--ker-r-sm);
+    padding: 10px 13px;
+    font-size: 13px; font-weight: 600; color: var(--ker-text);
+    background: var(--ker-bg); cursor: pointer;
+    transition: border-color .12s, background .12s;
   }
-  .kubus-event-reg .ker-date-card input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+  .kubus-event-reg .ker-date-card input {
+    position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none;
+  }
   .kubus-event-reg .ker-date-card-radio {
-    flex: 0 0 auto; width: 16px; height: 16px; border-radius: 50%;
-    border: 2px solid var(--ker-border-strong); position: relative; background: #fff;
+    flex: 0 0 auto; width: 15px; height: 15px;
+    border-radius: 50%; border: 2px solid var(--ker-border-hi);
+    position: relative; background: #fff;
+    transition: border-color .12s;
   }
-  .kubus-event-reg .ker-date-card:hover { border-color: var(--ker-border-strong); }
-  .kubus-event-reg .ker-date-card:has(input:checked) { border-color: var(--ker-green); background: rgba(145,167,158,0.16); }
-  .kubus-event-reg .ker-date-card:has(input:checked) .ker-date-card-radio { border-color: var(--ker-green); }
-  .kubus-event-reg .ker-date-card:has(input:checked) .ker-date-card-radio::after { content:""; position:absolute; inset:2px; border-radius:50%; background:var(--ker-green); }
-  .kubus-event-reg .ker-date-card:has(input:focus-visible) { box-shadow: 0 0 0 3px rgba(145,167,158,0.3); }
-  .kubus-event-reg .ker-date-card:has(input:disabled) { cursor:not-allowed; color:var(--ker-text-muted); background:transparent; opacity:0.55; }
+  .kubus-event-reg .ker-date-card:hover { border-color: var(--ker-border-hi); }
+  .kubus-event-reg .ker-date-card:has(input:checked) {
+    border-color: var(--ker-orange);
+    background: rgba(185,110,54,.07);
+  }
+  .kubus-event-reg .ker-date-card:has(input:checked) .ker-date-card-radio { border-color: var(--ker-orange); }
+  .kubus-event-reg .ker-date-card:has(input:checked) .ker-date-card-radio::after {
+    content: ""; position: absolute; inset: 2px; border-radius: 50%; background: var(--ker-orange);
+  }
+  .kubus-event-reg .ker-date-card:has(input:focus-visible) { box-shadow: 0 0 0 3px rgba(185,110,54,.2); }
+  .kubus-event-reg .ker-date-card:has(input:disabled) { cursor: not-allowed; opacity: .45; }
 
-  .kubus-event-reg .ker-selected-date { margin: 11px 2px 0; font-size: 13px; font-weight: 600; color: var(--ker-navy); }
+  .kubus-event-reg .ker-selected-date {
+    margin: 9px 0 0;
+    font-size: 12.5px; font-weight: 600;
+    color: var(--ker-orange);
+  }
 
+  /* Time / relationship pills */
+  .kubus-event-reg .ker-pill-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .kubus-event-reg .ker-pill {
+    position: relative; flex: 1 1 auto; min-width: 68px;
+    text-align: center;
+    border: 1.5px solid var(--ker-border); border-radius: var(--ker-r-sm);
+    padding: 9px 14px; font-size: 13.5px; font-weight: 600;
+    color: var(--ker-text); background: var(--ker-bg); cursor: pointer;
+    transition: border-color .12s, background .12s, color .12s;
+  }
+  .kubus-event-reg .ker-pill input {
+    position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none;
+  }
+  .kubus-event-reg .ker-pill:hover { border-color: var(--ker-border-hi); }
+  .kubus-event-reg .ker-pill:has(input:checked) {
+    border-color: var(--ker-green); background: rgba(145,167,158,.14); color: var(--ker-green-dark);
+  }
+  .kubus-event-reg .ker-pill:has(input:focus-visible) { box-shadow: 0 0 0 3px rgba(145,167,158,.3); }
+
+  /* Submit */
   .kubus-event-reg .ker-submit {
     width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    border: none; border-radius: 999px; padding: 13px 22px;
-    font-family: inherit; font-size: 14px; font-weight: 700; letter-spacing: 0.04em;
-    text-transform: uppercase; color: #fff; background: var(--ker-orange); cursor: pointer;
-    box-shadow: 0 10px 22px -8px rgba(185,110,54,0.55);
-    transition: background 0.12s, transform 0.12s, box-shadow 0.12s, opacity 0.12s;
-    margin-top: 6px;
+    border: none; border-radius: 999px; padding: 14px 24px; margin-top: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    color: #fff; background: var(--ker-orange); cursor: pointer;
+    box-shadow: 0 8px 22px -6px rgba(185,110,54,.52);
+    transition: background .12s, transform .12s, box-shadow .12s, opacity .12s;
   }
-  .kubus-event-reg .ker-submit:hover { background: var(--ker-orange-dark); transform: translateY(-1px); box-shadow: 0 14px 28px -8px rgba(185,110,54,0.6); }
+  .kubus-event-reg .ker-submit:hover {
+    background: var(--ker-orange-dark); transform: translateY(-1px);
+    box-shadow: 0 12px 28px -6px rgba(185,110,54,.58);
+  }
   .kubus-event-reg .ker-submit:active { transform: none; }
-  .kubus-event-reg .ker-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
-  .kubus-event-reg .ker-submit:focus-visible { outline: 3px solid rgba(185,110,54,0.4); outline-offset: 2px; }
+  .kubus-event-reg .ker-submit:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+  .kubus-event-reg .ker-submit:focus-visible { outline: 3px solid rgba(185,110,54,.4); outline-offset: 2px; }
 
-  .kubus-event-reg .ker-confirmation { text-align: center; padding: 56px 36px; }
+  /* ── Confirmation ── */
+  .kubus-event-reg .ker-confirmation {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 56px 44px;
+  }
   .kubus-event-reg .ker-confirmation-icon {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 52px; height: 52px; border-radius: 50%;
-    background: rgba(145,167,158,0.18); color: var(--ker-green-dark); margin-bottom: 16px;
+    width: 60px; height: 60px; border-radius: 50%;
+    background: rgba(145,167,158,.15); color: var(--ker-green-dark); margin-bottom: 18px;
   }
-  .kubus-event-reg .ker-confirmation h3 { margin: 0 0 7px; font-size: 18px; color: var(--ker-navy); }
-  .kubus-event-reg .ker-confirmation p { margin: 0 auto; max-width: 42ch; color: var(--ker-text-muted); font-size: 14px; line-height: 1.6; }
+  .kubus-event-reg .ker-confirmation h3 { margin: 0 0 8px; font-size: 20px; color: var(--ker-navy); }
+  .kubus-event-reg .ker-confirmation p { margin: 0 auto; max-width: 38ch; color: var(--ker-muted); font-size: 14px; line-height: 1.6; }
   .kubus-event-reg .ker-reset-link {
-    margin-top: 18px; background: none; border: none;
+    margin-top: 20px; background: none; border: none;
     color: var(--ker-navy); font-weight: 600; font-size: 13.5px;
     cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
   }
-  .kubus-event-reg .ker-reset-link:hover { color: var(--ker-green-dark); }
+  .kubus-event-reg .ker-reset-link:hover { color: var(--ker-orange); }
 
-  @media (max-width: 540px) {
-    .kubus-event-reg .ker-header { padding: 24px 20px 20px; }
-    .kubus-event-reg .ker-form { padding: 22px 20px 28px; }
-    .kubus-event-reg .ker-confirmation { padding: 40px 20px; }
+  /* ── Responsive ── */
+  @media (max-width: 680px) {
+    .kubus-event-reg .ker-layout { flex-direction: column; }
+    .kubus-event-reg .ker-sidebar {
+      flex: none; max-width: none; min-width: 0;
+      border-right: none; border-bottom: 3px solid var(--ker-orange);
+      padding: 28px 24px 22px;
+    }
+    .kubus-event-reg .ker-steps { display: none; }
+    .kubus-event-reg .ker-form { padding: 24px 20px 28px; }
     .kubus-event-reg .ker-grid { grid-template-columns: 1fr; gap: 0; }
     .kubus-event-reg .ker-date-grid { grid-template-columns: 1fr; }
+    .kubus-event-reg .ker-confirmation { padding: 40px 20px; }
   }
-  @media (prefers-reduced-motion: reduce) { .kubus-event-reg * { transition: none !important; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kubus-event-reg * { transition: none !important; }
+  }
 </style>
 
 <script>
   (function () {
     "use strict";
-    var FORM_ENDPOINT_URL = "REPLACE_WITH_YOUR_BACKEND_ENDPOINT";
+
+    var FORM_ENDPOINT_URL  = "REPLACE_WITH_YOUR_BACKEND_ENDPOINT";
     var NOTIFICATION_EMAIL = "info@tenav.co.uk";
-    var root = document.getElementById("kubusEventReg");
-    var form = root.querySelector("#kerForm");
-    var confirmation = root.querySelector("#kerConfirmation");
-    var resetBtn = root.querySelector("#kerResetBtn");
-    var formError = root.querySelector("#kerFormError");
-    var submitBtn = root.querySelector("#kerSubmit");
-    var eventDateInput = root.querySelector("#kerEventDate");
-    var selectedDateLabel = root.querySelector("#kerSelectedDateLabel");
-    var monthPillsContainer = root.querySelector("#kerMonthPills");
-    var dateCardsContainer = root.querySelector("#kerDateCards");
-    var WEEKDAY_WEDNESDAY = 3;
-    var AVAILABLE_MONTHS = [8,9,10];
-    var SEASON_START_MONTH=8; var SEASON_START_DAY=15;
-    var SEASON_END_MONTH=10;  var SEASON_END_DAY=15;
-    var MONTH_NAMES=["January","February","March","April","May","June","July","August","September","October","November","December"];
-    var today=new Date(); today.setHours(0,0,0,0);
-    var selectedDate=null;
-    function pad(n){return n<10?"0"+n:String(n);}
-    function toISODate(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
-    function toReadableDate(d){return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()]+" "+d.getDate()+" "+MONTH_NAMES[d.getMonth()]+" "+d.getFullYear();}
-    function getAvailableGroups(year){
-      var seasonStart=new Date(year,SEASON_START_MONTH,SEASON_START_DAY);
-      var seasonEnd=new Date(year,SEASON_END_MONTH,SEASON_END_DAY);
-      var rangeStart=seasonStart>today?seasonStart:today;
-      var groups=[];
-      AVAILABLE_MONTHS.forEach(function(monthIndex){
-        var daysInMonth=new Date(year,monthIndex+1,0).getDate();
-        var dates=[];
-        for(var day=1;day<=daysInMonth;day++){var d=new Date(year,monthIndex,day);if(d.getDay()===WEEKDAY_WEDNESDAY&&d>=rangeStart&&d<=seasonEnd)dates.push(d);}
-        if(dates.length)groups.push({monthIndex:monthIndex,dates:dates});
-      });
-      return groups;
+
+    var root   = document.getElementById("kubusEventReg");
+    var form   = root.querySelector("#kerForm");
+    var conf   = root.querySelector("#kerConfirmation");
+    var reset  = root.querySelector("#kerResetBtn");
+    var fErr   = root.querySelector("#kerFormError");
+    var btn    = root.querySelector("#kerSubmit");
+    var hidDate = root.querySelector("#kerEventDate");
+    var selLbl  = root.querySelector("#kerSelectedDateLabel");
+    var mCon    = root.querySelector("#kerMonthPills");
+    var dCon    = root.querySelector("#kerDateCards");
+
+    var WED = 3;
+    var MONTHS = [8, 9, 10];
+    var S_START_M = 8, S_START_D = 15;
+    var S_END_M   = 10, S_END_D  = 15;
+    var MN = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+    var today = new Date(); today.setHours(0,0,0,0);
+    var selDate = null;
+
+    function pad(n) { return n < 10 ? "0" + n : "" + n; }
+    function iso(d)  { return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate()); }
+    function readable(d) { return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()] + " " + d.getDate() + " " + MN[d.getMonth()] + " " + d.getFullYear(); }
+
+    function groups(year) {
+      var ss = new Date(year, S_START_M, S_START_D);
+      var se = new Date(year, S_END_M,   S_END_D);
+      var rs = ss > today ? ss : today;
+      return MONTHS.reduce(function(acc, mi) {
+        var dim = new Date(year, mi+1, 0).getDate();
+        var dates = [];
+        for (var d = 1; d <= dim; d++) { var dt = new Date(year, mi, d); if (dt.getDay()===WED && dt>=rs && dt<=se) dates.push(dt); }
+        if (dates.length) acc.push({ mi: mi, dates: dates });
+        return acc;
+      }, []);
     }
-    var seasonYear=today.getFullYear();
-    var seasonGroups=getAvailableGroups(seasonYear);
-    if(!seasonGroups.length){seasonYear++;seasonGroups=getAvailableGroups(seasonYear);}
-    var activeMonthIndex=seasonGroups.length?seasonGroups[0].monthIndex:null;
-    function renderMonthPills(){
-      monthPillsContainer.innerHTML="";
-      seasonGroups.forEach(function(group){
-        var label=document.createElement("label");label.className="ker-pill";
-        var input=document.createElement("input");input.type="radio";input.name="eventMonthChoice";input.id="kerMonth-"+group.monthIndex;
-        input.checked=group.monthIndex===activeMonthIndex;
-        input.addEventListener("change",function(){activeMonthIndex=group.monthIndex;selectedDate=null;eventDateInput.value="";selectedDateLabel.textContent="No date selected yet.";renderDateCardsForActiveMonth();});
-        var text=document.createElement("span");text.textContent=MONTH_NAMES[group.monthIndex];
-        label.appendChild(input);label.appendChild(text);monthPillsContainer.appendChild(label);
-      });
-    }
-    function renderDateCardsForActiveMonth(){
-      dateCardsContainer.innerHTML="";
-      var group=seasonGroups.filter(function(g){return g.monthIndex===activeMonthIndex;})[0];
-      if(!group)return;
-      group.dates.forEach(function(d){
-        var iso=toISODate(d);
-        var label=document.createElement("label");label.className="ker-date-card";label.setAttribute("for","kerDate-"+iso);
-        var input=document.createElement("input");input.type="radio";input.name="eventDateChoice";input.id="kerDate-"+iso;input.value=iso;
-        input.checked=!!selectedDate&&toISODate(selectedDate)===iso;
-        input.addEventListener("change",function(){selectedDate=d;eventDateInput.value=iso;selectedDateLabel.textContent="Selected: "+toReadableDate(d);clearFieldError("EventDate");});
-        var radioMark=document.createElement("span");radioMark.className="ker-date-card-radio";radioMark.setAttribute("aria-hidden","true");
-        var text=document.createElement("span");text.textContent=toReadableDate(d);
-        label.appendChild(input);label.appendChild(radioMark);label.appendChild(text);dateCardsContainer.appendChild(label);
+
+    var yr = today.getFullYear();
+    var GRP = groups(yr);
+    if (!GRP.length) { yr++; GRP = groups(yr); }
+    var activeMi = GRP.length ? GRP[0].mi : null;
+
+    function mkMonthTabs() {
+      mCon.innerHTML = "";
+      GRP.forEach(function(g) {
+        var lbl = document.createElement("label");
+        lbl.className = "ker-month-tab";
+        var inp = document.createElement("input");
+        inp.type = "radio"; inp.name = "kerMonthPick"; inp.id = "kerMo-" + g.mi;
+        inp.checked = g.mi === activeMi;
+        inp.addEventListener("change", function() {
+          activeMi = g.mi; selDate = null; hidDate.value = "";
+          selLbl.textContent = "No date selected yet.";
+          mkDateCards();
+        });
+        var sp = document.createElement("span"); sp.textContent = MN[g.mi];
+        lbl.appendChild(inp); lbl.appendChild(sp); mCon.appendChild(lbl);
       });
     }
-    renderMonthPills();renderDateCardsForActiveMonth();
-    var EMAIL_PATTERN=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    function fieldKeyToName(key){return {Name:"customerName",Org:"organisation",Email:"email",TimeSlot:"timeSlot",CustomerRelationship:"customerRelationship"}[key]||key;}
-    function setFieldError(fieldKey,message){
-      var errorEl=root.querySelector("#ker"+fieldKey+"-error");
-      var inputEl=form.querySelector('[name="'+fieldKeyToName(fieldKey)+'"]')||root.querySelector("#ker"+fieldKey);
-      if(errorEl){errorEl.textContent=message;errorEl.hidden=false;}
-      if(inputEl&&inputEl.setAttribute)inputEl.setAttribute("aria-invalid","true");
+
+    function mkDateCards() {
+      dCon.innerHTML = "";
+      var g = GRP.filter(function(x) { return x.mi === activeMi; })[0];
+      if (!g) return;
+      g.dates.forEach(function(d) {
+        var id  = "kerD-" + iso(d);
+        var lbl = document.createElement("label");
+        lbl.className = "ker-date-card"; lbl.setAttribute("for", id);
+        var inp = document.createElement("input");
+        inp.type="radio"; inp.name="kerDatePick"; inp.id=id; inp.value=iso(d);
+        inp.checked = !!selDate && iso(selDate)===iso(d);
+        inp.addEventListener("change", function() {
+          selDate = d; hidDate.value = iso(d);
+          selLbl.textContent = "Selected: " + readable(d);
+          clearErr("EventDate");
+        });
+        var dot = document.createElement("span"); dot.className="ker-date-card-radio"; dot.setAttribute("aria-hidden","true");
+        var txt = document.createElement("span"); txt.textContent = readable(d);
+        lbl.appendChild(inp); lbl.appendChild(dot); lbl.appendChild(txt);
+        dCon.appendChild(lbl);
+      });
     }
-    function clearFieldError(fieldKey){
-      var errorEl=root.querySelector("#ker"+fieldKey+"-error");
-      var inputEl=form.querySelector('[name="'+fieldKeyToName(fieldKey)+'"]')||root.querySelector("#ker"+fieldKey);
-      if(errorEl){errorEl.hidden=true;errorEl.textContent="";}
-      if(inputEl&&inputEl.removeAttribute)inputEl.removeAttribute("aria-invalid");
+
+    mkMonthTabs(); mkDateCards();
+
+    /* Validation */
+    var RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function nm(k) { return {Name:"customerName",Org:"organisation",Email:"email",TimeSlot:"timeSlot",CustomerRelationship:"customerRelationship"}[k]||k; }
+    function setErr(k, msg) {
+      var e = root.querySelector("#ker"+k+"-error");
+      var i = form.querySelector('[name="'+nm(k)+'"]') || root.querySelector("#ker"+k);
+      if (e) { e.textContent=msg; e.hidden=false; }
+      if (i && i.setAttribute) i.setAttribute("aria-invalid","true");
     }
-    ["Name","Org","Email"].forEach(function(key){root.querySelector("#ker"+key).addEventListener("input",function(){clearFieldError(key);});});
-    function validate(){
-      var valid=true,firstInvalid=null;
-      if(!root.querySelector("#kerName").value.trim()){setFieldError("Name","Please enter the customer name.");valid=false;firstInvalid=firstInvalid||"#kerName";}
-      if(!root.querySelector("#kerOrg").value.trim()){setFieldError("Org","Please enter the organisation.");valid=false;firstInvalid=firstInvalid||"#kerOrg";}
-      var email=root.querySelector("#kerEmail").value.trim();
-      if(!email||!EMAIL_PATTERN.test(email)){setFieldError("Email","Please enter a valid email address.");valid=false;firstInvalid=firstInvalid||"#kerEmail";}
-      if(!eventDateInput.value){setFieldError("EventDate","Please select an available Wednesday.");valid=false;firstInvalid=firstInvalid||"#kerDateLabel";}else clearFieldError("EventDate");
-      if(!form.querySelector('input[name="timeSlot"]:checked')){setFieldError("TimeSlot","Please choose AM or PM.");valid=false;firstInvalid=firstInvalid||"#kerForm";}else clearFieldError("TimeSlot");
-      if(!form.querySelector('input[name="customerRelationship"]:checked')){setFieldError("CustomerRelationship","Please select Kubus or Tentech.");valid=false;firstInvalid=firstInvalid||"#kerForm";}else clearFieldError("CustomerRelationship");
-      if(!valid&&firstInvalid){var el=root.querySelector(firstInvalid);if(el&&el.focus)el.focus();}
-      return valid;
+    function clearErr(k) {
+      var e = root.querySelector("#ker"+k+"-error");
+      var i = form.querySelector('[name="'+nm(k)+'"]') || root.querySelector("#ker"+k);
+      if (e) { e.hidden=true; e.textContent=""; }
+      if (i && i.removeAttribute) i.removeAttribute("aria-invalid");
     }
-    function buildPayload(){
-      var timeSlot=form.querySelector('input[name="timeSlot"]:checked');
-      var relationship=form.querySelector('input[name="customerRelationship"]:checked');
-      return {customerName:root.querySelector("#kerName").value.trim(),organisation:root.querySelector("#kerOrg").value.trim(),email:root.querySelector("#kerEmail").value.trim(),eventDate:eventDateInput.value,eventDateLabel:selectedDate?toReadableDate(selectedDate):"",timeSlot:timeSlot?timeSlot.value:"",customerRelationship:relationship?relationship.value:"",notifyEmail:NOTIFICATION_EMAIL,submittedAt:new Date().toISOString()};
-    }
-    function sendRegistration(payload){
-      if(!FORM_ENDPOINT_URL||FORM_ENDPOINT_URL.indexOf("REPLACE_WITH")!==-1){console.log("[Kubus Event Registration] No endpoint configured. Payload:",payload);return Promise.resolve();}
-      return fetch(FORM_ENDPOINT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)}).then(function(res){if(!res.ok)throw new Error("Status "+res.status);});
-    }
-    form.addEventListener("submit",function(e){
-      e.preventDefault();formError.hidden=true;
-      if(!validate())return;
-      var payload=buildPayload();submitBtn.disabled=true;submitBtn.textContent="Submitting…";
-      sendRegistration(payload)
-        .then(function(){form.hidden=true;confirmation.hidden=false;confirmation.focus();})
-        .catch(function(err){console.error("[Kubus Event Registration] Submission failed:",err);formError.textContent="Something went wrong. Please try again or contact "+NOTIFICATION_EMAIL+" directly.";formError.hidden=false;})
-        .finally(function(){submitBtn.disabled=false;submitBtn.textContent="Submit Registration";});
+    ["Name","Org","Email"].forEach(function(k) {
+      root.querySelector("#ker"+k).addEventListener("input", function() { clearErr(k); });
     });
-    resetBtn.addEventListener("click",function(){
-      form.reset();selectedDate=null;eventDateInput.value="";
-      selectedDateLabel.textContent="No date selected yet.";
-      activeMonthIndex=seasonGroups.length?seasonGroups[0].monthIndex:null;
-      renderMonthPills();renderDateCardsForActiveMonth();
-      confirmation.hidden=true;form.hidden=false;root.querySelector("#kerName").focus();
+
+    function validate() {
+      var ok = true, fi = null;
+      if (!root.querySelector("#kerName").value.trim())  { setErr("Name","Please enter the customer name."); ok=false; fi=fi||"#kerName"; }
+      if (!root.querySelector("#kerOrg").value.trim())   { setErr("Org","Please enter the organisation.");  ok=false; fi=fi||"#kerOrg"; }
+      var em = root.querySelector("#kerEmail").value.trim();
+      if (!em||!RE.test(em)) { setErr("Email","Please enter a valid email address."); ok=false; fi=fi||"#kerEmail"; }
+      if (!hidDate.value)    { setErr("EventDate","Please select an available Wednesday."); ok=false; fi=fi||"#kerDateLabel"; }
+      else                     clearErr("EventDate");
+      if (!form.querySelector('input[name="timeSlot"]:checked'))            { setErr("TimeSlot","Please choose AM or PM."); ok=false; fi=fi||"#kerForm"; }
+      else clearErr("TimeSlot");
+      if (!form.querySelector('input[name="customerRelationship"]:checked')) { setErr("CustomerRelationship","Please select Kubus or Tentech."); ok=false; fi=fi||"#kerForm"; }
+      else clearErr("CustomerRelationship");
+      if (!ok && fi) { var el=root.querySelector(fi); if(el&&el.focus) el.focus(); }
+      return ok;
+    }
+
+    function payload() {
+      var ts = form.querySelector('input[name="timeSlot"]:checked');
+      var cr = form.querySelector('input[name="customerRelationship"]:checked');
+      return {
+        customerName:   root.querySelector("#kerName").value.trim(),
+        organisation:   root.querySelector("#kerOrg").value.trim(),
+        email:          root.querySelector("#kerEmail").value.trim(),
+        eventDate:      hidDate.value,
+        eventDateLabel: selDate ? readable(selDate) : "",
+        timeSlot:       ts ? ts.value : "",
+        customerRelationship: cr ? cr.value : "",
+        notifyEmail:    NOTIFICATION_EMAIL,
+        submittedAt:    new Date().toISOString()
+      };
+    }
+
+    function send(data) {
+      if (!FORM_ENDPOINT_URL || FORM_ENDPOINT_URL.indexOf("REPLACE_WITH")!==-1) {
+        console.log("[Kubus Event Registration] No endpoint set. Payload:", data);
+        return Promise.resolve();
+      }
+      return fetch(FORM_ENDPOINT_URL, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(data) })
+        .then(function(r) { if (!r.ok) throw new Error("HTTP " + r.status); });
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault(); fErr.hidden = true;
+      if (!validate()) return;
+      btn.disabled = true; btn.textContent = "Submitting…";
+      send(payload())
+        .then(function() { form.hidden=true; conf.hidden=false; conf.focus(); })
+        .catch(function(err) {
+          console.error(err);
+          fErr.textContent = "Something went wrong. Please try again or contact " + NOTIFICATION_EMAIL + " directly.";
+          fErr.hidden = false;
+        })
+        .finally(function() { btn.disabled=false; btn.textContent="Submit Registration"; });
+    });
+
+    reset.addEventListener("click", function() {
+      form.reset(); selDate=null; hidDate.value="";
+      selLbl.textContent="No date selected yet.";
+      activeMi = GRP.length ? GRP[0].mi : null;
+      mkMonthTabs(); mkDateCards();
+      conf.hidden=true; form.hidden=false;
+      root.querySelector("#kerName").focus();
     });
   })();
 </script>
