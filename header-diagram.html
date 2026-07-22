@@ -1,36 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TenAV — One Team, One Point of Accountability</title>
+<!--- TenAV Hero Header — Elementor HTML widget embed --->
+<!--- Paste everything below this line into the HTML widget  --->
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
-/* ── Global reset (standalone page only) ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { background: #060f13; }
-
-body {
-  min-height: 100dvh;
-  background: #060f13;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(1rem, 4vw, 2.5rem);
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-}
-
-.tnav-page {
-  width: 100%;
-  max-width: 1280px;
-}
-
 /* ═══════════════════════════════════════════════
    HERO WRAPPER  —  scoped to #tnav-hero
+   No global/body rules — safe to embed anywhere
 ═══════════════════════════════════════════════ */
+
+#tnav-hero *, #tnav-hero *::before, #tnav-hero *::after {
+  box-sizing: border-box; margin: 0; padding: 0;
+}
 
 #tnav-hero {
   display: block;
@@ -44,6 +25,7 @@ body {
 
 #tnav-hero .tnav-hp {
   position: relative;
+  width: 100%;
   background: #0d1f24;
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
@@ -144,10 +126,10 @@ body {
 #tnav-hero .tnav-cta:hover .tnav-cta-arr { transform: translateX(3px); }
 
 /* ── Diagram column ── */
-#tnav-hero .tnav-hd            { display: flex; min-width: 0; }
+#tnav-hero .tnav-hd               { display: flex; min-width: 0; }
 #tnav-hero .tnav-hd > #tnav-block { flex: 1; min-width: 0; }
 
-/* Strip inner panel's border/radius — outer hero panel owns those */
+/* Strip inner panel's own border/radius — outer hero panel owns those */
 #tnav-hero .tnav-hd > #tnav-block .tnav-panel {
   border-radius: 0;
   border: none;
@@ -155,21 +137,14 @@ body {
 
 /* ── Stacked / mobile layout ── */
 @container (max-width: 680px) {
-  #tnav-hero .tnav-hg {
-    grid-template-columns: 1fr;
-  }
+  #tnav-hero .tnav-hg { grid-template-columns: 1fr; }
   #tnav-hero .tnav-ht {
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,0.07);
     padding: clamp(1.75rem, 6vw, 2.5rem) clamp(1.25rem, 5vw, 2rem);
   }
-  #tnav-hero .tnav-body {
-    max-width: none;
-  }
-  #tnav-hero .tnav-cta {
-    align-self: stretch;
-    justify-content: center;
-  }
+  #tnav-hero .tnav-body  { max-width: none; }
+  #tnav-hero .tnav-cta   { align-self: stretch; justify-content: center; }
 }
 
 /* ── Very narrow (≤ 380px) ── */
@@ -463,31 +438,31 @@ body {
 
 @keyframes tnav-fromLeft {
   from { opacity:0; transform:translateX(-10px); }
-  to   { opacity:1; transform:translateX(0);     }
+  to   { opacity:1; transform:translateX(0); }
 }
 @keyframes tnav-fromRight {
   from { opacity:0; transform:translateX(10px); }
-  to   { opacity:1; transform:translateX(0);    }
+  to   { opacity:1; transform:translateX(0); }
 }
 @keyframes tnav-itemFromLeft {
   from { opacity:0; transform:translateX(-10px); }
-  to   { opacity:1; transform:translateX(0);     }
+  to   { opacity:1; transform:translateX(0); }
 }
 @keyframes tnav-itemFromRight {
   from { opacity:0; transform:translateX(10px); }
-  to   { opacity:1; transform:translateX(0);    }
+  to   { opacity:1; transform:translateX(0); }
 }
 @keyframes tnav-cardIn {
   from { opacity:0; transform:scale(0.86); }
-  to   { opacity:1; transform:scale(1);    }
+  to   { opacity:1; transform:scale(1); }
 }
 @keyframes tnav-copperGlow {
-  0%,100% { box-shadow: 0 0  0 0   rgba(185,110,54,0);     }
+  0%,100% { box-shadow: 0 0  0 0   rgba(185,110,54,0); }
   50%     { box-shadow: 0 0 24px 6px rgba(185,110,54,0.18); }
 }
 @keyframes tnav-ringPulse {
   0%,100% { transform:scale(1);   opacity:0.7; }
-  60%     { transform:scale(2.4); opacity:0;   }
+  60%     { transform:scale(2.4); opacity:0; }
 }
 @keyframes tnav-phoneRing {
   0%,80%,100% { transform:rotate(0deg); }
@@ -524,8 +499,8 @@ body {
     border-color: var(--tnav-copper) !important;
     animation: tnav-ringPulse 2.4s ease-in-out infinite !important;
   }
-  #tnav-block .tnav-lines-svg  { display: none; }
-  #tnav-block .tnav-col-head   { margin-bottom: 1rem; }
+  #tnav-block .tnav-lines-svg { display: none; }
+  #tnav-block .tnav-col-head  { margin-bottom: 1rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -538,10 +513,6 @@ body {
   #tnav-block .tnav-center-wrap { opacity: 1 !important; }
 }
 </style>
-</head>
-
-<body>
-<div class="tnav-page">
 
 <div id="tnav-hero">
   <div class="tnav-hp">
@@ -564,7 +535,6 @@ body {
           <div class="tnav-panel">
             <div class="tnav-diagram" id="tnav-diagram">
 
-              <!-- Infrastructure -->
               <div class="tnav-col tnav-col--left">
                 <h2 class="tnav-col-head">Infrastructure</h2>
                 <div class="tnav-item" id="tnav-li0">
@@ -609,7 +579,6 @@ body {
                 </div>
               </div>
 
-              <!-- Center card -->
               <div class="tnav-center-wrap" id="tnav-centerWrap">
                 <div class="tnav-phone-wrap" id="tnav-phoneWrap">
                   <div class="tnav-card-inner" id="tnav-cardInner">
@@ -650,7 +619,6 @@ body {
                 <div class="tnav-flip-hint" id="tnav-flipHint">&#8635; &nbsp;tap for glossary</div>
               </div>
 
-              <!-- Outcome -->
               <div class="tnav-col tnav-col--right">
                 <h2 class="tnav-col-head">Outcome</h2>
                 <div class="tnav-item" id="tnav-ri0">
@@ -705,8 +673,6 @@ body {
     </div>
   </div>
 </div>
-
-</div><!-- /.tnav-page -->
 
 <script>
 (function () {
@@ -865,6 +831,3 @@ body {
   });
 })();
 </script>
-
-</body>
-</html>
