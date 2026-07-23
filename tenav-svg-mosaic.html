@@ -1,0 +1,379 @@
+<!-- =====================================================================
+     TenAV — Animated SVG Mosaic (Plug & Port Icons)
+     WordPress Custom HTML block — paste the entire file content below.
+     Self-contained: zero external CSS / JS / fonts / CDNs.
+     Class prefix: .tenav-svgm-
+     ===================================================================== -->
+<style>
+/* ── reset ── */
+.tenav-svgm,.tenav-svgm *,.tenav-svgm *::before,.tenav-svgm *::after{
+  box-sizing:border-box;
+}
+/* ── design tokens ── */
+.tenav-svgm{
+  --navy:   #0E2530;
+  --navy-2: #16303D;
+  --navy-3: #12262F;
+  --copper: #CC7A3E;
+  --cu-lt:  #E7A874;
+  --bg-lt:  #EFF5F8;
+  --g:      clamp(7px,1.3vw,12px);
+  --r:      clamp(11px,1.6vw,17px);
+  --ease:   cubic-bezier(.22,.8,.24,1);
+}
+
+/* ── grid ── */
+.tenav-svgm-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(2,1fr);
+  gap:var(--g);
+  max-width:min(480px,100%);
+  height:clamp(220px,36vw,360px);
+}
+
+/* ── tile base ── */
+.tenav-svgm-tile{
+  position:relative;
+  border-radius:var(--r);
+  overflow:hidden;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:
+    transform  .35s var(--ease),
+    box-shadow .35s var(--ease);
+  outline:2.5px solid transparent;
+  outline-offset:0;
+}
+.tenav-svgm-tile:focus-visible{
+  outline-color:var(--copper);
+  outline-offset:4px;
+}
+
+/* grid positions */
+.tenav-svgm-tile:nth-child(1){grid-column:1;  grid-row:1/3;} /* tall plug  */
+.tenav-svgm-tile:nth-child(2){grid-column:2/4;grid-row:1;}   /* wide port  */
+.tenav-svgm-tile:nth-child(3){grid-column:2;  grid-row:2;}   /* sm port    */
+.tenav-svgm-tile:nth-child(4){grid-column:3;  grid-row:2;}   /* sm plug    */
+
+/* dark tile */
+.tenav-svgm-tile--dark{
+  background:var(--navy);
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:0 6px 28px rgba(4,14,19,.40);
+}
+/* light tile */
+.tenav-svgm-tile--light{
+  background:var(--bg-lt);
+  border:1px solid rgba(14,37,48,.07);
+  box-shadow:0 4px 14px rgba(14,37,48,.10);
+}
+
+/* hover lift */
+.tenav-svgm-tile:hover{transform:translateY(-5px) scale(1.024);}
+.tenav-svgm-tile--dark:hover{
+  box-shadow:0 18px 52px rgba(4,14,19,.52),0 0 0 2px var(--copper);
+}
+.tenav-svgm-tile--light:hover{
+  box-shadow:0 12px 36px rgba(14,37,48,.18),0 0 0 2px var(--copper);
+}
+
+/* ambient copper glow — dark tiles only */
+.tenav-svgm-tile--dark::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(ellipse 80% 55% at 50% 95%,rgba(204,122,62,.28),transparent 68%);
+  opacity:0;transition:opacity .4s ease;pointer-events:none;
+}
+.tenav-svgm-tile--dark:hover::after{opacity:1;}
+
+/* sympathetic highlight: opposite-type tiles on hover */
+.tenav-svgm-tile.tenav-svgm--sym{
+  outline-color:rgba(204,122,62,.4);
+  outline-offset:4px;
+}
+
+/* SVG icon sizing */
+.tenav-svgm-icon{
+  display:block;
+  width:clamp(72px,62%,148px);
+  height:auto;
+  transition:transform .35s var(--ease),filter .35s ease;
+}
+.tenav-svgm-tile--dark:hover  .tenav-svgm-icon{
+  filter:drop-shadow(0 6px 18px rgba(204,122,62,.35));
+  transform:scale(1.07);
+}
+.tenav-svgm-tile--light:hover .tenav-svgm-icon{
+  filter:drop-shadow(0 4px 12px rgba(14,37,48,.22));
+  transform:scale(1.07);
+}
+
+/* hover label */
+.tenav-svgm-label{
+  position:absolute;bottom:9px;left:0;right:0;
+  text-align:center;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  opacity:0;transition:opacity .25s ease;pointer-events:none;
+}
+.tenav-svgm-tile--dark  .tenav-svgm-label{color:rgba(231,168,116,.7);}
+.tenav-svgm-tile--light .tenav-svgm-label{color:rgba(14,37,48,.5);}
+.tenav-svgm-tile:hover  .tenav-svgm-label{opacity:1;}
+
+/* ── pin idle wave animation ── */
+.tenav-svgm-pin{animation:tenavSvgmPin 2.7s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center;}
+.tenav-svgm-pin:nth-child(1){animation-delay:   0ms;}
+.tenav-svgm-pin:nth-child(2){animation-delay:  80ms;}
+.tenav-svgm-pin:nth-child(3){animation-delay: 160ms;}
+.tenav-svgm-pin:nth-child(4){animation-delay: 240ms;}
+.tenav-svgm-pin:nth-child(5){animation-delay: 320ms;}
+.tenav-svgm-pin:nth-child(6){animation-delay: 400ms;}
+.tenav-svgm-pin:nth-child(7){animation-delay: 480ms;}
+.tenav-svgm-pin:nth-child(8){animation-delay: 560ms;}
+@keyframes tenavSvgmPin{
+  0%,100%{opacity:.65;}
+  50%{opacity:1;}
+}
+
+/* ── click: cascade connect flash ── */
+.tenav-svgm-tile.tenav-svgm--active::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  border:2.5px solid var(--cu-lt);pointer-events:none;z-index:3;
+  animation:tenavSvgmRing .68s var(--ease) forwards;
+}
+@keyframes tenavSvgmRing{
+  0%  {opacity:.9;transform:scale(.96);}
+  100%{opacity:0; transform:scale(1.07);}
+}
+.tenav-svgm-tile.tenav-svgm--active .tenav-svgm-pin{
+  animation:tenavSvgmPinBurst .55s ease-out forwards;
+}
+@keyframes tenavSvgmPinBurst{
+  0%  {opacity:1;  filter:brightness(1)   drop-shadow(0 0 0   rgba(231,168,116,0));}
+  38% {opacity:1;  filter:brightness(1.75)drop-shadow(0 0 6px rgba(231,168,116,.95));}
+  100%{opacity:.68;filter:brightness(1)   drop-shadow(0 0 0   rgba(231,168,116,0));}
+}
+
+/* ── scroll entrance ── */
+.tenav-svgm-js .tenav-svgm-tile{
+  opacity:0;
+  transform:translateY(26px) scale(.93);
+  transition:opacity .62s var(--ease),transform .62s var(--ease),box-shadow .35s var(--ease);
+}
+.tenav-svgm-js .tenav-svgm-tile:nth-child(1){transition-delay:  0ms;}
+.tenav-svgm-js .tenav-svgm-tile:nth-child(2){transition-delay: 90ms;}
+.tenav-svgm-js .tenav-svgm-tile:nth-child(3){transition-delay:185ms;}
+.tenav-svgm-js .tenav-svgm-tile:nth-child(4){transition-delay:265ms;}
+.tenav-svgm-js.tenav-svgm--in .tenav-svgm-tile{
+  opacity:1;transform:translateY(0) scale(1);
+}
+
+/* ── reduced motion ── */
+@media(prefers-reduced-motion:reduce){
+  .tenav-svgm *{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+  }
+  .tenav-svgm-js .tenav-svgm-tile{opacity:1;transform:none;}
+}
+</style>
+
+<div class="tenav-svgm" role="region" aria-label="Network connector icons — plug and port">
+  <div class="tenav-svgm-grid" data-tenav-svgm>
+
+    <!-- ①  PLUG — dark tile, tall left column -->
+    <div class="tenav-svgm-tile tenav-svgm-tile--dark"
+         tabindex="0" role="button" aria-label="RJ45 plug connector — click to connect"
+         data-tenav-type="plug">
+      <svg class="tenav-svgm-icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="tenav-svgm-g1" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#CC7A3E"/>
+            <stop offset="1" stop-color="#E7A874"/>
+          </linearGradient>
+        </defs>
+        <!-- White icon tile with navy border -->
+        <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
+        <rect x="14" y="14" width="212" height="212" rx="32" stroke="#16303D" stroke-width="6"/>
+        <!-- Plug body: continuous solid block with strain relief ridges -->
+        <rect x="58" y="108" width="124" height="96" rx="14" fill="#12262F"/>
+        <rect x="68"  y="160" width="104" height="7" rx="3.5" fill="rgba(255,255,255,.16)"/>
+        <rect x="58"  y="171" width="124" height="7" rx="3.5" fill="rgba(255,255,255,.11)"/>
+        <rect x="68"  y="182" width="104" height="7" rx="3.5" fill="rgba(255,255,255,.07)"/>
+        <!-- 8 copper pins, stepped arch (outer short → inner tall → outer short) -->
+        <g fill="url(#tenav-svgm-g1)">
+          <rect class="tenav-svgm-pin" x="70"  y="92" width="7" height="20" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="83"  y="78" width="7" height="34" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="96"  y="70" width="7" height="42" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
+        </g>
+      </svg>
+      <span class="tenav-svgm-label">Plug</span>
+    </div>
+
+    <!-- ②  PORT — light tile, wide top-right -->
+    <div class="tenav-svgm-tile tenav-svgm-tile--light"
+         tabindex="0" role="button" aria-label="RJ45 port socket — click to connect"
+         data-tenav-type="port">
+      <svg class="tenav-svgm-icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="tenav-svgm-g2" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#CC7A3E"/>
+            <stop offset="1" stop-color="#E7A874"/>
+          </linearGradient>
+        </defs>
+        <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
+        <rect x="14" y="14" width="212" height="212" rx="32" stroke="#16303D" stroke-width="6"/>
+        <!-- Port socket: stepped opening (narrow notch + wide cavity) -->
+        <rect x="104" y="94"  width="32"  height="22" rx="4"  fill="#12262F"/>
+        <rect x="62"  y="110" width="116" height="92" rx="14" fill="#12262F"/>
+        <!-- 8 copper pins, stepped arch -->
+        <g fill="url(#tenav-svgm-g2)">
+          <rect class="tenav-svgm-pin" x="70"  y="92" width="7" height="20" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="83"  y="78" width="7" height="34" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="96"  y="70" width="7" height="42" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
+        </g>
+      </svg>
+      <span class="tenav-svgm-label">Port</span>
+    </div>
+
+    <!-- ③  PORT — light tile, small bottom-left -->
+    <div class="tenav-svgm-tile tenav-svgm-tile--light"
+         tabindex="0" role="button" aria-label="RJ45 port socket"
+         data-tenav-type="port">
+      <svg class="tenav-svgm-icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="tenav-svgm-g3" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#CC7A3E"/>
+            <stop offset="1" stop-color="#E7A874"/>
+          </linearGradient>
+        </defs>
+        <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
+        <rect x="14" y="14" width="212" height="212" rx="32" stroke="#16303D" stroke-width="6"/>
+        <rect x="104" y="94"  width="32"  height="22" rx="4"  fill="#12262F"/>
+        <rect x="62"  y="110" width="116" height="92" rx="14" fill="#12262F"/>
+        <g fill="url(#tenav-svgm-g3)">
+          <rect class="tenav-svgm-pin" x="70"  y="92" width="7" height="20" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="83"  y="78" width="7" height="34" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="96"  y="70" width="7" height="42" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
+        </g>
+      </svg>
+      <span class="tenav-svgm-label">Port</span>
+    </div>
+
+    <!-- ④  PLUG — dark tile, small bottom-right -->
+    <div class="tenav-svgm-tile tenav-svgm-tile--dark"
+         tabindex="0" role="button" aria-label="RJ45 plug connector"
+         data-tenav-type="plug">
+      <svg class="tenav-svgm-icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="tenav-svgm-g4" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#CC7A3E"/>
+            <stop offset="1" stop-color="#E7A874"/>
+          </linearGradient>
+        </defs>
+        <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
+        <rect x="14" y="14" width="212" height="212" rx="32" stroke="#16303D" stroke-width="6"/>
+        <rect x="58" y="108" width="124" height="96" rx="14" fill="#12262F"/>
+        <rect x="68"  y="160" width="104" height="7" rx="3.5" fill="rgba(255,255,255,.16)"/>
+        <rect x="58"  y="171" width="124" height="7" rx="3.5" fill="rgba(255,255,255,.11)"/>
+        <rect x="68"  y="182" width="104" height="7" rx="3.5" fill="rgba(255,255,255,.07)"/>
+        <g fill="url(#tenav-svgm-g4)">
+          <rect class="tenav-svgm-pin" x="70"  y="92" width="7" height="20" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="83"  y="78" width="7" height="34" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="96"  y="70" width="7" height="42" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
+          <rect class="tenav-svgm-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
+        </g>
+      </svg>
+      <span class="tenav-svgm-label">Plug</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var grid = document.querySelector('[data-tenav-svgm]');
+  if(!grid || grid.dataset.tenavSvgmInit) return;
+  grid.dataset.tenavSvgmInit = '1';
+
+  var wrap  = grid.closest('.tenav-svgm');
+  var tiles = Array.prototype.slice.call(grid.querySelectorAll('.tenav-svgm-tile'));
+  var rmo   = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* ── scroll entrance ── */
+  wrap.classList.add('tenav-svgm-js');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ wrap.classList.add('tenav-svgm--in'); io.unobserve(e.target); }
+      });
+    },{ threshold:.15 });
+    io.observe(grid);
+  } else {
+    wrap.classList.add('tenav-svgm--in');
+  }
+
+  /* ── hover: highlight opposite-type tiles (plug ↔ port) ── */
+  function setSym(hovered, on){
+    var myType = hovered.getAttribute('data-tenav-type');
+    tiles.forEach(function(t){
+      if(t === hovered) return;
+      t.classList.toggle('tenav-svgm--sym', on && t.getAttribute('data-tenav-type') !== myType);
+    });
+  }
+  tiles.forEach(function(tile){
+    tile.addEventListener('mouseenter', function(){ setSym(tile, true);  });
+    tile.addEventListener('mouseleave', function(){ setSym(tile, false); });
+    tile.addEventListener('focus',      function(){ setSym(tile, true);  });
+    tile.addEventListener('blur',       function(){ setSym(tile, false); });
+  });
+
+  /* ── click / Enter / Space: cascade connect flash ── */
+  function connectAll(){
+    if(rmo) return;
+    tiles.forEach(function(tile, i){
+      setTimeout(function(){
+        tile.classList.remove('tenav-svgm--active');
+        void tile.offsetWidth; /* retrigger animation */
+        tile.classList.add('tenav-svgm--active');
+        setTimeout(function(){ tile.classList.remove('tenav-svgm--active'); }, 720);
+      }, i * 80);
+    });
+  }
+  tiles.forEach(function(tile){
+    tile.addEventListener('click', connectAll);
+    tile.addEventListener('keydown', function(e){
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); connectAll(); }
+    });
+  });
+
+  /* ── auto-demo: fire once on load ── */
+  if(!rmo){
+    setTimeout(function(){
+      if(wrap.classList.contains('tenav-svgm--in')) connectAll();
+    }, 900);
+  }
+})();
+</script>
