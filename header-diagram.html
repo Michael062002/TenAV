@@ -68,7 +68,7 @@
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #b96e36;
+  color: #b45f18;
   margin-bottom: clamp(0.8rem, 1.8cqi, 1.25rem);
   line-height: 1.5;
 }
@@ -83,7 +83,7 @@
   margin-bottom: clamp(0.85rem, 1.8cqi, 1.35rem);
 }
 
-#tnav-hero .tnav-orange { color: #b96e36; }
+#tnav-hero .tnav-orange { color: #b45f18; }
 
 #tnav-hero .tnav-body {
   font-size: clamp(0.875rem, 1.35cqi, 0.95rem);
@@ -104,7 +104,7 @@
   font-weight: 600;
   letter-spacing: 0.01em;
   color: #ffffff;
-  background: #b96e36;
+  background: #b45f18;
   border: none;
   border-radius: 8px;
   padding: clamp(0.65rem, 1.15cqi, 0.8rem) clamp(1.2rem, 2.3cqi, 1.65rem);
@@ -116,7 +116,7 @@
 #tnav-hero .tnav-cta:hover   { background: #ca7d42; transform: translateY(-1px); }
 #tnav-hero .tnav-cta:active  { transform: translateY(0); }
 #tnav-hero .tnav-cta:focus-visible {
-  outline: 2px solid rgba(185,110,54,0.75);
+  outline: 2px solid rgba(180,95,24,0.75);
   outline-offset: 3px;
 }
 #tnav-hero .tnav-cta-arr {
@@ -167,7 +167,7 @@
 
 #tnav-block {
   --tnav-bg:     #0d1f24;
-  --tnav-copper: #b96e36;
+  --tnav-copper: #b45f18;
   --tnav-steel:  #3d5461;
   --tnav-white:  #ffffff;
   --tnav-w60:    rgba(255,255,255,0.60);
@@ -378,7 +378,7 @@
 #tnav-block .tnav-card-back {
   transform: rotateY(180deg);
   background: var(--tnav-bg);
-  border: 1.5px solid rgba(185,110,54,0.45);
+  border: 1.5px solid rgba(180,95,24,0.45);
   border-radius: 12px;
   padding: 0.72rem 0.9rem 0.6rem;
   display: flex;
@@ -457,8 +457,8 @@
   to   { opacity:1; transform:scale(1); }
 }
 @keyframes tnav-copperGlow {
-  0%,100% { box-shadow: 0 0  0 0   rgba(185,110,54,0); }
-  50%     { box-shadow: 0 0 24px 6px rgba(185,110,54,0.18); }
+  0%,100% { box-shadow: 0 0  0 0   rgba(180,95,24,0); }
+  50%     { box-shadow: 0 0 24px 6px rgba(180,95,24,0.18); }
 }
 @keyframes tnav-ringPulse {
   0%,100% { transform:scale(1);   opacity:0.7; }
@@ -592,14 +592,14 @@
                           <rect x="264" y="116" width="188" height="503" fill="#0d1f24"/>
                           <rect x="223" y="173" width="270" height="388" fill="#0d1f24"/>
                           <rect x="114" y="223" width="488" height="290" fill="#0d1f24"/>
-                          <rect x="280" y="136" width="27" height="156" fill="#b96e36"/>
-                          <rect x="323" y="136" width="27" height="156" fill="#b96e36"/>
-                          <rect x="366" y="136" width="27" height="156" fill="#b96e36"/>
-                          <rect x="409" y="136" width="27" height="156" fill="#b96e36"/>
-                          <rect x="237" y="188" width="27" height="104" fill="#b96e36"/>
-                          <rect x="452" y="188" width="27" height="104" fill="#b96e36"/>
-                          <rect x="198" y="249" width="23" height="43" fill="#b96e36"/>
-                          <rect x="495" y="249" width="23" height="43" fill="#b96e36"/>
+                          <rect x="280" y="136" width="27" height="156" fill="#b45f18"/>
+                          <rect x="323" y="136" width="27" height="156" fill="#b45f18"/>
+                          <rect x="366" y="136" width="27" height="156" fill="#b45f18"/>
+                          <rect x="409" y="136" width="27" height="156" fill="#b45f18"/>
+                          <rect x="237" y="188" width="27" height="104" fill="#b45f18"/>
+                          <rect x="452" y="188" width="27" height="104" fill="#b45f18"/>
+                          <rect x="198" y="249" width="23" height="43" fill="#b45f18"/>
+                          <rect x="495" y="249" width="23" height="43" fill="#b45f18"/>
                         </g>
                       </svg>
                     </div>
@@ -778,7 +778,7 @@
     if (gen !== lineGen) return;
     var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     c.setAttribute('r', '3.5');
-    c.setAttribute('fill', '#b96e36');
+    c.setAttribute('fill', '#b45f18');
     c.style.opacity = '0';
     svg.appendChild(c);
     var dur = 950 + Math.random() * 350;
