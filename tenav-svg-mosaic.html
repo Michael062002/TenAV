@@ -1,15 +1,13 @@
 <!-- =====================================================================
-     TenAV — Animated SVG Mosaic (Plug & Port Icons)
-     WordPress Custom HTML block — paste the entire file content below.
+     TenAV — Animated SVG Mosaic
+     WordPress Custom HTML block — paste the entire file content.
      Self-contained: zero external CSS / JS / fonts / CDNs.
      Class prefix: .tenav-svgm-
      ===================================================================== -->
 <style>
-/* ── reset ── */
 .tenav-svgm,.tenav-svgm *,.tenav-svgm *::before,.tenav-svgm *::after{
   box-sizing:border-box;
 }
-/* ── design tokens ── */
 .tenav-svgm{
   --navy:   #0E2530;
   --navy-2: #16303D;
@@ -21,8 +19,6 @@
   --r:      clamp(11px,1.6vw,17px);
   --ease:   cubic-bezier(.22,.8,.24,1);
 }
-
-/* ── grid ── */
 .tenav-svgm-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -31,8 +27,6 @@
   max-width:min(480px,100%);
   height:clamp(220px,36vw,360px);
 }
-
-/* ── tile base ── */
 .tenav-svgm-tile{
   position:relative;
   border-radius:var(--r);
@@ -51,27 +45,20 @@
   outline-color:var(--copper);
   outline-offset:4px;
 }
-
-/* grid positions */
-.tenav-svgm-tile:nth-child(1){grid-column:1;  grid-row:1/3;} /* tall plug  */
-.tenav-svgm-tile:nth-child(2){grid-column:2/4;grid-row:1;}   /* wide port  */
-.tenav-svgm-tile:nth-child(3){grid-column:2;  grid-row:2;}   /* sm port    */
-.tenav-svgm-tile:nth-child(4){grid-column:3;  grid-row:2;}   /* sm plug    */
-
-/* dark tile */
+.tenav-svgm-tile:nth-child(1){grid-column:1;  grid-row:1/3;}
+.tenav-svgm-tile:nth-child(2){grid-column:2/4;grid-row:1;}
+.tenav-svgm-tile:nth-child(3){grid-column:2;  grid-row:2;}
+.tenav-svgm-tile:nth-child(4){grid-column:3;  grid-row:2;}
 .tenav-svgm-tile--dark{
   background:var(--navy);
   border:1px solid rgba(255,255,255,.06);
   box-shadow:0 6px 28px rgba(4,14,19,.40);
 }
-/* light tile */
 .tenav-svgm-tile--light{
   background:var(--bg-lt);
   border:1px solid rgba(14,37,48,.07);
   box-shadow:0 4px 14px rgba(14,37,48,.10);
 }
-
-/* hover lift */
 .tenav-svgm-tile:hover{transform:translateY(-5px) scale(1.024);}
 .tenav-svgm-tile--dark:hover{
   box-shadow:0 18px 52px rgba(4,14,19,.52),0 0 0 2px var(--copper);
@@ -79,301 +66,174 @@
 .tenav-svgm-tile--light:hover{
   box-shadow:0 12px 36px rgba(14,37,48,.18),0 0 0 2px var(--copper);
 }
-
-/* ambient copper glow — dark tiles only */
 .tenav-svgm-tile--dark::after{
   content:'';position:absolute;inset:0;border-radius:inherit;
   background:radial-gradient(ellipse 80% 55% at 50% 95%,rgba(204,122,62,.28),transparent 68%);
   opacity:0;transition:opacity .4s ease;pointer-events:none;
 }
 .tenav-svgm-tile--dark:hover::after{opacity:1;}
-
-/* sympathetic highlight: opposite-type tiles on hover */
 .tenav-svgm-tile.tenav-svgm--sym{
   outline-color:rgba(204,122,62,.4);
   outline-offset:4px;
 }
-
-/* SVG icon sizing */
 .tenav-svgm-icon{
   display:block;
-  width:clamp(72px,62%,148px);
+  width:clamp(68px,70%,180px);
   height:auto;
+  pointer-events:none;
   transition:transform .35s var(--ease),filter .35s ease;
 }
 .tenav-svgm-tile--dark:hover  .tenav-svgm-icon{
   filter:drop-shadow(0 6px 18px rgba(204,122,62,.35));
-  transform:scale(1.07);
+  transform:scale(1.06);
 }
 .tenav-svgm-tile--light:hover .tenav-svgm-icon{
   filter:drop-shadow(0 4px 12px rgba(14,37,48,.22));
-  transform:scale(1.07);
+  transform:scale(1.06);
 }
-
-/* hover label */
-.tenav-svgm-label{
-  position:absolute;bottom:9px;left:0;right:0;
-  text-align:center;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  opacity:0;transition:opacity .25s ease;pointer-events:none;
-}
-.tenav-svgm-tile--dark  .tenav-svgm-label{color:rgba(231,168,116,.7);}
-.tenav-svgm-tile--light .tenav-svgm-label{color:rgba(14,37,48,.5);}
-.tenav-svgm-tile:hover  .tenav-svgm-label{opacity:1;}
-
-/* ── pin idle wave animation ── */
-.tenav-svgm-pin{animation:tenavSvgmPin 2.7s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center;}
-.tenav-svgm-pin:nth-child(1){animation-delay:   0ms;}
-.tenav-svgm-pin:nth-child(2){animation-delay:  80ms;}
-.tenav-svgm-pin:nth-child(3){animation-delay: 160ms;}
-.tenav-svgm-pin:nth-child(4){animation-delay: 240ms;}
-.tenav-svgm-pin:nth-child(5){animation-delay: 320ms;}
-.tenav-svgm-pin:nth-child(6){animation-delay: 400ms;}
-.tenav-svgm-pin:nth-child(7){animation-delay: 480ms;}
-.tenav-svgm-pin:nth-child(8){animation-delay: 560ms;}
-@keyframes tenavSvgmPin{
-  0%,100%{opacity:.65;}
-  50%{opacity:1;}
-}
-
-/* ── click: cascade connect flash ── */
+/* pin idle wave */
+.tenav-svgm-pin{animation:tenavSvgmPin 2.7s ease-in-out infinite;}
+@keyframes tenavSvgmPin{0%,100%{opacity:.62;}50%{opacity:1;}}
+/* click cascade flash */
 .tenav-svgm-tile.tenav-svgm--active::before{
   content:'';position:absolute;inset:0;border-radius:inherit;
   border:2.5px solid var(--cu-lt);pointer-events:none;z-index:3;
   animation:tenavSvgmRing .68s var(--ease) forwards;
 }
-@keyframes tenavSvgmRing{
-  0%  {opacity:.9;transform:scale(.96);}
-  100%{opacity:0; transform:scale(1.07);}
-}
+@keyframes tenavSvgmRing{0%{opacity:.9;transform:scale(.96);}100%{opacity:0;transform:scale(1.07);}}
 .tenav-svgm-tile.tenav-svgm--active .tenav-svgm-pin{
   animation:tenavSvgmPinBurst .55s ease-out forwards;
 }
 @keyframes tenavSvgmPinBurst{
-  0%  {opacity:1;  filter:brightness(1)   drop-shadow(0 0 0   rgba(231,168,116,0));}
-  38% {opacity:1;  filter:brightness(1.75)drop-shadow(0 0 6px rgba(231,168,116,.95));}
-  100%{opacity:.68;filter:brightness(1)   drop-shadow(0 0 0   rgba(231,168,116,0));}
+  0%  {opacity:1;  filter:brightness(1)    drop-shadow(0 0 0   rgba(231,168,116,0));}
+  38% {opacity:1;  filter:brightness(1.75) drop-shadow(0 0 6px rgba(231,168,116,.95));}
+  100%{opacity:.68;filter:brightness(1)    drop-shadow(0 0 0   rgba(231,168,116,0));}
 }
-
-/* ── scroll entrance ── */
+/* scroll entrance */
 .tenav-svgm-js .tenav-svgm-tile{
-  opacity:0;
-  transform:translateY(26px) scale(.93);
+  opacity:0;transform:translateY(26px) scale(.93);
   transition:opacity .62s var(--ease),transform .62s var(--ease),box-shadow .35s var(--ease);
 }
 .tenav-svgm-js .tenav-svgm-tile:nth-child(1){transition-delay:  0ms;}
 .tenav-svgm-js .tenav-svgm-tile:nth-child(2){transition-delay: 90ms;}
 .tenav-svgm-js .tenav-svgm-tile:nth-child(3){transition-delay:185ms;}
 .tenav-svgm-js .tenav-svgm-tile:nth-child(4){transition-delay:265ms;}
-.tenav-svgm-js.tenav-svgm--in .tenav-svgm-tile{
-  opacity:1;transform:translateY(0) scale(1);
-}
-
-/* ── reduced motion ── */
+.tenav-svgm-js.tenav-svgm--in .tenav-svgm-tile{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){
-  .tenav-svgm *{
-    animation-duration:.001ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:.001ms!important;
-  }
+  .tenav-svgm *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
   .tenav-svgm-js .tenav-svgm-tile{opacity:1;transform:none;}
 }
 </style>
 
-<div class="tenav-svgm" role="region" aria-label="Network connector icons — plug and port">
+<!-- SVG source — hidden, cloned per tile by JS -->
+<div id="tenav-svgm-src-1" style="display:none;pointer-events:none;" aria-hidden="true">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" zoomAndPan="magnify" viewBox="0 0 810 809.999993" height="1080" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><filter x="0%" y="0%" width="100%" height="100%" id="48dbc859ee"><feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0" color-interpolation-filters="sRGB"/></filter><clipPath id="b934bab63b"><path d="M 321.855469 36.5625 L 489.0625 36.5625 L 489.0625 62.054688 L 321.855469 62.054688 Z M 321.855469 36.5625 " clip-rule="nonzero"/></clipPath><clipPath id="dfd9cd30a8"><path d="M 323.355469 36.5625 L 487.535156 36.5625 C 488.363281 36.5625 489.035156 37.234375 489.035156 38.0625 L 489.035156 60.554688 C 489.035156 61.382812 488.363281 62.054688 487.535156 62.054688 L 323.355469 62.054688 C 322.527344 62.054688 321.855469 61.382812 321.855469 60.554688 L 321.855469 38.0625 C 321.855469 37.234375 322.527344 36.5625 323.355469 36.5625 Z M 323.355469 36.5625 " clip-rule="nonzero"/></clipPath><clipPath id="518f13362a"><path d="M 0.855469 0.5625 L 168.0625 0.5625 L 168.0625 26.054688 L 0.855469 26.054688 Z M 0.855469 0.5625 " clip-rule="nonzero"/></clipPath><clipPath id="367e879373"><path d="M 2.355469 0.5625 L 166.535156 0.5625 C 167.363281 0.5625 168.035156 1.234375 168.035156 2.0625 L 168.035156 24.554688 C 168.035156 25.382812 167.363281 26.054688 166.535156 26.054688 L 2.355469 26.054688 C 1.527344 26.054688 0.855469 25.382812 0.855469 24.554688 L 0.855469 2.0625 C 0.855469 1.234375 1.527344 0.5625 2.355469 0.5625 Z M 2.355469 0.5625 " clip-rule="nonzero"/></clipPath><clipPath id="1d3cb11014"><rect x="0" width="169" y="0" height="27"/></clipPath><clipPath id="8848cebec8"><path d="M 289.820312 56.058594 L 521.285156 56.058594 L 521.285156 360 L 289.820312 360 Z M 289.820312 56.058594 " clip-rule="nonzero"/></clipPath><clipPath id="a73e75f214"><path d="M 292.070312 56.058594 L 519.035156 56.058594 C 519.632812 56.058594 520.207031 56.292969 520.628906 56.714844 C 521.050781 57.136719 521.285156 57.710938 521.285156 58.308594 L 521.285156 357.632812 C 521.285156 358.230469 521.050781 358.800781 520.628906 359.222656 C 520.207031 359.644531 519.632812 359.882812 519.035156 359.882812 L 292.070312 359.882812 C 291.472656 359.882812 290.902344 359.644531 290.480469 359.222656 C 290.058594 358.800781 289.820312 358.230469 289.820312 357.632812 L 289.820312 58.308594 C 289.820312 57.710938 290.058594 57.136719 290.480469 56.714844 C 290.902344 56.292969 291.472656 56.058594 292.070312 56.058594 Z M 292.070312 56.058594 " clip-rule="nonzero"/></clipPath><clipPath id="73656b70a8"><path d="M 0.820312 0.0585938 L 232.285156 0.0585938 L 232.285156 304 L 0.820312 304 Z M 0.820312 0.0585938 " clip-rule="nonzero"/></clipPath><clipPath id="b1179dfbf6"><path d="M 3.070312 0.0585938 L 230.035156 0.0585938 C 230.632812 0.0585938 231.207031 0.292969 231.628906 0.714844 C 232.050781 1.136719 232.285156 1.710938 232.285156 2.308594 L 232.285156 301.632812 C 232.285156 302.230469 232.050781 302.800781 231.628906 303.222656 C 231.207031 303.644531 230.632812 303.882812 230.035156 303.882812 L 3.070312 303.882812 C 2.472656 303.882812 1.902344 303.644531 1.480469 303.222656 C 1.058594 302.800781 0.820312 302.230469 0.820312 301.632812 L 0.820312 2.308594 C 0.820312 1.710938 1.058594 1.136719 1.480469 0.714844 C 1.902344 0.292969 2.472656 0.0585938 3.070312 0.0585938 Z M 3.070312 0.0585938 " clip-rule="nonzero"/></clipPath><clipPath id="ca1843ac33"><rect x="0" width="233" y="0" height="304"/></clipPath><clipPath id="c576b84548"><path d="M 340.921875 590.121094 L 462.308594 590.121094 L 462.308594 769.0625 L 340.921875 769.0625 Z M 340.921875 590.121094 " clip-rule="nonzero"/></clipPath><clipPath id="02952cb258"><path d="M 0.921875 0.121094 L 122.308594 0.121094 L 122.308594 179 L 0.921875 179 Z M 0.921875 0.121094 " clip-rule="nonzero"/></clipPath><clipPath id="ef451dee61"><rect x="0" width="123" y="0" height="180"/></clipPath><clipPath id="65543baab9"><path d="M 337 414 L 522 414 L 522 661 L 337 661 Z M 337 414 " clip-rule="nonzero"/></clipPath><clipPath id="e678df8bc9"><path d="M 337.203125 645.175781 L 359.011719 414.742188 L 521.28125 430.097656 L 499.476562 660.535156 Z M 337.203125 645.175781 " clip-rule="nonzero"/></clipPath><clipPath id="1cefdccfc8"><path d="M 0.199219 0.71875 L 184.519531 0.71875 L 184.519531 246.71875 L 0.199219 246.71875 Z M 0.199219 0.71875 " clip-rule="nonzero"/></clipPath><clipPath id="125fac67dc"><path d="M 0.203125 231.175781 L 22.011719 0.742188 L 184.28125 16.097656 L 162.476562 246.535156 Z M 0.203125 231.175781 " clip-rule="nonzero"/></clipPath><clipPath id="39fb4397d8"><rect x="0" width="185" y="0" height="247"/></clipPath><clipPath id="6e9204423e"><path d="M 288 415 L 471 415 L 471 660 L 288 660 Z M 288 415 " clip-rule="nonzero"/></clipPath><clipPath id="779f924534"><path d="M 308.128906 659.800781 L 288.710938 429.148438 L 451.132812 415.472656 L 470.554688 646.125 Z M 308.128906 659.800781 " clip-rule="nonzero"/></clipPath><clipPath id="4715d91e38"><path d="M 0.480469 0.441406 L 182.640625 0.441406 L 182.640625 245 L 0.480469 245 Z M 0.480469 0.441406 " clip-rule="nonzero"/></clipPath><clipPath id="178b28c1b7"><path d="M 20.128906 244.800781 L 0.710938 14.148438 L 163.132812 0.472656 L 182.554688 231.125 Z M 20.128906 244.800781 " clip-rule="nonzero"/></clipPath><clipPath id="39debe6d49"><rect x="0" width="183" y="0" height="245"/></clipPath><clipPath id="a575157d68"><path d="M 289.820312 281.257812 L 521.285156 281.257812 L 521.285156 438.503906 L 289.820312 438.503906 Z M 289.820312 281.257812 " clip-rule="nonzero"/></clipPath><clipPath id="a5bd16f916"><path d="M 0.820312 0.257812 L 232.285156 0.257812 L 232.285156 157.503906 L 0.820312 157.503906 Z M 0.820312 0.257812 " clip-rule="nonzero"/></clipPath><clipPath id="95ec42bf85"><rect x="0" width="233" y="0" height="158"/></clipPath><clipPath id="39adf1f1a0"><path d="M 312.8125 86.796875 L 499.40625 86.796875 L 499.40625 429 L 312.8125 429 Z M 312.8125 86.796875 " clip-rule="nonzero"/></clipPath><clipPath id="7353e80603"><path d="M 315.0625 86.796875 L 497.15625 86.796875 C 497.753906 86.796875 498.328125 87.035156 498.75 87.457031 C 499.171875 87.878906 499.40625 88.449219 499.40625 89.046875 L 499.40625 426.394531 C 499.40625 426.992188 499.171875 427.566406 498.75 427.988281 C 498.328125 428.410156 497.753906 428.644531 497.15625 428.644531 L 315.0625 428.644531 C 314.46875 428.644531 313.894531 428.410156 313.472656 427.988281 C 313.050781 427.566406 312.8125 426.992188 312.8125 426.394531 L 312.8125 89.046875 C 312.8125 88.449219 313.050781 87.878906 313.472656 87.457031 C 313.894531 87.035156 314.46875 86.796875 315.0625 86.796875 Z M 315.0625 86.796875 " clip-rule="nonzero"/></clipPath><clipPath id="7b32dbedc4"><path d="M 0.8125 0.796875 L 187.40625 0.796875 L 187.40625 342.878906 L 0.8125 342.878906 Z M 0.8125 0.796875 " clip-rule="nonzero"/></clipPath><clipPath id="931ee82fb6"><path d="M 3.0625 0.796875 L 185.15625 0.796875 C 185.753906 0.796875 186.328125 1.035156 186.75 1.457031 C 187.171875 1.878906 187.40625 2.449219 187.40625 3.046875 L 187.40625 340.394531 C 187.40625 340.992188 187.171875 341.566406 186.75 341.988281 C 186.328125 342.410156 185.753906 342.644531 185.15625 342.644531 L 3.0625 342.644531 C 2.46875 342.644531 1.894531 342.410156 1.472656 341.988281 C 1.050781 341.566406 0.8125 340.992188 0.8125 340.394531 L 0.8125 3.046875 C 0.8125 2.449219 1.050781 1.878906 1.472656 1.457031 C 1.894531 1.035156 2.46875 0.796875 3.0625 0.796875 Z M 3.0625 0.796875 " clip-rule="nonzero"/></clipPath><clipPath id="967d0018b0"><rect x="0" width="188" y="0" height="343"/></clipPath><clipPath id="380bc58ed8"><path d="M 444.476562 58.6875 L 455.757812 58.6875 L 455.757812 418.78125 L 444.476562 418.78125 Z M 444.476562 58.6875 " clip-rule="nonzero"/></clipPath><clipPath id="a95b8d617d"><path d="M 0.476562 0.6875 L 11.757812 0.6875 L 11.757812 360.78125 L 0.476562 360.78125 Z M 0.476562 0.6875 " clip-rule="nonzero"/></clipPath><clipPath id="5c53bef702"><rect x="0" width="12" y="0" height="361"/></clipPath><clipPath id="1fa764b653"><path d="M 462.527344 58.6875 L 472.257812 58.6875 L 472.257812 418.382812 L 462.527344 418.382812 Z M 462.527344 58.6875 " clip-rule="nonzero"/></clipPath><clipPath id="f35897e5ec"><path d="M 0.527344 0.6875 L 10.257812 0.6875 L 10.257812 360.382812 L 0.527344 360.382812 Z M 0.527344 0.6875 " clip-rule="nonzero"/></clipPath><clipPath id="e029f52d43"><rect x="0" width="11" y="0" height="361"/></clipPath><clipPath id="b05fc830f1"><path d="M 354.234375 58.6875 L 365.511719 58.6875 L 365.511719 418.78125 L 354.234375 418.78125 Z M 354.234375 58.6875 " clip-rule="nonzero"/></clipPath><clipPath id="0791445bce"><path d="M 0.234375 0.6875 L 11.511719 0.6875 L 11.511719 360.78125 L 0.234375 360.78125 Z M 0.234375 0.6875 " clip-rule="nonzero"/></clipPath><clipPath id="adc70aa28b"><rect x="0" width="12" y="0" height="361"/></clipPath><clipPath id="9afd323e70"><path d="M 337.738281 58.6875 L 347.464844 58.6875 L 347.464844 418.382812 L 337.738281 418.382812 Z M 337.738281 58.6875 " clip-rule="nonzero"/></clipPath><clipPath id="72cdac37b6"><path d="M 0.738281 0.6875 L 10.464844 0.6875 L 10.464844 360.382812 L 0.738281 360.382812 Z M 0.738281 0.6875 " clip-rule="nonzero"/></clipPath><clipPath id="ab13690f2c"><rect x="0" width="11" y="0" height="361"/></clipPath><clipPath id="97de035cab"><path d="M 426.429688 58.6875 L 437.707031 58.6875 L 437.707031 418.382812 L 426.429688 418.382812 Z M 426.429688 58.6875 " clip-rule="nonzero"/></clipPath><clipPath id="75d1db4809"><path d="M 0.429688 0.6875 L 11.707031 0.6875 L 11.707031 360.382812 L 0.429688 360.382812 Z M 0.429688 0.6875 " clip-rule="nonzero"/></clipPath><clipPath id="2ca00cf49d"><rect x="0" width="12" y="0" height="361"/></clipPath><clipPath id="250dc76c50"><path d="M 408.378906 58.6875 L 419.660156 58.6875 L 419.660156 418.382812 L 408.378906 418.382812 Z M 408.378906 58.6875 " clip-rule="nonzero"/></clipPath><clipPath id="0e0d7a3e1e"><path d="M 0.378906 0.6875 L 11.660156 0.6875 L 11.660156 360.382812 L 0.378906 360.382812 Z M 0.378906 0.6875 " clip-rule="nonzero"/></clipPath><clipPath id="e0037a70ab"><rect x="0" width="12" y="0" height="361"/></clipPath><clipPath id="46cb1b74c1"><path d="M 390.332031 58.6875 L 401.609375 58.6875 L 401.609375 418.382812 L 390.332031 418.382812 Z M 390.332031 58.6875 " clip-rule="nonzero"/></clipPath><clipPath id="bd0f9e9304"><path d="M 0.332031 0.6875 L 11.609375 0.6875 L 11.609375 360.382812 L 0.332031 360.382812 Z M 0.332031 0.6875 " clip-rule="nonzero"/></clipPath><clipPath id="fef1aac70f"><rect x="0" width="12" y="0" height="361"/></clipPath><clipPath id="23111f67d5"><path d="M 372.285156 58.6875 L 383.5625 58.6875 L 383.5625 418.382812 L 372.285156 418.382812 Z M 372.285156 58.6875 " clip-rule="nonzero"/></clipPath><clipPath id="62ee095a77"><path d="M 0.285156 0.6875 L 11.5625 0.6875 L 11.5625 360.382812 L 0.285156 360.382812 Z M 0.285156 0.6875 " clip-rule="nonzero"/></clipPath><clipPath id="defae91912"><rect x="0" width="12" y="0" height="361"/></clipPath><clipPath id="9e2452d17d"><path d="M 315.378906 418.789062 L 496.398438 418.789062 L 496.398438 438.503906 L 315.378906 438.503906 Z M 315.378906 418.789062 " clip-rule="nonzero"/></clipPath><clipPath id="32b50764f2"><path d="M 0.378906 0.789062 L 181.398438 0.789062 L 181.398438 20.503906 L 0.378906 20.503906 Z M 0.378906 0.789062 " clip-rule="nonzero"/></clipPath><clipPath id="3b6dde64ad"><rect x="0" width="182" y="0" height="21"/></clipPath><mask id="260357a3b5"><g filter="url(#48dbc859ee)"><rect x="-81" width="972" fill="#000000" y="-80.999999" height="971.999992" fill-opacity="0.72"/></g></mask><clipPath id="ab832f5e5c"><path d="M 0.386719 0.257812 L 145.253906 0.257812 L 145.253906 147.644531 L 0.386719 147.644531 Z M 0.386719 0.257812 " clip-rule="nonzero"/></clipPath><clipPath id="a0e0965195"><path d="M 0.386719 0.257812 L 145.253906 0.257812 L 145.253906 147.644531 L 0.386719 147.644531 Z M 0.386719 0.257812 " clip-rule="nonzero"/></clipPath><clipPath id="bebb0a0e0f"><rect x="0" width="146" y="0" height="148"/></clipPath><clipPath id="4182520133"><rect x="0" width="146" y="0" height="149"/></clipPath><clipPath id="3c1758b1f8"><path d="M 321.855469 621.152344 L 489.035156 621.152344 L 489.035156 639.921875 L 321.855469 639.921875 Z M 321.855469 621.152344 " clip-rule="nonzero"/></clipPath><clipPath id="6eac4009aa"><path d="M 0.855469 0.152344 L 168.035156 0.152344 L 168.035156 18.921875 L 0.855469 18.921875 Z M 0.855469 0.152344 " clip-rule="nonzero"/></clipPath><clipPath id="4966fdf378"><rect x="0" width="169" y="0" height="19"/></clipPath><clipPath id="34c9ad8cee"><path d="M 316.699219 592.5 L 494.1875 592.5 L 494.1875 611.273438 L 316.699219 611.273438 Z M 316.699219 592.5 " clip-rule="nonzero"/></clipPath><clipPath id="e796187c0d"><path d="M 0.699219 0.5 L 178.1875 0.5 L 178.1875 19.273438 L 0.699219 19.273438 Z M 0.699219 0.5 " clip-rule="nonzero"/></clipPath><clipPath id="8296798058"><rect x="0" width="179" y="0" height="20"/></clipPath><clipPath id="86dddd0bcf"><path d="M 311.53125 563.847656 L 499.359375 563.847656 L 499.359375 582.621094 L 311.53125 582.621094 Z M 311.53125 563.847656 " clip-rule="nonzero"/></clipPath><clipPath id="46f924adee"><path d="M 0.53125 0.847656 L 188.359375 0.847656 L 188.359375 19.621094 L 0.53125 19.621094 Z M 0.53125 0.847656 " clip-rule="nonzero"/></clipPath><clipPath id="474839943a"><rect x="0" width="189" y="0" height="20"/></clipPath><clipPath id="785b23df68"><path d="M 306.171875 533.324219 L 504.714844 533.324219 L 504.714844 552.097656 L 306.171875 552.097656 Z M 306.171875 533.324219 " clip-rule="nonzero"/></clipPath><clipPath id="48afbc301b"><path d="M 0.171875 0.324219 L 198.714844 0.324219 L 198.714844 19.097656 L 0.171875 19.097656 Z M 0.171875 0.324219 " clip-rule="nonzero"/></clipPath><clipPath id="9b8de276ea"><rect x="0" width="199" y="0" height="20"/></clipPath><clipPath id="6129de3bd3"><path d="M 304.492188 507.054688 L 506.394531 507.054688 L 506.394531 525.824219 L 304.492188 525.824219 Z M 304.492188 507.054688 " clip-rule="nonzero"/></clipPath><clipPath id="fc93011556"><path d="M 0.492188 0.0546875 L 202.394531 0.0546875 L 202.394531 18.824219 L 0.492188 18.824219 Z M 0.492188 0.0546875 " clip-rule="nonzero"/></clipPath><clipPath id="cd4c87ecf9"><rect x="0" width="203" y="0" height="19"/></clipPath><clipPath id="4844f65a2e"><path d="M 306.457031 476.527344 L 509.269531 476.527344 L 509.269531 495.300781 L 306.457031 495.300781 Z M 306.457031 476.527344 " clip-rule="nonzero"/></clipPath><clipPath id="62b780a411"><path d="M 0.457031 0.527344 L 203.269531 0.527344 L 203.269531 19.300781 L 0.457031 19.300781 Z M 0.457031 0.527344 " clip-rule="nonzero"/></clipPath><clipPath id="59aabdf167"><rect x="0" width="204" y="0" height="20"/></clipPath><clipPath id="26d3c319f2"><path d="M 304.492188 446.003906 L 511.230469 446.003906 L 511.230469 464.777344 L 304.492188 464.777344 Z M 304.492188 446.003906 " clip-rule="nonzero"/></clipPath><clipPath id="e66df566ca"><path d="M 0.492188 0.00390625 L 207.230469 0.00390625 L 207.230469 18.777344 L 0.492188 18.777344 Z M 0.492188 0.00390625 " clip-rule="nonzero"/></clipPath><clipPath id="b64312797c"><rect x="0" width="208" y="0" height="19"/></clipPath><clipPath id="d5c89eca9f"><path d="M 476 444 L 517 444 L 517 656 L 476 656 Z M 476 444 " clip-rule="nonzero"/></clipPath><clipPath id="99dd9fb228"><path d="M 476.433594 653.851562 L 496.46875 444.09375 L 516.371094 445.992188 L 496.332031 655.75 Z M 476.433594 653.851562 " clip-rule="nonzero"/></clipPath><clipPath id="ab7124bdaf"><path d="M 0.398438 0 L 40.480469 0 L 40.480469 211.921875 L 0.398438 211.921875 Z M 0.398438 0 " clip-rule="nonzero"/></clipPath><clipPath id="71667de2e1"><path d="M 0.433594 209.851562 L 20.46875 0.09375 L 40.371094 1.992188 L 20.332031 211.75 Z M 0.433594 209.851562 " clip-rule="nonzero"/></clipPath><clipPath id="f3ebf90450"><rect x="0" width="41" y="0" height="212"/></clipPath><clipPath id="6005408771"><path d="M 295 443 L 329 443 L 329 656 L 295 656 Z M 295 443 " clip-rule="nonzero"/></clipPath><clipPath id="dd2b5c96d9"><path d="M 309.101562 655.503906 L 295.054688 445.261719 L 314.804688 443.941406 L 328.851562 654.183594 Z M 309.101562 655.503906 " clip-rule="nonzero"/></clipPath><clipPath id="c4559bfca6"><path d="M 0 0.761719 L 34 0.761719 L 34 212.679688 L 0 212.679688 Z M 0 0.761719 " clip-rule="nonzero"/></clipPath><clipPath id="e17bc65aba"><path d="M 14.101562 212.503906 L 0.0546875 2.261719 L 19.804688 0.941406 L 33.851562 211.183594 Z M 14.101562 212.503906 " clip-rule="nonzero"/></clipPath><clipPath id="dfdad7dcab"><rect x="0" width="34" y="0" height="213"/></clipPath><mask id="5237f7d0e1"><g filter="url(#48dbc859ee)"><rect x="-81" width="972" fill="#000000" y="-80.999999" height="971.999992" fill-opacity="0.47"/></g></mask><clipPath id="40b77b1d7f"><path d="M 0.375 0.324219 L 155.847656 0.324219 L 155.847656 19.070312 L 0.375 19.070312 Z M 0.375 0.324219 " clip-rule="nonzero"/></clipPath><clipPath id="06dc93ce51"><path d="M 0.375 0.324219 L 155.847656 0.324219 L 155.847656 19.070312 L 0.375 19.070312 Z M 0.375 0.324219 " clip-rule="nonzero"/></clipPath><clipPath id="6736621695"><rect x="0" width="156" y="0" height="20"/></clipPath><clipPath id="5806ce660d"><rect x="0" width="157" y="0" height="20"/></clipPath></defs><rect x="-81" width="972" fill="#ffffff" y="-80.999999" height="971.999992" fill-opacity="1"/><rect x="-81" width="972" fill="#ffffff" y="-80.999999" height="971.999992" fill-opacity="1"/><g transform="matrix(4.653561, 0, 0, 4.654255, -379.208913, -502.444587)"><image x="0" y="0" width="337" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVEAAAEaCAIAAAAni/O6AAAABmJLR0QA/wD/AP+gvaeTAAADTElEQVR4nO3TMQHAIADAsDEDaODGvz9cwNFEQZ+OufYHZPyvA4CrPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWjwPLZ6HFs9Di+ehxfPQ4nlo8Ty0eB5aPA8tnocWz0OL56HF89DieWjxPLR4Hlo8Dy2ehxbPQ4vnocXz0OJ5aPE8tHgeWg7+wgKPuuvDmwAAAABJRU5ErkJggg==" height="282" preserveAspectRatio="xMidYMid meet"/></g><g clip-path="url(#b934bab63b)"><g clip-path="url(#dfd9cd30a8)"><g transform="matrix(1, 0, 0, 1, 321, 36)"><g clip-path="url(#1d3cb11014)"><g clip-path="url(#518f13362a)"><g clip-path="url(#367e879373)"><path fill="#3e5562" d="M 0.855469 0.5625 L 168.0625 0.5625 L 168.0625 26.054688 L 0.855469 26.054688 Z M 0.855469 0.5625 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#8848cebec8)"><g clip-path="url(#a73e75f214)"><g transform="matrix(1, 0, 0, 1, 289, 56)"><g clip-path="url(#ca1843ac33)"><g clip-path="url(#73656b70a8)"><g clip-path="url(#b1179dfbf6)"><path fill="#3e5562" d="M 0.820312 0.0585938 L 232.285156 0.0585938 L 232.285156 303.855469 L 0.820312 303.855469 Z M 0.820312 0.0585938 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#c576b84548)"><g transform="matrix(1, 0, 0, 1, 340, 590)"><g clip-path="url(#ef451dee61)"><g clip-path="url(#02952cb258)"><path fill="#3e5562" d="M 0.921875 0.121094 L 122.308594 0.121094 L 122.308594 178.886719 L 0.921875 178.886719 Z M 0.921875 0.121094 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#65543baab9)"><g clip-path="url(#e678df8bc9)"><g transform="matrix(1, 0, 0, 1, 337, 414)"><g clip-path="url(#39fb4397d8)"><g clip-path="url(#1cefdccfc8)"><g clip-path="url(#125fac67dc)"><path fill="#3e5562" d="M 0.203125 231.175781 L 22.039062 0.445312 L 184.3125 15.804688 L 162.476562 246.535156 Z M 0.203125 231.175781 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#6e9204423e)"><g clip-path="url(#779f924534)"><g transform="matrix(1, 0, 0, 1, 288, 415)"><g clip-path="url(#39debe6d49)"><g clip-path="url(#4715d91e38)"><g clip-path="url(#178b28c1b7)"><path fill="#3e5562" d="M 20.128906 244.800781 L 0.683594 13.855469 L 163.105469 0.179688 L 182.554688 231.125 Z M 20.128906 244.800781 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#a575157d68)"><g transform="matrix(1, 0, 0, 1, 289, 281)"><g clip-path="url(#95ec42bf85)"><g clip-path="url(#a5bd16f916)"><path fill="#2a2a25" d="M 0.820312 0.257812 L 232.390625 0.257812 L 232.390625 157.503906 L 0.820312 157.503906 Z M 0.820312 0.257812 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#39adf1f1a0)"><g clip-path="url(#7353e80603)"><g transform="matrix(1, 0, 0, 1, 312, 86)"><g clip-path="url(#967d0018b0)"><g clip-path="url(#7b32dbedc4)"><g clip-path="url(#931ee82fb6)"><path fill="#ffffff" d="M 0.8125 0.796875 L 187.40625 0.796875 L 187.40625 342.640625 L 0.8125 342.640625 Z M 0.8125 0.796875 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#380bc58ed8)"><g transform="matrix(1, 0, 0, 1, 444, 58)"><g clip-path="url(#5c53bef702)"><g clip-path="url(#a95b8d617d)"><path fill="#b96e36" d="M 11.757812 360.78125 L 0.476562 360.78125 L 0.476562 0.671875 L 11.757812 0.671875 Z M 11.757812 360.78125 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#1fa764b653)"><g transform="matrix(1, 0, 0, 1, 462, 58)"><g clip-path="url(#e029f52d43)"><g clip-path="url(#f35897e5ec)"><path fill="#b96e36" d="M 10.257812 360.382812 L 0.527344 360.382812 L 0.527344 0.675781 L 10.257812 0.675781 Z M 10.257812 360.382812 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#b05fc830f1)"><g transform="matrix(1, 0, 0, 1, 354, 58)"><g clip-path="url(#adc70aa28b)"><g clip-path="url(#0791445bce)"><path fill="#b96e36" d="M 11.511719 360.78125 L 0.234375 360.78125 L 0.234375 0.671875 L 11.511719 0.671875 Z M 11.511719 360.78125 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#9afd323e70)"><g transform="matrix(1, 0, 0, 1, 337, 58)"><g clip-path="url(#ab13690f2c)"><g clip-path="url(#72cdac37b6)"><path fill="#b96e36" d="M 10.464844 360.382812 L 0.738281 360.382812 L 0.738281 0.675781 L 10.464844 0.675781 Z M 10.464844 360.382812 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#97de035cab)"><g transform="matrix(1, 0, 0, 1, 426, 58)"><g clip-path="url(#2ca00cf49d)"><g clip-path="url(#75d1db4809)"><path fill="#b96e36" d="M 11.707031 360.382812 L 0.429688 360.382812 L 0.429688 0.671875 L 11.707031 0.671875 Z M 11.707031 360.382812 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#250dc76c50)"><g transform="matrix(1, 0, 0, 1, 408, 58)"><g clip-path="url(#e0037a70ab)"><g clip-path="url(#0e0d7a3e1e)"><path fill="#b96e36" d="M 11.660156 360.382812 L 0.378906 360.382812 L 0.378906 0.671875 L 11.660156 0.671875 Z M 11.660156 360.382812 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#46cb1b74c1)"><g transform="matrix(1, 0, 0, 1, 390, 58)"><g clip-path="url(#fef1aac70f)"><g clip-path="url(#bd0f9e9304)"><path fill="#b96e36" d="M 11.609375 360.382812 L 0.332031 360.382812 L 0.332031 0.671875 L 11.609375 0.671875 Z M 11.609375 360.382812 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#23111f67d5)"><g transform="matrix(1, 0, 0, 1, 372, 58)"><g clip-path="url(#defae91912)"><g clip-path="url(#62ee095a77)"><path fill="#b96e36" d="M 11.5625 360.382812 L 0.285156 360.382812 L 0.285156 0.671875 L 11.5625 0.671875 Z M 11.5625 360.382812 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#9e2452d17d)"><g transform="matrix(1, 0, 0, 1, 315, 418)"><g clip-path="url(#3b6dde64ad)"><g clip-path="url(#32b50764f2)"><path fill="#2a2927" d="M 0.378906 0.789062 L 181.375 0.789062 L 181.375 20.503906 L 0.378906 20.503906 Z M 0.378906 0.789062 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g mask="url(#260357a3b5)"><g transform="matrix(1, 0, 0, 1, 331, 281)"><g clip-path="url(#4182520133)"><g clip-path="url(#ab832f5e5c)"><g transform="matrix(1, 0, 0, 1, 0, 0.000000000000056843)"><g clip-path="url(#bebb0a0e0f)"><g clip-path="url(#a0e0965195)"><path fill="#2a2927" d="M 0.386719 0.257812 L 145.253906 0.257812 L 145.253906 147.390625 L 0.386719 147.390625 Z M 0.386719 0.257812 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g></g><g clip-path="url(#3c1758b1f8)"><g transform="matrix(1, 0, 0, 1, 321, 621)"><g clip-path="url(#4966fdf378)"><g clip-path="url(#6eac4009aa)"><path fill="#909390" d="M 0.855469 0.152344 L 168.042969 0.152344 L 168.042969 18.921875 L 0.855469 18.921875 Z M 0.855469 0.152344 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#34c9ad8cee)"><g transform="matrix(1, 0, 0, 1, 316, 592)"><g clip-path="url(#8296798058)"><g clip-path="url(#e796187c0d)"><path fill="#909390" d="M 0.699219 0.5 L 178.15625 0.5 L 178.15625 19.273438 L 0.699219 19.273438 Z M 0.699219 0.5 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#86dddd0bcf)"><g transform="matrix(1, 0, 0, 1, 311, 563)"><g clip-path="url(#474839943a)"><g clip-path="url(#46f924adee)"><path fill="#909390" d="M 0.53125 0.847656 L 188.324219 0.847656 L 188.324219 19.621094 L 0.53125 19.621094 Z M 0.53125 0.847656 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#785b23df68)"><g transform="matrix(1, 0, 0, 1, 306, 533)"><g clip-path="url(#9b8de276ea)"><g clip-path="url(#48afbc301b)"><path fill="#909390" d="M 0.171875 0.324219 L 198.75 0.324219 L 198.75 19.097656 L 0.171875 19.097656 Z M 0.171875 0.324219 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#6129de3bd3)"><g transform="matrix(1, 0, 0, 1, 304, 507)"><g clip-path="url(#cd4c87ecf9)"><g clip-path="url(#fc93011556)"><path fill="#909390" d="M 0.492188 0.0546875 L 202.367188 0.0546875 L 202.367188 18.824219 L 0.492188 18.824219 Z M 0.492188 0.0546875 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#4844f65a2e)"><g transform="matrix(1, 0, 0, 1, 306, 476)"><g clip-path="url(#59aabdf167)"><g clip-path="url(#62b780a411)"><path fill="#909390" d="M 0.457031 0.527344 L 203.285156 0.527344 L 203.285156 19.300781 L 0.457031 19.300781 Z M 0.457031 0.527344 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#26d3c319f2)"><g transform="matrix(1, 0, 0, 1, 304, 446)"><g clip-path="url(#b64312797c)"><g clip-path="url(#e66df566ca)"><path fill="#909390" d="M 0.492188 0.00390625 L 207.207031 0.00390625 L 207.207031 18.777344 L 0.492188 18.777344 Z M 0.492188 0.00390625 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#d5c89eca9f)"><g clip-path="url(#99dd9fb228)"><g transform="matrix(1, 0, 0, 1, 476, 444)"><g clip-path="url(#f3ebf90450)"><g clip-path="url(#ab7124bdaf)"><g clip-path="url(#71667de2e1)"><path fill="#3e5562" d="M 0.433594 209.851562 L 20.46875 0.113281 L 40.367188 2.011719 L 20.332031 211.75 Z M 0.433594 209.851562 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#6005408771)"><g clip-path="url(#dd2b5c96d9)"><g transform="matrix(1, 0, 0, 1, 295, 443)"><g clip-path="url(#dfdad7dcab)"><g clip-path="url(#c4559bfca6)"><g clip-path="url(#e17bc65aba)"><path fill="#3e5562" d="M 14.101562 212.503906 L 0.0546875 2.285156 L 19.804688 0.964844 L 33.851562 211.183594 Z M 14.101562 212.503906 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g mask="url(#5237f7d0e1)"><g transform="matrix(1, 0, 0, 1, 328, 49)"><g clip-path="url(#5806ce660d)"><g clip-path="url(#40b77b1d7f)"><g transform="matrix(1, 0, 0, 1, -0.000000000000056843, 0.000000000000042633)"><g clip-path="url(#6736621695)"><g clip-path="url(#06dc93ce51)"><path fill="#94a3aa" d="M 0.375 0.324219 L 155.832031 0.324219 L 155.832031 19.070312 L 0.375 19.070312 Z M 0.375 0.324219 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g></g></svg>
+</div>
+
+<div class="tenav-svgm" role="region" aria-label="Network connector icons">
   <div class="tenav-svgm-grid" data-tenav-svgm>
-
-    <!-- ①  PLUG — dark tile, tall left column -->
-    <div class="tenav-svgm-tile tenav-svgm-tile--dark"
-         tabindex="0" role="button" aria-label="RJ45 plug connector — click to connect"
-         data-tenav-type="plug">
-      <svg class="tenav-svgm-icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="tenav-svgm-g1" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0" stop-color="#CC7A3E"/>
-            <stop offset="1" stop-color="#E7A874"/>
-          </linearGradient>
-        </defs>
-        <!-- White icon tile with navy border -->
-        <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
-        <rect x="14" y="14" width="212" height="212" rx="32" stroke="#16303D" stroke-width="6"/>
-        <!-- Plug body: continuous solid block with strain relief ridges -->
-        <rect x="58" y="108" width="124" height="96" rx="14" fill="#12262F"/>
-        <rect x="68"  y="160" width="104" height="7" rx="3.5" fill="rgba(255,255,255,.16)"/>
-        <rect x="58"  y="171" width="124" height="7" rx="3.5" fill="rgba(255,255,255,.11)"/>
-        <rect x="68"  y="182" width="104" height="7" rx="3.5" fill="rgba(255,255,255,.07)"/>
-        <!-- 8 copper pins, stepped arch (outer short → inner tall → outer short) -->
-        <g fill="url(#tenav-svgm-g1)">
-          <rect class="tenav-svgm-pin" x="70"  y="92" width="7" height="20" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="83"  y="78" width="7" height="34" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="96"  y="70" width="7" height="42" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
-        </g>
-      </svg>
-      <span class="tenav-svgm-label">Plug</span>
-    </div>
-
-    <!-- ②  PORT — light tile, wide top-right -->
-    <div class="tenav-svgm-tile tenav-svgm-tile--light"
-         tabindex="0" role="button" aria-label="RJ45 port socket — click to connect"
-         data-tenav-type="port">
-      <svg class="tenav-svgm-icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="tenav-svgm-g2" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0" stop-color="#CC7A3E"/>
-            <stop offset="1" stop-color="#E7A874"/>
-          </linearGradient>
-        </defs>
-        <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
-        <rect x="14" y="14" width="212" height="212" rx="32" stroke="#16303D" stroke-width="6"/>
-        <!-- Port socket: stepped opening (narrow notch + wide cavity) -->
-        <rect x="104" y="94"  width="32"  height="22" rx="4"  fill="#12262F"/>
-        <rect x="62"  y="110" width="116" height="92" rx="14" fill="#12262F"/>
-        <!-- 8 copper pins, stepped arch -->
-        <g fill="url(#tenav-svgm-g2)">
-          <rect class="tenav-svgm-pin" x="70"  y="92" width="7" height="20" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="83"  y="78" width="7" height="34" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="96"  y="70" width="7" height="42" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
-        </g>
-      </svg>
-      <span class="tenav-svgm-label">Port</span>
-    </div>
-
-    <!-- ③  PORT — light tile, small bottom-left -->
-    <div class="tenav-svgm-tile tenav-svgm-tile--light"
-         tabindex="0" role="button" aria-label="RJ45 port socket"
-         data-tenav-type="port">
-      <svg class="tenav-svgm-icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="tenav-svgm-g3" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0" stop-color="#CC7A3E"/>
-            <stop offset="1" stop-color="#E7A874"/>
-          </linearGradient>
-        </defs>
-        <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
-        <rect x="14" y="14" width="212" height="212" rx="32" stroke="#16303D" stroke-width="6"/>
-        <rect x="104" y="94"  width="32"  height="22" rx="4"  fill="#12262F"/>
-        <rect x="62"  y="110" width="116" height="92" rx="14" fill="#12262F"/>
-        <g fill="url(#tenav-svgm-g3)">
-          <rect class="tenav-svgm-pin" x="70"  y="92" width="7" height="20" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="83"  y="78" width="7" height="34" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="96"  y="70" width="7" height="42" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
-        </g>
-      </svg>
-      <span class="tenav-svgm-label">Port</span>
-    </div>
-
-    <!-- ④  PLUG — dark tile, small bottom-right -->
-    <div class="tenav-svgm-tile tenav-svgm-tile--dark"
-         tabindex="0" role="button" aria-label="RJ45 plug connector"
-         data-tenav-type="plug">
-      <svg class="tenav-svgm-icon" viewBox="0 0 240 240" fill="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="tenav-svgm-g4" x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0" stop-color="#CC7A3E"/>
-            <stop offset="1" stop-color="#E7A874"/>
-          </linearGradient>
-        </defs>
-        <rect x="14" y="14" width="212" height="212" rx="32" fill="#FFFFFF"/>
-        <rect x="14" y="14" width="212" height="212" rx="32" stroke="#16303D" stroke-width="6"/>
-        <rect x="58" y="108" width="124" height="96" rx="14" fill="#12262F"/>
-        <rect x="68"  y="160" width="104" height="7" rx="3.5" fill="rgba(255,255,255,.16)"/>
-        <rect x="58"  y="171" width="124" height="7" rx="3.5" fill="rgba(255,255,255,.11)"/>
-        <rect x="68"  y="182" width="104" height="7" rx="3.5" fill="rgba(255,255,255,.07)"/>
-        <g fill="url(#tenav-svgm-g4)">
-          <rect class="tenav-svgm-pin" x="70"  y="92" width="7" height="20" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="83"  y="78" width="7" height="34" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="96"  y="70" width="7" height="42" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="109" y="66" width="7" height="46" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="124" y="66" width="7" height="46" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="137" y="70" width="7" height="42" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="150" y="78" width="7" height="34" rx="2.5"/>
-          <rect class="tenav-svgm-pin" x="163" y="92" width="7" height="20" rx="2.5"/>
-        </g>
-      </svg>
-      <span class="tenav-svgm-label">Plug</span>
-    </div>
-
+    <div class="tenav-svgm-tile tenav-svgm-tile--dark"  tabindex="0" role="img" aria-label="Network connector" data-svg="1"></div>
+    <div class="tenav-svgm-tile tenav-svgm-tile--light" tabindex="0" role="img" aria-label="Network connector" data-svg="1"></div>
+    <div class="tenav-svgm-tile tenav-svgm-tile--light" tabindex="0" role="img" aria-label="Network connector" data-svg="1"></div>
+    <div class="tenav-svgm-tile tenav-svgm-tile--dark"  tabindex="0" role="img" aria-label="Network connector" data-svg="1"></div>
   </div>
 </div>
 
 <script>
 (function(){
   var grid = document.querySelector('[data-tenav-svgm]');
-  if(!grid || grid.dataset.tenavSvgmInit) return;
-  grid.dataset.tenavSvgmInit = '1';
+  if(!grid) return;
 
-  var wrap  = grid.closest('.tenav-svgm');
-  var tiles = Array.prototype.slice.call(grid.querySelectorAll('.tenav-svgm-tile'));
-  var rmo   = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function isolateSvgIds(svgStr, prefix){
+    var ids = [];
+    var re = /\bid="([^"]+)"/g, m;
+    while((m = re.exec(svgStr)) !== null){ ids.push(m[1]); }
+    ids.sort(function(a,b){ return b.length - a.length; });
+    ids.forEach(function(id){
+      var n = prefix + '-' + id;
+      svgStr = svgStr.split('id="' + id + '"').join('id="' + n + '"');
+      svgStr = svgStr.split('url(#' + id + ')').join('url(#' + n + ')');
+      svgStr = svgStr.split('href="#' + id + '"').join('href="#' + n + '"');
+      svgStr = svgStr.split('xlink:href="#' + id + '"').join('xlink:href="#' + n + '"');
+    });
+    return svgStr;
+  }
 
-  /* ── scroll entrance ── */
-  wrap.classList.add('tenav-svgm-js');
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ wrap.classList.add('tenav-svgm--in'); io.unobserve(e.target); }
+  var tiles = grid.querySelectorAll('.tenav-svgm-tile');
+
+  tiles.forEach(function(tile, i){
+    var srcId = 'tenav-svgm-src-' + (tile.dataset.svg || '1');
+    var srcEl = document.getElementById(srcId);
+    if(!srcEl) return;
+
+    var svgStr = srcEl.innerHTML.trim();
+    svgStr = isolateSvgIds(svgStr, 't' + (i + 1));
+
+    // Remove white background rects
+    svgStr = svgStr.replace(/<rect[^>]*fill="#ffffff"[^>]*\/>/g, '');
+
+    var parser = new DOMParser();
+    var doc = parser.parseFromString('<svg xmlns="http://www.w3.org/2000/svg">' + svgStr + '</svg>', 'image/svg+xml');
+    var newSvg = doc.querySelector('svg > svg') || doc.querySelector('svg');
+    if(!newSvg) return;
+
+    // Crop to connector only
+    newSvg.setAttribute('viewBox', '265 30 285 760');
+    newSvg.setAttribute('width', '100%');
+    newSvg.setAttribute('height', '100%');
+    newSvg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    newSvg.classList.add('tenav-svgm-icon');
+    newSvg.removeAttribute('zoomAndPan');
+
+    // Animate orange pins
+    var pinDelay = 0;
+    var pins = newSvg.querySelectorAll('path[fill="#b96e36"]');
+    pins.forEach(function(pin){
+      pin.classList.add('tenav-svgm-pin');
+      pin.style.animationDelay = pinDelay + 'ms';
+      pinDelay += 80;
+    });
+
+    tile.appendChild(document.importNode(newSvg, true));
+  });
+
+  // Scroll entrance
+  var wrapper = grid.closest('.tenav-svgm');
+  if(wrapper){
+    wrapper.classList.add('tenav-svgm-js');
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ wrapper.classList.add('tenav-svgm--in'); io.disconnect(); }
+        });
+      },{threshold:.12});
+      io.observe(wrapper);
+    } else {
+      wrapper.classList.add('tenav-svgm--in');
+    }
+  }
+
+  // Click cascade flash + sympathetic highlight
+  tiles.forEach(function(tile){
+    function activate(){
+      var isDark = tile.classList.contains('tenav-svgm-tile--dark');
+      tiles.forEach(function(t){
+        var tIsDark = t.classList.contains('tenav-svgm-tile--dark');
+        t.classList.remove('tenav-svgm--active','tenav-svgm--sym');
+        if(t === tile){
+          t.classList.add('tenav-svgm--active');
+          setTimeout(function(){ t.classList.remove('tenav-svgm--active'); }, 700);
+        } else if(tIsDark !== isDark){
+          t.classList.add('tenav-svgm--sym');
+          setTimeout(function(){ t.classList.remove('tenav-svgm--sym'); }, 700);
+        }
       });
-    },{ threshold:.15 });
-    io.observe(grid);
-  } else {
-    wrap.classList.add('tenav-svgm--in');
-  }
-
-  /* ── hover: highlight opposite-type tiles (plug ↔ port) ── */
-  function setSym(hovered, on){
-    var myType = hovered.getAttribute('data-tenav-type');
-    tiles.forEach(function(t){
-      if(t === hovered) return;
-      t.classList.toggle('tenav-svgm--sym', on && t.getAttribute('data-tenav-type') !== myType);
-    });
-  }
-  tiles.forEach(function(tile){
-    tile.addEventListener('mouseenter', function(){ setSym(tile, true);  });
-    tile.addEventListener('mouseleave', function(){ setSym(tile, false); });
-    tile.addEventListener('focus',      function(){ setSym(tile, true);  });
-    tile.addEventListener('blur',       function(){ setSym(tile, false); });
-  });
-
-  /* ── click / Enter / Space: cascade connect flash ── */
-  function connectAll(){
-    if(rmo) return;
-    tiles.forEach(function(tile, i){
-      setTimeout(function(){
-        tile.classList.remove('tenav-svgm--active');
-        void tile.offsetWidth; /* retrigger animation */
-        tile.classList.add('tenav-svgm--active');
-        setTimeout(function(){ tile.classList.remove('tenav-svgm--active'); }, 720);
-      }, i * 80);
-    });
-  }
-  tiles.forEach(function(tile){
-    tile.addEventListener('click', connectAll);
+    }
+    tile.addEventListener('click', activate);
     tile.addEventListener('keydown', function(e){
-      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); connectAll(); }
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); activate(); }
     });
   });
 
-  /* ── auto-demo: fire once on load ── */
-  if(!rmo){
-    setTimeout(function(){
-      if(wrap.classList.contains('tenav-svgm--in')) connectAll();
-    }, 900);
-  }
 })();
 </script>
