@@ -1,0 +1,360 @@
+<title>LED Walls — TenAV</title>
+
+<style>
+/* ── TOKENS ─────────────────────────────────────────── */
+:root {
+  --ink:    #111110;
+  --sub:    #3B3A38;
+  --ground: #F9F8F6;
+  --muted:  #7C7A75;
+  --border: rgba(17,17,16,.08);
+
+  --s1: #FF5C18;
+  --s2: #0057FF;
+  --s3: #00C46A;
+  --s4: #8B22FF;
+  --s5: #FFB300;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink:    #F2F1EE;
+    --sub:    #C2C0BA;
+    --ground: #0E0D0C;
+    --muted:  #86847F;
+    --border: rgba(242,241,238,.07);
+  }
+}
+:root[data-theme="light"] {
+  --ink:    #111110;
+  --sub:    #3B3A38;
+  --ground: #F9F8F6;
+  --muted:  #7C7A75;
+  --border: rgba(17,17,16,.08);
+}
+:root[data-theme="dark"] {
+  --ink:    #F2F1EE;
+  --sub:    #C2C0BA;
+  --ground: #0E0D0C;
+  --muted:  #86847F;
+  --border: rgba(242,241,238,.07);
+}
+
+/* ── RESET ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── SLIDE ───────────────────────────────────────────── */
+.slide {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(1.75rem, 4vw, 3.5rem) clamp(2rem, 5.5vw, 5.5rem);
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+/* ── GLOW ────────────────────────────────────────────── */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(clamp(80px, 14vw, 220px));
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Slide 1 — amber, top-right */
+.s1 .glow {
+  width: min(680px, 64vw); height: min(680px, 64vw);
+  background: var(--s1);
+  top: -18%; right: -12%;
+  opacity: .09;
+}
+@media (prefers-color-scheme: dark) { .s1 .glow { opacity: .24; } }
+:root[data-theme="dark"]  .s1 .glow { opacity: .24; }
+:root[data-theme="light"] .s1 .glow { opacity: .09; }
+
+/* Slide 2 — blue, bottom-left */
+.s2 .glow {
+  width: min(580px, 54vw); height: min(580px, 54vw);
+  background: var(--s2);
+  bottom: -14%; left: -10%;
+  opacity: .08;
+}
+@media (prefers-color-scheme: dark) { .s2 .glow { opacity: .20; } }
+:root[data-theme="dark"]  .s2 .glow { opacity: .20; }
+:root[data-theme="light"] .s2 .glow { opacity: .08; }
+
+/* Slide 3 — green, mid-right */
+.s3 .glow {
+  width: min(540px, 50vw); height: min(540px, 50vw);
+  background: var(--s3);
+  top: 18%; right: -8%;
+  opacity: .08;
+}
+@media (prefers-color-scheme: dark) { .s3 .glow { opacity: .20; } }
+:root[data-theme="dark"]  .s3 .glow { opacity: .20; }
+:root[data-theme="light"] .s3 .glow { opacity: .08; }
+
+/* Slide 4 — violet, bottom-center */
+.s4 .glow {
+  width: min(640px, 58vw); height: min(640px, 58vw);
+  background: var(--s4);
+  bottom: -22%; left: 22%;
+  opacity: .09;
+}
+@media (prefers-color-scheme: dark) { .s4 .glow { opacity: .22; } }
+:root[data-theme="dark"]  .s4 .glow { opacity: .22; }
+:root[data-theme="light"] .s4 .glow { opacity: .09; }
+
+/* Slide 5 — gold top + orange bottom-right */
+.s5 .glow-a {
+  width: min(700px, 65vw); height: min(700px, 65vw);
+  background: var(--s5);
+  top: -22%; left: 12%;
+  opacity: .09;
+}
+.s5 .glow-b {
+  width: min(440px, 40vw); height: min(440px, 40vw);
+  background: var(--s1);
+  bottom: -10%; right: -8%;
+  opacity: .07;
+}
+@media (prefers-color-scheme: dark) {
+  .s5 .glow-a { opacity: .26; }
+  .s5 .glow-b { opacity: .17; }
+}
+:root[data-theme="dark"]  .s5 .glow-a { opacity: .26; }
+:root[data-theme="dark"]  .s5 .glow-b { opacity: .17; }
+:root[data-theme="light"] .s5 .glow-a { opacity: .09; }
+:root[data-theme="light"] .s5 .glow-b { opacity: .07; }
+
+/* ── HEADER ──────────────────────────────────────────── */
+.slide__hd {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+.brand {
+  font-size: clamp(.7rem, 1.35vw, .88rem);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.brand sup { font-size: .58em; }
+
+/* ── BODY ────────────────────────────────────────────── */
+.slide__bd {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vh, 3.5rem) 0;
+}
+
+/* ── HEADLINE + ECHO ─────────────────────────────────── */
+.hl-wrap { position: relative; }
+
+.hl-echo {
+  position: absolute;
+  top: .045em;
+  left: .03em;
+  font-family: "Arial Black", "Franklin Gothic Heavy", "Helvetica Neue", Impact, sans-serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 7.5vw, 7.6rem);
+  line-height: .9;
+  letter-spacing: -.03em;
+  color: var(--accent, var(--ink));
+  opacity: .055;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  max-width: 16ch;
+}
+@media (prefers-color-scheme: dark) { .hl-echo { opacity: .15; } }
+:root[data-theme="dark"]  .hl-echo { opacity: .15; }
+:root[data-theme="light"] .hl-echo { opacity: .055; }
+
+.hl {
+  position: relative;
+  z-index: 1;
+  font-family: "Arial Black", "Franklin Gothic Heavy", "Helvetica Neue", Impact, sans-serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 7.5vw, 7.6rem);
+  line-height: .9;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  text-wrap: balance;
+  max-width: 16ch;
+}
+
+.subline {
+  margin-top: clamp(1.4rem, 3.5vw, 3rem);
+  font-size: clamp(.95rem, 1.9vw, 1.3rem);
+  font-weight: 400;
+  line-height: 1.48;
+  letter-spacing: -.01em;
+  color: var(--muted);
+  max-width: 42ch;
+}
+
+/* ── CTA ─────────────────────────────────────────────── */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .55em;
+  margin-top: clamp(2rem, 4.5vw, 3.5rem);
+  padding: .88em 1.75em;
+  background: var(--ink);
+  color: var(--ground);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: clamp(.85rem, 1.6vw, 1.05rem);
+  font-weight: 600;
+  letter-spacing: -.01em;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: opacity .2s, transform .2s;
+  width: fit-content;
+}
+.cta:hover { opacity: .78; transform: translateX(4px); }
+.cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.cta__arr { display: inline-block; transition: transform .2s; }
+.cta:hover .cta__arr { transform: translateX(5px); }
+
+/* ── FOOTER ──────────────────────────────────────────── */
+.slide__ft {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-top: clamp(1rem, 2vw, 1.5rem);
+}
+
+.pg {
+  font-size: clamp(.62rem, 1.05vw, .78rem);
+  font-weight: 600;
+  letter-spacing: .12em;
+  color: var(--muted);
+  opacity: .4;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── MOTION ──────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cta, .cta__arr { transition: none; }
+}
+</style>
+
+<!-- ─── SLIDE 1 ────────────────────────────────────── -->
+<section class="slide s1" style="--accent: var(--s1)">
+  <div class="glow"></div>
+  <header class="slide__hd">
+    <span class="brand">TenAV<sup>™</sup></span>
+  </header>
+  <div class="slide__bd">
+    <div class="hl-wrap">
+      <div class="hl-echo" aria-hidden="true">Nobody should settle for a blank wall.</div>
+      <h2 class="hl">Nobody should settle for a blank wall.</h2>
+    </div>
+    <p class="subline">LED walls built for spaces that demand attention.</p>
+  </div>
+  <footer class="slide__ft">
+    <span class="pg">01</span>
+  </footer>
+</section>
+
+<!-- ─── SLIDE 2 ────────────────────────────────────── -->
+<section class="slide s2" style="--accent: var(--s2)">
+  <div class="glow"></div>
+  <header class="slide__hd">
+    <span class="brand">TenAV<sup>™</sup></span>
+  </header>
+  <div class="slide__bd">
+    <div class="hl-wrap">
+      <div class="hl-echo" aria-hidden="true">We build display walls people can't ignore.</div>
+      <h2 class="hl">We build display walls people can't ignore.</h2>
+    </div>
+    <p class="subline">Designed for venues that need to make an impression — instantly.</p>
+  </div>
+  <footer class="slide__ft">
+    <span class="pg">02</span>
+  </footer>
+</section>
+
+<!-- ─── SLIDE 3 ────────────────────────────────────── -->
+<section class="slide s3" style="--accent: var(--s3)">
+  <div class="glow"></div>
+  <header class="slide__hd">
+    <span class="brand">TenAV<sup>™</sup></span>
+  </header>
+  <div class="slide__bd">
+    <div class="hl-wrap">
+      <div class="hl-echo" aria-hidden="true">Your content, live in seconds.</div>
+      <h2 class="hl">Your content, live in seconds.</h2>
+    </div>
+    <p class="subline">From opening doors to last call — your wall always says the right thing.</p>
+  </div>
+  <footer class="slide__ft">
+    <span class="pg">03</span>
+  </footer>
+</section>
+
+<!-- ─── SLIDE 4 ────────────────────────────────────── -->
+<section class="slide s4" style="--accent: var(--s4)">
+  <div class="glow"></div>
+  <header class="slide__hd">
+    <span class="brand">TenAV<sup>™</sup></span>
+  </header>
+  <div class="slide__bd">
+    <div class="hl-wrap">
+      <div class="hl-echo" aria-hidden="true">You see exactly what's landing.</div>
+      <h2 class="hl">You see exactly what's landing.</h2>
+    </div>
+    <p class="subline">Real-time insight into how your wall performs — so you never have to guess.</p>
+  </div>
+  <footer class="slide__ft">
+    <span class="pg">04</span>
+  </footer>
+</section>
+
+<!-- ─── SLIDE 5 / CTA ─────────────────────────────── -->
+<section class="slide s5" style="--accent: var(--s5)">
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+  <header class="slide__hd">
+    <span class="brand">TenAV<sup>™</sup></span>
+  </header>
+  <div class="slide__bd">
+    <div class="hl-wrap">
+      <div class="hl-echo" aria-hidden="true">Let's light up your space.</div>
+      <h2 class="hl">Let's light up your space.</h2>
+    </div>
+    <a class="cta" href="#">
+      Book a 15-minute walkthrough
+      <span class="cta__arr" aria-hidden="true">→</span>
+    </a>
+  </div>
+  <footer class="slide__ft">
+    <span class="pg">05</span>
+  </footer>
+</section>
