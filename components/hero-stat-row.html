@@ -3,18 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hero Stat Row</title>
+<title>Stat Line</title>
 <style>
   :root {
-    --bg-deep: #05070f;
-    --bg-mid: #0b1020;
-    --accent-a: #6ee7ff;
-    --accent-b: #a78bfa;
-    --accent-c: #f472b6;
-    --text-hi: #f5f7ff;
-    --text-lo: rgba(245, 247, 255, 0.62);
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --card-border: rgba(255, 255, 255, 0.12);
+    --navy: #142a4c;
+    --navy-soft: #5b6b85;
+    --accent: #1ea7e0;
+    --bg: #ffffff;
+    --divider: #e4e8ef;
   }
 
   * { box-sizing: border-box; }
@@ -22,270 +18,135 @@
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
-    background: var(--bg-deep);
-    color: var(--text-hi);
-    overflow-x: hidden;
+    background: var(--bg);
   }
 
-  .hero {
-    position: relative;
-    min-height: 100vh;
+  .stat-line {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 6rem 1.5rem 4rem;
-    background:
-      radial-gradient(circle at 20% 20%, rgba(110, 231, 255, 0.16), transparent 45%),
-      radial-gradient(circle at 80% 30%, rgba(167, 139, 250, 0.16), transparent 45%),
-      radial-gradient(circle at 50% 90%, rgba(244, 114, 182, 0.12), transparent 50%),
-      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
+    align-items: stretch;
+    flex-wrap: wrap;
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .stat {
+    flex: 1 1 0;
+    min-width: 140px;
     text-align: center;
-  }
-
-  /* floating orbs */
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.5;
-    pointer-events: none;
-    animation: float 14s ease-in-out infinite;
-  }
-  .orb--1 { width: 320px; height: 320px; background: var(--accent-a); top: -60px; left: -80px; animation-delay: 0s; }
-  .orb--2 { width: 260px; height: 260px; background: var(--accent-b); bottom: -40px; right: -60px; animation-delay: -5s; }
-  .orb--3 { width: 200px; height: 200px; background: var(--accent-c); top: 40%; left: 60%; animation-delay: -9s; }
-
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -25px) scale(1.08); }
-    66% { transform: translate(-25px, 20px) scale(0.95); }
-  }
-
-  .hero__eyebrow {
-    font-size: 0.8rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent-a);
-    margin-bottom: 1rem;
+    padding: 0 1.5rem;
+    border-left: 1px solid var(--divider);
     opacity: 0;
-    animation: rise 0.7s ease forwards;
+    transform: translateY(10px);
+    transition: color 0.25s ease;
   }
 
-  .hero__title {
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-    font-weight: 700;
-    line-height: 1.15;
-    max-width: 46rem;
-    margin: 0 0 1rem;
-    background: linear-gradient(120deg, #fff, var(--accent-a) 45%, var(--accent-b) 75%, var(--accent-c));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    opacity: 0;
-    animation: rise 0.8s ease 0.1s forwards;
+  .stat.is-visible {
+    animation: fadeUp 0.5s ease forwards;
   }
 
-  .hero__subtitle {
-    max-width: 34rem;
-    color: var(--text-lo);
-    font-size: 1.05rem;
-    margin-bottom: 3.5rem;
-    opacity: 0;
-    animation: rise 0.8s ease 0.2s forwards;
-  }
+  .stat:first-child { border-left: none; }
 
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(16px); }
+  .stat:nth-child(1) { animation-delay: 0s; }
+  .stat:nth-child(2) { animation-delay: 0.08s; }
+  .stat:nth-child(3) { animation-delay: 0.16s; }
+  .stat:nth-child(4) { animation-delay: 0.24s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Stat row */
-  .stat-row {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 76rem;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
-  }
-
-  @media (max-width: 860px) {
-    .stat-row { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 480px) {
-    .stat-row { grid-template-columns: 1fr; }
-  }
-
-  .stat-card {
-    position: relative;
-    padding: 1.75rem 1.25rem;
-    border-radius: 1rem;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(24px);
-    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-  }
-
-  .stat-card.is-visible {
-    animation: cardIn 0.6s ease forwards;
-  }
-
-  .stat-card:nth-child(1) { animation-delay: 0s; }
-  .stat-card:nth-child(2) { animation-delay: 0.1s; }
-  .stat-card:nth-child(3) { animation-delay: 0.2s; }
-  .stat-card:nth-child(4) { animation-delay: 0.3s; }
-
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .stat-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255, 255, 255, 0.28);
-    box-shadow: 0 18px 40px -18px rgba(110, 231, 255, 0.35);
-  }
-
-  .stat-card::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, var(--accent-a), transparent 40%, var(--accent-c) 100%);
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
-  .stat-card:hover::before { opacity: 1; }
-
-  /* cursor-follow glow */
-  .stat-card::after {
-    content: "";
-    position: absolute;
-    width: 220px;
-    height: 220px;
-    left: var(--mx, 50%);
-    top: var(--my, 50%);
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, rgba(110, 231, 255, 0.16), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .stat-card:hover::after { opacity: 1; }
-
-  .stat-card__value {
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
+  .stat__value {
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
     font-weight: 700;
+    color: var(--navy);
     letter-spacing: -0.01em;
-    color: var(--text-hi);
     font-variant-numeric: tabular-nums;
+    transition: color 0.25s ease;
   }
 
-  .stat-card__label {
-    margin-top: 0.4rem;
-    font-size: 0.85rem;
-    color: var(--text-lo);
+  .stat:hover .stat__value {
+    color: var(--accent);
+  }
+
+  .stat__label {
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--navy-soft);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
   }
 
-  .stat-card__value .suffix {
-    background: linear-gradient(120deg, var(--accent-a), var(--accent-b));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  @media (max-width: 640px) {
+    .stat-line {
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 2rem 1.5rem;
+    }
+    .stat {
+      border-left: none;
+      border-top: 1px solid var(--divider);
+      padding: 1.25rem 0 0;
+    }
+    .stat:first-child { border-top: none; padding-top: 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .orb { animation: none; }
-    .hero__eyebrow, .hero__title, .hero__subtitle, .stat-card {
-      animation: none !important;
-      opacity: 1 !important;
-      transform: none !important;
-    }
+    .stat { animation: none !important; opacity: 1 !important; transform: none !important; }
   }
 </style>
 </head>
 <body>
 
-<section class="hero">
-  <div class="orb orb--1"></div>
-  <div class="orb orb--2"></div>
-  <div class="orb orb--3"></div>
-
-  <p class="hero__eyebrow">Trusted UK-wide</p>
-  <h1 class="hero__title">Built on two decades of delivery</h1>
-  <p class="hero__subtitle">
-    From startups to public sector, we've been the team behind the numbers below —
-    consistently, reliably, since 2003.
-  </p>
-
-  <div class="stat-row" id="statRow">
-    <div class="stat-card" data-target="2003" data-suffix="" data-format="plain">
-      <div class="stat-card__value"><span class="count">0</span></div>
-      <div class="stat-card__label">Trading since</div>
-    </div>
-
-    <div class="stat-card" data-target="4000" data-suffix="+">
-      <div class="stat-card__value"><span class="count">0</span><span class="suffix">+</span></div>
-      <div class="stat-card__label">Projects delivered</div>
-    </div>
-
-    <div class="stat-card" data-target="600" data-suffix="+">
-      <div class="stat-card__value"><span class="count">0</span><span class="suffix">+</span></div>
-      <div class="stat-card__label">Organisations served</div>
-    </div>
-
-    <div class="stat-card" data-target="0" data-suffix="" data-static="UK-wide">
-      <div class="stat-card__value"><span class="count">UK-wide</span></div>
-      <div class="stat-card__label">Coverage</div>
-    </div>
+<div class="stat-line" id="statLine">
+  <div class="stat" data-target="2003" data-format="plain">
+    <div class="stat__value"><span class="count">0</span></div>
+    <div class="stat__label">Trading since</div>
   </div>
-</section>
+
+  <div class="stat" data-target="4000" data-suffix="+">
+    <div class="stat__value"><span class="count">0</span>+</div>
+    <div class="stat__label">Projects delivered</div>
+  </div>
+
+  <div class="stat" data-target="600" data-suffix="+">
+    <div class="stat__value"><span class="count">0</span>+</div>
+    <div class="stat__label">Organisations served</div>
+  </div>
+
+  <div class="stat" data-static="UK-wide">
+    <div class="stat__value">UK-wide</div>
+    <div class="stat__label">Coverage</div>
+  </div>
+</div>
 
 <script>
 (function () {
-  var cards = document.querySelectorAll('.stat-card');
+  var stats = document.querySelectorAll('.stat');
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Cursor-follow glow per card
-  cards.forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      var rect = card.getBoundingClientRect();
-      card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-      card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-    });
-  });
+  function format(value, plain) {
+    return plain ? String(value) : value.toLocaleString();
+  }
 
-  function animateCount(el, target, duration) {
+  function animateCount(el, target, plain, duration) {
     if (prefersReduced) {
-      el.textContent = target.toLocaleString();
+      el.textContent = format(target, plain);
       return;
     }
     var startTime = null;
     function step(timestamp) {
       if (!startTime) startTime = timestamp;
       var progress = Math.min((timestamp - startTime) / duration, 1);
-      var eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      var eased = 1 - Math.pow(1 - progress, 3);
       var value = Math.floor(eased * target);
-      el.textContent = value.toLocaleString();
+      el.textContent = format(value, plain);
       if (progress < 1) {
         requestAnimationFrame(step);
       } else {
-        el.textContent = target.toLocaleString();
+        el.textContent = format(target, plain);
       }
     }
     requestAnimationFrame(step);
@@ -294,22 +155,20 @@
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (!entry.isIntersecting) return;
-      var card = entry.target;
-      card.classList.add('is-visible');
+      var stat = entry.target;
+      stat.classList.add('is-visible');
 
-      var staticText = card.getAttribute('data-static');
-      var countEl = card.querySelector('.count');
-
-      if (!staticText) {
-        var target = parseInt(card.getAttribute('data-target'), 10) || 0;
-        animateCount(countEl, target, 1600);
+      if (!stat.hasAttribute('data-static')) {
+        var target = parseInt(stat.getAttribute('data-target'), 10) || 0;
+        var plain = stat.getAttribute('data-format') === 'plain';
+        animateCount(stat.querySelector('.count'), target, plain, 1400);
       }
 
-      observer.unobserve(card);
+      observer.unobserve(stat);
     });
   }, { threshold: 0.4 });
 
-  cards.forEach(function (card) { observer.observe(card); });
+  stats.forEach(function (stat) { observer.observe(stat); });
 })();
 </script>
 
