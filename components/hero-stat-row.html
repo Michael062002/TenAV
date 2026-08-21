@@ -53,14 +53,8 @@
 
   .stat {
     text-align: center;
-    padding: 1.75rem 1rem 0;
-    border-top: 1px solid var(--divider);
+    padding: 0 1rem;
     transition: transform 0.25s ease;
-  }
-
-  .stat:first-child {
-    border-top: none;
-    padding-top: 0;
   }
 
   .stat:hover {
@@ -91,28 +85,21 @@
     height: 22px;
   }
 
-  /* Tablet / iPad: 2x2 grid with cross dividers */
+  /* Tablet / iPad: 2x2 grid */
   @media (min-width: 641px) and (max-width: 1023px) {
     .stat-line {
       grid-template-columns: repeat(2, 1fr);
-      column-gap: 1rem;
-      row-gap: 0;
+      column-gap: 1.5rem;
+      row-gap: 2.5rem;
       padding: 2.75rem 2.25rem;
     }
 
     .stat {
-      border-top: none;
-      padding: 0 1.5rem 2rem;
+      padding: 0 1.5rem;
     }
-
-    .stat:nth-child(odd) { border-right: 1px solid var(--divider); }
-    .stat:nth-child(-n+2) { border-bottom: 1px solid var(--divider); }
-    .stat:nth-child(n+3) { padding-top: 2rem; padding-bottom: 0; }
-    .stat:first-child { padding-top: 0; }
-    .stat:nth-child(2) { padding-top: 0; }
   }
 
-  /* Desktop: single row with vertical dividers */
+  /* Desktop: single row */
   @media (min-width: 1024px) {
     .stat-line {
       grid-template-columns: repeat(4, 1fr);
@@ -121,14 +108,8 @@
     }
 
     .stat {
-      border-top: none;
-      border-right: none;
-      border-bottom: none;
-      border-left: 1px solid var(--divider);
       padding: 0 1.75rem;
     }
-
-    .stat:first-child { border-left: none; }
   }
 
   .stat__value {
