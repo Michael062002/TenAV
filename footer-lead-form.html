@@ -1,0 +1,174 @@
+<meta charset="utf-8">
+<title>TenAV Footer Lead Form</title>
+
+<link rel="stylesheet" href="https://capsulecrm.com/assets/capsule-form.css">
+
+<style>
+.footer-lead-wrapper,
+.footer-lead-wrapper *{
+box-sizing:border-box;
+}
+
+.footer-lead-wrapper{
+width:100%;
+padding-right:0;
+padding-left:0;
+padding-top:0;
+padding-bottom:0;
+}
+
+.capsule-form,
+.capsule-form__container,
+.capsule-form__section,
+.capsule-form__content{
+width:100%!important;
+max-width:none!important;
+margin:0!important;
+padding-left:0!important;
+padding-right:0!important;
+border:none!important;
+box-shadow:none!important;
+border-radius:0!important;
+}
+
+.capsule-form__grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:20px;
+width:100%!important;
+}
+
+.capsule-form__row,
+.capsule-form__field,
+.capsule-form__input,
+.capsule-form__field input,
+.capsule-form__field textarea,
+.capsule-form__field select{
+width:100%!important;
+}
+
+.capsule-form__row.capsule-form__full{
+grid-column:1 / -1;
+}
+
+textarea[name="NOTE"]{
+min-height:140px;
+resize:vertical;
+}
+
+.capsule-form__submit{
+background-color:#41C0F0;
+border:none;
+padding:12px 20px;
+font-size:16px;
+cursor:pointer;
+}
+
+@media (max-width:768px){
+.capsule-form__grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+
+
+
+
+<div class="footer-lead-wrapper">
+
+<form class="capsule-form" action="https://service.capsulecrm.com/service/newlead" accept-charset="UTF-8" method="post">
+
+<input name="FORM_ID" type="hidden" value="2b64108f-88dd-4747-b8be-6568cb50801d">
+<input name="COMPLETE_URL" type="hidden" value="https://tenav.co.uk/thank-you/">
+
+<input name="TAG" type="hidden" value="Prospect">
+<input name="TAG" type="hidden" value="Web lead">
+
+<input name="DATE_FORMAT" type="hidden" value="dd/MM/yy">
+<input name="CREATE_CHECK_TASK" type="hidden" value="true">
+<input name="SEND" type="hidden" value="true">
+<input name="REVIEW_ID" type="hidden" value="543199">
+
+<div class="capsule-form__grid">
+
+<div class="capsule-form__row">
+<label class="capsule-form__field capsule-form__field--text">
+<span class="capsule-form__label">Company Name:</span>
+
+<input class="capsule-form__input" name="ORGANISATION_NAME" type="text">
+</label>
+</div>
+
+<div class="capsule-form__row">
+<label class="capsule-form__field capsule-form__field--text">
+<span class="capsule-form__label">Job Title:</span>
+
+<input class="capsule-form__input" name="JOB_TITLE" type="text">
+</label>
+</div>
+
+<div class="capsule-form__row">
+<label class="capsule-form__field capsule-form__field--text">
+<span class="capsule-form__label">
+First Name:
+<span class="capsule-form__required">*</span>
+</span>
+
+<input class="capsule-form__input" name="FIRST_NAME" required="" type="text">
+</label>
+</div>
+
+<div class="capsule-form__row">
+<label class="capsule-form__field capsule-form__field--text">
+<span class="capsule-form__label">
+Last Name:
+<span class="capsule-form__required">*</span>
+</span>
+
+<input class="capsule-form__input" name="LAST_NAME" required="" type="text">
+</label>
+</div>
+
+<div class="capsule-form__row">
+<label class="capsule-form__field capsule-form__field--text">
+<span class="capsule-form__label">
+Email Address:
+<span class="capsule-form__required">*</span>
+</span>
+
+<input class="capsule-form__input" name="EMAIL" type="email" required="" autocomplete="email" inputmode="email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$" placeholder="Enter a valid email address" title="Please enter a valid email address">
+</label>
+</div>
+
+<div class="capsule-form__row">
+<label class="capsule-form__field capsule-form__field--text">
+<span class="capsule-form__label">
+Phone:
+<span class="capsule-form__required">*</span>
+</span>
+
+<input class="capsule-form__input" name="PHONE" type="tel" required="" autocomplete="tel" inputmode="tel" pattern="^\+?[0-9\s]{7,20}$" placeholder="Enter a valid phone number" title="Please enter a valid phone number">
+</label>
+</div>
+
+<div class="capsule-form__row capsule-form__full">
+<label class="capsule-form__field capsule-form__field--text">
+<span class="capsule-form__label">
+Your Message:
+<span class="capsule-form__required">*</span>
+</span>
+
+<textarea class="capsule-form__input" name="NOTE" required=""></textarea>
+</label>
+</div>
+
+<div class="capsule-form__row capsule-form__full">
+<button class="capsule-form__submit" type="submit">
+Let's Chat!
+</button>
+</div>
+
+</div>
+</form>
+
+</div>
