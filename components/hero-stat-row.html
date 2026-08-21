@@ -46,11 +46,19 @@
     text-align: center;
     padding: 0 1.5rem;
     border-left: 1px solid var(--divider);
+    transition: transform 0.25s ease;
   }
 
   .stat:first-child { border-left: none; }
 
+  .stat:hover {
+    transform: translateY(-4px);
+  }
+
   .stat__value {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 8px;
     font-size: clamp(1.6rem, 3vw, 2.1rem);
     font-weight: 600;
     color: var(--blue);
@@ -58,11 +66,32 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .stat__value::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: var(--blue);
+    transform: translateX(-50%);
+    transition: width 0.25s ease;
+  }
+
+  .stat:hover .stat__value::after {
+    width: 32px;
+  }
+
   .stat__label {
     margin-top: 0.35rem;
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-soft);
+    transition: color 0.25s ease;
+  }
+
+  .stat:hover .stat__label {
+    color: var(--blue);
   }
 
   @media (max-width: 640px) {
@@ -81,6 +110,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     .stat-line { animation: none !important; opacity: 1 !important; }
+    .stat { transition: none !important; }
+    .stat:hover { transform: none !important; }
   }
 </style>
 </head>
