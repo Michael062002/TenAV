@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stat Line</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #1ea7e0;
+    --blue-deep: #0f7cb0;
+    --blue-tint: rgba(30, 167, 224, 0.1);
+    --navy: #142a4c;
+    --text-soft: #6b7a93;
+    --bg: #ffffff;
+    --panel-bg: linear-gradient(180deg, #ffffff 0%, #f5fafd 100%);
+    --divider: #e4e8ef;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: transparent;
+    padding: 0;
+  }
+
+  .stat-panel {
+    max-width: 84rem;
+    margin: 0 auto;
+    background: transparent;
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stat-line {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 2.5rem;
+    padding: 0;
+  }
+
+  .stat {
+    text-align: center;
+    padding: 0 1.25rem;
+    transition: transform 0.25s ease;
+  }
+
+  .stat:hover {
+    transform: translateY(-5px);
+  }
+
+  .stat__icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--blue-tint);
+    color: var(--blue);
+    transition: background 0.25s ease, transform 0.25s ease;
+  }
+
+  .stat:hover .stat__icon {
+    background: var(--blue);
+    color: #fff;
+    transform: scale(1.06);
+  }
+
+  .stat__icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Tablet / iPad: 2x2 grid */
+  @media (min-width: 641px) and (max-width: 1023px) {
+    .stat-line {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2rem;
+      row-gap: 3.25rem;
+      padding: 0;
+    }
+
+    .stat {
+      padding: 0 2rem;
+    }
+  }
+
+  /* Desktop: single row */
+  @media (min-width: 1024px) {
+    .stat-line {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 0;
+      padding: 0;
+    }
+
+    .stat {
+      padding: 0 2.25rem;
+    }
+  }
+
+  .stat__value {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 56px;
+    font-weight: 600;
+    letter-spacing: normal;
+    font-variant-numeric: tabular-nums;
+    color: #313496;
+  }
+
+  @media (max-width: 480px) {
+    .stat__value { font-size: 44px; }
+  }
+
+  .stat__value .suffix {
+    font-weight: 600;
+    color: #313496;
+  }
+
+  .stat__value::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 32px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--blue);
+    transform: translateX(-50%);
+    opacity: 0.45;
+    transition: width 0.25s ease, opacity 0.25s ease;
+  }
+
+  .stat:hover .stat__value::after {
+    width: 52px;
+    opacity: 1;
+  }
+
+  .stat__label {
+    margin-top: 0.65rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #54595F;
+    transition: color 0.25s ease;
+  }
+
+  .stat:hover .stat__label {
+    color: var(--navy);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stat-panel { animation: none !important; opacity: 1 !important; }
+    .stat, .stat__icon, .stat__value::after { transition: none !important; }
+    .stat:hover { transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stat-panel">
+  <div class="stat-line">
+    <div class="stat" data-target="2003" data-format="plain">
+      <div class="stat__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+          <line x1="3" y1="9" x2="21" y2="9"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+        </svg>
+      </div>
+      <div class="stat__value"><span class="count">0</span></div>
+      <div class="stat__label">Trading Since</div>
+    </div>
+
+    <div class="stat" data-target="4000" data-suffix="+">
+      <div class="stat__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 3 7l9 5 9-5-9-5Z"></path>
+          <path d="M3 12l9 5 9-5"></path>
+          <path d="M3 17l9 5 9-5"></path>
+        </svg>
+      </div>
+      <div class="stat__value"><span class="count">0</span><span class="suffix">+</span></div>
+      <div class="stat__label">Projects Delivered</div>
+    </div>
+
+    <div class="stat" data-target="600" data-suffix="+">
+      <div class="stat__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 21V8l8-5 8 5v13"></path>
+          <path d="M9 21v-6h6v6"></path>
+          <path d="M9 12h.01M15 12h.01M9 8h.01M15 8h.01"></path>
+        </svg>
+      </div>
+      <div class="stat__value"><span class="count">0</span><span class="suffix">+</span></div>
+      <div class="stat__label">Organisations Served</div>
+    </div>
+
+    <div class="stat" data-static="UK-wide">
+      <div class="stat__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21s-7-6.1-7-11.2A7 7 0 0 1 12 3a7 7 0 0 1 7 6.8C19 14.9 12 21 12 21Z"></path>
+          <circle cx="12" cy="10" r="2.4"></circle>
+        </svg>
+      </div>
+      <div class="stat__value">UK-wide</div>
+      <div class="stat__label">Coverage</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var stats = document.querySelectorAll('.stat');
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function format(value, plain) {
+    return plain ? String(value) : value.toLocaleString();
+  }
+
+  function animateCount(el, target, plain, duration) {
+    if (prefersReduced) {
+      el.textContent = format(target, plain);
+      return;
+    }
+    var startTime = null;
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var value = Math.floor(eased * target);
+      el.textContent = format(value, plain);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = format(target, plain);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var stat = entry.target;
+
+      if (!stat.hasAttribute('data-static')) {
+        var target = parseInt(stat.getAttribute('data-target'), 10) || 0;
+        var plain = stat.getAttribute('data-format') === 'plain';
+        animateCount(stat.querySelector('.count'), target, plain, 1400);
+      }
+
+      observer.unobserve(stat);
+    });
+  }, { threshold: 0.4 });
+
+  stats.forEach(function (stat) { observer.observe(stat); });
+})();
+</script>
+
+</body>
+</html>
