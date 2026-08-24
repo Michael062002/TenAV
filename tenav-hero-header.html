@@ -1003,6 +1003,7 @@ html { scroll-behavior: smooth; }
     var trackFrame  = null;
     var resizeTimer;
 
+    var hero = document.getElementById('tnav-hero');
     var block = document.getElementById('tnav-block');
     var diagram = document.getElementById('tnav-diagram');
     var centerWrap = document.getElementById('tnav-centerWrap');
@@ -1010,13 +1011,12 @@ html { scroll-behavior: smooth; }
     var phoneWrap = document.getElementById('tnav-phoneWrap');
     var cardInner = document.getElementById('tnav-cardInner');
     var flipHint = document.getElementById('tnav-flipHint');
-    var cta = document.getElementById('tnav-cta');
 
     // If any core node is missing (widget duplicated/renamed, markup
     // partially stripped, etc.) bail out instead of throwing — a thrown
     // error here would otherwise silently prevent every listener below
     // from ever being attached.
-    if (!block || !diagram || !centerWrap || !linesSvg) return;
+    if (!hero || !block || !diagram || !centerWrap || !linesSvg) return;
 
     function computeDs() {
       var dR = diagram.getBoundingClientRect();
@@ -1143,18 +1143,23 @@ html { scroll-behavior: smooth; }
 
     // "Talk to our team" scrolls to the bottom of whatever page this hero
     // is embedded on, rather than depending on a specific #contact anchor
-    // existing elsewhere on the page.
-    if (cta) {
-      cta.addEventListener('click', function(e) {
-        e.preventDefault();
-        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          left: 0,
-          behavior: reduceMotion ? 'auto' : 'smooth'
-        });
+    // existing elsewhere on the page. Bound as a delegated listener on the
+    // hero container (matched by class, not id) rather than directly on
+    // the link — some WordPress link-handling plugins (tracking, "open
+    // external links", nofollow rules) rewrite <a> tags site-wide and can
+    // strip a custom id or swap the node out after load; delegation still
+    // catches the click either way as long as the class survives.
+    hero.addEventListener('click', function(e) {
+      var link = e.target.closest('.tnav-cta');
+      if (!link) return;
+      e.preventDefault();
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        left: 0,
+        behavior: reduceMotion ? 'auto' : 'smooth'
       });
-    }
+    });
 
     block.querySelectorAll('.tnav-item').forEach(function(item) {
       item.addEventListener('click', function() {
