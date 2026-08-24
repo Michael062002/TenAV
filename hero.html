@@ -1,0 +1,429 @@
+<title>Invisible By Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,480;9..144,560;9..144,620&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------------------------------------------------------------
+     Tokens
+     Dark-first: bare :root carries the dark (default) palette.
+     Light overrides live in the prefers-color-scheme media query
+     and the explicit [data-theme="light"] block.
+  ----------------------------------------------------------------*/
+  :root {
+    --bg: #12161a;
+    --bg-elevated: #1a2027;
+    --text: #efebe3;
+    --text-muted: #98a1ab;
+    --accent: #c99a5b;
+    --accent-strong: #e2b57a;
+    --on-accent: #14181c;
+    --line: rgba(239, 235, 227, 0.13);
+    --line-strong: rgba(239, 235, 227, 0.24);
+    --focus: #e2b57a;
+    --trace-line: rgba(239, 235, 227, 0.14);
+    --trace-pulse: rgba(226, 181, 122, 0.85);
+    --scrim: rgba(10, 12, 15, 0.55);
+
+    --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", serif;
+    --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #eeebe3;
+      --bg-elevated: #e4e0d4;
+      --text: #191d21;
+      --text-muted: #5c6369;
+      --accent: #8c5f2e;
+      --accent-strong: #6e4a22;
+      --on-accent: #f6f4ee;
+      --line: rgba(25, 29, 33, 0.14);
+      --line-strong: rgba(25, 29, 33, 0.26);
+      --focus: #8c5f2e;
+      --trace-line: rgba(25, 29, 33, 0.12);
+      --trace-pulse: rgba(140, 95, 46, 0.7);
+      --scrim: rgba(238, 235, 227, 0.55);
+    }
+  }
+
+  :root[data-theme="light"] {
+    --bg: #eeebe3;
+    --bg-elevated: #e4e0d4;
+    --text: #191d21;
+    --text-muted: #5c6369;
+    --accent: #8c5f2e;
+    --accent-strong: #6e4a22;
+    --on-accent: #f6f4ee;
+    --line: rgba(25, 29, 33, 0.14);
+    --line-strong: rgba(25, 29, 33, 0.26);
+    --focus: #8c5f2e;
+    --trace-line: rgba(25, 29, 33, 0.12);
+    --trace-pulse: rgba(140, 95, 46, 0.7);
+    --scrim: rgba(238, 235, 227, 0.55);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ---------------------------------------------------------------
+     Header / hero
+  ----------------------------------------------------------------*/
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .hero::before {
+    /* faint drafting-grid texture, top-right corner only */
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(46vw, 640px);
+    height: min(46vw, 640px);
+    background-image:
+      repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 48px),
+      repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 48px);
+    -webkit-mask-image: radial-gradient(circle at 100% 0%, #000 0%, transparent 72%);
+            mask-image: radial-gradient(circle at 100% 0%, #000 0%, transparent 72%);
+    pointer-events: none;
+  }
+
+  .topbar {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(20px, 3.2vw, 34px) clamp(20px, 5vw, 64px) 0;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+  }
+
+  .wordmark::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    background: var(--accent);
+    display: inline-block;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 3;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: clamp(48px, 9vw, 0px) clamp(20px, 5vw, 64px) clamp(64px, 10vw, 96px);
+  }
+
+  .hero-content {
+    max-width: 40rem;
+    padding: 28px 32px 32px 0;
+  }
+
+  @media (min-width: 720px) {
+    .hero-content {
+      border-left: 1px solid var(--line-strong);
+      padding-left: 32px;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin: 0 0 1.25em;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    font-weight: 560;
+    font-size: clamp(2.25rem, 2.6vw + 1.6rem, 3.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 0 0.55em;
+    text-wrap: balance;
+    color: var(--text);
+  }
+
+  .sub {
+    font-size: clamp(1.0625rem, 0.4vw + 1rem, 1.1875rem);
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 34rem;
+    margin: 0 0 2.25em;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(20px, 2.5vw, 32px);
+  }
+
+  .btn-primary {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--on-accent);
+    background: var(--accent);
+    padding: 0.95em 1.7em;
+    border-radius: 3px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 160ms ease, transform 160ms ease;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-strong);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    color: var(--text);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+    padding: 0.5em 0;
+    border-bottom: 1px solid var(--line-strong);
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+
+  .btn-secondary .arrow {
+    transition: transform 160ms ease;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover {
+    color: var(--accent-strong);
+    border-color: var(--accent-strong);
+  }
+
+  .btn-secondary:hover .arrow {
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary,
+    .btn-secondary,
+    .btn-secondary .arrow {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 719px) {
+    .hero-content { padding-right: 0; }
+    .cta-row { flex-direction: column; align-items: flex-start; gap: 18px; }
+  }
+</style>
+
+<section class="hero" data-theme-target>
+  <canvas id="trace" aria-hidden="true"></canvas>
+
+  <div class="topbar">
+    <a class="wordmark" href="#">TENAV</a>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="eyebrow">Design&nbsp;&middot;&nbsp;Install&nbsp;&middot;&nbsp;Support</p>
+      <h1>The best workplace technology is the technology nobody notices.</h1>
+      <p class="sub">We design, install and support AV solutions that simply work. Independent advice, expert engineers and ongoing support long after the project is complete.</p>
+      <div class="cta-row">
+        <a class="btn-primary" href="#contact">Tell us about your space</a>
+        <a class="btn-secondary" href="#work">See our recent work <span class="arrow" aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var canvas = document.getElementById("trace");
+  var ctx = canvas.getContext("2d");
+  var section = canvas.closest(".hero");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var w = 0, h = 0, paths = [];
+
+  function colorTokens() {
+    var s = getComputedStyle(document.documentElement);
+    return {
+      line: s.getPropertyValue("--trace-line").trim(),
+      pulse: s.getPropertyValue("--trace-pulse").trim()
+    };
+  }
+
+  // Orthogonal "signal conduit" paths, defined as fractions of the canvas
+  // so they reflow with the viewport. Right-angle turns read as routed
+  // cabling rather than decorative squiggle.
+  function buildPaths() {
+    paths = [
+      { pts: [[0.62, 0.0], [0.62, 0.22], [0.86, 0.22], [0.86, 0.5], [1.0, 0.5]], speed: 0.00028, offset: 0 },
+      { pts: [[0.78, 0.0], [0.78, 0.4], [0.68, 0.4], [0.68, 0.72], [0.96, 0.72], [0.96, 1.0]], speed: 0.00021, offset: 0.4 },
+      { pts: [[1.0, 0.14], [0.9, 0.14], [0.9, 0.34], [1.0, 0.34]], speed: 0.00034, offset: 0.75 },
+      { pts: [[0.5, 1.0], [0.5, 0.86], [0.58, 0.86], [0.58, 0.6]], speed: 0.00025, offset: 0.15 }
+    ];
+  }
+
+  function resize() {
+    var rect = section.getBoundingClientRect();
+    w = rect.width;
+    h = rect.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function pathLength(pts) {
+    var total = 0;
+    for (var i = 1; i < pts.length; i++) {
+      var dx = (pts[i][0] - pts[i - 1][0]) * w;
+      var dy = (pts[i][1] - pts[i - 1][1]) * h;
+      total += Math.sqrt(dx * dx + dy * dy);
+    }
+    return total;
+  }
+
+  function pointAt(pts, t) {
+    var segLens = [], total = 0;
+    for (var i = 1; i < pts.length; i++) {
+      var dx = (pts[i][0] - pts[i - 1][0]) * w;
+      var dy = (pts[i][1] - pts[i - 1][1]) * h;
+      var len = Math.sqrt(dx * dx + dy * dy);
+      segLens.push(len);
+      total += len;
+    }
+    var target = t * total, acc = 0;
+    for (var j = 0; j < segLens.length; j++) {
+      if (acc + segLens[j] >= target || j === segLens.length - 1) {
+        var segT = segLens[j] ? (target - acc) / segLens[j] : 0;
+        segT = Math.max(0, Math.min(1, segT));
+        var x0 = pts[j][0] * w, y0 = pts[j][1] * h;
+        var x1 = pts[j + 1][0] * w, y1 = pts[j + 1][1] * h;
+        return [x0 + (x1 - x0) * segT, y0 + (y1 - y0) * segT];
+      }
+      acc += segLens[j];
+    }
+    return [pts[0][0] * w, pts[0][1] * h];
+  }
+
+  function drawStatic() {
+    var colors = colorTokens();
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = colors.line;
+    ctx.lineWidth = 1;
+    paths.forEach(function (p) {
+      ctx.beginPath();
+      p.pts.forEach(function (pt, i) {
+        var x = pt[0] * w, y = pt[1] * h;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    });
+  }
+
+  function frame(ts) {
+    var colors = colorTokens();
+    ctx.clearRect(0, 0, w, h);
+    ctx.strokeStyle = colors.line;
+    ctx.lineWidth = 1;
+    paths.forEach(function (p) {
+      ctx.beginPath();
+      p.pts.forEach(function (pt, i) {
+        var x = pt[0] * w, y = pt[1] * h;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      var t = ((ts * p.speed) + p.offset) % 1;
+      var pos = pointAt(p.pts, t);
+      var grad = ctx.createRadialGradient(pos[0], pos[1], 0, pos[0], pos[1], 7);
+      grad.addColorStop(0, colors.pulse);
+      grad.addColorStop(1, "transparent");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(pos[0], pos[1], 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = colors.pulse;
+      ctx.beginPath();
+      ctx.arc(pos[0], pos[1], 1.6, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  buildPaths();
+  if (reduceMotion) {
+    drawStatic();
+  } else {
+    requestAnimationFrame(frame);
+  }
+
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      resize();
+      if (reduceMotion) drawStatic();
+    }, 120);
+  });
+})();
+</script>
