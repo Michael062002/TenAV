@@ -527,7 +527,7 @@ html { scroll-behavior: smooth; }
         <p class="tnav-eyebrow">One team. One point of accountability.</p>
         <h1 class="tnav-headline">Own <span class="tnav-orange">everything</span> on either side of the data port.</h1>
         <p class="tnav-body">A fully integrated approach to your network, security, and workplace technology, built around how your business actually works.</p>
-        <a href="#contact" class="tnav-cta">
+        <a href="#tnav-bottom-of-page" class="tnav-cta" id="tnav-cta">
           Talk to our team
           <span class="tnav-cta-arr" aria-hidden="true">&#8594;</span>
         </a>
@@ -686,6 +686,7 @@ html { scroll-behavior: smooth; }
     var phoneWrap = document.getElementById('tnav-phoneWrap');
     var cardInner = document.getElementById('tnav-cardInner');
     var flipHint = document.getElementById('tnav-flipHint');
+    var cta = document.getElementById('tnav-cta');
 
     // If any core node is missing (widget duplicated/renamed, markup
     // partially stripped, etc.) bail out instead of throwing — a thrown
@@ -820,6 +821,21 @@ html { scroll-behavior: smooth; }
         flipHint.innerHTML = cardInner.classList.contains('flipped')
           ? '&#8635; &nbsp;tap to flip back'
           : '&#8635; &nbsp;tap for glossary';
+      });
+    }
+
+    // "Talk to our team" scrolls to the bottom of whatever page this hero
+    // is embedded on, rather than depending on a specific #contact anchor
+    // existing elsewhere on the page.
+    if (cta) {
+      cta.addEventListener('click', function(e) {
+        e.preventDefault();
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          left: 0,
+          behavior: reduceMotion ? 'auto' : 'smooth'
+        });
       });
     }
 
