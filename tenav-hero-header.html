@@ -242,6 +242,21 @@ html { scroll-behavior: smooth; }
 #tnav-block .tnav-col--left  .tnav-col-head { animation: tnav-fromLeft  0.5s ease forwards 0.30s; }
 #tnav-block .tnav-col--right .tnav-col-head { animation: tnav-fromRight 0.5s ease forwards 0.55s; }
 
+/* Row entrance animations live entirely in CSS (not assigned via JS) so
+   the list content is always visible even if the <script> below never
+   runs — e.g. delayed/blocked by a caching or "delay JS" plugin on the
+   live page, which doesn't apply inside the Elementor editor canvas. */
+#tnav-block .tnav-col--left  .tnav-item:nth-of-type(1) { animation: tnav-itemFromLeft  0.4s ease forwards 0.360s; }
+#tnav-block .tnav-col--left  .tnav-item:nth-of-type(2) { animation: tnav-itemFromLeft  0.4s ease forwards 0.455s; }
+#tnav-block .tnav-col--left  .tnav-item:nth-of-type(3) { animation: tnav-itemFromLeft  0.4s ease forwards 0.550s; }
+#tnav-block .tnav-col--left  .tnav-item:nth-of-type(4) { animation: tnav-itemFromLeft  0.4s ease forwards 0.645s; }
+#tnav-block .tnav-col--left  .tnav-item:nth-of-type(5) { animation: tnav-itemFromLeft  0.4s ease forwards 0.740s; }
+#tnav-block .tnav-col--right .tnav-item:nth-of-type(1) { animation: tnav-itemFromRight 0.4s ease forwards 0.580s; }
+#tnav-block .tnav-col--right .tnav-item:nth-of-type(2) { animation: tnav-itemFromRight 0.4s ease forwards 0.675s; }
+#tnav-block .tnav-col--right .tnav-item:nth-of-type(3) { animation: tnav-itemFromRight 0.4s ease forwards 0.770s; }
+#tnav-block .tnav-col--right .tnav-item:nth-of-type(4) { animation: tnav-itemFromRight 0.4s ease forwards 0.865s; }
+#tnav-block .tnav-col--right .tnav-item:nth-of-type(5) { animation: tnav-itemFromRight 0.4s ease forwards 0.960s; }
+
 #tnav-block .tnav-item {
   display: flex;
   align-items: flex-start;
@@ -693,13 +708,6 @@ html { scroll-behavior: smooth; }
     // error here would otherwise silently prevent every listener below
     // from ever being attached.
     if (!block || !diagram || !centerWrap || !linesSvg) return;
-
-    for (var i = 0; i < 5; i++) {
-      var li = document.getElementById('tnav-li' + i);
-      var ri = document.getElementById('tnav-ri' + i);
-      if (li) li.style.animation = 'tnav-itemFromLeft 0.4s ease forwards ' + (0.36 + i * 0.095) + 's';
-      if (ri) ri.style.animation = 'tnav-itemFromRight 0.4s ease forwards ' + (0.58 + i * 0.095) + 's';
-    }
 
     function computeDs() {
       var dR = diagram.getBoundingClientRect();
