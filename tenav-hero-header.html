@@ -243,7 +243,7 @@ html { scroll-behavior: smooth; }
 #tnav-block .tnav-col--right .tnav-col-head { animation: tnav-fromRight 0.5s ease forwards 0.55s; }
 
 /* Row entrance animations live entirely in CSS (not assigned via JS) so
-   the list content is always visible even if the <script> below never
+   the list content is always visible even if the script below never
    runs — e.g. delayed/blocked by a caching or "delay JS" plugin on the
    live page, which doesn't apply inside the Elementor editor canvas. */
 #tnav-block .tnav-col--left  .tnav-item:nth-of-type(1) { animation: tnav-itemFromLeft  0.4s ease forwards 0.360s; }
@@ -681,7 +681,7 @@ html { scroll-behavior: smooth; }
 
   // Run once the DOM is actually parsed. Elementor's HTML widget, caching
   // plugins (Autoptimize/WP Rocket/LiteSpeed), and asset optimizers can all
-  // relocate or delay inline <script> tags, so this must not assume it runs
+  // relocate or delay inline scripts, so this must not assume it runs
   // synchronously right after the markup above.
   function ready(fn) {
     if (document.readyState !== 'loading') fn();
