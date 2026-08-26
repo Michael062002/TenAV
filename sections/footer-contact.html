@@ -166,15 +166,9 @@
     flex:1 1 auto;
     gap:12px;
     min-width:0;
-    transition:opacity 320ms ease, transform 320ms ease;
   }
 
   .tenav-form__submit{ margin-top:auto; }
-
-  .tenav-form.is-leaving{
-    opacity:0;
-    transform:translateY(-12px) scale(.98);
-  }
 
   .tenav-field{ position:relative; min-width:0; }
 
@@ -231,44 +225,6 @@
     margin:0 0 20px;
   }
 
-  /* ---------- Success state ---------- */
-  .tenav-success{
-    display:none;
-    text-align:center;
-    padding:14px 4px 4px;
-    opacity:0;
-    transform:translateY(10px) scale(.97);
-    transition:opacity 420ms ease, transform 420ms ease;
-  }
-
-  .tenav-success.is-visible{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-
-  .tenav-success__title{
-    font-size:20px;
-    font-weight:700;
-    color:var(--tenav-navy);
-    margin:0 0 10px;
-  }
-
-  .tenav-success__text{
-    font-size:14px;
-    line-height:1.65;
-    color:var(--tenav-grey);
-    margin:0 0 10px;
-  }
-
-  .tenav-success__text strong{ color:var(--tenav-ink); }
-
-  .tenav-success__phone{
-    color:var(--tenav-blue);
-    font-weight:600;
-    text-decoration:none;
-  }
-  .tenav-success__phone:hover{ text-decoration:underline; }
-
   /* ---------- Trust signals ---------- */
   .tenav-trust{
     margin-top:48px;
@@ -309,7 +265,7 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .tenav-card, .tenav-btn, .tenav-form, .tenav-success{
+    .tenav-card, .tenav-btn{
       transition:none !important;
       animation:none !important;
     }
@@ -354,38 +310,47 @@
         <p class="tenav-card__text">Tell us a little about your project and we'll be in touch.</p>
         <p class="tenav-form__note--top">We typically respond within 2 business hours.</p>
 
-        <form class="tenav-form" id="tenavForm" novalidate>
+        <form class="tenav-form" id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" novalidate>
+
+          <!-- Capsule CRM web-to-lead config — see https://capsulecrm.com -->
+          <input type="hidden" name="FORM_ID" value="2b64108f-88dd-4747-b8be-6568cb50801d">
+          <input type="hidden" name="COMPLETE_URL" value="https://tenav.co.uk/thank-you/">
+          <input type="hidden" name="TAG" value="Prospect">
+          <input type="hidden" name="TAG" value="Web lead">
+          <input type="hidden" name="DATE_FORMAT" value="dd/MM/yy">
+          <input type="hidden" name="CREATE_CHECK_TASK" value="true">
+          <input type="hidden" name="SEND" value="true">
+          <input type="hidden" name="REVIEW_ID" value="543199">
+          <input type="hidden" id="tenavFirstName" name="FIRST_NAME">
+          <input type="hidden" id="tenavLastName" name="LAST_NAME">
 
           <div class="tenav-field">
-            <input type="text" id="tenavName" name="fullName" placeholder="Full Name" aria-label="Full Name" autocomplete="name" required>
+            <input type="text" id="tenavName" placeholder="Full Name" aria-label="Full Name" autocomplete="name" required>
             <span class="tenav-field__error">Please enter your full name.</span>
           </div>
 
           <div class="tenav-field">
-            <input type="email" id="tenavEmail" name="email" placeholder="Email Address" aria-label="Email Address" autocomplete="email" required>
+            <input type="email" id="tenavEmail" name="EMAIL" placeholder="Email Address" aria-label="Email Address" autocomplete="email" required>
             <span class="tenav-field__error">Please enter a valid email address.</span>
           </div>
 
           <div class="tenav-field">
-            <input type="text" id="tenavCompany" name="company" placeholder="Company Name" aria-label="Company Name" autocomplete="organization" required>
+            <input type="tel" id="tenavPhone" name="PHONE" placeholder="Phone Number" aria-label="Phone Number" autocomplete="tel" inputmode="tel" required>
+            <span class="tenav-field__error">Please enter a valid phone number.</span>
+          </div>
+
+          <div class="tenav-field">
+            <input type="text" id="tenavCompany" name="ORGANISATION_NAME" placeholder="Company Name" aria-label="Company Name" autocomplete="organization" required>
             <span class="tenav-field__error">Please enter your company name.</span>
           </div>
 
           <div class="tenav-field">
-            <textarea id="tenavMessage" name="message" placeholder="Tell us about your project..." aria-label="Tell us about your project" rows="2" required></textarea>
+            <textarea id="tenavMessage" name="NOTE" placeholder="Tell us about your project..." aria-label="Tell us about your project" rows="2" required></textarea>
             <span class="tenav-field__error">Please tell us a little about your project.</span>
           </div>
 
           <button type="submit" class="tenav-btn tenav-btn--primary tenav-form__submit" id="tenavSubmit">Let's Chat</button>
         </form>
-
-        <div class="tenav-success" id="tenavSuccess" role="status" aria-live="polite">
-          <h3 class="tenav-success__title">Thank You</h3>
-          <p class="tenav-success__text">Your enquiry has been successfully received.</p>
-          <p class="tenav-success__text">A dedicated account manager will review your request and contact you as soon as possible. We aim to respond within <strong>2 business hours</strong> and no later than one working day.</p>
-          <p class="tenav-success__text">If your enquiry is urgent, please call us on <a class="tenav-success__phone" href="tel:+442033977360">020 3397 7360</a>.</p>
-          <p class="tenav-success__text">We look forward to speaking with you.</p>
-        </div>
       </div>
 
     </div>
@@ -404,7 +369,7 @@
 <script>
 (function(){
   var form = document.getElementById('tenavForm');
-  var success = document.getElementById('tenavSuccess');
+  var submitBtn = document.getElementById('tenavSubmit');
   var messageField = document.getElementById('tenavMessage');
 
   // Auto-expand textarea (starts ~2 rows, grows with content)
@@ -416,6 +381,7 @@
   autoExpand(messageField);
 
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var phonePattern = /^\+?[0-9\s]{7,20}$/;
 
   function fieldWrap(el){ return el.closest('.tenav-field'); }
 
@@ -425,6 +391,7 @@
 
     if (!value) valid = false;
     if (valid && el.type === 'email' && !emailPattern.test(value)) valid = false;
+    if (valid && el.type === 'tel' && !phonePattern.test(value)) valid = false;
 
     var wrap = fieldWrap(el);
     if (valid) {
@@ -435,7 +402,11 @@
     return valid;
   }
 
-  Array.prototype.forEach.call(form.querySelectorAll('input, textarea'), function(el){
+  // Only the visible, wrapped fields are validated — Capsule's hidden
+  // config inputs (FORM_ID, TAG, etc.) live outside .tenav-field.
+  var fields = form.querySelectorAll('.tenav-field input, .tenav-field textarea');
+
+  Array.prototype.forEach.call(fields, function(el){
     el.addEventListener('blur', function(){ validateField(el); });
     el.addEventListener('input', function(){
       if (fieldWrap(el).classList.contains('has-error')) validateField(el);
@@ -443,41 +414,27 @@
   });
 
   form.addEventListener('submit', function(e){
-    e.preventDefault();
-
-    var fields = form.querySelectorAll('input, textarea');
     var allValid = true;
     Array.prototype.forEach.call(fields, function(el){
       if (!validateField(el)) allValid = false;
     });
 
     if (!allValid) {
+      e.preventDefault();
       var firstError = form.querySelector('.has-error input, .has-error textarea');
       if (firstError) firstError.focus();
       return;
     }
 
-    // Full name → split into first / surname for backend submission
+    // Full name → split into Capsule's separate FIRST_NAME / LAST_NAME fields
     var fullName = document.getElementById('tenavName').value.trim().split(/\s+/);
-    var payload = {
-      firstName: fullName[0] || '',
-      lastName: fullName.slice(1).join(' ') || '',
-      email: document.getElementById('tenavEmail').value.trim(),
-      company: document.getElementById('tenavCompany').value.trim(),
-      message: messageField.value.trim()
-    };
+    document.getElementById('tenavFirstName').value = fullName[0] || '';
+    document.getElementById('tenavLastName').value = fullName.slice(1).join(' ') || fullName[0] || '';
 
-    // TODO: replace with real submission (fetch/AJAX) to backend endpoint.
-    // fetch('/api/enquiry', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-
-    form.classList.add('is-leaving');
-    setTimeout(function(){
-      form.style.display = 'none';
-      success.style.display = 'block';
-      requestAnimationFrame(function(){
-        success.classList.add('is-visible');
-      });
-    }, 320);
+    // Validation passed — let the browser submit for real to Capsule CRM
+    // (service.capsulecrm.com), which redirects to COMPLETE_URL on success.
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
   });
 })();
 </script>
