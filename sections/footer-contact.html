@@ -54,7 +54,7 @@
     display:grid;
     grid-template-columns:repeat(3, minmax(0, 1fr));
     gap:24px;
-    align-items:start;
+    align-items:stretch;
   }
 
   .tenav-card{
@@ -66,10 +66,13 @@
     transition:transform var(--tenav-transition), box-shadow var(--tenav-transition), border-color var(--tenav-transition);
     display:flex;
     flex-direction:column;
+    justify-content:center;
     position:relative;
     overflow:hidden;
     min-width:0;
   }
+
+  .tenav-card--form{ justify-content:flex-start; }
 
   .tenav-card::before{
     content:"";
@@ -151,7 +154,7 @@
     margin:0 0 26px;
   }
 
-  .tenav-card__spacer{ flex-grow:1; min-height:24px; }
+  .tenav-card__spacer{ height:24px; }
 
   .tenav-btn{
     appearance:none;
