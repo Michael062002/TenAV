@@ -19,19 +19,17 @@
      ============================================================ */
 
   :root{
-    --tenav-navy-dark:#1f2266;
     --tenav-navy:#2e3192;
     --tenav-blue:#4d51d8;
-    --tenav-blue-light:#eef0fd;
+    --tenav-cta:#29abe2;
+    --tenav-cta-dark:#1f8fc0;
     --tenav-ink:#1c1d3d;
     --tenav-grey:#5c5f7a;
     --tenav-grey-light:#8386a3;
     --tenav-border:#e6e7f2;
     --tenav-success:#1fa96b;
     --tenav-radius-lg:20px;
-    --tenav-radius-md:14px;
     --tenav-radius-sm:10px;
-    --tenav-shadow-hover:0 18px 40px rgba(31,34,102,0.14);
     --tenav-transition:220ms cubic-bezier(.4,0,.2,1);
   }
 
@@ -61,9 +59,8 @@
     background:transparent;
     border:1px solid var(--tenav-border);
     border-radius:var(--tenav-radius-lg);
-    padding:36px 30px;
-    box-shadow:none;
-    transition:transform var(--tenav-transition), box-shadow var(--tenav-transition), border-color var(--tenav-transition);
+    padding:32px;
+    transition:transform var(--tenav-transition), border-color var(--tenav-transition);
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -79,16 +76,15 @@
     position:absolute;
     inset:0 0 auto 0;
     height:4px;
-    background:var(--tenav-navy);
+    background:var(--tenav-cta);
     transform:scaleX(0);
     transform-origin:left;
     transition:transform 320ms ease;
   }
 
   .tenav-card:hover{
-    transform:translateY(-6px);
-    box-shadow:var(--tenav-shadow-hover);
-    border-color:transparent;
+    transform:translateY(-4px);
+    border-color:var(--tenav-cta);
   }
 
   .tenav-card:hover::before{ transform:scaleX(1); }
@@ -101,10 +97,10 @@
   }
 
   .tenav-card__text{
-    font-size:14.5px;
-    line-height:1.65;
+    font-size:15px;
+    line-height:1.6;
     color:var(--tenav-grey);
-    margin:0 0 22px;
+    margin:0 0 20px;
     flex-grow:0;
   }
 
@@ -125,10 +121,10 @@
   .tenav-contact-link:hover{ color:var(--tenav-blue); }
 
   .tenav-card__meta{
-    font-size:13.5px;
+    font-size:14px;
     color:var(--tenav-grey-light);
     line-height:1.6;
-    margin:0 0 26px;
+    margin:0 0 24px;
   }
 
   .tenav-card__spacer{ height:24px; }
@@ -148,26 +144,21 @@
     font-weight:600;
     border-radius:var(--tenav-radius-sm);
     text-decoration:none;
-    transition:transform var(--tenav-transition), box-shadow var(--tenav-transition), background var(--tenav-transition);
+    transition:transform var(--tenav-transition), background var(--tenav-transition);
   }
 
   .tenav-btn--primary{
-    background:var(--tenav-navy);
+    background:var(--tenav-cta);
     color:#fff;
-    box-shadow:0 10px 24px rgba(46,49,146,0.28);
   }
 
   .tenav-btn--primary:hover{
-    transform:translateY(-3px);
-    background:var(--tenav-navy-dark);
-    box-shadow:0 16px 32px rgba(46,49,146,0.36);
+    background:var(--tenav-cta-dark);
   }
 
-  .tenav-btn--primary:active{ transform:translateY(-1px); }
+  .tenav-btn--primary:active{ transform:translateY(1px); }
 
   /* ---------- Form column ---------- */
-  .tenav-card--form{ padding-bottom:30px; }
-
   .tenav-form{
     display:flex;
     flex-direction:column;
@@ -187,7 +178,7 @@
   .tenav-field textarea{
     width:100%;
     font-family:inherit;
-    font-size:14.5px;
+    font-size:15px;
     color:var(--tenav-ink);
     background:#fbfbfe;
     border:1.5px solid var(--tenav-border);
@@ -230,13 +221,13 @@
 
   .tenav-field.has-error .tenav-field__error{ display:block; }
 
-  .tenav-form__submit{ margin-top:6px; }
+  .tenav-form__submit{ margin-top:8px; }
 
   .tenav-form__note{
-    font-size:11.5px;
+    font-size:12px;
     color:var(--tenav-grey-light);
     text-align:center;
-    margin:2px 0 0;
+    margin:4px 0 0;
   }
 
   /* ---------- Success state ---------- */
@@ -279,19 +270,19 @@
 
   /* ---------- Trust signals ---------- */
   .tenav-trust{
-    margin-top:56px;
-    padding-top:36px;
+    margin-top:48px;
+    padding-top:32px;
     border-top:1px solid var(--tenav-border);
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
-    gap:14px 40px;
+    gap:16px 40px;
   }
 
   .tenav-trust__item{
     display:flex;
     align-items:center;
-    gap:7px;
+    gap:8px;
     font-size:14px;
     font-weight:500;
     color:var(--tenav-grey);
@@ -312,7 +303,7 @@
   }
 
   @media (max-width: 480px){
-    .tenav-card{ padding:28px 22px; }
+    .tenav-card{ padding:24px; }
     .tenav-contact-link{ font-size:19px; }
   }
 
@@ -351,7 +342,7 @@
 
         <a class="tenav-contact-link" href="mailto:info@tenav.co.uk" style="font-size:17px;">info@tenav.co.uk</a>
 
-        <div class="tenav-card__spacer" style="margin-top:22px;"></div>
+        <div class="tenav-card__spacer"></div>
 
         <a class="tenav-btn tenav-btn--primary" href="mailto:info@tenav.co.uk">Send Email</a>
       </div>
