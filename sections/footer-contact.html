@@ -27,13 +27,10 @@
     --tenav-grey:#5c5f7a;
     --tenav-grey-light:#8386a3;
     --tenav-border:#e6e7f2;
-    --tenav-bg:#f6f7fb;
-    --tenav-white:#ffffff;
     --tenav-success:#1fa96b;
     --tenav-radius-lg:20px;
     --tenav-radius-md:14px;
     --tenav-radius-sm:10px;
-    --tenav-shadow:0 4px 18px rgba(31,34,102,0.06);
     --tenav-shadow-hover:0 18px 40px rgba(31,34,102,0.14);
     --tenav-transition:220ms cubic-bezier(.4,0,.2,1);
   }
@@ -42,52 +39,14 @@
 
   .tenav-contact{
     font-family:'Poppins', 'Segoe UI', Arial, sans-serif;
-    background:
-      radial-gradient(1100px 480px at 12% -10%, rgba(77,81,216,0.08), transparent 60%),
-      radial-gradient(900px 420px at 100% 0%, rgba(46,49,146,0.06), transparent 55%),
-      var(--tenav-bg);
+    background:transparent;
     color:var(--tenav-ink);
-    padding:88px 24px 64px;
+    padding:64px 24px;
   }
 
   .tenav-contact__container{
     max-width:1180px;
     margin:0 auto;
-  }
-
-  /* ---------- Header ---------- */
-  .tenav-contact__header{
-    text-align:center;
-    max-width:680px;
-    margin:0 auto 56px;
-  }
-
-  .tenav-contact__eyebrow{
-    display:inline-block;
-    font-size:13px;
-    font-weight:600;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:var(--tenav-blue);
-    background:var(--tenav-blue-light);
-    padding:6px 16px;
-    border-radius:999px;
-    margin-bottom:18px;
-  }
-
-  .tenav-contact__title{
-    font-size:clamp(32px, 4.5vw, 44px);
-    font-weight:700;
-    color:var(--tenav-navy);
-    margin:0 0 16px;
-    letter-spacing:-0.01em;
-  }
-
-  .tenav-contact__subtitle{
-    font-size:16px;
-    line-height:1.7;
-    color:var(--tenav-grey);
-    margin:0;
   }
 
   /* ---------- Grid ---------- */
@@ -99,11 +58,11 @@
   }
 
   .tenav-card{
-    background:var(--tenav-white);
+    background:transparent;
     border:1px solid var(--tenav-border);
     border-radius:var(--tenav-radius-lg);
     padding:36px 30px;
-    box-shadow:var(--tenav-shadow);
+    box-shadow:none;
     transition:transform var(--tenav-transition), box-shadow var(--tenav-transition), border-color var(--tenav-transition);
     display:flex;
     flex-direction:column;
@@ -409,8 +368,7 @@
     .tenav-contact__grid{
       grid-template-columns:minmax(0, 1fr);
     }
-    .tenav-contact{ padding:64px 20px 48px; }
-    .tenav-contact__header{ margin-bottom:40px; }
+    .tenav-contact{ padding:48px 20px; }
     .tenav-trust{ gap:12px 28px; }
   }
 
@@ -427,18 +385,10 @@
   }
 </style>
 </head>
-<body style="margin:0; background:#f6f7fb;">
+<body style="margin:0; background:transparent;">
 
-<section class="tenav-contact" id="contact">
+<section class="tenav-contact" id="contact" aria-label="Contact TenAV">
   <div class="tenav-contact__container">
-
-    <div class="tenav-contact__header">
-      <span class="tenav-contact__eyebrow">Get in touch</span>
-      <h2 class="tenav-contact__title">Let's Talk</h2>
-      <p class="tenav-contact__subtitle">
-        Whether you're planning a meeting room upgrade, digital signage project, LED video wall or workplace transformation, our team is here to help.
-      </p>
-    </div>
 
     <div class="tenav-contact__grid">
 
