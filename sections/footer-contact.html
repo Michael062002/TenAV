@@ -225,6 +225,46 @@
     margin:0 0 20px;
   }
 
+  /* ---------- Success state ---------- */
+  .tenav-success{
+    display:none;
+    flex:1 1 auto;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+    opacity:0;
+    transform:translateY(10px) scale(.97);
+    transition:opacity 420ms ease, transform 420ms ease;
+  }
+
+  .tenav-success.is-visible{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+
+  .tenav-success__title{
+    font-size:20px;
+    font-weight:700;
+    color:var(--tenav-navy);
+    margin:0 0 10px;
+  }
+
+  .tenav-success__text{
+    font-size:14px;
+    line-height:1.65;
+    color:var(--tenav-grey);
+    margin:0 0 10px;
+  }
+
+  .tenav-success__text strong{ color:var(--tenav-ink); }
+
+  .tenav-success__phone{
+    color:var(--tenav-blue);
+    font-weight:600;
+    text-decoration:none;
+  }
+  .tenav-success__phone:hover{ text-decoration:underline; }
+
   /* ---------- Trust signals ---------- */
   .tenav-trust{
     margin-top:48px;
@@ -265,7 +305,7 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .tenav-card, .tenav-btn{
+    .tenav-card, .tenav-btn, .tenav-success{
       transition:none !important;
       animation:none !important;
     }
@@ -310,7 +350,7 @@
         <p class="tenav-card__text">Tell us a little about your project and we'll be in touch.</p>
         <p class="tenav-form__note--top">We typically respond within 2 business hours.</p>
 
-        <form class="tenav-form" id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" novalidate>
+        <form class="tenav-form" id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" target="tenavCapsuleFrame" novalidate>
 
           <!-- Capsule CRM web-to-lead config — see https://capsulecrm.com -->
           <input type="hidden" name="FORM_ID" value="2b64108f-88dd-4747-b8be-6568cb50801d">
@@ -351,6 +391,18 @@
 
           <button type="submit" class="tenav-btn tenav-btn--primary tenav-form__submit" id="tenavSubmit">Let's Chat</button>
         </form>
+
+        <div class="tenav-success" id="tenavSuccess" role="status" aria-live="polite">
+          <h3 class="tenav-success__title">Thank You</h3>
+          <p class="tenav-success__text">Your enquiry has been successfully received.</p>
+          <p class="tenav-success__text">A dedicated account manager will review your request and contact you as soon as possible. We aim to respond within <strong>2 business hours</strong> and no later than one working day.</p>
+          <p class="tenav-success__text">If your enquiry is urgent, please call us on <a class="tenav-success__phone" href="tel:+442033977360">020 3397 7360</a>.</p>
+          <p class="tenav-success__text">We look forward to speaking with you.</p>
+        </div>
+
+        <!-- Submits into this invisible frame so Capsule's redirect happens
+             in the background and the visitor never leaves this page. -->
+        <iframe name="tenavCapsuleFrame" id="tenavCapsuleFrame" title="Form submission" style="display:none" aria-hidden="true"></iframe>
       </div>
 
     </div>
@@ -371,6 +423,9 @@
   var form = document.getElementById('tenavForm');
   var submitBtn = document.getElementById('tenavSubmit');
   var messageField = document.getElementById('tenavMessage');
+  var successPanel = document.getElementById('tenavSuccess');
+  var targetFrame = document.getElementById('tenavCapsuleFrame');
+  var awaitingSubmit = false;
 
   // Auto-expand textarea (starts ~2 rows, grows with content)
   function autoExpand(el){
@@ -432,9 +487,25 @@
     document.getElementById('tenavLastName').value = fullName.slice(1).join(' ') || fullName[0] || '';
 
     // Validation passed — let the browser submit for real to Capsule CRM
-    // (service.capsulecrm.com), which redirects to COMPLETE_URL on success.
+    // (service.capsulecrm.com), into the hidden iframe so the visitor stays
+    // on this page. Capsule redirects to COMPLETE_URL on success, which
+    // fires the iframe's load event below once that round trip completes.
+    awaitingSubmit = true;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
+  });
+
+  // Fires once when the hidden frame finishes loading Capsule's redirect
+  // target — ignored on initial page load since awaitingSubmit starts false.
+  targetFrame.addEventListener('load', function(){
+    if (!awaitingSubmit) return;
+    awaitingSubmit = false;
+
+    form.style.display = 'none';
+    successPanel.style.display = 'flex';
+    requestAnimationFrame(function(){
+      successPanel.classList.add('is-visible');
+    });
   });
 })();
 </script>
