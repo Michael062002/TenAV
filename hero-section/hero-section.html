@@ -1,11 +1,19 @@
 <!--noptimize-->
+<!-- The theme's own Poppins enqueue is 404ing (confirmed in console: the
+     700-weight file isn't being served), so the font is loaded directly
+     here via <link>, not the CSS @import an optimiser could mangle. If
+     the theme's Poppins load is fixed later, this link is harmless and
+     can stay — the browser just reuses its own cached copy. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style data-no-optimize="1" data-noptimize="1">
-/* Poppins is loaded by the theme. No @import here on purpose:
+/* Poppins is now loaded directly above via <link> (the theme's own
+   enqueue was 404ing on the 700 weight). No @import here on purpose:
    an @import inside an inline <style> in the body is mishandled by
    CSS optimisers (Remove Unused CSS / Combine CSS / Optimize CSS
    Delivery) and can take the rest of the page's stylesheets down
-   with it. If Poppins ever stops rendering, enqueue it in the
-   theme rather than importing it here. */
+   with it. */
 
 /* ═══════════════════════════════════════════════
    HERO WRAPPER  —  scoped to #tnav-hero
