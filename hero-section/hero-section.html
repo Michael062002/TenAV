@@ -20,6 +20,18 @@
 #tnav-hero {
   display: block;
   width: 100%;
+  min-width: 0;
+  /* Elementor's flexbox Container element gives child widgets
+     Width:Auto (fit-content) unless the widget is explicitly set to
+     100%/Grow in its Layout settings. If that setting is missed, this
+     block sits inside a shrink-wrapped flex item and container-type
+     below measures that shrunk width instead of the real available
+     space, making the whole hero render cramped. flex/align-self here
+     are a no-op on a normal block parent (Section/Column or plain div)
+     and only take effect if the immediate parent IS a flex or grid
+     container, so they're safe insurance either way. */
+  flex: 1 1 auto;
+  align-self: stretch;
   container-type: inline-size;
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -85,11 +97,19 @@
 #tnav-hero .tnav-headline {
   font-size: clamp(1.6rem, 3.6cqi, 2.85rem);
   font-weight: 800;
-  line-height: 1.07;
+  /* !important on the three properties Elementor's Global Fonts feature
+     and most theme heading resets fight over (font-family, line-height,
+     margin) on this and .tnav-col-head — the component's own <h1>/<h2>
+     tags are otherwise easy for sitewide heading CSS to win against,
+     even at equal specificity, since many of those rules ship with
+     !important themselves. Safe here because it's scoped to two unique,
+     component-only headings, not a blanket override. */
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif !important;
+  line-height: 1.07 !important;
   letter-spacing: -0.025em;
   color: #ffffff;
   text-wrap: balance;
-  margin-bottom: clamp(0.85rem, 1.8cqi, 1.35rem);
+  margin: 0 0 clamp(0.85rem, 1.8cqi, 1.35rem) !important;
 }
 
 #tnav-hero .tnav-orange { color: #cb6715; }
@@ -246,9 +266,10 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--tnav-copper);
-  margin-bottom: clamp(1rem, 2.5cqi, 2rem);
+  margin: 0 0 clamp(1rem, 2.5cqi, 2rem) !important;
   opacity: 0;
-  font-family: var(--tnav-font);
+  font-family: var(--tnav-font) !important;
+  line-height: 1.3 !important;
 }
 #tnav-block .tnav-col--left  .tnav-col-head { animation: tnav-fromLeft  0.5s ease forwards 0.30s; }
 #tnav-block .tnav-col--right .tnav-col-head { animation: tnav-fromRight 0.5s ease forwards 0.55s; }
