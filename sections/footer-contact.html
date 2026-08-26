@@ -79,7 +79,7 @@
     position:absolute;
     inset:0 0 auto 0;
     height:4px;
-    background:linear-gradient(90deg, var(--tenav-navy), var(--tenav-blue));
+    background:var(--tenav-navy);
     transform:scaleX(0);
     transform-origin:left;
     transition:transform 320ms ease;
@@ -92,23 +92,6 @@
   }
 
   .tenav-card:hover::before{ transform:scaleX(1); }
-
-  .tenav-card__icon{
-    width:52px;
-    height:52px;
-    border-radius:14px;
-    background:linear-gradient(135deg, var(--tenav-navy), var(--tenav-blue));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-bottom:20px;
-    box-shadow:0 8px 20px rgba(46,49,146,0.25);
-    transition:transform var(--tenav-transition);
-  }
-
-  .tenav-card:hover .tenav-card__icon{ transform:scale(1.08) rotate(-4deg); }
-
-  .tenav-card__icon svg{ width:24px; height:24px; stroke:#fff; }
 
   .tenav-card__heading{
     font-size:20px;
@@ -141,12 +124,6 @@
 
   .tenav-contact-link:hover{ color:var(--tenav-blue); }
 
-  .tenav-contact-link svg{
-    width:18px; height:18px;
-    stroke:var(--tenav-blue);
-    flex-shrink:0;
-  }
-
   .tenav-card__meta{
     font-size:13.5px;
     color:var(--tenav-grey-light);
@@ -175,19 +152,18 @@
   }
 
   .tenav-btn--primary{
-    background:linear-gradient(135deg, var(--tenav-navy), var(--tenav-blue));
+    background:var(--tenav-navy);
     color:#fff;
     box-shadow:0 10px 24px rgba(46,49,146,0.28);
   }
 
   .tenav-btn--primary:hover{
     transform:translateY(-3px);
+    background:var(--tenav-navy-dark);
     box-shadow:0 16px 32px rgba(46,49,146,0.36);
   }
 
   .tenav-btn--primary:active{ transform:translateY(-1px); }
-
-  .tenav-btn svg{ width:17px; height:17px; stroke:currentColor; }
 
   /* ---------- Form column ---------- */
   .tenav-card--form{ padding-bottom:30px; }
@@ -265,6 +241,7 @@
 
   /* ---------- Success state ---------- */
   .tenav-success{
+    display:none;
     text-align:center;
     padding:14px 4px 4px;
     opacity:0;
@@ -276,46 +253,6 @@
     opacity:1;
     transform:translateY(0) scale(1);
   }
-
-  .tenav-success__check{
-    width:64px;
-    height:64px;
-    margin:0 auto 18px;
-    border-radius:50%;
-    background:rgba(31,169,107,0.12);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .tenav-success__check svg{ width:34px; height:34px; }
-
-  .tenav-success__check circle{
-    stroke:var(--tenav-success);
-    stroke-width:2;
-    fill:none;
-    stroke-dasharray:166;
-    stroke-dashoffset:166;
-  }
-
-  .tenav-success__check path{
-    stroke:var(--tenav-success);
-    stroke-width:3;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    fill:none;
-    stroke-dasharray:48;
-    stroke-dashoffset:48;
-  }
-
-  .tenav-success.is-visible .tenav-success__check circle{
-    animation:tenav-draw 520ms ease forwards .05s;
-  }
-  .tenav-success.is-visible .tenav-success__check path{
-    animation:tenav-draw 320ms ease forwards .55s;
-  }
-
-  @keyframes tenav-draw{ to{ stroke-dashoffset:0; } }
 
   .tenav-success__title{
     font-size:20px;
@@ -354,16 +291,15 @@
   .tenav-trust__item{
     display:flex;
     align-items:center;
-    gap:9px;
+    gap:7px;
     font-size:14px;
     font-weight:500;
     color:var(--tenav-grey);
   }
 
-  .tenav-trust__item svg{
-    width:18px; height:18px;
-    stroke:var(--tenav-success);
-    flex-shrink:0;
+  .tenav-trust__item .tenav-trust__check{
+    color:var(--tenav-success);
+    font-weight:700;
   }
 
   /* ---------- Responsive ---------- */
@@ -381,7 +317,7 @@
   }
 
   @media (prefers-reduced-motion: reduce){
-    .tenav-card, .tenav-btn, .tenav-form, .tenav-success, .tenav-card__icon{
+    .tenav-card, .tenav-btn, .tenav-form, .tenav-success{
       transition:none !important;
       animation:none !important;
     }
@@ -397,45 +333,27 @@
 
       <!-- Column 1: Call Us -->
       <div class="tenav-card tenav-card--call">
-        <div class="tenav-card__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        </div>
         <h3 class="tenav-card__heading">Speak to an AV Specialist</h3>
         <p class="tenav-card__text">Need an answer quickly? Speak directly with a member of our team.</p>
 
-        <a class="tenav-contact-link" href="tel:+442033977360">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          020 3397 7360
-        </a>
+        <a class="tenav-contact-link" href="tel:+442033977360">020 3397 7360</a>
         <p class="tenav-card__meta">Monday to Friday<br>8:00am – 5:30pm</p>
 
         <div class="tenav-card__spacer"></div>
 
-        <a class="tenav-btn tenav-btn--primary" href="tel:+442033977360">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Call Now
-        </a>
+        <a class="tenav-btn tenav-btn--primary" href="tel:+442033977360">Call Now</a>
       </div>
 
       <!-- Column 2: Email Us -->
       <div class="tenav-card tenav-card--email">
-        <div class="tenav-card__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>
-        </div>
         <h3 class="tenav-card__heading">Prefer to Send an Email?</h3>
         <p class="tenav-card__text">Our team will ensure your enquiry reaches the right specialist.</p>
 
-        <a class="tenav-contact-link" href="mailto:info@tenav.co.uk" style="font-size:17px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>
-          info@tenav.co.uk
-        </a>
+        <a class="tenav-contact-link" href="mailto:info@tenav.co.uk" style="font-size:17px;">info@tenav.co.uk</a>
 
         <div class="tenav-card__spacer" style="margin-top:22px;"></div>
 
-        <a class="tenav-btn tenav-btn--primary" href="mailto:info@tenav.co.uk">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6z"/><path d="m22 6-10 7L2 6"/></svg>
-          Send Email
-        </a>
+        <a class="tenav-btn tenav-btn--primary" href="mailto:info@tenav.co.uk">Send Email</a>
       </div>
 
       <!-- Column 3: Contact Form -->
@@ -465,21 +383,12 @@
             <span class="tenav-field__error">Please tell us a little about your project.</span>
           </div>
 
-          <button type="submit" class="tenav-btn tenav-btn--primary tenav-form__submit" id="tenavSubmit">
-            <span>Let's Chat</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </button>
+          <button type="submit" class="tenav-btn tenav-btn--primary tenav-form__submit" id="tenavSubmit">Let's Chat</button>
 
           <p class="tenav-form__note">We typically respond within 2 business hours.</p>
         </form>
 
         <div class="tenav-success" id="tenavSuccess" role="status" aria-live="polite">
-          <div class="tenav-success__check">
-            <svg viewBox="0 0 52 52">
-              <circle cx="26" cy="26" r="23"/>
-              <path d="M15 27l7 7 16-16"/>
-            </svg>
-          </div>
           <h3 class="tenav-success__title">Thank You</h3>
           <p class="tenav-success__text">Your enquiry has been successfully received.</p>
           <p class="tenav-success__text">A dedicated account manager will review your request and contact you as soon as possible. We aim to respond within <strong>2 business hours</strong> and no later than one working day.</p>
@@ -492,22 +401,10 @@
 
     <!-- Trust signals -->
     <div class="tenav-trust">
-      <div class="tenav-trust__item">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        Established since 2003
-      </div>
-      <div class="tenav-trust__item">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        UK-wide coverage
-      </div>
-      <div class="tenav-trust__item">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        Certified engineers
-      </div>
-      <div class="tenav-trust__item">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        Support beyond handover
-      </div>
+      <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> Established since 2003</div>
+      <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> UK-wide coverage</div>
+      <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> Certified engineers</div>
+      <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> Support beyond handover</div>
     </div>
 
   </div>
@@ -585,7 +482,10 @@
     form.classList.add('is-leaving');
     setTimeout(function(){
       form.style.display = 'none';
-      success.classList.add('is-visible');
+      success.style.display = 'block';
+      requestAnimationFrame(function(){
+        success.classList.add('is-visible');
+      });
     }, 320);
   });
 })();
