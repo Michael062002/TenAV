@@ -50,9 +50,16 @@
   /* ---------- Grid ---------- */
   .tenav-contact__grid{
     display:grid;
-    grid-template-columns:repeat(3, minmax(0, 1fr));
+    grid-template-columns:minmax(0, 1fr) minmax(0, 2fr);
     gap:24px;
     align-items:stretch;
+  }
+
+  .tenav-contact__stack{
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    min-width:0;
   }
 
   .tenav-card{
@@ -166,6 +173,12 @@
     flex:1 1 auto;
     gap:12px;
     min-width:0;
+  }
+
+  .tenav-form__grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:12px;
   }
 
   .tenav-form__submit{ margin-top:auto; }
@@ -319,32 +332,35 @@
 
     <div class="tenav-contact__grid">
 
-      <!-- Column 1: Call Us -->
-      <div class="tenav-card tenav-card--call">
-        <h3 class="tenav-card__heading">Speak to Our Team</h3>
-        <p class="tenav-card__text">Need an answer quickly? Speak directly with a member of our team.</p>
+      <!-- Column 1: Call Us + Email Us, stacked -->
+      <div class="tenav-contact__stack">
 
-        <a class="tenav-contact-link" href="tel:+442033977360">020 3397 7360</a>
-        <p class="tenav-card__meta">Monday to Friday<br>8:00am – 5:30pm</p>
+        <div class="tenav-card tenav-card--call">
+          <h3 class="tenav-card__heading">Speak to Our Team</h3>
+          <p class="tenav-card__text">Need an answer quickly? Speak directly with a member of our team.</p>
 
-        <div class="tenav-card__spacer"></div>
+          <a class="tenav-contact-link" href="tel:+442033977360">020 3397 7360</a>
+          <p class="tenav-card__meta">Monday to Friday<br>8:00am – 5:30pm</p>
 
-        <a class="tenav-btn tenav-btn--primary" href="tel:+442033977360">Call Now</a>
+          <div class="tenav-card__spacer"></div>
+
+          <a class="tenav-btn tenav-btn--primary" href="tel:+442033977360">Call Now</a>
+        </div>
+
+        <div class="tenav-card tenav-card--email">
+          <h3 class="tenav-card__heading">Prefer to Send an Email?</h3>
+          <p class="tenav-card__text">Our team will ensure your enquiry reaches the right specialist.</p>
+
+          <a class="tenav-contact-link" href="mailto:info@tenav.co.uk" style="font-size:17px;">info@tenav.co.uk</a>
+
+          <div class="tenav-card__spacer"></div>
+
+          <a class="tenav-btn tenav-btn--primary" href="mailto:info@tenav.co.uk">Send Email</a>
+        </div>
+
       </div>
 
-      <!-- Column 2: Email Us -->
-      <div class="tenav-card tenav-card--email">
-        <h3 class="tenav-card__heading">Prefer to Send an Email?</h3>
-        <p class="tenav-card__text">Our team will ensure your enquiry reaches the right specialist.</p>
-
-        <a class="tenav-contact-link" href="mailto:info@tenav.co.uk" style="font-size:17px;">info@tenav.co.uk</a>
-
-        <div class="tenav-card__spacer"></div>
-
-        <a class="tenav-btn tenav-btn--primary" href="mailto:info@tenav.co.uk">Send Email</a>
-      </div>
-
-      <!-- Column 3: Contact Form -->
+      <!-- Column 2: Contact Form (double width) -->
       <div class="tenav-card tenav-card--form">
         <h3 class="tenav-card__heading">Request a Callback</h3>
         <p class="tenav-card__text">Tell us a little about your project and we'll be in touch.</p>
@@ -364,24 +380,26 @@
           <input type="hidden" id="tenavFirstName" name="FIRST_NAME">
           <input type="hidden" id="tenavLastName" name="LAST_NAME">
 
-          <div class="tenav-field">
-            <input type="text" id="tenavName" placeholder="Full Name" aria-label="Full Name" autocomplete="name" required>
-            <span class="tenav-field__error">Please enter your full name.</span>
-          </div>
+          <div class="tenav-form__grid">
+            <div class="tenav-field">
+              <input type="text" id="tenavName" placeholder="Full Name" aria-label="Full Name" autocomplete="name" required>
+              <span class="tenav-field__error">Please enter your full name.</span>
+            </div>
 
-          <div class="tenav-field">
-            <input type="email" id="tenavEmail" name="EMAIL" placeholder="Email Address" aria-label="Email Address" autocomplete="email" required>
-            <span class="tenav-field__error">Please enter a valid email address.</span>
-          </div>
+            <div class="tenav-field">
+              <input type="email" id="tenavEmail" name="EMAIL" placeholder="Email Address" aria-label="Email Address" autocomplete="email" required>
+              <span class="tenav-field__error">Please enter a valid email address.</span>
+            </div>
 
-          <div class="tenav-field">
-            <input type="tel" id="tenavPhone" name="PHONE" placeholder="Phone Number" aria-label="Phone Number" autocomplete="tel" inputmode="tel" required>
-            <span class="tenav-field__error">Please enter a valid phone number.</span>
-          </div>
+            <div class="tenav-field">
+              <input type="tel" id="tenavPhone" name="PHONE" placeholder="Phone Number" aria-label="Phone Number" autocomplete="tel" inputmode="tel" required>
+              <span class="tenav-field__error">Please enter a valid phone number.</span>
+            </div>
 
-          <div class="tenav-field">
-            <input type="text" id="tenavCompany" name="ORGANISATION_NAME" placeholder="Company Name" aria-label="Company Name" autocomplete="organization" required>
-            <span class="tenav-field__error">Please enter your company name.</span>
+            <div class="tenav-field">
+              <input type="text" id="tenavCompany" name="ORGANISATION_NAME" placeholder="Company Name" aria-label="Company Name" autocomplete="organization" required>
+              <span class="tenav-field__error">Please enter your company name.</span>
+            </div>
           </div>
 
           <div class="tenav-field">
