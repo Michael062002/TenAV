@@ -1,30 +1,8 @@
-<!-- ================================================================
-     TenAV — "Let's Talk" footer contact section
-     Pure HTML / CSS / JS, no external libraries besides the Poppins
-     webfont. This ENTIRE file — as-is, top to bottom — is the embed
-     code: paste it directly into an Elementor "HTML" widget (or any
-     raw-code block on any page builder/CMS).
-
-     Do NOT wrap this in <html>/<head>/<body>/<!DOCTYPE> tags, and do
-     not nest it inside another document — those tags are invalid
-     mid-page and browsers will silently merge/relocate them in ways
-     that can alter the REST of the host page (this bit us once
-     already: an inline style on a duplicate <body> tag was resetting
-     the real page's margin and background). Every selector below is
-     scoped under .tenav-contact so nothing here can leak out and
-     affect the rest of the page, however it's embedded.
-     ================================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Loaded non-render-blocking: a slow/unreachable font host must never delay the
-     page's own script (a stylesheet before a script normally blocks its execution). -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"></noscript>
 <style>
-  /* Custom properties live on .tenav-contact itself, not :root —
-     :root is the page's <html> element, and a bare `*` box-sizing
-     rule (removed below) would leak the same way. Nothing in this
-     stylesheet touches anything outside .tenav-contact. */
   .tenav-contact{
     --tenav-navy:#2e3192;
     --tenav-blue:#4d51d8;
@@ -57,7 +35,6 @@
     padding:0 !important;
   }
 
-  /* ---------- Grid ---------- */
   .tenav-contact__grid{
     display:grid;
     grid-template-columns:minmax(0, 1fr) minmax(0, 2fr);
@@ -98,12 +75,6 @@
 
   .tenav-card:hover::before{ transform:scaleX(1); }
 
-  /* Headings/paragraphs below carry !important on spacing and size:
-     once embedded in a WordPress/Elementor page, the host theme's own
-     global typography settings commonly target bare h1-h6/p elements
-     with enough specificity (or !important of their own) to override
-     plain class rules, breaking the vertical rhythm this design relies
-     on — margins/sizes here are load-bearing, not just cosmetic. */
   .tenav-card__heading{
     font-size:20px !important;
     line-height:1.3 !important;
@@ -122,7 +93,6 @@
     flex-grow:0;
   }
 
-  /* ---------- Call / Email columns ---------- */
   .tenav-contact-link{
     display:inline-flex;
     align-items:center;
@@ -147,11 +117,6 @@
 
   .tenav-card__spacer{ height:24px !important; }
 
-  /* A plain div, not <hr> — many CMS/page-builder themes carry a
-     global reset or content filter that strips or restyles <hr>
-     specifically, which is unpredictable once this is embedded in a
-     host page we don't control. !important guards against the host
-     theme's own resets overriding this element's spacing. */
   .tenav-contact__divider{
     height:1px !important;
     background:var(--tenav-border) !important;
@@ -192,7 +157,6 @@
 
   .tenav-btn--primary:active{ transform:translateY(1px); }
 
-  /* ---------- Form column ---------- */
   .tenav-form{
     display:flex;
     flex-direction:column;
@@ -267,7 +231,6 @@
     margin:0 0 20px !important;
   }
 
-  /* ---------- Success state ---------- */
   .tenav-success{
     display:none;
     flex:1 1 auto;
@@ -307,7 +270,6 @@
   }
   .tenav-success__phone:hover{ text-decoration:underline; }
 
-  /* ---------- Trust signals ---------- */
   .tenav-trust{
     margin:48px 0 0 !important;
     padding:32px 0 0 !important;
@@ -334,9 +296,6 @@
     font-weight:700;
   }
 
-  /* ---------- Responsive ---------- */
-  /* Below this, a 1:2 column split would squeeze the left card
-     under ~340px — switch to a full-width single column instead. */
   @media (max-width: 1100px){
     .tenav-contact__grid{
       grid-template-columns:minmax(0, 1fr);
@@ -366,7 +325,6 @@
 
     <div class="tenav-contact__grid">
 
-      <!-- Column 1: Call Us + Email Us, one card -->
       <div class="tenav-card tenav-card--contact">
 
         <h3 class="tenav-card__heading">Speak to Our Team</h3>
@@ -392,7 +350,6 @@
 
       </div>
 
-      <!-- Column 2: Contact Form (double width) -->
       <div class="tenav-card tenav-card--form">
         <h3 class="tenav-card__heading">Request a Callback</h3>
         <p class="tenav-card__text">Tell us a little about your project and we'll be in touch.</p>
@@ -400,7 +357,6 @@
 
         <form class="tenav-form" id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" target="tenavCapsuleFrame" novalidate>
 
-          <!-- Capsule CRM web-to-lead config — see https://capsulecrm.com -->
           <input type="hidden" name="FORM_ID" value="2b64108f-88dd-4747-b8be-6568cb50801d">
           <input type="hidden" name="COMPLETE_URL" value="https://tenav.co.uk/thank-you/">
           <input type="hidden" name="TAG" value="Prospect">
@@ -450,14 +406,11 @@
           <p class="tenav-success__text">We look forward to speaking with you.</p>
         </div>
 
-        <!-- Submits into this invisible frame so Capsule's redirect happens
-             in the background and the visitor never leaves this page. -->
         <iframe name="tenavCapsuleFrame" id="tenavCapsuleFrame" title="Form submission" style="display:none" aria-hidden="true"></iframe>
       </div>
 
     </div>
 
-    <!-- Trust signals -->
     <div class="tenav-trust">
       <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> Established since 2003</div>
       <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> UK-wide coverage</div>
