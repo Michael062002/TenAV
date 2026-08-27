@@ -55,13 +55,6 @@
     align-items:stretch;
   }
 
-  .tenav-contact__stack{
-    display:flex;
-    flex-direction:column;
-    gap:24px;
-    min-width:0;
-  }
-
   .tenav-card{
     background:transparent;
     border:1px solid var(--tenav-border);
@@ -135,7 +128,13 @@
     margin:0 0 24px;
   }
 
-  .tenav-card__spacer{ flex:1 1 auto; min-height:24px; }
+  .tenav-card__spacer{ height:24px; }
+
+  .tenav-contact__divider{
+    border:none;
+    border-top:1px solid var(--tenav-border);
+    margin:32px 0;
+  }
 
   .tenav-btn{
     appearance:none;
@@ -332,31 +331,29 @@
 
     <div class="tenav-contact__grid">
 
-      <!-- Column 1: Call Us + Email Us, stacked -->
-      <div class="tenav-contact__stack">
+      <!-- Column 1: Call Us + Email Us, one card -->
+      <div class="tenav-card tenav-card--contact">
 
-        <div class="tenav-card tenav-card--call">
-          <h3 class="tenav-card__heading">Speak to Our Team</h3>
-          <p class="tenav-card__text">Need an answer quickly? Speak directly with a member of our team.</p>
+        <h3 class="tenav-card__heading">Speak to Our Team</h3>
+        <p class="tenav-card__text">Need an answer quickly? Speak directly with a member of our team.</p>
 
-          <a class="tenav-contact-link" href="tel:+442033977360">020 3397 7360</a>
-          <p class="tenav-card__meta">Monday to Friday<br>8:00am – 5:30pm</p>
+        <a class="tenav-contact-link" href="tel:+442033977360">020 3397 7360</a>
+        <p class="tenav-card__meta">Monday to Friday<br>8:00am – 5:30pm</p>
 
-          <div class="tenav-card__spacer"></div>
+        <div class="tenav-card__spacer"></div>
 
-          <a class="tenav-btn tenav-btn--primary" href="tel:+442033977360">Call Now</a>
-        </div>
+        <a class="tenav-btn tenav-btn--primary" href="tel:+442033977360">Call Now</a>
 
-        <div class="tenav-card tenav-card--email">
-          <h3 class="tenav-card__heading">Prefer to Send an Email?</h3>
-          <p class="tenav-card__text">Our team will ensure your enquiry reaches the right specialist.</p>
+        <hr class="tenav-contact__divider">
 
-          <a class="tenav-contact-link" href="mailto:info@tenav.co.uk" style="font-size:17px;">info@tenav.co.uk</a>
+        <h3 class="tenav-card__heading">Prefer to Send an Email?</h3>
+        <p class="tenav-card__text">Our team will ensure your enquiry reaches the right specialist.</p>
 
-          <div class="tenav-card__spacer"></div>
+        <a class="tenav-contact-link" href="mailto:info@tenav.co.uk" style="font-size:17px;">info@tenav.co.uk</a>
 
-          <a class="tenav-btn tenav-btn--primary" href="mailto:info@tenav.co.uk">Send Email</a>
-        </div>
+        <div class="tenav-card__spacer"></div>
+
+        <a class="tenav-btn tenav-btn--primary" href="mailto:info@tenav.co.uk">Send Email</a>
 
       </div>
 
