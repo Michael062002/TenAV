@@ -1,9 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TenAV — Let's Talk</title>
+<!-- ================================================================
+     TenAV — "Let's Talk" footer contact section
+     Pure HTML / CSS / JS, no external libraries besides the Poppins
+     webfont. This ENTIRE file — as-is, top to bottom — is the embed
+     code: paste it directly into an Elementor "HTML" widget (or any
+     raw-code block on any page builder/CMS).
+
+     Do NOT wrap this in <html>/<head>/<body>/<!DOCTYPE> tags, and do
+     not nest it inside another document — those tags are invalid
+     mid-page and browsers will silently merge/relocate them in ways
+     that can alter the REST of the host page (this bit us once
+     already: an inline style on a duplicate <body> tag was resetting
+     the real page's margin and background). Every selector below is
+     scoped under .tenav-contact so nothing here can leak out and
+     affect the rest of the page, however it's embedded.
+     ================================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Loaded non-render-blocking: a slow/unreachable font host must never delay the
@@ -11,14 +21,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"></noscript>
 <style>
-  /* ============================================================
-     TenAV — "Let's Talk" footer contact section
-     Pure HTML / CSS / JS, no external libraries besides the
-     Poppins webfont. Drop the <section class="tenav-contact">
-     block (and its styles/script) into any page.
-     ============================================================ */
-
-  :root{
+  /* Custom properties live on .tenav-contact itself, not :root —
+     :root is the page's <html> element, and a bare `*` box-sizing
+     rule (removed below) would leak the same way. Nothing in this
+     stylesheet touches anything outside .tenav-contact. */
+  .tenav-contact{
     --tenav-navy:#2e3192;
     --tenav-blue:#4d51d8;
     --tenav-cta:#29abe2;
@@ -33,7 +40,8 @@
     --tenav-transition:220ms cubic-bezier(.4,0,.2,1);
   }
 
-  *{ box-sizing:border-box; }
+  .tenav-contact,
+  .tenav-contact *{ box-sizing:border-box; }
 
   .tenav-contact{
     font-family:'Poppins', 'Segoe UI', Arial, sans-serif;
@@ -352,8 +360,6 @@
     }
   }
 </style>
-</head>
-<body style="margin:0; background:transparent;">
 
 <section class="tenav-contact" id="contact" aria-label="Contact TenAV">
   <div class="tenav-contact__container">
@@ -553,6 +559,3 @@
   });
 })();
 </script>
-
-</body>
-</html>
