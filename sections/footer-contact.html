@@ -2,360 +2,40 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"></noscript>
-<style>
-  .tenav-contact{
-    --tenav-navy:#2e3192;
-    --tenav-blue:#4d51d8;
-    --tenav-cta:#29abe2;
-    --tenav-cta-dark:#1f8fc0;
-    --tenav-ink:#1c1d3d;
-    --tenav-grey:#5c5f7a;
-    --tenav-grey-light:#8386a3;
-    --tenav-border:#e6e7f2;
-    --tenav-success:#1fa96b;
-    --tenav-radius-lg:20px;
-    --tenav-radius-sm:10px;
-    --tenav-transition:220ms cubic-bezier(.4,0,.2,1);
-  }
 
-  .tenav-contact,
-  .tenav-contact *{ box-sizing:border-box; }
+<section id="contact" aria-label="Contact TenAV" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;background:transparent;padding:64px 24px;box-sizing:border-box;">
+  <div style="max-width:1180px;margin:0 auto;box-sizing:border-box;">
 
-  .tenav-contact{
-    font-family:'Poppins', 'Segoe UI', Arial, sans-serif;
-    background:transparent;
-    color:var(--tenav-ink);
-    padding:64px 24px !important;
-    margin:0 !important;
-  }
+    <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:stretch;box-sizing:border-box;">
 
-  .tenav-contact__container{
-    max-width:1180px;
-    margin:0 auto !important;
-    padding:0 !important;
-  }
+      <div style="flex:1 1 320px;min-width:0;box-sizing:border-box;background:transparent;border:1px solid #e6e7f2;border-radius:20px;padding:32px;">
 
-  .tenav-contact__grid{
-    display:grid;
-    grid-template-columns:minmax(0, 1fr) minmax(0, 2fr);
-    gap:24px !important;
-    align-items:stretch;
-  }
+        <h3 style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:20px;line-height:1.3;font-weight:600;color:#2e3192;margin:0 0 8px;">Speak to Our Team</h3>
+        <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.6;color:#5c5f7a;margin:0 0 20px;">Need an answer quickly? Speak directly with a member of our team.</p>
 
-  .tenav-card{
-    background:transparent;
-    border:1px solid var(--tenav-border) !important;
-    border-radius:var(--tenav-radius-lg);
-    padding:32px !important;
-    margin:0 !important;
-    transition:transform var(--tenav-transition), border-color var(--tenav-transition);
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    position:relative;
-    overflow:hidden;
-    min-width:0;
-  }
+        <a href="tel:+442033977360" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:inline-block;font-size:22px;font-weight:700;color:#1c1d3d;text-decoration:none;margin:0 0 4px;">020 3397 7360</a>
+        <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;color:#8386a3;line-height:1.6;margin:0 0 24px;">Monday to Friday<br>8:00am – 5:30pm</p>
 
-  .tenav-card::before{
-    content:"";
-    position:absolute;
-    inset:0 0 auto 0;
-    height:4px;
-    background:var(--tenav-cta);
-    transform:scaleX(0);
-    transform-origin:left;
-    transition:transform 320ms ease;
-  }
+        <a href="tel:+442033977360" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;background:#29abe2;color:#ffffff;text-align:center;padding:14px 20px;font-size:15px;font-weight:600;border-radius:10px;text-decoration:none;">Call Now</a>
 
-  .tenav-card:hover{
-    transform:translateY(-4px);
-    border-color:var(--tenav-cta);
-  }
+        <div style="height:1px;background:#e6e7f2;margin:32px 0;"></div>
 
-  .tenav-card:hover::before{ transform:scaleX(1); }
+        <h3 style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:20px;line-height:1.3;font-weight:600;color:#2e3192;margin:0 0 8px;">Prefer to Send an Email?</h3>
+        <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.6;color:#5c5f7a;margin:0 0 20px;">Our team will ensure your enquiry reaches the right specialist.</p>
 
-  .tenav-card__heading{
-    font-size:20px !important;
-    line-height:1.3 !important;
-    font-weight:600 !important;
-    color:var(--tenav-navy);
-    margin:0 0 8px !important;
-    min-height:2.6em;
-  }
+        <a href="mailto:info@tenav.co.uk" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:inline-block;font-size:17px;font-weight:700;color:#1c1d3d;text-decoration:none;margin:0 0 24px;word-break:break-word;">info@tenav.co.uk</a>
 
-  .tenav-card__text{
-    font-size:15px !important;
-    line-height:1.6 !important;
-    color:var(--tenav-grey);
-    margin:0 0 20px !important;
-    min-height:3.2em;
-    flex-grow:0;
-  }
-
-  .tenav-contact-link{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    font-size:22px !important;
-    font-weight:700 !important;
-    color:var(--tenav-ink);
-    text-decoration:none;
-    margin:0 0 4px !important;
-    transition:color var(--tenav-transition);
-    word-break:break-word;
-  }
-
-  .tenav-contact-link:hover{ color:var(--tenav-blue); }
-
-  .tenav-card__meta{
-    font-size:14px !important;
-    color:var(--tenav-grey-light);
-    line-height:1.6 !important;
-    margin:0 0 24px !important;
-  }
-
-  .tenav-card__spacer{ height:24px !important; }
-
-  .tenav-contact__divider{
-    height:1px !important;
-    background:var(--tenav-border) !important;
-    border:0 !important;
-    margin:32px 0 !important;
-    padding:0 !important;
-    flex-shrink:0;
-  }
-
-  .tenav-btn{
-    appearance:none !important;
-    border:none !important;
-    cursor:pointer;
-    display:inline-flex !important;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-    width:100% !important;
-    padding:14px 20px !important;
-    margin:0 !important;
-    font-family:inherit !important;
-    font-size:15px !important;
-    font-weight:600 !important;
-    line-height:normal !important;
-    border-radius:var(--tenav-radius-sm);
-    text-decoration:none !important;
-    transition:transform var(--tenav-transition), background var(--tenav-transition);
-  }
-
-  .tenav-btn--primary{
-    background:var(--tenav-cta);
-    color:#fff;
-  }
-
-  .tenav-btn--primary:hover{
-    background:var(--tenav-cta-dark);
-  }
-
-  .tenav-btn--primary:active{ transform:translateY(1px); }
-
-  .tenav-form{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    min-width:0;
-  }
-
-  .tenav-form__grid{
-    display:grid;
-    grid-template-columns:repeat(2, minmax(0, 1fr));
-    gap:12px;
-  }
-
-  .tenav-field{ position:relative; min-width:0; margin:0 !important; }
-
-  .tenav-field input,
-  .tenav-field textarea{
-    display:block !important;
-    width:100% !important;
-    max-width:100% !important;
-    height:auto !important;
-    font-family:inherit !important;
-    font-size:15px !important;
-    line-height:normal !important;
-    color:var(--tenav-ink);
-    background:#fbfbfe;
-    border:1.5px solid var(--tenav-border) !important;
-    border-radius:var(--tenav-radius-sm);
-    padding:12px 14px !important;
-    margin:0 !important;
-    outline:none;
-    resize:none;
-    transition:border-color var(--tenav-transition), box-shadow var(--tenav-transition), background var(--tenav-transition);
-  }
-
-  .tenav-field textarea{
-    min-height:52px;
-    line-height:1.5 !important;
-    overflow:hidden;
-  }
-
-  .tenav-field input::placeholder,
-  .tenav-field textarea::placeholder{ color:var(--tenav-grey-light); }
-
-  .tenav-field input:focus,
-  .tenav-field textarea:focus{
-    border-color:var(--tenav-blue);
-    background:#fff;
-    box-shadow:0 0 0 4px rgba(77,81,216,0.12);
-  }
-
-  .tenav-field.has-error input,
-  .tenav-field.has-error textarea{
-    border-color:#e5484d;
-    background:#fff6f6;
-  }
-
-  .tenav-field__error{
-    display:none;
-    font-size:12px;
-    color:#e5484d;
-    margin-top:5px;
-    padding-left:2px;
-  }
-
-  .tenav-field.has-error .tenav-field__error{ display:block; }
-
-  .tenav-form__note--top{
-    font-size:12px !important;
-    color:var(--tenav-grey-light);
-    line-height:1.5 !important;
-    margin:0 0 20px !important;
-  }
-
-  .tenav-success{
-    display:none;
-    flex:1 1 auto;
-    flex-direction:column;
-    justify-content:center;
-    text-align:center;
-    opacity:0;
-    transform:translateY(10px) scale(.97);
-    transition:opacity 420ms ease, transform 420ms ease;
-  }
-
-  .tenav-success.is-visible{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-
-  .tenav-success__title{
-    font-size:20px !important;
-    font-weight:700 !important;
-    color:var(--tenav-navy);
-    margin:0 0 10px !important;
-  }
-
-  .tenav-success__text{
-    font-size:14px !important;
-    line-height:1.65 !important;
-    color:var(--tenav-grey);
-    margin:0 0 10px !important;
-  }
-
-  .tenav-success__text strong{ color:var(--tenav-ink); }
-
-  .tenav-success__phone{
-    color:var(--tenav-blue);
-    font-weight:600;
-    text-decoration:none;
-  }
-  .tenav-success__phone:hover{ text-decoration:underline; }
-
-  .tenav-trust{
-    margin:48px 0 0 !important;
-    padding:32px 0 0 !important;
-    border:0 !important;
-    border-top:1px solid var(--tenav-border) !important;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:16px 40px;
-  }
-
-  .tenav-trust__item{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:14px !important;
-    font-weight:500 !important;
-    color:var(--tenav-grey);
-    margin:0 !important;
-  }
-
-  .tenav-trust__item .tenav-trust__check{
-    color:var(--tenav-success);
-    font-weight:700;
-  }
-
-  @media (max-width: 1100px){
-    .tenav-contact__grid{
-      grid-template-columns:minmax(0, 1fr);
-    }
-    .tenav-contact{ padding:48px 20px !important; }
-    .tenav-trust{ gap:12px 28px; }
-  }
-
-  @media (max-width: 480px){
-    .tenav-card{ padding:24px !important; }
-    .tenav-contact-link{ font-size:19px !important; }
-    .tenav-form__grid{
-      grid-template-columns:minmax(0, 1fr);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .tenav-card, .tenav-btn, .tenav-success{
-      transition:none !important;
-      animation:none !important;
-    }
-  }
-</style>
-
-<section class="tenav-contact" id="contact" aria-label="Contact TenAV">
-  <div class="tenav-contact__container">
-
-    <div class="tenav-contact__grid">
-
-      <div class="tenav-card tenav-card--contact">
-
-        <h3 class="tenav-card__heading">Speak to Our Team</h3>
-        <p class="tenav-card__text">Need an answer quickly? Speak directly with a member of our team.</p>
-
-        <a class="tenav-contact-link" href="tel:+442033977360">020 3397 7360</a>
-        <p class="tenav-card__meta">Monday to Friday<br>8:00am – 5:30pm</p>
-
-        <div class="tenav-card__spacer"></div>
-
-        <a class="tenav-btn tenav-btn--primary" href="tel:+442033977360">Call Now</a>
-
-        <div class="tenav-contact__divider" role="separator"></div>
-
-        <h3 class="tenav-card__heading">Prefer to Send an Email?</h3>
-        <p class="tenav-card__text">Our team will ensure your enquiry reaches the right specialist.</p>
-
-        <a class="tenav-contact-link" href="mailto:info@tenav.co.uk" style="font-size:17px;">info@tenav.co.uk</a>
-
-        <div class="tenav-card__spacer"></div>
-
-        <a class="tenav-btn tenav-btn--primary" href="mailto:info@tenav.co.uk">Send Email</a>
+        <a href="mailto:info@tenav.co.uk" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;background:#29abe2;color:#ffffff;text-align:center;padding:14px 20px;font-size:15px;font-weight:600;border-radius:10px;text-decoration:none;">Send Email</a>
 
       </div>
 
-      <div class="tenav-card tenav-card--form">
-        <h3 class="tenav-card__heading">Request a Callback</h3>
-        <p class="tenav-card__text">Tell us a little about your project and we'll be in touch.</p>
-        <p class="tenav-form__note--top">We typically respond within 2 business hours.</p>
+      <div style="flex:2 1 460px;min-width:0;box-sizing:border-box;background:transparent;border:1px solid #e6e7f2;border-radius:20px;padding:32px;">
 
-        <form class="tenav-form" id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" target="tenavCapsuleFrame" novalidate>
+        <h3 style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:20px;line-height:1.3;font-weight:600;color:#2e3192;margin:0 0 8px;">Request a Callback</h3>
+        <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:15px;line-height:1.6;color:#5c5f7a;margin:0 0 20px;">Tell us a little about your project and we'll be in touch.</p>
+        <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:12px;line-height:1.5;color:#8386a3;margin:0 0 20px;">We typically respond within 2 business hours.</p>
+
+        <form id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" target="tenavCapsuleFrame">
 
           <input type="hidden" name="FORM_ID" value="2b64108f-88dd-4747-b8be-6568cb50801d">
           <input type="hidden" name="COMPLETE_URL" value="https://tenav.co.uk/thank-you/">
@@ -365,57 +45,54 @@
           <input type="hidden" name="CREATE_CHECK_TASK" value="true">
           <input type="hidden" name="SEND" value="true">
           <input type="hidden" name="REVIEW_ID" value="543199">
-          <input type="hidden" id="tenavFirstName" name="FIRST_NAME">
-          <input type="hidden" id="tenavLastName" name="LAST_NAME">
 
-          <div class="tenav-form__grid">
-            <div class="tenav-field">
-              <input type="text" id="tenavName" placeholder="Full Name" aria-label="Full Name" autocomplete="name" required>
-              <span class="tenav-field__error">Please enter your full name.</span>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin:0 0 12px;box-sizing:border-box;">
+            <div style="flex:1 1 180px;min-width:0;box-sizing:border-box;">
+              <input type="text" id="tenavFirstName" name="FIRST_NAME" placeholder="First Name" aria-label="First Name" autocomplete="given-name" required style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
             </div>
-
-            <div class="tenav-field">
-              <input type="email" id="tenavEmail" name="EMAIL" placeholder="Email Address" aria-label="Email Address" autocomplete="email" required>
-              <span class="tenav-field__error">Please enter a valid email address.</span>
-            </div>
-
-            <div class="tenav-field">
-              <input type="tel" id="tenavPhone" name="PHONE" placeholder="Phone Number" aria-label="Phone Number" autocomplete="tel" inputmode="tel" required>
-              <span class="tenav-field__error">Please enter a valid phone number.</span>
-            </div>
-
-            <div class="tenav-field">
-              <input type="text" id="tenavCompany" name="ORGANISATION_NAME" placeholder="Company Name" aria-label="Company Name" autocomplete="organization" required>
-              <span class="tenav-field__error">Please enter your company name.</span>
+            <div style="flex:1 1 180px;min-width:0;box-sizing:border-box;">
+              <input type="text" id="tenavLastName" name="LAST_NAME" placeholder="Last Name" aria-label="Last Name" autocomplete="family-name" required style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
             </div>
           </div>
 
-          <div class="tenav-field">
-            <textarea id="tenavMessage" name="NOTE" placeholder="Tell us about your project..." aria-label="Tell us about your project" rows="2" required></textarea>
-            <span class="tenav-field__error">Please tell us a little about your project.</span>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin:0 0 12px;box-sizing:border-box;">
+            <div style="flex:1 1 180px;min-width:0;box-sizing:border-box;">
+              <input type="email" id="tenavEmail" name="EMAIL" placeholder="Email Address" aria-label="Email Address" autocomplete="email" required style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
+            </div>
+            <div style="flex:1 1 180px;min-width:0;box-sizing:border-box;">
+              <input type="tel" id="tenavPhone" name="PHONE" placeholder="Phone Number" aria-label="Phone Number" autocomplete="tel" inputmode="tel" required style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
+            </div>
           </div>
 
-          <button type="submit" class="tenav-btn tenav-btn--primary tenav-form__submit" id="tenavSubmit">Let's Chat</button>
+          <div style="margin:0 0 12px;box-sizing:border-box;">
+            <input type="text" id="tenavCompany" name="ORGANISATION_NAME" placeholder="Company Name" aria-label="Company Name" autocomplete="organization" required style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
+          </div>
+
+          <div style="margin:0 0 12px;box-sizing:border-box;">
+            <textarea id="tenavMessage" name="NOTE" placeholder="Tell us about your project..." aria-label="Tell us about your project" rows="3" required style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;line-height:1.5;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;resize:vertical;min-height:64px;"></textarea>
+          </div>
+
+          <button type="submit" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;background:#29abe2;color:#ffffff;text-align:center;padding:14px 20px;font-size:15px;font-weight:600;border-radius:10px;border:none;cursor:pointer;margin:0;">Let's Chat</button>
         </form>
 
-        <div class="tenav-success" id="tenavSuccess" role="status" aria-live="polite">
-          <h3 class="tenav-success__title">Thank You</h3>
-          <p class="tenav-success__text">Your enquiry has been successfully received.</p>
-          <p class="tenav-success__text">A dedicated account manager will review your request and contact you as soon as possible. We aim to respond within <strong>2 business hours</strong> and no later than one working day.</p>
-          <p class="tenav-success__text">If your enquiry is urgent, please call us on <a class="tenav-success__phone" href="tel:+442033977360">020 3397 7360</a>.</p>
-          <p class="tenav-success__text">We look forward to speaking with you.</p>
-        </div>
+        <iframe name="tenavCapsuleFrame" title="Form submission" style="display:none" aria-hidden="true"></iframe>
 
-        <iframe name="tenavCapsuleFrame" id="tenavCapsuleFrame" title="Form submission" style="display:none" aria-hidden="true"></iframe>
+        <div id="tenavSuccess" role="status" aria-live="polite" style="display:none;text-align:center;padding:20px 0;">
+          <h3 style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:20px;font-weight:700;color:#2e3192;margin:0 0 10px;">Thank You</h3>
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">Your enquiry has been successfully received.</p>
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">A dedicated account manager will review your request and contact you as soon as possible. We aim to respond within <strong style="color:#1c1d3d;">2 business hours</strong> and no later than one working day.</p>
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">If your enquiry is urgent, please call us on <a href="tel:+442033977360" style="color:#4d51d8;font-weight:600;text-decoration:none;">020 3397 7360</a>.</p>
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0;">We look forward to speaking with you.</p>
+        </div>
       </div>
 
     </div>
 
-    <div class="tenav-trust">
-      <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> Established since 2003</div>
-      <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> UK-wide coverage</div>
-      <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> Certified engineers</div>
-      <div class="tenav-trust__item"><span class="tenav-trust__check" aria-hidden="true">✓</span> Support beyond handover</div>
+    <div style="margin:48px 0 0;padding:32px 0 0;border-top:1px solid #e6e7f2;display:flex;flex-wrap:wrap;justify-content:center;gap:16px 40px;box-sizing:border-box;">
+      <div style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:#5c5f7a;"><span aria-hidden="true" style="color:#1fa96b;font-weight:700;">✓</span> Established since 2003</div>
+      <div style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:#5c5f7a;"><span aria-hidden="true" style="color:#1fa96b;font-weight:700;">✓</span> UK-wide coverage</div>
+      <div style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:#5c5f7a;"><span aria-hidden="true" style="color:#1fa96b;font-weight:700;">✓</span> Certified engineers</div>
+      <div style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:#5c5f7a;"><span aria-hidden="true" style="color:#1fa96b;font-weight:700;">✓</span> Support beyond handover</div>
     </div>
 
   </div>
@@ -424,24 +101,19 @@
 <script>
 (function(){
   var form = document.getElementById('tenavForm');
-  var submitBtn = document.getElementById('tenavSubmit');
-  var messageField = document.getElementById('tenavMessage');
-  var successPanel = document.getElementById('tenavSuccess');
-  var targetFrame = document.getElementById('tenavCapsuleFrame');
-  var awaitingSubmit = false;
+  if (!form) return;
 
-  // Auto-expand textarea (starts ~2 rows, grows with content)
-  function autoExpand(el){
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
-  }
-  messageField.addEventListener('input', function(){ autoExpand(messageField); });
-  autoExpand(messageField);
+  var submitBtn = form.querySelector('button[type="submit"]');
+  var successPanel = document.getElementById('tenavSuccess');
+  var targetFrame = document.querySelector('iframe[name="tenavCapsuleFrame"]');
+  var awaitingSubmit = false;
+  var errorBorder = '#e5484d';
+  var errorBg = '#fff6f6';
+  var normalBorder = '#e6e7f2';
+  var normalBg = '#fbfbfe';
 
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var phonePattern = /^\+?[0-9\s]{7,20}$/;
-
-  function fieldWrap(el){ return el.closest('.tenav-field'); }
 
   function validateField(el){
     var value = el.value.trim();
@@ -451,23 +123,17 @@
     if (valid && el.type === 'email' && !emailPattern.test(value)) valid = false;
     if (valid && el.type === 'tel' && !phonePattern.test(value)) valid = false;
 
-    var wrap = fieldWrap(el);
-    if (valid) {
-      wrap.classList.remove('has-error');
-    } else {
-      wrap.classList.add('has-error');
-    }
+    el.style.borderColor = valid ? normalBorder : errorBorder;
+    el.style.background = valid ? normalBg : errorBg;
     return valid;
   }
 
-  // Only the visible, wrapped fields are validated — Capsule's hidden
-  // config inputs (FORM_ID, TAG, etc.) live outside .tenav-field.
-  var fields = form.querySelectorAll('.tenav-field input, .tenav-field textarea');
+  var fields = form.querySelectorAll('input[required], textarea[required]');
 
   Array.prototype.forEach.call(fields, function(el){
     el.addEventListener('blur', function(){ validateField(el); });
     el.addEventListener('input', function(){
-      if (fieldWrap(el).classList.contains('has-error')) validateField(el);
+      if (el.style.borderColor === errorBorder) validateField(el);
     });
   });
 
@@ -479,36 +145,29 @@
 
     if (!allValid) {
       e.preventDefault();
-      var firstError = form.querySelector('.has-error input, .has-error textarea');
+      var firstError = form.querySelector('input[required], textarea[required]');
+      Array.prototype.forEach.call(fields, function(el){
+        if (el.style.borderColor === errorBorder) { firstError = el; }
+      });
       if (firstError) firstError.focus();
       return;
     }
 
-    // Full name → split into Capsule's separate FIRST_NAME / LAST_NAME fields
-    var fullName = document.getElementById('tenavName').value.trim().split(/\s+/);
-    document.getElementById('tenavFirstName').value = fullName[0] || '';
-    document.getElementById('tenavLastName').value = fullName.slice(1).join(' ') || fullName[0] || '';
-
-    // Validation passed — let the browser submit for real to Capsule CRM
-    // (service.capsulecrm.com), into the hidden iframe so the visitor stays
-    // on this page. Capsule redirects to COMPLETE_URL on success, which
-    // fires the iframe's load event below once that round trip completes.
     awaitingSubmit = true;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+    }
   });
 
-  // Fires once when the hidden frame finishes loading Capsule's redirect
-  // target — ignored on initial page load since awaitingSubmit starts false.
-  targetFrame.addEventListener('load', function(){
-    if (!awaitingSubmit) return;
-    awaitingSubmit = false;
+  if (targetFrame && successPanel) {
+    targetFrame.addEventListener('load', function(){
+      if (!awaitingSubmit) return;
+      awaitingSubmit = false;
 
-    form.style.display = 'none';
-    successPanel.style.display = 'flex';
-    requestAnimationFrame(function(){
-      successPanel.classList.add('is-visible');
+      form.style.display = 'none';
+      successPanel.style.display = 'block';
     });
-  });
+  }
 })();
 </script>
