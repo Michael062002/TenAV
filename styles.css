@@ -49,8 +49,8 @@ body {
 /* static brand lockup (logo + tagline), kept exactly as supplied */
 .hero-logo {
   position: relative;
-  flex: 0 0 45%;
-  max-width: 45%;
+  flex: 0 0 41%;
+  max-width: 41%;
   aspect-ratio: var(--logo-w) / var(--logo-h);
 }
 
