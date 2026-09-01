@@ -88,19 +88,51 @@ body {
   flex: 1 1 0%;
   min-width: 0;
   overflow: hidden;
-  background: var(--panel);
-  border-left: 1px solid var(--line);
+  background: #11151a;
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
   transform: skewX(-12deg);
   margin-left: -28px;
   cursor: pointer;
   text-decoration: none;
   outline: none;
-  transition: flex-grow 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease,
-    border-color 0.35s ease;
+  transition: flex-grow 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease;
 }
 
 .hero-panel:first-child {
   margin-left: -10px;
+}
+
+/* photograph, oversized so its counter-skew never exposes a corner, plus
+   a bottom-weighted scrim so the label stays legible over any photo */
+.hero-panel-bg {
+  position: absolute;
+  inset: -10% -35%;
+  transform: skewX(12deg);
+}
+
+.hero-panel-bg picture,
+.hero-panel-bg img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-panel-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 12, 16, 0.15) 0%, rgba(10, 12, 16, 0.55) 100%);
+}
+
+.hero-panel-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--brand);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 0.35s ease;
 }
 
 .hero-panel-inner {
@@ -119,7 +151,8 @@ body {
   font-weight: 800;
   font-size: clamp(0.85rem, 1.8vw, 1.35rem);
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -131,14 +164,20 @@ body {
 .hero-panel.is-active {
   flex-grow: 1.35;
   z-index: 2;
-  background: color-mix(in srgb, var(--brand) 10%, var(--panel));
   border-left-color: var(--brand);
+}
+
+.hero-panel:hover .hero-panel-bg::after,
+.hero-panel:focus-visible .hero-panel-bg::after,
+.hero-panel.is-active .hero-panel-bg::after {
+  opacity: 0.6;
 }
 
 .hero-panel:hover .hero-label,
 .hero-panel:focus-visible .hero-label,
 .hero-panel.is-active .hero-label {
   color: var(--brand);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
 }
 
 .hero-panel:focus-visible {
@@ -220,16 +259,21 @@ body {
 
   .hero-panel {
     flex: none;
-    min-height: 3.1rem;
+    min-height: 3.6rem;
     transform: none;
     margin-left: 0;
     border-left: none;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
   }
 
   .hero-panel:first-child {
     margin-left: 0;
     border-top: none;
+  }
+
+  .hero-panel-bg {
+    inset: 0;
+    transform: none;
   }
 
   .hero-panel-inner {
