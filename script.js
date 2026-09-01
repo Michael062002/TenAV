@@ -3,23 +3,14 @@
 
   var hero = document.getElementById("hero");
   var art = document.getElementById("heroArt");
-  var nodes = Array.prototype.slice.call(art.querySelectorAll(".hero-node"));
+  var panels = Array.prototype.slice.call(art.querySelectorAll(".hero-panel"));
   var tooltip = document.getElementById("heroTooltip");
   var tooltipName = document.getElementById("tooltipName");
   var tooltipDesc = document.getElementById("tooltipDesc");
   var tooltipLink = document.getElementById("tooltipLink");
 
   var isTouch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
-  var activeNode = null;
-
-  // clip-path shapes the visible panel, but getBoundingClientRect() on a
-  // clipped element still reports the full untransformed box — so the
-  // tooltip anchor uses each panel's known visual centre instead.
-  var CENTROID_X_PCT = {
-    install: 44.278,
-    signage: 68.643,
-    unify: 90.786,
-  };
+  var activePanel = null;
 
   // ---- entrance animation ----
   if ("IntersectionObserver" in window) {
@@ -40,73 +31,72 @@
   }
 
   // ---- description reveal ----
-  function showTooltip(node) {
-    tooltipName.textContent = node.dataset.name;
-    tooltipDesc.textContent = node.dataset.description;
-    tooltipLink.href = node.getAttribute("href");
+  function showTooltip(panel) {
+    tooltipName.textContent = panel.dataset.name;
+    tooltipDesc.textContent = panel.dataset.description;
+    tooltipLink.href = panel.getAttribute("href");
     tooltipLink.textContent = "";
-    tooltipLink.append("Explore " + node.dataset.name + " ");
+    tooltipLink.append("Explore " + panel.dataset.name + " ");
     var arrow = document.createElement("span");
     arrow.setAttribute("aria-hidden", "true");
     arrow.textContent = "→";
     tooltipLink.append(arrow);
-    tooltip.style.setProperty("--brand", getComputedStyle(node).getPropertyValue("--brand"));
+    tooltip.style.setProperty("--brand", getComputedStyle(panel).getPropertyValue("--brand"));
 
     var artRect = art.getBoundingClientRect();
-    var centroidPct = CENTROID_X_PCT[node.dataset.id] || 50;
-    var x = artRect.width * (centroidPct / 100);
+    var panelRect = panel.getBoundingClientRect();
+    var x = panelRect.left + panelRect.width / 2 - artRect.left;
     var minX = 120;
     var maxX = artRect.width - 120;
     x = Math.max(minX, Math.min(maxX, x));
-    var y = 0;
 
     tooltip.style.left = x + "px";
-    tooltip.style.top = y + "px";
+    tooltip.style.top = panelRect.top - artRect.top + "px";
     tooltip.classList.add("is-visible");
 
-    if (activeNode && activeNode !== node) {
-      activeNode.classList.remove("is-active");
+    if (activePanel && activePanel !== panel) {
+      activePanel.classList.remove("is-active");
     }
-    activeNode = node;
-    node.classList.add("is-active");
+    activePanel = panel;
+    panel.classList.add("is-active");
   }
 
   function hideTooltip() {
     tooltip.classList.remove("is-visible");
-    if (activeNode) {
-      activeNode.classList.remove("is-active");
-      activeNode = null;
+    if (activePanel) {
+      activePanel.classList.remove("is-active");
+      activePanel = null;
     }
   }
 
-  nodes.forEach(function (node) {
-    node.addEventListener("mouseenter", function () {
-      showTooltip(node);
+  panels.forEach(function (panel) {
+    panel.addEventListener("mouseenter", function () {
+      showTooltip(panel);
     });
-    node.addEventListener("focus", function () {
-      showTooltip(node);
+    panel.addEventListener("focus", function () {
+      showTooltip(panel);
     });
-    node.addEventListener("mouseleave", function () {
+    panel.addEventListener("mouseleave", function () {
       if (!isTouch) hideTooltip();
     });
-    node.addEventListener("blur", function () {
+    panel.addEventListener("blur", function () {
       hideTooltip();
     });
 
     if (isTouch) {
-      node.addEventListener("click", function (event) {
+      panel.addEventListener("click", function (event) {
         // a synthetic "mouseenter" fires before "click" on tap and already
-        // shows the tooltip, so activeNode can't tell first tap from second —
-        // track "tapped" per node instead.
-        if (!node.classList.contains("is-tapped")) {
+        // shows the tooltip, so activePanel can't tell first tap from
+        // second — track "tapped" per panel instead.
+        if (!panel.classList.contains("is-tapped")) {
           event.preventDefault();
-          nodes.forEach(function (n) {
-            if (n !== node) n.classList.remove("is-tapped");
+          panels.forEach(function (p) {
+            if (p !== panel) p.classList.remove("is-tapped");
           });
-          node.classList.add("is-tapped");
-          showTooltip(node);
+          panel.classList.add("is-tapped");
+          showTooltip(panel);
         }
-        // second tap on an already-tapped node follows the link normally
+        // second tap on an already-tapped panel follows the link normally
       });
     }
   });
@@ -114,9 +104,9 @@
   document.addEventListener(
     "click",
     function (event) {
-      if (isTouch && activeNode && !art.contains(event.target)) {
-        nodes.forEach(function (n) {
-          n.classList.remove("is-tapped");
+      if (isTouch && activePanel && !art.contains(event.target)) {
+        panels.forEach(function (p) {
+          p.classList.remove("is-tapped");
         });
         hideTooltip();
       }

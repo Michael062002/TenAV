@@ -4,6 +4,7 @@
   --ink: #101418;
   --ink-soft: #5b6472;
   --line: #e4e7ec;
+  --panel: #f4f5f7;
 }
 
 * {
@@ -20,98 +21,24 @@ body {
 .tenav-hero {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 5vw, 3rem) clamp(1.5rem, 4vw, 3rem);
-}
-
-/* ---------- primary content ---------- */
-
-.hero-content {
-  max-width: 62ch;
-  margin: 0 0 clamp(1.75rem, 4vw, 2.75rem);
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.tenav-hero.in-view .hero-content {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hero-eyebrow {
-  margin: 0 0 0.6rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #ee2f2f;
-}
-
-.hero-title {
-  margin: 0 0 1rem;
-  font-size: clamp(1.9rem, 3.6vw, 2.7rem);
-  line-height: 1.15;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-
-.hero-copy {
-  margin: 0 0 1.5rem;
-  color: var(--ink-soft);
-  font-size: 1.05rem;
-  line-height: 1.6;
-}
-
-.hero-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.75rem 1.4rem;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  text-decoration: none;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-}
-
-.btn-primary {
-  background: #ee2f2f;
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background: #d81f1f;
-}
-
-.btn-secondary {
-  color: var(--ink);
-  border: 1px solid var(--line);
-  background: transparent;
-}
-
-.btn-secondary:hover {
-  border-color: var(--ink-soft);
+  padding: clamp(1.5rem, 5vw, 3rem);
 }
 
 /* ---------- interactive artwork ---------- */
 
-.hero-art {
+.hero-art-wrap {
   position: relative;
-  aspect-ratio: var(--vb-w) / var(--vb-h);
+}
+
+.hero-art {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
   border-radius: 4px;
   overflow: hidden;
   opacity: 0;
   transform: scale(0.97);
-  transition: opacity 0.8s ease 0.15s, transform 0.8s ease 0.15s;
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .tenav-hero.in-view .hero-art {
@@ -119,7 +46,16 @@ body {
   transform: scale(1);
 }
 
-.hero-bg {
+/* static brand lockup (logo + tagline), kept exactly as supplied */
+.hero-logo {
+  position: relative;
+  flex: 0 0 45%;
+  max-width: 45%;
+  aspect-ratio: var(--logo-w) / var(--logo-h);
+}
+
+.hero-logo-img,
+.hero-tick {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -128,105 +64,84 @@ body {
   object-fit: cover;
 }
 
-/* diagonal panel hit-areas, aligned to the artwork's own geometry */
-.hero-wash,
-.hero-node {
+/* the tick draws in (top to bottom) once the hero enters the viewport */
+.hero-tick {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+}
+
+.tenav-hero.in-view .hero-tick {
+  clip-path: inset(0 0 0% 0);
+}
+
+/* interactive service panels — real flex items, so hovering one actually
+   grows its width and shrinks its neighbours, not an overlay on top */
+.hero-panels {
+  flex: 1 1 auto;
+  display: flex;
+  overflow: hidden;
+  margin-right: -28px;
+}
+
+.hero-panel {
+  position: relative;
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--panel);
+  border-left: 1px solid var(--line);
+  transform: skewX(-12deg);
+  margin-left: -28px;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  transition: flex-grow 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.hero-panel:first-child {
+  margin-left: -10px;
+}
+
+.hero-panel-inner {
   position: absolute;
   inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+  transform: skewX(12deg);
 }
 
-.hero-wash[data-for="install"],
-.hero-node[data-id="install"] {
-  clip-path: polygon(37.201% 0%, 60.086% 0%, 51.343% 100%, 28.483% 100%);
+.hero-label {
+  min-width: 0;
+  max-width: 100%;
+  font-weight: 800;
+  font-size: clamp(0.85rem, 1.8vw, 1.35rem);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
 }
 
-.hero-wash[data-for="signage"],
-.hero-node[data-id="signage"] {
-  clip-path: polygon(60.086% 0%, 85.939% 0%, 77.204% 100%, 51.343% 100%);
+.hero-panel:hover,
+.hero-panel:focus-visible,
+.hero-panel.is-active {
+  flex-grow: 1.35;
+  z-index: 2;
+  background: color-mix(in srgb, var(--brand) 10%, var(--panel));
+  border-left-color: var(--brand);
 }
 
-.hero-wash[data-for="unify"],
-.hero-node[data-id="unify"] {
-  clip-path: polygon(85.939% 0%, 100% 0%, 100% 100%, 77.204% 100%);
+.hero-panel:hover .hero-label,
+.hero-panel:focus-visible .hero-label,
+.hero-panel.is-active .hero-label {
+  color: var(--brand);
 }
 
-.hero-wash,
-.hero-node {
-  z-index: 1;
-  transition: clip-path 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.hero-wash {
-  pointer-events: none;
-  background: var(--brand);
-  mix-blend-mode: multiply;
-  opacity: 0;
-  transition: clip-path 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
-}
-
-.hero-node {
-  cursor: pointer;
-  outline: none;
-  transition: clip-path 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.28s ease;
-}
-
-/* on hover/focus, the panel's own clip-path grows into its neighbour —
-   revealing more of the photo — while its wash goes near-opaque so the
-   (white) logo pops to a solid brand colour and the photo behind it dims
-   into a duotone. The panel closest to the master logo keeps its outer
-   edge fixed so that lockup is never tinted. */
-.hero-node[data-id="install"]:hover,
-.hero-node[data-id="install"]:focus-visible,
-.hero-node[data-id="install"].is-active {
-  clip-path: polygon(37.201% 0%, 65.086% 0%, 56.343% 100%, 28.483% 100%);
-  z-index: 6;
-}
-
-.hero-art:has(.hero-node[data-id="install"]:hover) .hero-wash[data-for="install"],
-.hero-art:has(.hero-node[data-id="install"]:focus-visible) .hero-wash[data-for="install"],
-.hero-node[data-id="install"].is-active ~ .hero-wash[data-for="install"] {
-  clip-path: polygon(37.201% 0%, 65.086% 0%, 56.343% 100%, 28.483% 100%);
-  opacity: 0.85;
-  z-index: 6;
-}
-
-.hero-node[data-id="signage"]:hover,
-.hero-node[data-id="signage"]:focus-visible,
-.hero-node[data-id="signage"].is-active {
-  clip-path: polygon(55.086% 0%, 90.939% 0%, 82.204% 100%, 46.343% 100%);
-  z-index: 6;
-}
-
-.hero-art:has(.hero-node[data-id="signage"]:hover) .hero-wash[data-for="signage"],
-.hero-art:has(.hero-node[data-id="signage"]:focus-visible) .hero-wash[data-for="signage"],
-.hero-node[data-id="signage"].is-active ~ .hero-wash[data-for="signage"] {
-  clip-path: polygon(55.086% 0%, 90.939% 0%, 82.204% 100%, 46.343% 100%);
-  opacity: 0.85;
-  z-index: 6;
-}
-
-.hero-node[data-id="unify"]:hover,
-.hero-node[data-id="unify"]:focus-visible,
-.hero-node[data-id="unify"].is-active {
-  clip-path: polygon(80.939% 0%, 100% 0%, 100% 100%, 72.204% 100%);
-  z-index: 6;
-}
-
-.hero-art:has(.hero-node[data-id="unify"]:hover) .hero-wash[data-for="unify"],
-.hero-art:has(.hero-node[data-id="unify"]:focus-visible) .hero-wash[data-for="unify"],
-.hero-node[data-id="unify"].is-active ~ .hero-wash[data-for="unify"] {
-  clip-path: polygon(80.939% 0%, 100% 0%, 100% 100%, 72.204% 100%);
-  opacity: 0.85;
-  z-index: 6;
-}
-
-.hero-node:hover,
-.hero-node:focus-visible,
-.hero-node.is-active {
-  filter: saturate(1.15) brightness(1.04);
-}
-
-.hero-node:focus-visible {
+.hero-panel:focus-visible {
   box-shadow: inset 0 0 0 3px var(--brand);
 }
 
@@ -288,7 +203,50 @@ body {
 
 @media (max-width: 640px) {
   .hero-art {
+    flex-direction: column;
     border-radius: 2px;
+  }
+
+  .hero-logo {
+    flex-basis: auto;
+    max-width: none;
+    width: 100%;
+  }
+
+  .hero-panels {
+    flex-direction: column;
+    margin-right: 0;
+  }
+
+  .hero-panel {
+    flex: none;
+    min-height: 3.1rem;
+    transform: none;
+    margin-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .hero-panel:first-child {
+    margin-left: 0;
+    border-top: none;
+  }
+
+  .hero-panel-inner {
+    padding: 0 1.25rem;
+    justify-content: flex-start;
+    transform: none;
+  }
+
+  .hero-panel:hover,
+  .hero-panel:focus-visible,
+  .hero-panel.is-active {
+    flex-grow: 0;
+    min-height: 3.6rem;
+  }
+
+  .hero-label {
+    font-size: 1.05rem;
   }
 
   .hero-tooltip {
@@ -298,26 +256,19 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-content,
-  .hero-art {
+  .hero-art,
+  .hero-tick {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
+    clip-path: inset(0 0 0% 0) !important;
   }
 
-  .hero-node,
-  .hero-wash {
+  .hero-panel {
     transition: none !important;
   }
 
   .hero-tooltip {
     transition: opacity 0.01s linear !important;
-  }
-}
-
-/* graceful fallback for browsers without :has() — washes stay hidden, node highlight still works */
-@supports not (selector(:has(a))) {
-  .hero-node.is-active ~ .hero-wash {
-    opacity: 0;
   }
 }

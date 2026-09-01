@@ -8,63 +8,61 @@
 </head>
 <body>
   <section class="tenav-hero" id="hero">
-    <div class="hero-content">
-      <p class="hero-eyebrow">TenTechnology Group</p>
-      <h1 class="hero-title">Three specialisms. One trusted technology partner.</h1>
-      <p class="hero-copy">
-        TenAV, TenSignage and TenUnify bring AV installation, digital signage and
-        unified IT together under one roof. Explore each service below.
-      </p>
-      <div class="hero-ctas">
-        <a class="btn btn-primary" href="/contact">Get in touch</a>
-        <a class="btn btn-secondary" href="/about">About the Group</a>
+    <div class="hero-art-wrap" id="heroArt">
+      <div class="hero-art">
+        <div class="hero-logo" style="--logo-w:1575; --logo-h:893;">
+          <picture>
+            <source srcset="assets/hero.webp" type="image/webp" />
+            <img
+              class="hero-logo-img"
+              src="assets/hero.jpg"
+              alt="TenTechnology Group: a Kubus Group Company"
+              width="1575"
+              height="893"
+            />
+          </picture>
+          <picture>
+            <source srcset="assets/tick.webp" type="image/webp" />
+            <img class="hero-tick" src="assets/tick.png" alt="" aria-hidden="true" width="1575" height="893" />
+          </picture>
+        </div>
+
+        <div class="hero-panels">
+          <a
+            class="hero-panel"
+            data-id="install"
+            data-name="TenAV"
+            data-description="AV design, installation and integration for meeting rooms, offices and venues."
+            href="#tenav"
+            aria-label="TenAV — AV design, installation and integration. Explore this service."
+            style="--brand:#EE2F2F"
+          >
+            <span class="hero-panel-inner"><span class="hero-label">TenAV</span></span>
+          </a>
+          <a
+            class="hero-panel"
+            data-id="signage"
+            data-name="TenSignage"
+            data-description="Digital signage and menu boards that keep customers informed and engaged."
+            href="#tensignage"
+            aria-label="TenSignage — digital signage and menu boards. Explore this service."
+            style="--brand:#2BA6A6"
+          >
+            <span class="hero-panel-inner"><span class="hero-label">TenSignage</span></span>
+          </a>
+          <a
+            class="hero-panel"
+            data-id="unify"
+            data-name="TenUnify"
+            data-description="Unified IT and communications that keep every device and workspace connected."
+            href="#tenunify"
+            aria-label="TenUnify — unified IT and communications. Explore this service."
+            style="--brand:#B96E36"
+          >
+            <span class="hero-panel-inner"><span class="hero-label">TenUnify</span></span>
+          </a>
+        </div>
       </div>
-    </div>
-
-    <div class="hero-art" id="heroArt" style="--vb-w:1166.25; --vb-h:297.75;">
-      <picture>
-        <source srcset="assets/hero.webp" type="image/webp" />
-        <img
-          class="hero-bg"
-          src="assets/hero.jpg"
-          alt="TenTechnology Group: a Kubus Group Company, spanning TenAV, TenSignage and TenUnify"
-          width="1166"
-          height="298"
-        />
-      </picture>
-
-      <a
-        class="hero-node"
-        data-id="install"
-        data-name="TenAV"
-        data-description="AV design, installation and integration for meeting rooms, offices and venues."
-        href="/tenav"
-        aria-label="TenAV — AV design, installation and integration. Explore this service."
-        style="--brand:#EE2F2F"
-      ></a>
-      <div class="hero-wash" data-for="install" style="--brand:#EE2F2F"></div>
-
-      <a
-        class="hero-node"
-        data-id="signage"
-        data-name="TenSignage"
-        data-description="Digital signage and menu boards that keep customers informed and engaged."
-        href="/tensignage"
-        aria-label="TenSignage — digital signage and menu boards. Explore this service."
-        style="--brand:#2BA6A6"
-      ></a>
-      <div class="hero-wash" data-for="signage" style="--brand:#2BA6A6"></div>
-
-      <a
-        class="hero-node"
-        data-id="unify"
-        data-name="TenUnify"
-        data-description="Unified IT and communications that keep every device and workspace connected."
-        href="/tenunify"
-        aria-label="TenUnify — unified IT and communications. Explore this service."
-        style="--brand:#B96E36"
-      ></a>
-      <div class="hero-wash" data-for="unify" style="--brand:#B96E36"></div>
 
       <div class="hero-tooltip" id="heroTooltip" role="status" aria-live="polite">
         <p class="tooltip-name" id="tooltipName"></p>
