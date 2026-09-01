@@ -79,6 +79,10 @@ body {
   flex: 1 1 auto;
   display: flex;
   overflow: hidden;
+  /* pulls the row left by a % of the *whole* hero-art width so it always
+     meets the tick's true edge, regardless of viewport size (a fixed px
+     value here would drift out of alignment as the hero scales) */
+  margin-left: -1%;
   margin-right: -28px;
 }
 
@@ -98,7 +102,7 @@ body {
 }
 
 .hero-panel:first-child {
-  margin-left: -10px;
+  margin-left: 0;
 }
 
 /* photograph, oversized so its counter-skew never exposes a corner, plus
@@ -235,6 +239,7 @@ body {
 
   .hero-panels {
     flex-direction: column;
+    margin-left: 0;
     margin-right: 0;
   }
 
