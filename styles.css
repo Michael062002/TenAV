@@ -84,7 +84,14 @@ body {
    used to try to bridge a gap that didn't actually exist there */
 .hero-tick-clip {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* taller than the logo box itself so the tick's long arm — extended
+     further down to reach further into the panel — isn't clipped by its
+     own reveal-animation clip-path, which clips to this element's own
+     box even at full reveal */
+  height: 130%;
   transform: translateX(4%);
   z-index: 5;
   pointer-events: none;
@@ -122,7 +129,7 @@ body {
   min-width: 0;
   overflow: hidden;
   background: #11151a;
-  border-left: 9px solid rgba(255, 255, 255, 0.9);
+  border-left: 8px solid rgba(255, 255, 255, 0.9);
   transform: skewX(-12deg);
   margin-left: -28px;
   cursor: pointer;
@@ -159,7 +166,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10, 12, 16, 0.35) 0%, rgba(10, 12, 16, 0.78) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%);
 }
 
 .hero-panel-bg::after {
@@ -311,6 +318,7 @@ body {
   }
 
   .hero-tick-clip {
+    height: 100%;
     transform: none;
   }
 
