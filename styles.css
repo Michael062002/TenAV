@@ -176,8 +176,13 @@ body {
   filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.35));
 }
 
-.brand-logo [class$="-white"] {
-  transition: fill 0.3s ease;
+/* logos stay plain white — it's the tick that picks up the hovered
+   panel's brand colour instead (see below) */
+.brand-logo path,
+.brand-logo polygon,
+.brand-logo text,
+.brand-logo tspan {
+  fill: #fff !important;
 }
 
 /* description + CTA live inside the panel itself and only take up space
@@ -218,16 +223,34 @@ body {
   opacity: 0.6;
 }
 
-.hero-panel:hover .brand-logo [class$="-white"],
-.hero-panel:focus-visible .brand-logo [class$="-white"],
-.hero-panel.is-active .brand-logo [class$="-white"] {
-  fill: var(--brand);
-}
-
 .hero-panel:hover .brand-logo,
 .hero-panel:focus-visible .brand-logo,
 .hero-panel.is-active .brand-logo {
   filter: drop-shadow(0 1px 12px rgba(0, 0, 0, 0.55));
+}
+
+/* the tick itself picks up whichever panel's brand colour is active,
+   tying the master mark to the highlighted service */
+.hero-tick polygon {
+  transition: fill 0.35s ease;
+}
+
+.hero-art:has(.hero-panel[data-id="install"]:hover) .hero-tick polygon,
+.hero-art:has(.hero-panel[data-id="install"]:focus-visible) .hero-tick polygon,
+.hero-art:has(.hero-panel[data-id="install"].is-active) .hero-tick polygon {
+  fill: #20c4f4;
+}
+
+.hero-art:has(.hero-panel[data-id="signage"]:hover) .hero-tick polygon,
+.hero-art:has(.hero-panel[data-id="signage"]:focus-visible) .hero-tick polygon,
+.hero-art:has(.hero-panel[data-id="signage"].is-active) .hero-tick polygon {
+  fill: #6fc59f;
+}
+
+.hero-art:has(.hero-panel[data-id="unify"]:hover) .hero-tick polygon,
+.hero-art:has(.hero-panel[data-id="unify"]:focus-visible) .hero-tick polygon,
+.hero-art:has(.hero-panel[data-id="unify"].is-active) .hero-tick polygon {
+  fill: #fdb913;
 }
 
 .hero-panel:hover .hero-panel-desc,
@@ -315,7 +338,8 @@ body {
 
   .hero-panel,
   .hero-panel-desc,
-  .hero-panel-cta {
+  .hero-panel-cta,
+  .hero-tick polygon {
     transition: none !important;
   }
 }
