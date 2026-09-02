@@ -92,7 +92,7 @@ body {
   min-width: 0;
   overflow: hidden;
   background: #11151a;
-  border-left: 4px solid #fff;
+  border-left: 2px solid rgba(255, 255, 255, 0.9);
   transform: skewX(-12deg);
   margin-left: -28px;
   cursor: pointer;
@@ -103,6 +103,7 @@ body {
 
 .hero-panel:first-child {
   margin-left: 0;
+  border-left: none;
 }
 
 /* photograph, oversized so its counter-skew never exposes a corner, plus
@@ -144,7 +145,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   gap: 0.45rem;
   padding: 0 1.5rem;
   transform: skewX(12deg);
