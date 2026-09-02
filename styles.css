@@ -77,15 +77,40 @@ body {
   transform: translateX(9.37%);
 }
 
+/* a patch of the TenAV photo itself, bled leftward behind the tick, so
+   any gap between the tick's own edge and the panel boundary shows more
+   photo instead of white background — more robust than relying on the
+   tick's position alone, which drifted at different viewport widths */
+.hero-gap-fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14%;
+  height: 100%;
+  overflow: hidden;
+  transform: skewX(-12deg);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-gap-fill picture,
+.hero-gap-fill img {
+  position: absolute;
+  inset: -10% -35%;
+  width: 170%;
+  height: 120%;
+  display: block;
+  object-fit: cover;
+  transform: skewX(12deg);
+}
+
 /* matches the exact crop window of hero-logo-img (same original-document
    coordinate space) for a true natural position relative to the logo
-   text, nudged right slightly so it touches the panel with no gap —
-   the panels here are a separate photo composition, not derived from
-   the original document, so a small manual nudge is still needed */
+   text */
 .hero-tick-clip {
   position: absolute;
   inset: 0;
-  transform: translateX(18%);
+  transform: translateX(4%);
   z-index: 5;
   pointer-events: none;
 }
