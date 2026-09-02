@@ -65,12 +65,15 @@ body {
   clip-path: polygon(0% 0%, 100% 0%, 86.73% 100%, 0% 100%);
 }
 
+/* matches the exact crop window of hero-logo-img (same original-document
+   coordinate space) for a true natural position relative to the logo
+   text, nudged right slightly so it touches the panel with no gap —
+   the panels here are a separate photo composition, not derived from
+   the original document, so a small manual nudge is still needed */
 .hero-tick-clip {
   position: absolute;
-  top: 0;
-  right: -14%;
-  height: 100%;
-  aspect-ratio: 359 / 500;
+  inset: 0;
+  transform: translateX(10%);
   z-index: 5;
   pointer-events: none;
 }
@@ -287,7 +290,7 @@ body {
   }
 
   .hero-tick-clip {
-    right: 4%;
+    transform: none;
   }
 
   .hero-panels {
