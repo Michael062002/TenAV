@@ -158,6 +158,10 @@ body {
 
 .hero-panel:first-child {
   margin-left: 0;
+  /* no divider here — this edge meets the logo/tick artwork, not another
+     photo panel, so a white seam would look like a stray line rather than
+     a deliberate divider */
+  border-left: none;
 }
 
 /* photograph, oversized so its counter-skew never exposes a corner, plus
