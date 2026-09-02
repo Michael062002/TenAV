@@ -53,6 +53,17 @@ body {
   aspect-ratio: var(--logo-w) / var(--logo-h);
 }
 
+/* right edge cut at the same 12deg angle as the panels' own skew, so the
+   white lockup ends on a diagonal instead of a vertical edge — kept on
+   its own wrapper (rather than the image) so the recentring shift below
+   doesn't drag the clip boundary along with it */
+.hero-logo-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  clip-path: polygon(0% 0%, 100% 0%, 86.73% 100%, 0% 100%);
+}
+
 .hero-logo-img {
   position: absolute;
   inset: 0;
@@ -60,9 +71,10 @@ body {
   height: 100%;
   display: block;
   object-fit: cover;
-  /* right edge cut at the same 12deg angle as the panels' own skew, so
-     the white lockup ends on a diagonal instead of a vertical edge */
-  clip-path: polygon(0% 0%, 100% 0%, 86.73% 100%, 0% 100%);
+  /* the source crop has far more empty margin on the right (reserved
+     for the tick, which now renders separately) than the left — shift
+     right to balance the margins and centre the wordmark */
+  transform: translateX(9.37%);
 }
 
 /* matches the exact crop window of hero-logo-img (same original-document
@@ -73,7 +85,7 @@ body {
 .hero-tick-clip {
   position: absolute;
   inset: 0;
-  transform: translateX(10%);
+  transform: translateX(18%);
   z-index: 5;
   pointer-events: none;
 }
@@ -285,8 +297,14 @@ body {
     width: 100%;
   }
 
-  .hero-logo-img {
+  .hero-logo-clip {
     clip-path: none;
+  }
+
+  .hero-logo-img {
+    /* the desktop recentring shift relies on the diagonal clip to
+       absorb the overflow; without it here it would cut off "Company" */
+    transform: none;
   }
 
   .hero-tick-clip {
