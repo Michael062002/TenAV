@@ -86,16 +86,15 @@ body {
   transform: translateX(9.37%);
 }
 
-/* matches the exact crop window of hero-logo-img (same original-document
-   coordinate space) for a true natural position relative to the logo
-   text — the logo's own diagonal clip (above) already meets the panel's
-   edge with no gap on its own, so this only needs a small nudge right to
-   clear the "y" in "Company", not the large offset a previous version
-   used to try to bridge a gap that didn't actually exist there */
+/* the tick itself is drawn at a steeper angle than the panels' 12deg
+   skew, so skewX(7deg) corrects its long stroke to the exact same angle
+   as the new diagonal TenAV edge below, and translateX positions it to
+   sit exactly on top of that edge with no gap — together they turn the
+   tick into the red diagonal divider between the white lockup and TenAV */
 .hero-tick-clip {
   position: absolute;
   inset: 0;
-  transform: translateX(4%);
+  transform: translateX(5.4%) skewX(7deg);
   z-index: 5;
   pointer-events: none;
 }
@@ -119,10 +118,12 @@ body {
   flex: 1 1 auto;
   display: flex;
   overflow: hidden;
-  /* pulls the row left by a % of the *whole* hero-art width so it always
-     meets the tick's true edge, regardless of viewport size (a fixed px
-     value here would drift out of alignment as the hero scales) */
-  margin-left: -1%;
+  /* pulls the row left by a % of the *whole* hero-art width so the first
+     panel's own skew (below) lands its diagonal left edge exactly on the
+     logo's diagonal clip, with the +17.5px correcting for the fixed
+     -28px each panel also carries (a fixed px value alone would drift
+     out of alignment as the hero scales, hence the % term) */
+  margin-left: calc(-1% + 17.5px);
   margin-right: -28px;
 }
 
@@ -142,7 +143,9 @@ body {
 }
 
 .hero-panel:first-child {
-  margin-left: 0;
+  /* the same -28px margin-left as every other panel (no override here
+     anymore) so TenAV's own skew gives it a diagonal left edge too,
+     instead of being clipped into a vertical one */
   /* no divider here — this edge meets the logo/tick artwork, not another
      photo panel, so a white seam would look like a stray line rather than
      a deliberate divider */
