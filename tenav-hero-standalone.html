@@ -94,14 +94,7 @@ body {
    used to try to bridge a gap that didn't actually exist there */
 .hero-tick-clip {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  /* taller than the logo box itself so the tick's long arm — extended
-     further down to reach further into the panel — isn't clipped by its
-     own reveal-animation clip-path, which clips to this element's own
-     box even at full reveal */
-  height: 130%;
+  inset: 0;
   transform: translateX(4%);
   z-index: 5;
   pointer-events: none;
@@ -328,7 +321,6 @@ body {
   }
 
   .hero-tick-clip {
-    height: 100%;
     transform: none;
   }
 
@@ -412,7 +404,7 @@ body {
           <div class="hero-tick-clip">
             <svg class="hero-tick" viewBox="0 0 476.667 297.75" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
               <path fill="#ee2f2f" d="M53.308594 75.605469L20.21875 84.382812L0.367188 9.535156L33.457031 0.757812Z" transform="translate(299 220)"/>
-              <path fill="#ee2f2f" d="M106.285156 -13.636719L138.742188 -2.742188L12.302 373.955L-20.155 363.060Z" transform="translate(331 0)"/>
+              <path fill="#ee2f2f" d="M106.285156 -13.636719L138.742188 -2.742188L33.375 311.171875L0.917969 300.277344Z" transform="translate(331 0)"/>
             </svg>
           </div>
         </div>
