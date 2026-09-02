@@ -87,37 +87,13 @@ body {
   transform: translateX(9.37%);
 }
 
-/* a soft shadow-toned bleed behind the tick, so any gap between the
-   tick's own edge and the panel boundary shades into the panel's own
-   dark tone instead of showing white background — a flat tone rather
-   than a second cropped copy of the panel photo, which (at different
-   scale/crop than the real photo right next to it) read as two
-   mismatched photos stitched together */
-.hero-gap-fill {
-  position: absolute;
-  top: 0;
-  right: -8%;
-  width: 22%;
-  height: 100%;
-  overflow: hidden;
-  transform: skewX(-12deg);
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(
-    to right,
-    rgba(17, 21, 26, 0) 0%,
-    rgba(17, 21, 26, 0.55) 55%,
-    rgba(17, 21, 26, 0.9) 100%
-  );
-}
-
 /* matches the exact crop window of hero-logo-img (same original-document
    coordinate space) for a true natural position relative to the logo
    text */
 .hero-tick-clip {
   position: absolute;
   inset: 0;
-  transform: translateX(4%);
+  transform: translateX(16%);
   z-index: 5;
   pointer-events: none;
 }
@@ -347,12 +323,6 @@ body {
     transform: none;
   }
 
-  /* this bleed only makes sense beside the first photo panel, which is
-     stacked below (not beside) the logo on the mobile layout */
-  .hero-gap-fill {
-    display: none;
-  }
-
   .hero-panels {
     flex-direction: column;
     margin-left: 0;
@@ -430,7 +400,6 @@ body {
                 height="893"
               />
           </div>
-          <div class="hero-gap-fill" aria-hidden="true"></div>
           <div class="hero-tick-clip">
             <svg class="hero-tick" viewBox="0 0 476.667 297.75" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
               <path fill="#ee2f2f" d="M53.308594 75.605469L20.21875 84.382812L0.367188 9.535156L33.457031 0.757812Z" transform="translate(299 220)"/>
