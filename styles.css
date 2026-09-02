@@ -62,14 +62,19 @@ body {
   object-fit: cover;
 }
 
-/* the tick draws in (top to bottom) once the hero enters the viewport */
-.hero-tick {
+.hero-tick-clip {
   position: absolute;
   top: 0;
   right: -25%;
   height: 100%;
   aspect-ratio: 359 / 500;
+}
+
+/* the tick draws in (top to bottom) once the hero enters the viewport */
+.hero-tick {
   display: block;
+  width: 100%;
+  height: 100%;
   clip-path: inset(0 0 100% 0);
   transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
 }
@@ -158,17 +163,21 @@ body {
 }
 
 .hero-label {
+  display: block;
   min-width: 0;
   max-width: 100%;
-  font-weight: 800;
-  font-size: clamp(0.85rem, 1.8vw, 1.35rem);
-  letter-spacing: -0.01em;
-  color: #fff;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color 0.3s ease;
+}
+
+.brand-logo {
+  display: block;
+  height: clamp(1.1rem, 3.4vw, 2.1rem);
+  width: auto;
+  max-width: 100%;
+  filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.35));
+}
+
+.brand-logo [class$="-white"] {
+  transition: fill 0.3s ease;
 }
 
 /* description + CTA live inside the panel itself and only take up space
@@ -209,11 +218,16 @@ body {
   opacity: 0.6;
 }
 
-.hero-panel:hover .hero-label,
-.hero-panel:focus-visible .hero-label,
-.hero-panel.is-active .hero-label {
-  color: var(--brand);
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+.hero-panel:hover .brand-logo [class$="-white"],
+.hero-panel:focus-visible .brand-logo [class$="-white"],
+.hero-panel.is-active .brand-logo [class$="-white"] {
+  fill: var(--brand);
+}
+
+.hero-panel:hover .brand-logo,
+.hero-panel:focus-visible .brand-logo,
+.hero-panel.is-active .brand-logo {
+  filter: drop-shadow(0 1px 12px rgba(0, 0, 0, 0.55));
 }
 
 .hero-panel:hover .hero-panel-desc,
@@ -285,8 +299,8 @@ body {
     min-height: 7.5rem;
   }
 
-  .hero-label {
-    font-size: 1.05rem;
+  .brand-logo {
+    height: 1.6rem;
   }
 }
 
