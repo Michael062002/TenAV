@@ -79,11 +79,14 @@ body {
 
 /* matches the exact crop window of hero-logo-img (same original-document
    coordinate space) for a true natural position relative to the logo
-   text */
+   text — the logo's own diagonal clip (above) already meets the panel's
+   edge with no gap on its own, so this only needs a small nudge right to
+   clear the "y" in "Company", not the large offset a previous version
+   used to try to bridge a gap that didn't actually exist there */
 .hero-tick-clip {
   position: absolute;
   inset: 0;
-  transform: translateX(16%);
+  transform: translateX(4%);
   z-index: 5;
   pointer-events: none;
 }
