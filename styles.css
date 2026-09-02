@@ -68,6 +68,8 @@ body {
   right: -25%;
   height: 100%;
   aspect-ratio: 359 / 500;
+  z-index: 5;
+  pointer-events: none;
 }
 
 /* the tick draws in (top to bottom) once the hero enters the viewport */
