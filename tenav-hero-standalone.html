@@ -30,39 +30,7 @@ body {
 .tenav-hero {
   max-width: 1320px;
   margin: 0 auto;
-  padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 3rem);
-}
-
-/* ---------- headline ---------- */
-
-.hero-intro {
-  max-width: 720px;
-  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
-  text-align: center;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.tenav-hero.in-view .hero-intro {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hero-intro h2 {
-  margin: 0 0 0.9rem;
-  font-size: clamp(1.7rem, 3.6vw, 2.6rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-  color: var(--ink);
-}
-
-.hero-intro p {
-  margin: 0;
-  font-size: clamp(1rem, 1.6vw, 1.15rem);
-  line-height: 1.6;
-  color: var(--ink-soft);
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
 }
 
 /* ---------- brand cards ---------- */
@@ -76,8 +44,8 @@ body {
 .hero-card {
   position: relative;
   flex: 1 1 300px;
+  aspect-ratio: 1 / 1;
   display: block;
-  min-height: clamp(320px, 32vw, 400px);
   border-radius: 18px;
   overflow: hidden;
   text-decoration: none;
@@ -88,9 +56,9 @@ body {
   opacity: 0;
   transform: translateY(18px);
   transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.7s ease;
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.6s ease;
 }
 
 .tenav-hero.in-view .hero-card {
@@ -109,6 +77,45 @@ body {
   box-shadow: 0 4px 10px rgba(16, 20, 24, 0.1), 0 24px 44px -16px rgba(16, 20, 24, 0.38), inset 0 0 0 3px var(--brand);
 }
 
+/* animated white border that travels around the card edge on hover — a
+   conic-gradient "comet" clipped to a thin ring via mask-composite, so
+   it reads as a border rather than a glow */
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.9) 12%,
+    transparent 28%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  animation: hero-card-border-spin 2.8s linear infinite;
+  animation-play-state: paused;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.hero-card:hover::before,
+.hero-card:focus-visible::before,
+.hero-card.is-active::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes hero-card-border-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .hero-card-bg {
   position: absolute;
   inset: 0;
@@ -120,7 +127,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-card:hover .hero-card-bg img,
@@ -129,12 +136,12 @@ body {
   transform: scale(1.06);
 }
 
-/* subtle dark overlay for text readability, plus the brand tint on hover */
+/* light dark overlay for text readability, plus the brand tint on hover */
 .hero-card-bg::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10, 12, 16, 0.45) 0%, rgba(10, 12, 16, 0.8) 100%);
+  background: linear-gradient(180deg, rgba(10, 12, 16, 0.25) 0%, rgba(10, 12, 16, 0.6) 100%);
 }
 
 .hero-card-bg::after {
@@ -150,23 +157,18 @@ body {
 .hero-card:hover .hero-card-bg::after,
 .hero-card:focus-visible .hero-card-bg::after,
 .hero-card.is-active .hero-card-bg::after {
-  opacity: 0.75;
+  opacity: 0.55;
 }
 
-.hero-card-content {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 0.9rem;
-  padding: 2rem 1.75rem;
-}
-
+/* the logo is positioned independently of the description/CTA below, so
+   it stays perfectly centred and never shifts when they reveal */
 .hero-card-logo {
-  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  max-width: calc(100% - 3.5rem);
 }
 
 .brand-logo {
@@ -185,51 +187,55 @@ body {
   fill: #fff !important;
 }
 
+/* description + CTA live below the logo, anchored to the bottom of the
+   card so they never affect the logo's own position */
+.hero-card-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.85rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1.75rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-card:hover .hero-card-text,
+.hero-card:focus-visible .hero-card-text,
+.hero-card.is-active .hero-card-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .hero-card-desc {
   max-width: 260px;
   font-size: 0.92rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.3s ease;
-}
-
-.hero-card:hover .hero-card-desc,
-.hero-card:focus-visible .hero-card-desc,
-.hero-card.is-active .hero-card-desc {
-  opacity: 1;
-  max-height: 100px;
 }
 
 .hero-card-cta {
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #fff;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.3s ease, font-size 0.3s ease;
 }
 
-.hero-card:hover .hero-card-cta,
-.hero-card:focus-visible .hero-card-cta,
-.hero-card.is-active .hero-card-cta {
-  opacity: 1;
-  max-height: 100px;
-  font-size: 1.05rem;
-}
-
-.hero-card-cta span {
+.hero-card-arrow {
   display: inline-block;
-  transition: transform 0.35s ease;
+  color: var(--brand);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hero-card:hover .hero-card-cta span,
-.hero-card:focus-visible .hero-card-cta span,
-.hero-card.is-active .hero-card-cta span {
+.hero-card:hover .hero-card-arrow,
+.hero-card:focus-visible .hero-card-arrow,
+.hero-card.is-active .hero-card-arrow {
   transform: translateX(4px);
 }
 
@@ -238,7 +244,7 @@ body {
 .tenav-blue,
 .tenunify-yellow,
 .tensignage-green {
-  transition: fill 0.35s ease;
+  transition: fill 0.2s ease;
 }
 
 .hero-card:hover .tenav-blue,
@@ -254,17 +260,19 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-intro,
   .hero-card {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
 
+  .hero-card::before {
+    animation: none !important;
+  }
+
   .hero-card-bg img,
-  .hero-card-desc,
-  .hero-card-cta,
-  .hero-card-cta span,
+  .hero-card-text,
+  .hero-card-arrow,
   .tenav-blue,
   .tenunify-yellow,
   .tensignage-green {
@@ -276,11 +284,6 @@ body {
 </head>
 <body>
   <section class="tenav-hero" id="hero">
-    <div class="hero-intro">
-      <h2>Technology Solutions That Work Better Together</h2>
-      <p>Through TenAV, TenSignage and TenUnify, we help organisations design, deploy and manage connected workplace technology through a single trusted partner.</p>
-    </div>
-
     <div class="hero-cards" id="heroArt">
       <a
         class="hero-card"
@@ -310,8 +313,10 @@ body {
               <polygon class="tenav-blue" points="2165.41 0 2001.45 518.87 1970.16 416.4 1832.1 416.4 1918.51 675.12 2083.43 675.12 2311.04 0 2165.41 0"/>
             </svg>
           </span>
-          <span class="hero-card-desc">Audio visual solutions for meeting rooms, workspaces and large venues.</span>
-          <span class="hero-card-cta">Explore <span aria-hidden="true">→</span></span>
+          <span class="hero-card-text">
+            <span class="hero-card-desc">Audio visual solutions for meeting rooms, workspaces and large venues.</span>
+            <span class="hero-card-cta">Explore <span class="hero-card-arrow" aria-hidden="true">→</span></span>
+          </span>
         </span>
       </a>
 
@@ -346,8 +351,10 @@ body {
               </g>
             </svg>
           </span>
-          <span class="hero-card-desc">Digital signage that keeps communications engaging, dynamic and easy to manage.</span>
-          <span class="hero-card-cta">Explore <span aria-hidden="true">→</span></span>
+          <span class="hero-card-text">
+            <span class="hero-card-desc">Digital signage that keeps communications engaging, dynamic and easy to manage.</span>
+            <span class="hero-card-cta">Explore <span class="hero-card-arrow" aria-hidden="true">→</span></span>
+          </span>
         </span>
       </a>
 
@@ -385,8 +392,10 @@ body {
               <path class="tenunify-white" d="M2730.79,627.94c-44.07,101.04-112.03,145.27-209.77,139.89v-100.26c42.17.59,69.57-11.9,89.08-39.29l120.69-.33h0Z"/>
             </svg>
           </span>
-          <span class="hero-card-desc">Integrated workplace technology and managed services designed to simplify operations.</span>
-          <span class="hero-card-cta">Explore <span aria-hidden="true">→</span></span>
+          <span class="hero-card-text">
+            <span class="hero-card-desc">Integrated workplace technology and managed services designed to simplify operations.</span>
+            <span class="hero-card-cta">Explore <span class="hero-card-arrow" aria-hidden="true">→</span></span>
+          </span>
         </span>
       </a>
     </div>
