@@ -33,57 +33,119 @@ body {
   padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem);
 }
 
-/* ---------- intro copy: follows on from the page's own heading/eyebrow pattern ---------- */
+/* ---------- intro copy: standalone section, engages on its own ---------- */
 
-.brands-intro {
-  max-width: 760px;
-  margin: 0 0 clamp(2rem, 4vw, 3rem);
+.tt-intro {
+  --tt-av: #20c4f4;
+  --tt-signage: #6fc59f;
+  --tt-unify: #fdb913;
+  position: relative;
+  max-width: 900px;
+  margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  padding: clamp(2.25rem, 4.5vw, 3.5rem);
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(480px 260px at 8% -10%, rgba(32, 196, 244, 0.10), transparent 65%),
+    radial-gradient(480px 260px at 95% 0%, rgba(253, 185, 19, 0.10), transparent 60%),
+    radial-gradient(520px 320px at 50% 120%, rgba(111, 197, 159, 0.10), transparent 65%),
+    #fbfcfd;
+  box-shadow: 0 24px 60px -32px rgba(16, 20, 24, 0.25);
 }
 
-.brands-intro-eyebrow {
+.tt-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  margin: 0 0 0.75rem;
+  gap: 0.65rem;
+  margin: 0 0 0.85rem;
   font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
 
-.brands-intro-dots {
+.tt-eyebrow-dots {
   display: inline-flex;
   gap: 4px;
 }
 
-.brands-intro-dots span {
+.tt-eyebrow-dots span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.brands-intro-title {
-  margin: 0 0 1rem;
-  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
-  font-weight: 700;
-  line-height: 1.15;
+.tt-title {
+  margin: 0 0 1.1rem;
+  font-size: clamp(1.9rem, 3.8vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
   color: var(--ink);
 }
 
-.brands-intro-copy {
+.tt-copy {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.9rem;
+  max-width: 60ch;
 }
 
-.brands-intro-copy p {
+.tt-copy p {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 1.02rem;
+  line-height: 1.65;
   color: var(--ink-soft);
-  max-width: 62ch;
+}
+
+.tt-brands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+}
+
+.tt-brand-chip {
+  --c: var(--tt-av);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1.1rem 0.55rem 0.85rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tt-brand-chip:hover,
+.tt-brand-chip:focus-visible {
+  border-color: var(--c);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -12px var(--c);
+  outline: none;
+}
+
+.tt-brand-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c);
+  flex: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-brand-chip {
+    transition: none;
+  }
 }
 
 /* ---------- brand cards ---------- */
@@ -332,22 +394,33 @@ body {
 </head>
 <body>
   <section class="tenav-hero" id="hero">
-    <div class="brands-intro">
-      <p class="brands-intro-eyebrow">
-        <span class="brands-intro-dots" aria-hidden="true">
-          <span style="background:#20C4F4"></span>
-          <span style="background:#6FC59F"></span>
-          <span style="background:#FDB913"></span>
+    <section class="tt-intro">
+      <p class="tt-eyebrow">
+        <span class="tt-eyebrow-dots" aria-hidden="true">
+          <span style="background:#20c4f4"></span>
+          <span style="background:#6fc59f"></span>
+          <span style="background:#fdb913"></span>
         </span>
         Three specialist brands
       </p>
-      <h2 class="brands-intro-title">One technology partner.</h2>
-      <div class="brands-intro-copy">
-        <p>We bring this approach to life through three specialist brands, each focused on a specific customer need.</p>
-        <p>Together they give you a broad portfolio in one place, from workplace technology and communications to data and insight. You choose exactly what your business needs.</p>
+      <h2 class="tt-title">One technology partner.</h2>
+      <div class="tt-copy">
+        <p>TenTechnology Group is built around three specialist brands, each solving a specific piece of the technology puzzle — from meeting room AV to digital signage to unified workplace platforms.</p>
+        <p>Together they give you a broad portfolio in one place, so you get exactly what your business needs without juggling multiple suppliers.</p>
         <p>Solving one specific challenge, or looking for a technology partner to support your wider ambitions? Either way, we can help.</p>
       </div>
-    </div>
+      <div class="tt-brands">
+        <a class="tt-brand-chip" href="https://tenav.co.uk/" style="--c:#20c4f4">
+          <span class="tt-brand-dot"></span>TenAV
+        </a>
+        <a class="tt-brand-chip" href="https://tenav.co.uk/products/tensignage/" style="--c:#6fc59f">
+          <span class="tt-brand-dot"></span>TenSignage
+        </a>
+        <a class="tt-brand-chip" href="https://www.tenunify.co.uk/" style="--c:#fdb913">
+          <span class="tt-brand-dot"></span>TenUnify
+        </a>
+      </div>
+    </section>
     <div class="hero-cards" id="heroArt">
       <a
         class="hero-card"
