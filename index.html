@@ -61,19 +61,14 @@ body {
 /* ---------- brand cards ---------- */
 
 .hero-cards {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: clamp(1.25rem, 2.5vw, 2rem);
-}
-
-@media (max-width: 860px) {
-  .hero-cards {
-    grid-template-columns: 1fr;
-  }
 }
 
 .hero-card {
   position: relative;
+  flex: 1 1 300px;
   display: block;
   aspect-ratio: 1 / 1;
   border-radius: 18px;
@@ -136,21 +131,22 @@ body {
   transform: scale(1.05);
 }
 
-/* base overlay keeps text legible at rest; hover lifts it slightly so the
-   photo reads a bit brighter as the card comes forward */
+/* the card is just the photo at rest; hovering brings in a tall dark
+   gradient (darkest at the bottom) so the revealed text stays legible */
 .hero-card-bg::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.62) 45%, rgba(0, 0, 0, 0.28) 72%, rgba(0, 0, 0, 0.05) 100%);
-  transition: background 0.3s ease;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.72) 35%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0.1) 85%, rgba(0, 0, 0, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .hero-card:hover .hero-card-bg::before,
 .hero-card:focus-visible .hero-card-bg::before,
 .hero-card.is-active .hero-card-bg::before {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.5) 42%, rgba(0, 0, 0, 0.12) 100%);
+  opacity: 1;
 }
 
 .hero-card-content {
@@ -159,8 +155,9 @@ body {
   z-index: 3;
 }
 
-/* the logo is positioned independently of the description/CTA below, so
-   it stays perfectly centred and never shifts when they reveal */
+/* the card shows just the photo at rest; the logo is positioned
+   independently of the description/CTA below so it stays perfectly
+   centred and never shifts as everything fades in together on hover */
 .hero-card-logo {
   position: absolute;
   top: 50%;
@@ -168,12 +165,14 @@ body {
   transform: translate(-50%, -50%);
   z-index: 2;
   max-width: calc(100% - 3.5rem);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-card:hover .hero-card-logo,
 .hero-card:focus-visible .hero-card-logo,
 .hero-card.is-active .hero-card-logo {
+  opacity: 1;
   transform: translate(-50%, calc(-50% - 5px));
 }
 
@@ -293,6 +292,7 @@ body {
   }
 
   .hero-card-bg img,
+  .hero-card-bg::before,
   .hero-card-logo,
   .hero-card-text,
   .hero-card-arrow,
