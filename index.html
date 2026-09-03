@@ -237,7 +237,73 @@ body {
 /* ---------- brand cards ---------- */
 
 .hero-intro {
+  position: relative;
   margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/* recreates the TenTechnology Group / Kubus lockup used across the
+   group's own marketing so this section reads as part of that family,
+   not just three unrelated cards */
+.group-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.1rem;
+  padding: 0.4rem 0.85rem 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  line-height: 1;
+}
+
+.group-tick {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: #ef403d;
+}
+
+.group-badge-text {
+  color: var(--ink);
+}
+
+.group-badge-text strong {
+  font-weight: 700;
+}
+
+.group-badge-divider {
+  width: 1px;
+  height: 0.9rem;
+  background: var(--line);
+}
+
+.group-badge-sub {
+  color: var(--ink-soft);
+}
+
+.group-badge-sub strong {
+  color: #b96e36;
+  font-weight: 700;
+}
+
+/* a small angled flourish echoing the diagonal chevron used across the
+   group's own banners and slides */
+.hero-intro::after {
+  content: "";
+  position: absolute;
+  top: 0.35rem;
+  right: 0;
+  display: block;
+  width: 84px;
+  height: 10px;
+  background: linear-gradient(100deg, #ef403d 0%, #ef403d 45%, #b96e36 55%, #b96e36 100%);
+  clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
+}
+
+@media (max-width: 700px) {
+  .hero-intro::after {
+    display: none;
+  }
 }
 
 .hero-cards {
@@ -508,6 +574,14 @@ body {
 
   <section class="tenav-hero" id="brands">
     <div class="hero-intro">
+      <div class="group-badge">
+        <svg class="group-tick" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 12.5l5 5L20 6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="group-badge-text"><strong>TenTechnology</strong> Group</span>
+        <span class="group-badge-divider" aria-hidden="true"></span>
+        <span class="group-badge-sub">A <strong>Kubus</strong> Group Company</span>
+      </div>
       <h2 class="section-heading">Three specialist brands. One technology partner.</h2>
       <div class="section-body">
         <p>We bring this approach to life through three specialist brands, each focused on a specific customer need.</p>
