@@ -99,47 +99,9 @@
   color: var(--tt-ink-soft);
 }
 
-.tt-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-top: 1.85rem;
-  padding: 0.8rem 1.6rem;
-  border-radius: 999px;
-  border: 1.5px solid var(--tt-red);
-  background: transparent;
-  color: var(--tt-red);
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.tt-cta:hover,
-.tt-cta:focus-visible {
-  background: var(--tt-red);
-  color: #fff;
-  transform: translateY(-1px);
-  outline: none;
-}
-
-.tt-cta-arrow {
-  transition: transform 0.2s ease;
-}
-
-.tt-cta:hover .tt-cta-arrow,
-.tt-cta:focus-visible .tt-cta-arrow {
-  transform: translateY(3px);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .tt-eyebrow-dots span {
     animation: none;
-  }
-
-  .tt-cta,
-  .tt-cta-arrow {
-    transition: none;
   }
 }
 </style>
@@ -159,8 +121,4 @@
     <p>Together they give you a broad portfolio in one place, so you get exactly what your business needs without juggling multiple suppliers.</p>
     <p>Solving one specific challenge, or looking for a technology partner to support your wider ambitions? Either way, we can help.</p>
   </div>
-  <a class="tt-cta" href="#heroArt">
-    Explore our three brands
-    <span class="tt-cta-arrow" aria-hidden="true">↓</span>
-  </a>
 </section>
