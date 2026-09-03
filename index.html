@@ -75,7 +75,7 @@ body {
 .hero-card {
   position: relative;
   display: block;
-  min-height: clamp(420px, 34vw, 500px);
+  aspect-ratio: 1 / 1;
   border-radius: 18px;
   overflow: hidden;
   text-decoration: none;
@@ -98,7 +98,8 @@ body {
 }
 
 .hero-card:hover,
-.hero-card:focus-visible {
+.hero-card:focus-visible,
+.hero-card.is-active {
   transform: translateY(-6px);
   border-color: rgba(255, 255, 255, 0.18);
   box-shadow:
@@ -130,7 +131,8 @@ body {
 }
 
 .hero-card:hover .hero-card-bg img,
-.hero-card:focus-visible .hero-card-bg img {
+.hero-card:focus-visible .hero-card-bg img,
+.hero-card.is-active .hero-card-bg img {
   transform: scale(1.05);
 }
 
@@ -146,7 +148,8 @@ body {
 }
 
 .hero-card:hover .hero-card-bg::before,
-.hero-card:focus-visible .hero-card-bg::before {
+.hero-card:focus-visible .hero-card-bg::before,
+.hero-card.is-active .hero-card-bg::before {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.5) 42%, rgba(0, 0, 0, 0.12) 100%);
 }
 
@@ -162,7 +165,8 @@ body {
 }
 
 .hero-card:hover .hero-card-bg::after,
-.hero-card:focus-visible .hero-card-bg::after {
+.hero-card:focus-visible .hero-card-bg::after,
+.hero-card.is-active .hero-card-bg::after {
   opacity: 0.35;
 }
 
@@ -170,31 +174,29 @@ body {
   position: absolute;
   inset: 0;
   z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.85rem;
-  padding: 2rem 1.75rem;
-  text-align: center;
 }
 
+/* the logo is positioned independently of the description/CTA below, so
+   it stays perfectly centred and never shifts when they reveal */
 .hero-card-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: clamp(1.7rem, 3vw, 2.3rem);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  max-width: calc(100% - 3.5rem);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hero-card:hover .hero-card-logo,
-.hero-card:focus-visible .hero-card-logo {
-  transform: translateY(-5px);
+.hero-card:focus-visible .hero-card-logo,
+.hero-card.is-active .hero-card-logo {
+  transform: translate(-50%, calc(-50% - 5px));
 }
 
 .brand-logo {
   display: block;
-  height: 100%;
+  height: clamp(1.6rem, 3vw, 2.2rem);
   width: auto;
   max-width: 100%;
   filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.35));
@@ -215,16 +217,36 @@ body {
   fill: #fff !important;
 }
 
+/* description + CTA live below the logo, anchored to the bottom of the
+   card so they never affect the logo's own position, and only reveal
+   on hover/focus */
 .hero-card-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.85rem;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
+  padding: 0 1.75rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-card:hover .hero-card-text,
+.hero-card:focus-visible .hero-card-text,
+.hero-card.is-active .hero-card-text {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hero-card-desc {
   margin: 0;
-  max-width: 280px;
+  max-width: 260px;
   font-size: 0.92rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
@@ -242,7 +264,8 @@ body {
 }
 
 .hero-card:hover .hero-card-cta,
-.hero-card:focus-visible .hero-card-cta {
+.hero-card:focus-visible .hero-card-cta,
+.hero-card.is-active .hero-card-cta {
   text-decoration: underline;
   text-decoration-color: var(--brand);
 }
@@ -254,7 +277,8 @@ body {
 }
 
 .hero-card:hover .hero-card-arrow,
-.hero-card:focus-visible .hero-card-arrow {
+.hero-card:focus-visible .hero-card-arrow,
+.hero-card.is-active .hero-card-arrow {
   transform: translateX(6px);
 }
 
@@ -268,10 +292,13 @@ body {
 
 .hero-card:hover .tenav-blue,
 .hero-card:focus-visible .tenav-blue,
+.hero-card.is-active .tenav-blue,
 .hero-card:hover .tenunify-yellow,
 .hero-card:focus-visible .tenunify-yellow,
+.hero-card.is-active .tenunify-yellow,
 .hero-card:hover .tensignage-green,
-.hero-card:focus-visible .tensignage-green {
+.hero-card:focus-visible .tensignage-green,
+.hero-card.is-active .tensignage-green {
   fill: var(--brand) !important;
 }
 
@@ -284,6 +311,7 @@ body {
 
   .hero-card-bg img,
   .hero-card-logo,
+  .hero-card-text,
   .hero-card-arrow,
   .tenav-blue,
   .tenunify-yellow,
@@ -422,7 +450,11 @@ body {
   "use strict";
 
   var hero = document.getElementById("hero");
+  var cards = Array.prototype.slice.call(hero.querySelectorAll(".hero-card"));
 
+  var isTouch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
+  // ---- entrance animation ----
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(
       function (entries) {
@@ -438,6 +470,42 @@ body {
     io.observe(hero);
   } else {
     hero.classList.add("in-view");
+  }
+
+  // ---- touch: first tap reveals the description, second tap follows the link ----
+  if (isTouch) {
+    cards.forEach(function (card) {
+      card.addEventListener("click", function (event) {
+        if (!card.classList.contains("is-active")) {
+          event.preventDefault();
+          cards.forEach(function (c) {
+            if (c !== card) c.classList.remove("is-active");
+          });
+          card.classList.add("is-active");
+        }
+        // second tap on an already-active card follows the link normally
+      });
+    });
+
+    document.addEventListener(
+      "click",
+      function (event) {
+        if (!hero.contains(event.target)) {
+          cards.forEach(function (c) {
+            c.classList.remove("is-active");
+          });
+        }
+      },
+      true
+    );
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        cards.forEach(function (c) {
+          c.classList.remove("is-active");
+        });
+      }
+    });
   }
 })();
 </script>
