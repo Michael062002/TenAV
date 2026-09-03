@@ -126,9 +126,53 @@ body {
   color: var(--ink-soft);
 }
 
+.tt-brands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--line);
+}
+
+.tt-brand-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1.1rem 0.55rem 0.85rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tt-brand-chip:hover,
+.tt-brand-chip:focus-visible {
+  border-color: var(--c);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -12px var(--c);
+  outline: none;
+}
+
+.tt-brand-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c);
+  flex: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tt-eyebrow-dots span {
     animation: none;
+  }
+
+  .tt-brand-chip {
+    transition: none;
   }
 }
 
@@ -392,6 +436,17 @@ body {
         <p>TenTechnology Group is built around three specialist brands, each solving a specific piece of the technology puzzle — from meeting room AV to digital signage to workplace reporting.</p>
         <p>Together they give you a broad portfolio in one place, so you get exactly what your business needs without juggling multiple suppliers.</p>
         <p>Solving one specific challenge, or looking for a technology partner to support your wider ambitions? Either way, we can help.</p>
+      </div>
+      <div class="tt-brands">
+        <a class="tt-brand-chip" href="https://tenav.co.uk/" style="--c:#20c4f4">
+          <span class="tt-brand-dot"></span>TenAV
+        </a>
+        <a class="tt-brand-chip" href="https://tenav.co.uk/products/tensignage/" style="--c:#6fc59f">
+          <span class="tt-brand-dot"></span>TenSignage
+        </a>
+        <a class="tt-brand-chip" href="https://www.tenunify.co.uk/" style="--c:#fdb913">
+          <span class="tt-brand-dot"></span>TenUnify
+        </a>
       </div>
     </section>
     <div class="hero-cards" id="heroArt">
