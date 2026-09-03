@@ -5,22 +5,11 @@
 .tt-intro {
   --tt-ink: #101418;
   --tt-ink-soft: #5b6472;
-  --tt-line: #e4e7ec;
-  --tt-av: #20c4f4;
-  --tt-signage: #6fc59f;
-  --tt-unify: #fdb913;
-  position: relative;
-  max-width: 900px;
+  --tt-red: #D71920;
+  max-width: 760px;
   margin: 0 auto;
-  padding: clamp(2.5rem, 5vw, 4rem) clamp(1.75rem, 4vw, 3.25rem);
-  border-radius: 28px;
-  border: 1px solid var(--tt-line);
-  background:
-    radial-gradient(480px 260px at 8% -10%, rgba(32, 196, 244, 0.10), transparent 65%),
-    radial-gradient(480px 260px at 95% 0%, rgba(253, 185, 19, 0.10), transparent 60%),
-    radial-gradient(520px 320px at 50% 120%, rgba(111, 197, 159, 0.10), transparent 65%),
-    #fbfcfd;
-  box-shadow: 0 24px 60px -32px rgba(16, 20, 24, 0.25);
+  padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 4vw, 2rem);
+  background: #fff;
   font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color: var(--tt-ink);
 }
@@ -47,6 +36,30 @@
   height: 8px;
   border-radius: 50%;
   display: inline-block;
+  animation: tt-dot-pulse 2.6s ease-in-out infinite;
+}
+
+.tt-eyebrow-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.tt-eyebrow-dots span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.tt-eyebrow-dots span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes tt-dot-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
 }
 
 .tt-title {
@@ -56,6 +69,14 @@
   line-height: 1.08;
   letter-spacing: -0.01em;
   text-wrap: balance;
+}
+
+.tt-title-highlight {
+  transition: color 0.25s ease;
+}
+
+.tt-title-highlight:hover {
+  color: var(--tt-red);
 }
 
 .tt-copy {
@@ -73,50 +94,9 @@
   color: var(--tt-ink-soft);
 }
 
-.tt-brands {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.75rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--tt-line);
-}
-
-.tt-brand-chip {
-  --c: var(--tt-av);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.55rem 1.1rem 0.55rem 0.85rem;
-  border-radius: 999px;
-  border: 1.5px solid var(--tt-line);
-  background: #fff;
-  color: var(--tt-ink);
-  font-size: 0.92rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.tt-brand-chip:hover,
-.tt-brand-chip:focus-visible {
-  border-color: var(--c);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px -12px var(--c);
-  outline: none;
-}
-
-.tt-brand-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--c);
-  flex: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .tt-brand-chip {
-    transition: none;
+  .tt-eyebrow-dots span {
+    animation: none;
   }
 }
 </style>
@@ -130,21 +110,10 @@
     </span>
     Three specialist brands
   </p>
-  <h2 class="tt-title">One technology partner.</h2>
+  <h2 class="tt-title"><span class="tt-title-highlight">One</span> technology partner.</h2>
   <div class="tt-copy">
-    <p>TenTechnology Group is built around three specialist brands, each solving a specific piece of the technology puzzle — from meeting room AV to digital signage to unified workplace platforms.</p>
+    <p>TenTechnology Group is built around three specialist brands, each solving a specific piece of the technology puzzle — from meeting room AV to digital signage to workplace reporting.</p>
     <p>Together they give you a broad portfolio in one place, so you get exactly what your business needs without juggling multiple suppliers.</p>
     <p>Solving one specific challenge, or looking for a technology partner to support your wider ambitions? Either way, we can help.</p>
-  </div>
-  <div class="tt-brands">
-    <a class="tt-brand-chip" href="https://tenav.co.uk/" style="--c:#20c4f4">
-      <span class="tt-brand-dot"></span>TenAV
-    </a>
-    <a class="tt-brand-chip" href="https://tenav.co.uk/products/tensignage/" style="--c:#6fc59f">
-      <span class="tt-brand-dot"></span>TenSignage
-    </a>
-    <a class="tt-brand-chip" href="https://www.tenunify.co.uk/" style="--c:#fdb913">
-      <span class="tt-brand-dot"></span>TenUnify
-    </a>
   </div>
 </section>
