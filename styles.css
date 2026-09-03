@@ -65,13 +65,23 @@ body {
 .hero-card:focus-visible,
 .hero-card.is-active {
   transform: translateY(-6px) scale(1.015);
-  box-shadow: 0 4px 10px rgba(16, 20, 24, 0.1), 0 24px 44px -16px rgba(16, 20, 24, 0.38);
+  /* the tight, darker ring sits just behind the white outline so it
+     reads clearly against a light page background instead of blending
+     into it */
+  box-shadow:
+    0 0 0 6px rgba(16, 20, 24, 0.22),
+    0 8px 18px rgba(16, 20, 24, 0.22),
+    0 28px 48px -16px rgba(16, 20, 24, 0.48);
   outline-color: rgba(255, 255, 255, 0.95);
   outline-offset: 4px;
 }
 
 .hero-card:focus-visible {
-  box-shadow: 0 4px 10px rgba(16, 20, 24, 0.1), 0 24px 44px -16px rgba(16, 20, 24, 0.38), inset 0 0 0 3px var(--brand);
+  box-shadow:
+    0 0 0 6px rgba(16, 20, 24, 0.22),
+    0 8px 18px rgba(16, 20, 24, 0.22),
+    0 28px 48px -16px rgba(16, 20, 24, 0.48),
+    inset 0 0 0 3px var(--brand);
 }
 
 .hero-card-bg {
