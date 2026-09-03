@@ -18,192 +18,153 @@ body {
 }
 
 .tenav-hero {
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 3rem);
 }
 
-/* ---------- interactive artwork ---------- */
+/* ---------- headline ---------- */
 
-.hero-art-wrap {
-  position: relative;
-}
-
-.hero-art {
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-  overflow: hidden;
+.hero-intro {
+  max-width: 720px;
+  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
   opacity: 0;
-  transform: scale(0.97);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 
-.tenav-hero.in-view .hero-art {
+.tenav-hero.in-view .hero-intro {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(0);
 }
 
-/* static brand lockup (logo + tagline), kept exactly as supplied */
-.hero-logo {
-  position: relative;
-  flex: 0 0 26%;
-  max-width: 26%;
-  aspect-ratio: var(--logo-w) / var(--logo-h);
+.hero-intro h2 {
+  margin: 0 0 0.9rem;
+  font-size: clamp(1.7rem, 3.6vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--ink);
 }
 
-/* right edge cut at the same 12deg angle as the panels' own skew, so the
-   white lockup ends on a diagonal instead of a vertical edge — kept on
-   its own wrapper (rather than the image) so the recentring shift below
-   doesn't drag the clip boundary along with it */
-.hero-logo-clip {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  clip-path: polygon(0% 0%, 100% 0%, 86.73% 100%, 0% 100%);
+.hero-intro p {
+  margin: 0;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--ink-soft);
 }
 
-.hero-logo-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  /* the source crop has far more empty margin on the right (reserved
-     for the tick, which now renders separately) than the left — shift
-     right to balance the margins and centre the wordmark */
-  transform: translateX(9.37%);
-}
+/* ---------- brand cards ---------- */
 
-/* the tick itself is drawn at a steeper angle than the panels' 12deg
-   skew, so skewX(7deg) corrects its long stroke to the exact same angle
-   as the new diagonal TenAV edge below, and translateX positions it to
-   sit exactly on top of that edge with no gap — together they turn the
-   tick into the red diagonal divider between the white lockup and TenAV */
-.hero-tick-clip {
-  position: absolute;
-  inset: 0;
-  transform: translateX(5.4%) skewX(7deg);
-  z-index: 5;
-  pointer-events: none;
-}
-
-/* the tick draws in (top to bottom) once the hero enters the viewport */
-.hero-tick {
-  display: block;
-  width: 100%;
-  height: 100%;
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
-}
-
-.tenav-hero.in-view .hero-tick {
-  clip-path: inset(0 0 0% 0);
-}
-
-/* interactive service panels — real flex items, so hovering one actually
-   grows its width and shrinks its neighbours, not an overlay on top */
-.hero-panels {
-  flex: 1 1 auto;
+.hero-cards {
   display: flex;
-  overflow: hidden;
-  /* pulls the row left by a % of the *whole* hero-art width so the first
-     panel's own skew (below) lands its diagonal left edge exactly on the
-     logo's diagonal clip, with the +17.5px correcting for the fixed
-     -28px each panel also carries (a fixed px value alone would drift
-     out of alignment as the hero scales, hence the % term) */
-  margin-left: calc(-1% + 17.5px);
-  margin-right: -28px;
+  flex-wrap: wrap;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
 }
 
-.hero-panel {
+.hero-card {
   position: relative;
-  flex: 1 1 0%;
-  min-width: 0;
+  flex: 1 1 300px;
+  display: block;
+  min-height: clamp(320px, 32vw, 400px);
+  border-radius: 18px;
   overflow: hidden;
-  background: #11151a;
-  border-left: 8px solid rgba(255, 255, 255, 0.9);
-  transform: skewX(-12deg);
-  margin-left: -28px;
-  cursor: pointer;
   text-decoration: none;
   outline: none;
-  transition: flex-grow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+  background: #11151a;
+  box-shadow: 0 1px 2px rgba(16, 20, 24, 0.06), 0 12px 28px -12px rgba(16, 20, 24, 0.28);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.7s ease;
 }
 
-.hero-panel:first-child {
-  /* the same -28px margin-left as every other panel (no override here
-     anymore) so TenAV's own skew gives it a diagonal left edge too,
-     instead of being clipped into a vertical one */
-  /* no divider here — this edge meets the logo/tick artwork, not another
-     photo panel, so a white seam would look like a stray line rather than
-     a deliberate divider */
-  border-left: none;
+.tenav-hero.in-view .hero-card {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* photograph, oversized so its counter-skew never exposes a corner, plus
-   a bottom-weighted scrim so the label stays legible over any photo */
-.hero-panel-bg {
+.hero-card:hover,
+.hero-card:focus-visible {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: 0 4px 10px rgba(16, 20, 24, 0.1), 0 24px 44px -16px rgba(16, 20, 24, 0.38);
+}
+
+.hero-card:focus-visible {
+  box-shadow: 0 4px 10px rgba(16, 20, 24, 0.1), 0 24px 44px -16px rgba(16, 20, 24, 0.38), inset 0 0 0 3px var(--brand);
+}
+
+.hero-card-bg {
   position: absolute;
-  inset: -15% -50%;
-  transform: skewX(12deg);
+  inset: 0;
 }
 
-.hero-panel-bg picture,
-.hero-panel-bg img {
+.hero-card-bg picture,
+.hero-card-bg img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.hero-panel-bg::before {
+.hero-card:hover .hero-card-bg img,
+.hero-card:focus-visible .hero-card-bg img {
+  transform: scale(1.06);
+}
+
+/* subtle dark overlay for text readability, plus the brand tint on hover */
+.hero-card-bg::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.35) 100%);
+  background: linear-gradient(180deg, rgba(10, 12, 16, 0.25) 0%, rgba(10, 12, 16, 0.6) 100%);
 }
 
-.hero-panel-bg::after {
+.hero-card-bg::after {
   content: "";
   position: absolute;
   inset: 0;
   background: var(--brand);
   mix-blend-mode: multiply;
   opacity: 0;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.4s ease;
 }
 
-.hero-panel-inner {
+.hero-card:hover .hero-card-bg::after,
+.hero-card:focus-visible .hero-card-bg::after {
+  opacity: 0.45;
+}
+
+.hero-card-content {
   position: absolute;
   inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  gap: 0.45rem;
-  padding: 0 1.5rem;
-  transform: skewX(12deg);
+  gap: 0.9rem;
+  padding: 2rem 1.75rem;
 }
 
-.hero-label {
+.hero-card-logo {
   display: block;
-  min-width: 0;
-  max-width: 100%;
 }
 
 .brand-logo {
   display: block;
-  height: clamp(1.4rem, 4.2vw, 2.7rem);
+  height: clamp(1.6rem, 3vw, 2.2rem);
   width: auto;
   max-width: 100%;
   filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.35));
 }
 
-/* logos stay plain white — it's the tick that picks up the hovered
-   panel's brand colour instead (see below) */
+/* logos stay plain white — the accent shape picks up the brand colour instead */
 .brand-logo path,
 .brand-logo polygon,
 .brand-logo text,
@@ -211,166 +172,59 @@ body {
   fill: #fff !important;
 }
 
-/* description + CTA live inside the panel itself and only take up space
-   once the panel has expanded and there's room for them — no floating
-   tooltip */
-.hero-panel-desc,
-.hero-panel-cta {
-  max-width: 220px;
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.3s ease;
-}
-
-.hero-panel-desc {
-  font-size: 0.8rem;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.92);
+.hero-card-desc {
+  max-width: 260px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
-.hero-panel-cta {
-  font-size: 0.82rem;
+.hero-card-cta {
+  font-size: 0.88rem;
   font-weight: 700;
   color: #fff;
+  transition: transform 0.35s ease;
 }
 
-.hero-panel:hover,
-.hero-panel:focus-visible,
-.hero-panel.is-active {
-  flex-grow: 2.1;
-  z-index: 2;
+.hero-card-cta span {
+  display: inline-block;
+  transition: transform 0.35s ease;
 }
 
-.hero-panel:hover .hero-panel-bg::after,
-.hero-panel:focus-visible .hero-panel-bg::after,
-.hero-panel.is-active .hero-panel-bg::after {
-  opacity: 0.6;
+.hero-card:hover .hero-card-cta span,
+.hero-card:focus-visible .hero-card-cta span {
+  transform: translateX(4px);
 }
 
-.hero-panel:hover .brand-logo,
-.hero-panel:focus-visible .brand-logo,
-.hero-panel.is-active .brand-logo {
-  filter: drop-shadow(0 1px 12px rgba(0, 0, 0, 0.55));
-}
-
-/* the logo's own accent shape (the "tick" in AV/Unify, "Ten" in
-   Signage) is what picks up the brand colour on hover — the rest of the
-   wordmark, and the separate master tick by the main logo, stay as-is */
+/* the logo's own accent shape (the tick in AV/Unify, "Ten" in Signage)
+   picks up the brand colour on hover */
 .tenav-blue,
 .tenunify-yellow,
 .tensignage-green {
   transition: fill 0.35s ease;
 }
 
-.hero-panel:hover .tenav-blue,
-.hero-panel:focus-visible .tenav-blue,
-.hero-panel.is-active .tenav-blue,
-.hero-panel:hover .tenunify-yellow,
-.hero-panel:focus-visible .tenunify-yellow,
-.hero-panel.is-active .tenunify-yellow,
-.hero-panel:hover .tensignage-green,
-.hero-panel:focus-visible .tensignage-green,
-.hero-panel.is-active .tensignage-green {
+.hero-card:hover .tenav-blue,
+.hero-card:focus-visible .tenav-blue,
+.hero-card:hover .tenunify-yellow,
+.hero-card:focus-visible .tenunify-yellow,
+.hero-card:hover .tensignage-green,
+.hero-card:focus-visible .tensignage-green {
   fill: var(--brand) !important;
 }
 
-.hero-panel:hover .hero-panel-desc,
-.hero-panel:focus-visible .hero-panel-desc,
-.hero-panel.is-active .hero-panel-desc,
-.hero-panel:hover .hero-panel-cta,
-.hero-panel:focus-visible .hero-panel-cta,
-.hero-panel.is-active .hero-panel-cta {
-  opacity: 1;
-  max-height: 100px;
-}
-
-.hero-panel:focus-visible {
-  box-shadow: inset 0 0 0 3px var(--brand);
-}
-
-/* ---------- responsive ---------- */
-
-@media (max-width: 640px) {
-  .hero-art {
-    flex-direction: column;
-  }
-
-  .hero-logo {
-    flex-basis: auto;
-    max-width: none;
-    width: 100%;
-  }
-
-  .hero-logo-clip {
-    clip-path: none;
-  }
-
-  .hero-logo-img {
-    /* the desktop recentring shift relies on the diagonal clip to
-       absorb the overflow; without it here it would cut off "Company" */
-    transform: none;
-  }
-
-  .hero-tick-clip {
-    transform: none;
-  }
-
-  .hero-panels {
-    flex-direction: column;
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .hero-panel {
-    flex: none;
-    min-height: 3.6rem;
-    transform: none;
-    margin-left: 0;
-    border-left: none;
-    border-top: 7px solid #fff;
-  }
-
-  .hero-panel:first-child {
-    margin-left: 0;
-  }
-
-  .hero-panel-bg {
-    inset: 0;
-    transform: none;
-  }
-
-  .hero-panel-inner {
-    padding: 0.75rem 1.25rem;
-    justify-content: center;
-    transform: none;
-  }
-
-  .hero-panel:hover,
-  .hero-panel:focus-visible,
-  .hero-panel.is-active {
-    flex-grow: 0;
-    min-height: 7.5rem;
-  }
-
-  .brand-logo {
-    height: 2rem;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .hero-art,
-  .hero-tick {
+  .hero-intro,
+  .hero-card {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
-    clip-path: inset(0 0 0% 0) !important;
   }
 
-  .hero-panel,
-  .hero-panel-desc,
-  .hero-panel-cta,
+  .hero-card-bg img,
+  .hero-card-cta,
+  .hero-card-cta span,
   .tenav-blue,
   .tenunify-yellow,
   .tensignage-green {
