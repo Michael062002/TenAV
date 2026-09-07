@@ -47,28 +47,48 @@ Both `<img>`, `<style>` and `<a>` survive `wp_kses` filtering, so this
 version works regardless of the saving account's `unfiltered_html`
 capability.
 
+### Round 3: still blank, even single-file with `<img src="data:...">`
+
+The `<img src="data:...">` single-file version above still rendered blank
+on the live site, despite a bare `<style>` + `<div>` test in the same
+widget working. That combination — style survives, image attribute doesn't
+— pins down *where* the filtering happens: `wp_kses` (and, separately, a
+`Content-Security-Policy: img-src` header some hosts/security plugins send)
+both act on **HTML attribute values**. Neither one parses the text content
+of a `<style>` block, which is exactly why the style-only test always got
+through untouched.
+
+`kubus-hero-card-single-file.html` was rewritten accordingly: every image
+(background photo, both logo states) moved out of `<img src>` and into the
+`<style>` block itself, as `background-image: var(--kb-...)` CSS custom
+properties, still holding the same embedded base64 data. There is now no
+`data:` URI anywhere in an HTML attribute for `wp_kses` to strip — verified
+by simulating that filter against the file and diffing the rendered output
+(byte-identical). This is still a single paste, nothing to upload.
+
+This only leaves one thing it can't work around: a CSP `img-src` header
+blocks `data:` images at the *browser* level, in CSS `background-image`
+just as much as `<img src>`, and no HTML-side change can get past that. If
+this version is still blank, open the browser DevTools Console on the live
+page — a line like *"Refused to load the image '...' because it violates
+the following Content Security Policy directive: img-src ..."* confirms
+it. At that point swap the three `url("data:...")` values at the top of
+the file for real `https://` URLs (WordPress Media Library uploads are
+same-origin and always allowed by `img-src`) — everything else in the file
+stays the same.
+
 ### To use in Elementor
 
-Two options, same markup:
+**`kubus-hero-card-single-file.html`** (recommended) — one paste, nothing
+to upload. Add a **Custom HTML** widget (not Text Editor) and paste the
+whole file in. See "Round 3" above for the one remaining failure mode
+(CSP blocking `data:` images) and how to spot/fix it.
 
-**`kubus-hero-card-single-file.html`** — one file, nothing to upload. The
-three images are embedded as base64 `data:` URIs so it's a single
-copy/paste. Just add a **Custom HTML** widget (not Text Editor) and paste
-the whole file in.
-
-Caveat: `data:` URIs are one of the two things that made the widget render
-blank originally (see above) — WordPress's `wp_kses` filter strips them for
-any account without the `unfiltered_html` capability. This file works if
-the account saving it is a normal Administrator on a standard single-site
-install with no security plugin restricting that capability. If it goes
-blank again, that confirms the permission is missing — either get it
-granted, or fall back to the option below.
-
-**`kubus-hero-card.html` + `assets/`** — the resilient version, split into
-3 steps: upload the three files in `assets/` (`kubus-bg.jpg`,
-`kubus-logo-white.png`, `kubus-logo-green.png`) to the WordPress Media
-Library, copy each file's URL, and replace the three placeholders in
-`kubus-hero-card.html` (`PASTE-KUBUS-BG-IMAGE-URL-HERE`,
-`PASTE-KUBUS-LOGO-WHITE-URL-HERE`, `PASTE-KUBUS-LOGO-GREEN-URL-HERE`) before
-pasting into the Custom HTML widget. No `data:` URIs, so it survives
-`wp_kses` regardless of capability.
+**`kubus-hero-card.html` + `assets/`** — same markup, but the three images
+are referenced by URL instead of embedded, for a permanent production
+setup: upload the files in `assets/` (`kubus-bg.jpg`, `kubus-logo-white.png`,
+`kubus-logo-green.png`) to the WordPress Media Library, copy each file's
+URL, and replace the three placeholders in `kubus-hero-card.html`
+(`PASTE-KUBUS-BG-IMAGE-URL-HERE`, `PASTE-KUBUS-LOGO-WHITE-URL-HERE`,
+`PASTE-KUBUS-LOGO-GREEN-URL-HERE`). Immune to both `wp_kses` and CSP
+`img-src`, at the cost of one extra setup step.
