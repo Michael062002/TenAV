@@ -48,10 +48,27 @@ version works regardless of the saving account's `unfiltered_html`
 capability.
 
 ### To use in Elementor
-1. Upload the three files in `assets/` (`kubus-bg.jpg`, `kubus-logo-white.png`,
-   `kubus-logo-green.png`) to the WordPress Media Library and copy each
-   file's URL.
-2. Open `kubus-hero-card.html` and replace the three placeholders —
-   `PASTE-KUBUS-BG-IMAGE-URL-HERE`, `PASTE-KUBUS-LOGO-WHITE-URL-HERE`,
-   `PASTE-KUBUS-LOGO-GREEN-URL-HERE` — with those Media Library URLs.
-3. Add a **Custom HTML** widget (not Text Editor) and paste the result in.
+
+Two options, same markup:
+
+**`kubus-hero-card-single-file.html`** — one file, nothing to upload. The
+three images are embedded as base64 `data:` URIs so it's a single
+copy/paste. Just add a **Custom HTML** widget (not Text Editor) and paste
+the whole file in.
+
+Caveat: `data:` URIs are one of the two things that made the widget render
+blank originally (see above) — WordPress's `wp_kses` filter strips them for
+any account without the `unfiltered_html` capability. This file works if
+the account saving it is a normal Administrator on a standard single-site
+install with no security plugin restricting that capability. If it goes
+blank again, that confirms the permission is missing — either get it
+granted, or fall back to the option below.
+
+**`kubus-hero-card.html` + `assets/`** — the resilient version, split into
+3 steps: upload the three files in `assets/` (`kubus-bg.jpg`,
+`kubus-logo-white.png`, `kubus-logo-green.png`) to the WordPress Media
+Library, copy each file's URL, and replace the three placeholders in
+`kubus-hero-card.html` (`PASTE-KUBUS-BG-IMAGE-URL-HERE`,
+`PASTE-KUBUS-LOGO-WHITE-URL-HERE`, `PASTE-KUBUS-LOGO-GREEN-URL-HERE`) before
+pasting into the Custom HTML widget. No `data:` URIs, so it survives
+`wp_kses` regardless of capability.
