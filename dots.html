@@ -1,0 +1,37 @@
+<style>
+.tt-dots {
+  display: inline-flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+}
+
+.tt-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  animation: tt-dot-pulse 2.6s ease-in-out infinite;
+}
+
+.tt-dots span:nth-child(1) { animation-delay: 0s; }
+.tt-dots span:nth-child(2) { animation-delay: 0.3s; }
+.tt-dots span:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes tt-dot-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-dots span { animation: none; }
+}
+</style>
+
+<span class="tt-dots" aria-hidden="true">
+  <span style="background:#20c4f4"></span>
+  <span style="background:#6fc59f"></span>
+  <span style="background:#fdb913"></span>
+</span>
