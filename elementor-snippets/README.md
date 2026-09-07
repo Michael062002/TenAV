@@ -77,6 +77,33 @@ the file for real `https://` URLs (WordPress Media Library uploads are
 same-origin and always allowed by `img-src`) — everything else in the file
 stays the same.
 
+### Round 4: sizing — fixed 1320px box instead of filling the column
+
+The card also had `max-width: 1320px; margin: 0 auto` on its wrapper (a
+fixed, centered box) and its height was `clamp(300px, 26vw, 460px)` — sized
+off the *viewport* width, not the width of whatever Elementor column/section
+it was actually placed in. Drop it into a narrower column on a wide page
+and the card either looked like a stranded fixed-width box or, since `vw`
+still tracked the full page width regardless of the column's real width,
+came out too tall for how narrow it actually was.
+
+Fixed:
+- Removed `max-width`/`margin: 0 auto` from `.tenav-kubus-card` — it's now
+  `width: 100%` with no imposed box, so it fills whatever column/section
+  Elementor gives it.
+- Height now comes from `aspect-ratio: 2.75 / 1` on `.hero-card`, which is
+  relative to the card's own rendered width, clamped with `min-height: 300px`
+  / `max-height: 460px` (same bounds as before). A narrow column gets a
+  closer-to-square tile with the same layout instead of a sliver; a wide
+  section keeps the original hero proportions; nothing is ever tied to the
+  page's viewport size instead of the block's actual size.
+- The logo width changed from a hard `min-width: 200px` to
+  `clamp(140px, 32%, 300px)` so it doesn't overpower a narrow tile.
+
+Verified by rendering the same markup inside 340px, 700px and 1600px wide
+containers — no overlap, no overflow, aspect ratio holds in the middle
+range and clamps correctly at both extremes.
+
 ### To use in Elementor
 
 **`kubus-hero-card-single-file.html`** (recommended) — one paste, nothing

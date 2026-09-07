@@ -1,14 +1,28 @@
 <style>
 .tenav-kubus-card {
-  --kb-bg: #ffffff;
-  --kb-ink: #101418;
-  --kb-ink-soft: #5b6472;
-  --kb-line: #e4e7ec;
+  /* ===================================================================
+     Images live here as CSS background-image values (not <img src>).
+     Defaults below are embedded base64 — nothing to upload, just paste
+     this whole file into an Elementor Custom HTML widget.
+
+     If the card still doesn't show after that, open your browser's
+     DevTools Console on the live page. A line reading roughly:
+       "Refused to load the image '...' because it violates the
+       following Content Security Policy directive: img-src ..."
+     means your host/security plugin blocks data: images at the browser
+     level — no HTML change can fix that. In that case replace the three
+     url("data:...") values below with real https:// URLs to images
+     uploaded in your WordPress Media Library (same-origin URLs are
+     always allowed by img-src) and nothing else needs to change.
+     =================================================================== */
+  --kb-bg-image: url("PASTE-KUBUS-BG-IMAGE-URL-HERE");
+  --kb-logo-white: url("PASTE-KUBUS-LOGO-WHITE-URL-HERE");
+  --kb-logo-green: url("PASTE-KUBUS-LOGO-GREEN-URL-HERE");
+
   --kb-brand: #9ab9ac;
 
+  display: block;
   width: 100%;
-  max-width: 1320px;
-  margin: 0 auto;
   padding: 0;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
@@ -19,11 +33,20 @@
 
 /* ---------- the card ---------- */
 
+/* No fixed max-width/centering here on purpose — the card fills whatever
+   column/section Elementor places it in instead of imposing its own boxed
+   width. Height is driven by aspect-ratio (relative to the card's own
+   rendered width) rather than clamp(...vw...) (relative to the whole
+   viewport), so it scales correctly with the actual block size, including
+   inside a narrow column on a wide page. min/max-height keep it from
+   getting too short or too tall at extreme widths. */
 .tenav-kubus-card .hero-card {
   position: relative;
   display: block;
   width: 100%;
-  height: clamp(300px, 26vw, 460px);
+  aspect-ratio: 2.75 / 1;
+  min-height: 300px;
+  max-height: 460px;
   border-radius: 18px;
   overflow: hidden;
   text-decoration: none;
@@ -46,23 +69,20 @@
   outline-offset: 3px;
 }
 
-.tenav-kubus-card .hero-card-bg { position: absolute; inset: 0; }
-
-.tenav-kubus-card .hero-card-bg img {
+.tenav-kubus-card .hero-card-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 100%;
+  background-image: var(--kb-bg-image);
+  background-size: cover;
+  background-position: center 100%;
+  background-repeat: no-repeat;
   filter: saturate(0.92) contrast(1.03);
   transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
 }
 
-.tenav-kubus-card .hero-card:hover .hero-card-bg img,
-.tenav-kubus-card .hero-card:focus-visible .hero-card-bg img {
+.tenav-kubus-card .hero-card:hover .hero-card-bg,
+.tenav-kubus-card .hero-card:focus-visible .hero-card-bg {
   transform: scale(1.05);
 }
 
@@ -89,9 +109,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  width: 32%;
-  max-width: 300px;
-  min-width: 200px;
+  width: clamp(140px, 32%, 300px);
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
@@ -100,27 +118,31 @@
   transform: translate(-50%, calc(-50% - 5px));
 }
 
-/* Logo is two stacked raster images (white, and white-lettering/green-icon)
-   cross-faded on hover, instead of an inline <svg> — WordPress's default
-   content filter (wp_kses) strips <svg>/<path>/<polygon> tags and "data:"
-   image sources for any account without the unfiltered_html capability,
-   which silently emptied this widget before. Plain <img> tags survive that
-   filter. */
+/* Logo is two stacked background-image layers (white, and white-lettering
+   /green-icon) cross-faded on :hover, instead of an inline <svg> or
+   <img src="data:...">. Both of those are stripped by WordPress's content
+   filter (wp_kses) for any account without the unfiltered_html capability,
+   and a data: <img> src can also be blocked outright by a host's
+   Content-Security-Policy — neither restriction reaches into a <style>
+   block's own text, which is why a plain style+div test kept working
+   while this widget went blank. */
 .tenav-kubus-card .brand-logo-frame { position: relative; display: block; width: 100%; }
 .tenav-kubus-card .brand-logo-frame::before { content: ""; display: block; padding-top: calc(728.0403481 / 2231.2964609 * 100%); }
 .tenav-kubus-card .brand-logo {
   position: absolute;
   inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
-.tenav-kubus-card .brand-logo-hover {
+.tenav-kubus-card .brand-logo-white { background-image: var(--kb-logo-white); }
+.tenav-kubus-card .brand-logo-green {
+  background-image: var(--kb-logo-green);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
-.tenav-kubus-card .hero-card:hover .brand-logo-hover,
-.tenav-kubus-card .hero-card:focus-visible .brand-logo-hover {
+.tenav-kubus-card .hero-card:hover .brand-logo-green,
+.tenav-kubus-card .hero-card:focus-visible .brand-logo-green {
   opacity: 1;
 }
 
@@ -192,7 +214,7 @@
   .tenav-kubus-card .hero-card-bg::before {
     opacity: 1;
   }
-  .tenav-kubus-card .brand-logo-hover {
+  .tenav-kubus-card .brand-logo-green {
     opacity: 1;
   }
 }
@@ -200,12 +222,12 @@
 
 <div class="tenav-kubus-card">
   <a class="hero-card" href="https://www.kubus.com/" aria-label="Kubus — The technology you need to keep your business secure, connected and running smoothly. Explore this service.">
-    <span class="hero-card-bg"><img src="PASTE-KUBUS-BG-IMAGE-URL-HERE" alt="" loading="lazy"></span>
+    <span class="hero-card-bg"></span>
     <span class="hero-card-content">
       <span class="hero-card-logo">
         <span class="brand-logo-frame">
-          <img class="brand-logo" src="PASTE-KUBUS-LOGO-WHITE-URL-HERE" alt="Kubus">
-          <img class="brand-logo brand-logo-hover" src="PASTE-KUBUS-LOGO-GREEN-URL-HERE" alt="" aria-hidden="true">
+          <span class="brand-logo brand-logo-white" aria-hidden="true"></span>
+          <span class="brand-logo brand-logo-green" aria-hidden="true"></span>
         </span>
       </span>
       <span class="hero-card-text">

@@ -21,9 +21,8 @@
 
   --kb-brand: #9ab9ac;
 
+  display: block;
   width: 100%;
-  max-width: 1320px;
-  margin: 0 auto;
   padding: 0;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
@@ -34,11 +33,20 @@
 
 /* ---------- the card ---------- */
 
+/* No fixed max-width/centering here on purpose — the card fills whatever
+   column/section Elementor places it in instead of imposing its own boxed
+   width. Height is driven by aspect-ratio (relative to the card's own
+   rendered width) rather than clamp(...vw...) (relative to the whole
+   viewport), so it scales correctly with the actual block size, including
+   inside a narrow column on a wide page. min/max-height keep it from
+   getting too short or too tall at extreme widths. */
 .tenav-kubus-card .hero-card {
   position: relative;
   display: block;
   width: 100%;
-  height: clamp(300px, 26vw, 460px);
+  aspect-ratio: 2.75 / 1;
+  min-height: 300px;
+  max-height: 460px;
   border-radius: 18px;
   overflow: hidden;
   text-decoration: none;
@@ -101,9 +109,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  width: 32%;
-  max-width: 300px;
-  min-width: 200px;
+  width: clamp(140px, 32%, 300px);
   transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
