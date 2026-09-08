@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Icon Set Preview</title>
+<style>
+  :root{ --stroke:#1a1a1a; --bg:#ffffff; }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--bg);
+    font-family:Arial, Helvetica, sans-serif;
+  }
+  .row{
+    display:flex;
+    gap:48px;
+  }
+  .icon-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+  }
+  .icon-card svg{
+    width:120px;
+    height:120px;
+  }
+  .icon-card svg *{
+    fill:none;
+    stroke:var(--stroke);
+    stroke-width:3;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+  .icon-card .label{
+    font-size:15px;
+    font-weight:600;
+    color:var(--stroke);
+    text-align:center;
+    line-height:1.3;
+  }
+</style>
+</head>
+<body>
+  <div class="row">
+
+    <div class="icon-card">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flexTitle">
+        <title id="flexTitle">Flexibility</title>
+        <circle cx="22" cy="20" r="9"/>
+        <line x1="22" y1="9" x2="22" y2="11"/>
+        <line x1="22" y1="20" x2="22" y2="14"/>
+        <line x1="22" y1="20" x2="27" y2="22"/>
+        <rect x="42" y="9" width="16" height="16" rx="2"/>
+        <line x1="46" y1="6" x2="46" y2="11"/>
+        <line x1="54" y1="6" x2="54" y2="11"/>
+        <line x1="45" y1="17" x2="55" y2="17"/>
+        <line x1="45" y1="21" x2="55" y2="21"/>
+        <rect x="70" y="15" width="16" height="12" rx="2"/>
+        <path d="M75,15 v-4 a3,3 0 0 1 6,0 v4"/>
+        <line x1="78" y1="15" x2="78" y2="27"/>
+        <circle cx="50" cy="55" r="7"/>
+        <path d="M40,90 L44,68 Q50,63 56,68 L60,90"/>
+        <line x1="45" y1="70" x2="25" y2="55"/>
+        <line x1="55" y1="70" x2="75" y2="55"/>
+      </svg>
+      <div class="label">Flexibility</div>
+    </div>
+
+    <div class="icon-card">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="futureTitle">
+        <title id="futureTitle">Future Thinking</title>
+        <path d="M35,55 C22,45 22,20 50,15 C78,20 78,45 65,55 C62,58 60,60 60,64 L40,64 C40,60 38,58 35,55 Z"/>
+        <line x1="50" y1="22" x2="50" y2="55"/>
+        <path d="M42,25 q-6,4 0,8 q-6,4 0,8 q-6,4 0,8"/>
+        <path d="M58,25 q6,4 0,8 q6,4 0,8 q6,4 0,8"/>
+        <line x1="42" y1="68" x2="58" y2="68"/>
+        <line x1="42" y1="73" x2="58" y2="73"/>
+        <line x1="42" y1="78" x2="58" y2="78"/>
+        <rect x="44" y="82" width="12" height="6" rx="2"/>
+      </svg>
+      <div class="label">Future<br>Thinking</div>
+    </div>
+
+    <div class="icon-card">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="a11yTitle">
+        <title id="a11yTitle">Accessibility</title>
+        <circle cx="22" cy="24" r="7"/>
+        <circle cx="22" cy="24" r="2.5"/>
+        <line x1="29.5" y1="24" x2="32.5" y2="24"/>
+        <line x1="27.3" y1="29.3" x2="29.4" y2="31.4"/>
+        <line x1="22" y1="31.5" x2="22" y2="34.5"/>
+        <line x1="16.7" y1="29.3" x2="14.6" y2="31.4"/>
+        <line x1="14.5" y1="24" x2="11.5" y2="24"/>
+        <line x1="16.7" y1="18.7" x2="14.6" y2="16.6"/>
+        <line x1="22" y1="16.5" x2="22" y2="13.5"/>
+        <line x1="27.3" y1="18.7" x2="29.4" y2="16.6"/>
+        <circle cx="42" cy="50" r="14"/>
+        <line x1="52" y1="60" x2="64" y2="72"/>
+        <circle cx="42" cy="45" r="3.5"/>
+        <path d="M35,58 q7,-9 14,0"/>
+        <line x1="80" y1="26" x2="80" y2="32"/>
+        <circle cx="80" cy="22" r="2"/>
+        <path d="M85,17 a10,10 0 0 1 0,10"/>
+        <path d="M75,17 a10,10 0 0 0 0,10"/>
+      </svg>
+      <div class="label">Accessibility</div>
+    </div>
+
+  </div>
+</body>
+</html>
