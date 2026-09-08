@@ -182,73 +182,15 @@
   .btn-ghost.on-dark:hover{ border-color: rgba(255,255,255,0.55); }
 
   /* ---------- hero ---------- */
-  .hero{ padding: clamp(48px, 8vw, 92px) 0 clamp(40px, 6vw, 64px); }
+  .hero{ padding: clamp(48px, 8vw, 92px) 0 clamp(36px, 5vw, 52px); }
   .hero h1{
-    font-size: clamp(2.1rem, 4.4vw, 3.4rem);
-    line-height: 1.08;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
     margin-top: 14px;
-    max-width: 15ch;
-  }
-  .hero .lead{
-    margin-top: 26px;
-    max-width: 62ch;
-    font-size: 1.1rem;
-    color: var(--ink-muted);
-  }
-  .hero .lead strong{ color: var(--ink); font-weight: 600; }
-
-  /* stat strip */
-  .stats{
-    margin-top: 44px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-  }
-  .stat{
-    padding: 20px 18px 20px 0;
-    border-left: 1px solid var(--rule);
-    padding-left: 18px;
-  }
-  .stat:first-child{ border-left: none; padding-left: 0; }
-  .stat .n{
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-    font-size: clamp(1.35rem, 2.6vw, 1.9rem);
-    color: var(--ink);
-    display:block;
-  }
-  .stat .n span{ color: var(--accent); }
-  .stat .l{
-    font-size: 0.78rem;
-    color: var(--ink-muted);
-    margin-top: 4px;
-    display:block;
-  }
-  @media (max-width: 720px){
-    .stats{ grid-template-columns: repeat(2, 1fr); }
-    .stat:nth-child(3){ border-left:none; padding-left:0; }
+    max-width: 17ch;
   }
 
-  /* compact aside (used for points the homepage already owns) */
-  .aside{
-    padding: 30px 0;
-    border-top: 1px solid var(--rule);
-  }
-  .aside .wrap{
-    display:flex;
-    align-items:baseline;
-    gap: 22px 32px;
-    flex-wrap: wrap;
-  }
-  .aside .eyebrow{ margin:0; flex-shrink:0; }
-  .aside p.compact{
-    margin:0;
-    color: var(--ink-muted);
-    flex: 1 1 320px;
-    font-size: 0.98rem;
-  }
-  .aside .inline-link{
+  .inline-link{
     color: var(--accent);
     font-family: var(--font-mono);
     font-size: 0.78rem;
@@ -256,9 +198,6 @@
     text-decoration: none;
     border-bottom: 1px solid currentColor;
     white-space: nowrap;
-  }
-  .aside .mark-ph{
-    flex-shrink: 0;
   }
 
   /* ---------- placeholder blocks ---------- */
@@ -312,54 +251,23 @@
   /* ---------- sections ---------- */
   section{ padding: clamp(52px, 7vw, 84px) 0; }
   section.rule-top{ border-top: 1px solid var(--rule); }
-  .section-head{ margin-bottom: 30px; }
-  .section-head h2{
-    font-size: clamp(1.5rem, 2.6vw, 2rem);
-    margin-top: 10px;
-    max-width: 20ch;
-  }
 
-  .split{
-    display:grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: clamp(24px, 5vw, 56px);
-    align-items: start;
+  .article p{
+    margin: 0 0 20px;
+    color: var(--ink);
+    font-size: 1.05rem;
   }
-  .split.reverse{ grid-template-columns: 0.9fr 1.1fr; }
-  .split.reverse .placeholder{ order: -1; }
-  @media (max-width: 860px){
-    .split, .split.reverse{ grid-template-columns: 1fr; }
-    .split.reverse .placeholder{ order: 0; }
+  .article p:last-child{ margin-bottom: 0; }
+  .article .placeholder{ margin: 8px 0 28px; }
+  .article p.close{
+    color: var(--ink-muted);
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
   }
-
-  .body-text p{ margin: 0 0 16px; color: var(--ink); }
-  .body-text p:last-child{ margin-bottom: 0; }
-  .body-text p.muted{ color: var(--ink-muted); }
-
-  /* how we work grid */
-  .principles{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  @media (max-width: 720px){ .principles{ grid-template-columns: 1fr; } }
-  .principle{
-    background: var(--surface);
-    padding: 28px 26px;
-  }
-  .principle .icon-ph{
-    width: 30px; height: 30px;
-    margin-bottom: 16px;
-  }
-  .principle h3{
-    font-size: 1.15rem;
-    margin-bottom: 8px;
-  }
-  .principle p{ color: var(--ink-muted); margin: 0; font-size: 0.96rem; }
+  .article p.close .mark-ph{ flex-shrink: 0; margin-top: 2px; }
 
   /* CTA */
   .cta-band{
@@ -392,8 +300,6 @@
     .mockup-banner{ display:none; }
     header.site{ position: static; border-bottom: 2px solid var(--ink); }
     .placeholder{ break-inside: avoid; }
-    .split, .split.reverse{ grid-template-columns: 1fr; }
-    .split.reverse .placeholder{ order: 0; }
     section{ padding: 26px 0; }
     .cta-band{ background: var(--surface-alt) !important; color: var(--ink) !important; }
     .cta-band h2, .cta-band p{ color: var(--ink) !important; }
@@ -403,15 +309,13 @@
 </head>
 <body>
 
-  <div class="mockup-banner">MOCKUP v2 — trimmed to avoid repeating the homepage · TaaS and Kubus are now one-line asides linking back there · hatched blocks mark real photography / diagrams still to source</div>
+  <div class="mockup-banner">MOCKUP v3 — restructured as a single welcome-style narrative, four paragraphs · hatched blocks mark real photography still to source</div>
 
   <header class="site">
     <div class="wrap nav">
       <div class="wordmark"><span class="ten">TEN</span><span class="grp">Technology Group</span></div>
       <nav class="links">
         <a class="current" href="#top">About</a>
-        <a href="#work">How we work</a>
-        <a href="#kubus">Kubus Group</a>
         <a href="#contact">Contact</a>
       </nav>
       <a class="btn btn-primary nav-cta" href="#contact">Talk to us</a>
@@ -422,114 +326,32 @@
 
     <section class="hero">
       <div class="wrap">
-        <p class="eyebrow">About Ten Technology Group</p>
-        <h1>One partner for audio visual, digital signage and workplace analytics</h1>
-        <p class="lead">Ten Technology Group has been designing, installing and supporting workplace technology for UK organisations since 2003. <strong>More than 4,000 projects, over 600 customers, engineers across the UK.</strong> And a fair number of rooms we've been called in to fix after somebody else built them.</p>
-        <p class="lead">Our three specialist brands, TenAV, TenSignage and TenUnify, cover audio visual, digital signage, managed services and workplace analytics.</p>
-
-        <div class="stats">
-          <div class="stat"><span class="n mono"><span>4,000</span>+</span><span class="l">Projects delivered</span></div>
-          <div class="stat"><span class="n mono"><span>600</span>+</span><span class="l">Customers supported</span></div>
-          <div class="stat"><span class="n mono"><span>23</span></span><span class="l">Years trading, since 2003</span></div>
-          <div class="stat"><span class="n mono">UK</span><span class="l">Engineers, nationwide</span></div>
-        </div>
-
-        <p class="lead" style="margin-top:18px; font-size:0.92rem;"><span class="mono" style="color:var(--ink-faint); letter-spacing:0.02em;">Brand breakdown and logos live on the homepage —</span> <a class="inline-link" href="#" style="color:var(--accent); font-family:var(--font-mono); font-size:0.82rem; text-decoration:none; border-bottom:1px solid currentColor;">see TenAV, TenSignage &amp; TenUnify</a></p>
-
-        <div class="placeholder ratio-3-1" style="margin-top:22px;">
-          <span class="tag">Photo strip</span>
-          <span class="label">PHOTO PLACEHOLDER — three frames: an engineer wiring a rack, a signage screen live in a reception, an analytics dashboard on a wall-mounted tablet</span>
-          <span class="dims">16:9 × 3, or one 3:1 composite</span>
-        </div>
+        <p class="eyebrow">About us</p>
+        <h1>Welcome to Ten Technology Group</h1>
       </div>
     </section>
 
     <section class="rule-top">
-      <div class="wrap">
-        <div class="split">
-          <div class="body-text">
-            <div class="section-head">
-              <p class="eyebrow">Independence</p>
-              <h2>Advice that isn't tied to a brand</h2>
-            </div>
-            <p>No manufacturer sets our targets, so nobody here has a reason to sell you the wrong thing. What suits a six person huddle room and what suits a boardroom that doubles as a training space are rarely the same kit, or the same manufacturer. Sometimes the answer is the obvious brand. Often it isn't. Twenty three years of specifying rooms teaches you where the money is well spent, and where it quietly isn't.</p>
-          </div>
-          <div class="placeholder ratio-4-3">
-            <span class="tag">Comparison photo</span>
-            <span class="label">PHOTO PLACEHOLDER — six-person huddle room set-up alongside a boardroom/training space set-up, side by side</span>
-            <span class="dims">4:3</span>
-          </div>
-        </div>
-      </div>
-    </section>
+      <div class="wrap measure article">
+        <p>Welcome to Ten Technology Group — home to three specialist brands, TenAV, TenSignage and TenUnify — a UK-based designer, installer and support partner for audio visual, digital signage and workplace analytics. Established in 2003, we've been delivering workplace technology projects to organisations across the UK for over twenty three years: more than 4,000 projects, over 600 customers, and engineers based across the country. And a fair number of rooms we've been called in to fix after somebody else built them.</p>
 
-    <section class="rule-top">
-      <div class="wrap">
-        <div class="split reverse">
-          <div class="body-text">
-            <div class="section-head">
-              <p class="eyebrow">Single point of contact</p>
-              <h2>One relationship instead of five</h2>
-            </div>
-            <p>Most organisations end up with a supplier for screens, another for signage, another for support, and a spreadsheet to track them all. We replace that with one contract, one account manager who knows your sites, and nowhere for the blame to go. When something stops working you call a person rather than filling in a portal.</p>
-          </div>
-          <div class="placeholder ratio-4-3">
-            <span class="tag">Diagram</span>
-            <span class="label">DIAGRAM PLACEHOLDER — five scattered suppliers + spreadsheet, collapsing into one contract / one account manager</span>
-            <span class="dims">4:3</span>
-          </div>
+        <div class="placeholder ratio-16-9">
+          <span class="tag">Photo</span>
+          <span class="label">PHOTO PLACEHOLDER — engineer commissioning a meeting room installation, on a UK customer site</span>
+          <span class="dims">16:9</span>
         </div>
-      </div>
-    </section>
 
-    <section class="aside">
-      <div class="wrap">
-        <p class="eyebrow">Technology as a Service</p>
-        <p class="compact">Not every good project survives the capital budget round — TaaS moves it to a monthly subscription instead, so a multi site rollout stops being a funding argument and starts being a project with a date on it.</p>
-        <a class="inline-link" href="#">How TaaS works →</a>
-      </div>
-    </section>
+        <p>At Ten Technology Group we're as passionate about getting a room right as the people who'll use it every day. Our goal is to give you advice that isn't tied to any one manufacturer, so nobody here has a reason to sell you the wrong thing. Our customers range from a single six-person huddle room to organisations running technology across dozens of UK sites, and what suits one is rarely what suits the other. We work across the leading audio visual, signage and analytics manufacturers, and twenty three years of specifying rooms gives us a clear view of where the money is well spent, and where it quietly isn't.</p>
 
-    <section class="rule-top" id="work">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="eyebrow">How we work</p>
-          <h2>Four things that don't change from project to project</h2>
-        </div>
-        <div class="principles">
-          <div class="principle">
-            <svg class="icon-ph" viewBox="0 0 30 30"><rect x="0.5" y="0.5" width="29" height="29" rx="4" fill="none" stroke="var(--ph-border)" stroke-dasharray="2 3"/></svg>
-            <h3>People before product</h3>
-            <p>We ask how a space actually gets used before recommending anything to put in it. Skip that question and you end up with a room full of features nobody touches.</p>
-          </div>
-          <div class="principle">
-            <svg class="icon-ph" viewBox="0 0 30 30"><rect x="0.5" y="0.5" width="29" height="29" rx="4" fill="none" stroke="var(--ph-border)" stroke-dasharray="2 3"/></svg>
-            <h3>Simple by design</h3>
-            <p>Good kit gets out of the way. Complexity costs you twice: once to install, and again every time someone can't get a meeting started.</p>
-          </div>
-          <div class="principle">
-            <svg class="icon-ph" viewBox="0 0 30 30"><rect x="0.5" y="0.5" width="29" height="29" rx="4" fill="none" stroke="var(--ph-border)" stroke-dasharray="2 3"/></svg>
-            <h3>Independent by default</h3>
-            <p>We'll tell you when the cheaper option is better, and when you don't need the upgrade at all. Saying no to a sale is what makes the yes worth something.</p>
-          </div>
-          <div class="principle">
-            <svg class="icon-ph" viewBox="0 0 30 30"><rect x="0.5" y="0.5" width="29" height="29" rx="4" fill="none" stroke="var(--ph-border)" stroke-dasharray="2 3"/></svg>
-            <h3>In it after handover</h3>
-            <p>Kit rarely fails on the day it's installed. It fails eighteen months later, on the morning of something important. We support what we supply, for as long as you have it.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+        <p>Because audio visual, digital signage and workplace analytics all sit under one roof, you get one contract and one account manager who knows your sites, rather than a different supplier for every screen, sign and support call. Projects can be bought outright, or spread across a monthly Technology as a Service subscription, so a multi site rollout doesn't have to wait on a capital budget round. Our engineers and account managers offer straightforward, independent advice you can act on, tailored to your building, your budget and how your teams actually work.</p>
 
-    <section class="aside" id="kubus">
-      <div class="wrap">
-        <p class="eyebrow">Part of Kubus Group</p>
-        <p class="compact">We bring the workplace technology; Kubus Group brings IT, connectivity and infrastructure — so when a room job turns out to need the network sorting first, that's a conversation, not a new procurement exercise.</p>
-        <svg class="mark-ph" viewBox="0 0 92 28" width="92" height="28" role="img" aria-label="Kubus Group logo mark placeholder">
-          <rect x="0.5" y="0.5" width="91" height="27" rx="3" fill="var(--ph-bg)" stroke="var(--ph-border)" stroke-dasharray="3 3"/>
-          <text x="46" y="18" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5" fill="var(--ph-text)">LOGO · Kubus</text>
-        </svg>
-        <a class="inline-link" href="#">More on Kubus Group →</a>
+        <p class="close">
+          <svg class="mark-ph" viewBox="0 0 92 28" width="92" height="28" role="img" aria-label="Kubus Group logo mark placeholder">
+            <rect x="0.5" y="0.5" width="91" height="27" rx="3" fill="var(--ph-bg)" stroke="var(--ph-border)" stroke-dasharray="3 3"/>
+            <text x="46" y="18" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5" fill="var(--ph-text)">LOGO · Kubus</text>
+          </svg>
+          <span>*We're part of Kubus Group, so when a project needs networking, connectivity or infrastructure sorted alongside the room itself, that's a conversation rather than a new procurement exercise. And we support everything we supply for as long as you have it — kit rarely fails on the day it's installed, it fails eighteen months later, and we're still the number you call.</span>
+        </p>
       </div>
     </section>
 
