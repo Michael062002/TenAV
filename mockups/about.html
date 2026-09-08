@@ -230,28 +230,35 @@
     .stat:nth-child(3){ border-left:none; padding-left:0; }
   }
 
-  /* brand strip */
-  .brands{
-    margin-top: 40px;
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+  /* compact aside (used for points the homepage already owns) */
+  .aside{
+    padding: 30px 0;
+    border-top: 1px solid var(--rule);
   }
-  @media (max-width: 720px){ .brands{ grid-template-columns: 1fr; } }
-  .brand-card{
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 4px;
-    padding: 18px 18px 20px;
+  .aside .wrap{
+    display:flex;
+    align-items:baseline;
+    gap: 22px 32px;
+    flex-wrap: wrap;
   }
-  .brand-logo-ph{
-    height: 34px;
-    width: 118px;
-    margin-bottom: 12px;
-  }
-  .brand-card .cap{
-    font-size: 0.86rem;
+  .aside .eyebrow{ margin:0; flex-shrink:0; }
+  .aside p.compact{
+    margin:0;
     color: var(--ink-muted);
+    flex: 1 1 320px;
+    font-size: 0.98rem;
+  }
+  .aside .inline-link{
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    white-space: nowrap;
+  }
+  .aside .mark-ph{
+    flex-shrink: 0;
   }
 
   /* ---------- placeholder blocks ---------- */
@@ -354,18 +361,6 @@
   }
   .principle p{ color: var(--ink-muted); margin: 0; font-size: 0.96rem; }
 
-  /* kubus */
-  .kubus{
-    background: var(--surface-alt);
-    border-radius: 6px;
-    padding: clamp(32px, 5vw, 52px);
-    display:grid;
-    grid-template-columns: 1fr 260px;
-    gap: 40px;
-    align-items:center;
-  }
-  @media (max-width: 780px){ .kubus{ grid-template-columns: 1fr; } }
-
   /* CTA */
   .cta-band{
     background: var(--ink);
@@ -395,15 +390,15 @@
 </head>
 <body>
 
-  <div class="mockup-banner">MOCKUP — copy final, visuals not yet sourced · hatched blocks below mark where real photography / diagrams / logos go</div>
+  <div class="mockup-banner">MOCKUP v2 — trimmed to avoid repeating the homepage · TaaS and Kubus are now one-line asides linking back there · hatched blocks mark real photography / diagrams still to source</div>
 
   <header class="site">
     <div class="wrap nav">
       <div class="wordmark"><span class="ten">TEN</span><span class="grp">Technology Group</span></div>
       <nav class="links">
         <a class="current" href="#top">About</a>
-        <a href="#brands">Our brands</a>
-        <a href="#work">Our work</a>
+        <a href="#work">How we work</a>
+        <a href="#kubus">Kubus Group</a>
         <a href="#contact">Contact</a>
       </nav>
       <a class="btn btn-primary nav-cta" href="#contact">Talk to us</a>
@@ -426,22 +421,9 @@
           <div class="stat"><span class="n mono">UK</span><span class="l">Engineers, nationwide</span></div>
         </div>
 
-        <div class="brands" id="brands">
-          <div class="brand-card">
-            <svg class="brand-logo-ph" viewBox="0 0 118 34" role="img" aria-label="TenAV logo placeholder"><rect width="118" height="34" rx="3" fill="var(--ph-bg)" stroke="var(--ph-border)" stroke-dasharray="3 3"/><text x="59" y="21" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="var(--ph-text)">LOGO · TenAV</text></svg>
-            <p class="cap">Audio visual — meeting rooms, boardrooms, auditoria.</p>
-          </div>
-          <div class="brand-card">
-            <svg class="brand-logo-ph" viewBox="0 0 118 34" role="img" aria-label="TenSignage logo placeholder"><rect width="118" height="34" rx="3" fill="var(--ph-bg)" stroke="var(--ph-border)" stroke-dasharray="3 3"/><text x="59" y="21" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="var(--ph-text)">LOGO · TenSignage</text></svg>
-            <p class="cap">Digital signage — estate-wide content and screens.</p>
-          </div>
-          <div class="brand-card">
-            <svg class="brand-logo-ph" viewBox="0 0 118 34" role="img" aria-label="TenUnify logo placeholder"><rect width="118" height="34" rx="3" fill="var(--ph-bg)" stroke="var(--ph-border)" stroke-dasharray="3 3"/><text x="59" y="21" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.5" fill="var(--ph-text)">LOGO · TenUnify</text></svg>
-            <p class="cap">Managed services and workplace analytics.</p>
-          </div>
-        </div>
+        <p class="lead" style="margin-top:18px; font-size:0.92rem;"><span class="mono" style="color:var(--ink-faint); letter-spacing:0.02em;">Brand breakdown and logos live on the homepage —</span> <a class="inline-link" href="#" style="color:var(--accent); font-family:var(--font-mono); font-size:0.82rem; text-decoration:none; border-bottom:1px solid currentColor;">see TenAV, TenSignage &amp; TenUnify</a></p>
 
-        <div class="placeholder ratio-3-1" style="margin-top:14px;">
+        <div class="placeholder ratio-3-1" style="margin-top:22px;">
           <span class="tag">Photo strip</span>
           <span class="label">PHOTO PLACEHOLDER — three frames: an engineer wiring a rack, a signage screen live in a reception, an analytics dashboard on a wall-mounted tablet</span>
           <span class="dims">16:9 × 3, or one 3:1 composite</span>
@@ -487,22 +469,11 @@
       </div>
     </section>
 
-    <section class="rule-top">
+    <section class="aside">
       <div class="wrap">
-        <div class="split">
-          <div class="body-text">
-            <div class="section-head">
-              <p class="eyebrow">Technology as a Service</p>
-              <h2>Buy it outright, or pay monthly</h2>
-            </div>
-            <p>Not every good project survives the capital budget round. Technology as a Service moves it to a monthly subscription instead, which is how a multi site rollout stops being a funding argument and starts being a project with a date on it.</p>
-          </div>
-          <div class="placeholder ratio-4-3">
-            <span class="tag">Chart</span>
-            <span class="label">CHART PLACEHOLDER — CapEx lump sum vs Technology as a Service monthly cost, across a multi-site rollout timeline</span>
-            <span class="dims">4:3</span>
-          </div>
-        </div>
+        <p class="eyebrow">Technology as a Service</p>
+        <p class="compact">Not every good project survives the capital budget round — TaaS moves it to a monthly subscription instead, so a multi site rollout stops being a funding argument and starts being a project with a date on it.</p>
+        <a class="inline-link" href="#">How TaaS works →</a>
       </div>
     </section>
 
@@ -537,22 +508,15 @@
       </div>
     </section>
 
-    <section class="rule-top">
+    <section class="aside" id="kubus">
       <div class="wrap">
-        <div class="section-head">
-          <p class="eyebrow">Group structure</p>
-          <h2>Part of Kubus Group</h2>
-        </div>
-        <div class="kubus">
-          <div class="body-text">
-            <p>We're part of Kubus Group. We bring the workplace technology; they bring IT, connectivity and infrastructure. So when the room job turns out to need the network sorting first, that's a conversation, not a new procurement exercise.</p>
-          </div>
-          <svg class="placeholder ratio-1-1" viewBox="0 0 260 260" preserveAspectRatio="none" style="width:100%; height:auto; aspect-ratio:1/1; padding:0;" role="img" aria-label="Kubus Group logo lockup placeholder">
-            <rect x="1" y="1" width="258" height="258" rx="6" fill="var(--ph-bg)" stroke="var(--ph-border)" stroke-dasharray="4 4"/>
-            <text x="130" y="122" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="var(--ph-text)">LOGO LOCKUP</text>
-            <text x="130" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="var(--ph-text)">Ten × Kubus Group</text>
-          </svg>
-        </div>
+        <p class="eyebrow">Part of Kubus Group</p>
+        <p class="compact">We bring the workplace technology; Kubus Group brings IT, connectivity and infrastructure — so when a room job turns out to need the network sorting first, that's a conversation, not a new procurement exercise.</p>
+        <svg class="mark-ph" viewBox="0 0 92 28" width="92" height="28" role="img" aria-label="Kubus Group logo mark placeholder">
+          <rect x="0.5" y="0.5" width="91" height="27" rx="3" fill="var(--ph-bg)" stroke="var(--ph-border)" stroke-dasharray="3 3"/>
+          <text x="46" y="18" text-anchor="middle" font-family="IBM Plex Mono" font-size="8.5" fill="var(--ph-text)">LOGO · Kubus</text>
+        </svg>
+        <a class="inline-link" href="#">More on Kubus Group →</a>
       </div>
     </section>
 
