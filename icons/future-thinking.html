@@ -4,7 +4,14 @@
 <meta charset="UTF-8">
 <title>Future Thinking Icon</title>
 <style>
-  :root{ --stroke:#1a1a1a; --bg:#ffffff; }
+  :root{
+    --tenav-red:#E4002B;
+    --ink:#1a1a1a;
+    --card-bg:#ffffff;
+    --card-border:#eaeaea;
+    --shadow:0 2px 10px rgba(0,0,0,0.06);
+    --shadow-hover:0 20px 44px rgba(228,0,43,0.18), 0 6px 14px rgba(0,0,0,0.08);
+  }
   *{ box-sizing:border-box; }
   body{
     margin:0;
@@ -12,37 +19,91 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    background:var(--bg);
-    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f5f6;
   }
-  .icon-card{
+
+  .icon-tile{
+    position:relative;
+    width:180px;
+    height:180px;
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:24px;
     display:flex;
-    flex-direction:column;
     align-items:center;
-    gap:14px;
+    justify-content:center;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    cursor:pointer;
+    transition:transform .45s cubic-bezier(.22,1,.36,1),
+               box-shadow .45s cubic-bezier(.22,1,.36,1),
+               border-color .45s ease;
+    animation:tileIn .6s cubic-bezier(.22,1,.36,1) both;
   }
-  .icon-card svg{
-    width:140px;
-    height:140px;
+
+  .icon-tile::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 50% 42%, rgba(228,0,43,0.14), transparent 70%);
+    opacity:0;
+    transition:opacity .45s ease;
   }
-  .icon-card svg *{
+
+  .icon-tile::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:0;
+    width:0%;
+    height:3px;
+    background:var(--tenav-red);
+    transform:translateX(-50%);
+    transition:width .45s cubic-bezier(.22,1,.36,1);
+    border-radius:3px 3px 0 0;
+  }
+
+  .icon-tile:hover{
+    transform:translateY(-8px);
+    box-shadow:var(--shadow-hover);
+    border-color:rgba(228,0,43,0.28);
+  }
+  .icon-tile:hover::before{ opacity:1; }
+  .icon-tile:hover::after{ width:56%; }
+
+  .icon-tile svg{
+    width:96px;
+    height:96px;
+    position:relative;
+    z-index:1;
+    transition:transform .45s cubic-bezier(.22,1,.36,1);
+  }
+  .icon-tile:hover svg{ transform:scale(1.08); }
+
+  .icon-tile svg *{
     fill:none;
-    stroke:var(--stroke);
+    stroke:var(--ink);
     stroke-width:3;
     stroke-linecap:round;
     stroke-linejoin:round;
+    stroke-dasharray:300;
+    stroke-dashoffset:300;
+    animation:draw 1.1s cubic-bezier(.22,1,.36,1) .15s forwards;
+    transition:stroke .45s ease;
   }
-  .icon-card .label{
-    font-size:16px;
-    font-weight:600;
-    color:var(--stroke);
-    text-align:center;
-    line-height:1.3;
+  .icon-tile:hover svg *{ stroke:var(--tenav-red); }
+
+  @keyframes tileIn{
+    from{ opacity:0; transform:translateY(14px) scale(.96); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+  @keyframes draw{
+    to{ stroke-dashoffset:0; }
   }
 </style>
 </head>
 <body>
-  <div class="icon-card">
+  <div class="icon-tile">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="futureTitle">
       <title id="futureTitle">Future Thinking</title>
 
@@ -60,7 +121,6 @@
       <line x1="42" y1="78" x2="58" y2="78"/>
       <rect x="44" y="82" width="12" height="6" rx="2"/>
     </svg>
-    <div class="label">Future<br>Thinking</div>
   </div>
 </body>
 </html>
