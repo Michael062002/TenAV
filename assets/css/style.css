@@ -1,0 +1,282 @@
+/* ==========================================================================
+   TenAV Group homepage
+   ========================================================================== */
+
+:root {
+  --color-bg: #0b0f14;
+  --color-text: #0f172a;
+  --color-text-inverse: #ffffff;
+  --color-muted: #64748b;
+
+  --tenav-accent: #3b82f6;
+  --tenav-accent-dark: #1e3a8a;
+
+  --tensignage-accent: #17b890;
+  --tensignage-accent-dark: #0f5e4c;
+
+  --tenunify-accent: #a855f7;
+  --tenunify-accent-dark: #5b21b6;
+
+  --card-radius: 18px;
+  --transition-fast: 200ms ease;
+  --transition-slow: 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--color-text);
+  background: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Header
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.site-header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.site-header__logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.site-header__nav {
+  display: flex;
+  gap: 24px;
+  font-weight: 500;
+}
+
+.site-header__nav a {
+  color: var(--color-muted);
+  transition: color var(--transition-fast);
+}
+
+.site-header__nav a:hover,
+.site-header__nav a:focus-visible {
+  color: var(--color-text);
+}
+
+/* Hero
+   ========================================================================== */
+
+.hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 24px 96px;
+}
+
+.hero__intro {
+  max-width: 640px;
+  margin-bottom: 40px;
+}
+
+.hero__intro h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 12px;
+}
+
+.hero__intro p {
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* CTA cards
+   ========================================================================== */
+
+.cta-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .cta-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cta-card {
+  position: relative;
+  display: block;
+  height: 420px;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  outline-offset: 4px;
+}
+
+.cta-card__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.04);
+  transition: transform var(--transition-slow);
+}
+
+/* Each card layers its real photo (assets/images/*.jpg) over a brand
+   gradient. Comma-separated background-image layers are independent, so if
+   a photo file hasn't been supplied yet and 404s, only that layer is
+   skipped and the gradient underneath still renders. */
+.cta-card--tenav .cta-card__bg {
+  background-color: var(--tenav-accent-dark);
+  background-image: url('../images/tenav-bg.jpg'),
+    linear-gradient(160deg, var(--tenav-accent-dark), var(--tenav-accent));
+}
+
+.cta-card--tensignage .cta-card__bg {
+  background-color: var(--tensignage-accent-dark);
+  background-image: url('../images/tensignage-bg.jpg'),
+    linear-gradient(160deg, var(--tensignage-accent-dark), var(--tensignage-accent));
+}
+
+.cta-card--tenunify .cta-card__bg {
+  background-color: var(--tenunify-accent-dark);
+  background-image: url('../images/tenunify-bg.jpg'),
+    linear-gradient(160deg, var(--tenunify-accent-dark), var(--tenunify-accent));
+}
+
+.cta-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 45%, rgba(0, 0, 0, 0) 75%);
+  opacity: 0.75;
+  transition: opacity var(--transition-slow);
+}
+
+.cta-card__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  color: var(--color-text-inverse);
+}
+
+.cta-card__logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+
+.cta-card__tagline {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: max-height var(--transition-slow), opacity var(--transition-slow), transform var(--transition-slow);
+  overflow: hidden;
+}
+
+.cta-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.cta-card__arrow {
+  transition: transform var(--transition-fast);
+}
+
+/* Hover / focus reveal state (pointer devices) */
+.cta-card:hover .cta-card__bg,
+.cta-card:focus-visible .cta-card__bg {
+  transform: scale(1.1);
+}
+
+.cta-card:hover .cta-card__overlay,
+.cta-card:focus-visible .cta-card__overlay {
+  opacity: 0.92;
+}
+
+.cta-card:hover .cta-card__tagline,
+.cta-card:focus-visible .cta-card__tagline {
+  max-height: 4rem;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cta-card:hover .cta-card__arrow,
+.cta-card:focus-visible .cta-card__arrow {
+  transform: translateX(4px);
+}
+
+/* Touch-device state, toggled via JS (first tap reveals, second tap follows
+   the link) since :hover is unreliable on touch. */
+body.touch-device .cta-card.is-active .cta-card__bg {
+  transform: scale(1.1);
+}
+
+body.touch-device .cta-card.is-active .cta-card__overlay {
+  opacity: 0.92;
+}
+
+body.touch-device .cta-card.is-active .cta-card__tagline {
+  max-height: 4rem;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-card__bg,
+  .cta-card__overlay,
+  .cta-card__tagline,
+  .cta-card__arrow {
+    transition-duration: 1ms;
+  }
+}
+
+/* Footer
+   ========================================================================== */
+
+.site-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
