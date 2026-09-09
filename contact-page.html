@@ -89,7 +89,32 @@
   font-size: 17px;
   line-height: 1.7;
   color: #5c5f7a;
-  margin: 0;
+  margin: 0 0 16px;
+}
+
+.tenav-contact-hero p:last-child {
+  margin-bottom: 0;
+}
+
+.tenav-contact-hero-note {
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+  color: #8386a3 !important;
+}
+
+.tenav-contact-hero-quicklinks {
+  margin: 24px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.tenav-contact-hero-quicklinks a {
+  color: #2e3192;
+  text-decoration: none;
 }
 
 @media (max-width: 640px) {
@@ -110,9 +135,14 @@
 <div class="tenav-contact-page">
 
   <div class="tenav-contact-hero">
-    <span class="tenav-contact-eyebrow">Contact Us</span>
-    <h1>Let's Start Your Project</h1>
-    <p>Whether you have a question, a project brief, or just want to talk through your options, our team is ready to help. Reach us by phone, email, or the form below.</p>
+    <span class="tenav-contact-eyebrow">Get In Touch</span>
+    <h1>Contact Us</h1>
+    <p>Do you have a workplace technology project that you'd like to discuss with us? We'd love to hear from you!</p>
+    <p class="tenav-contact-hero-note">Please note, although we do not offer short-term rental or support for one-off events, we do offer longer-term services such as Hire Purchase and Lease deals under our TaaS agreements.</p>
+    <div class="tenav-contact-hero-quicklinks">
+      <a href="tel:+442033977360">020 3397 7360</a>
+      <a href="mailto:info@tenav.co.uk">info@tenav.co.uk</a>
+    </div>
   </div>
 
   <div class="tenav-contact-component" aria-label="Contact TenAV" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;background:transparent;padding:0 24px;box-sizing:border-box;">
