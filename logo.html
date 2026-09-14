@@ -11,7 +11,7 @@
   }
   .logo-wrap {
     width: 100%;
-    max-width: 400px;
+    max-width: 1123px;
     margin: 0 auto;
   }
   svg {
@@ -23,15 +23,46 @@
 </head>
 <body>
 <div class="logo-wrap">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384.68 746.54" version="1.0">
-  <!-- long upstroke of the tick -->
-  <path fill="#7ac29c" d="M 291.68 20.0 L 364.68 42.93 L 159.03 697.61 L 86.04 674.68 Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 842.25 702" version="1.0">
+  <defs>
+    <clipPath id="canvas-clip"><path d="M 0 0.015625 L 841.5 0.015625 L 841.5 594.984375 L 0 594.984375 Z M 0 0.015625" clip-rule="nonzero"/></clipPath>
+    <clipPath id="small-block-clip"><path d="M 4 435 L 140 435 L 140 594.984375 L 4 594.984375 Z M 4 435" clip-rule="nonzero"/></clipPath>
+    <clipPath id="bottom-bar-clip"><path d="M 0.578125 419.066406 L 91.109375 419.066406 L 91.109375 458.632812 L 0.578125 458.632812 Z M 0.578125 419.066406" clip-rule="nonzero"/></clipPath>
+  </defs>
 
-  <!-- short lower stroke (left leg) of the tick -->
-  <path fill="#7ac29c" d="M 156.23 706.92 L 82.27 726.54 L 23.35 504.38 L 97.3 484.77 Z"/>
+  <!-- white background -->
+  <rect x="0" y="0" width="842.25" height="702" fill="#ffffff"/>
 
-  <!-- small connecting bar -->
-  <path fill="#17b890" d="M 20.0 468.25 L 109.03 468.25 L 109.03 507.15 L 20.0 507.15 Z"/>
+  <!-- previous revision: large dark-teal diagonal band -->
+  <g clip-path="url(#canvas-clip)">
+    <path fill="#17b890" d="M -68.683594 -151.441406 L 308.691406 -24.796875 L 72.722656 678.355469 L -304.652344 551.714844 Z"/>
+  </g>
+
+  <!-- previous revision: large light-green diagonal band, offset 67px to the right -->
+  <g clip-path="url(#canvas-clip)" transform="translate(67,0)">
+    <path fill="#7ac29c" d="M 209.988281 -36.992188 L 284.253906 -13.664062 L 75.027344 652.40625 L 0.761719 629.078125 Z"/>
+  </g>
+
+  <!-- previous revision: small light-green diagonal block, bottom-left -->
+  <g clip-path="url(#small-block-clip)" transform="translate(4,435)">
+    <path fill="#7ac29c" d="M 135.175781 226.882812 L 59.933594 246.839844 L -0.015625 20.820312 L 75.226562 0.863281 Z"/>
+  </g>
+
+  <!-- previous revision: small dark-teal bar, bottom-left -->
+  <g clip-path="url(#bottom-bar-clip)" transform="translate(0,419)">
+    <path fill="#17b890" d="M 0.578125 0.066406 L 91.152344 0.066406 L 91.152344 39.632812 L 0.578125 39.632812 Z"/>
+  </g>
+
+  <!-- tick overlay (on top, unclipped so the full mark shows) -->
+  <g transform="translate(85,0)">
+    <path fill="#7ac29c" d="M 206.257812 -24.695312 L 279.253906 -1.765625 L 73.609375 652.910156 L 0.613281 629.980469 Z"/>
+  </g>
+  <g transform="translate(22,440)">
+    <path fill="#7ac29c" d="M 133.804688 222.222656 L 59.847656 241.839844 L 0.925781 19.6875 L 74.882812 0.0703125 Z"/>
+  </g>
+  <g transform="translate(19,423)">
+    <path fill="#17b890" d="M 0.578125 0.558594 L 89.605469 0.558594 L 89.605469 39.453125 L 0.578125 39.453125 Z"/>
+  </g>
 </svg>
 </div>
 </body>
