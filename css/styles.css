@@ -408,6 +408,118 @@ a {
 }
 
 /* ==========================================================================
+   Promo button — styled after the TenSignage brand banner
+   (diagonal-cut dark panel, two-tone bold wordmark, teal/mint chevron mark)
+   ========================================================================== */
+
+.promo-showcase {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 1.5rem clamp(3rem, 7vw, 5rem);
+  text-align: center;
+}
+
+.promo-showcase__label {
+  margin: 0 0 1.1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.promo-cta {
+  position: relative;
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.promo-cta__chevrons {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 50px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.promo-cta__chevron {
+  position: absolute;
+  inset: 0;
+  /* blunt arrowhead / chevron, echoing the banner's angular mark */
+  clip-path: polygon(0% 0%, 52% 0%, 100% 50%, 52% 100%, 0% 100%, 40% 50%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.promo-cta__chevron--teal {
+  background: #0f9c74;
+}
+
+.promo-cta__chevron--mint {
+  background: var(--brand-signage);
+  left: 11px;
+  opacity: 0.95;
+}
+
+.promo-cta:hover .promo-cta__chevron--teal,
+.promo-cta:focus-within .promo-cta__chevron--teal {
+  transform: translateX(-3px);
+}
+
+.promo-cta:hover .promo-cta__chevron--mint,
+.promo-cta:focus-within .promo-cta__chevron--mint {
+  transform: translateX(3px);
+}
+
+.promo-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1.1rem 2.25rem 1.1rem 2.6rem;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: #fff;
+  background:
+    radial-gradient(130% 170% at 12% 10%, rgba(111, 197, 159, 0.35), transparent 55%),
+    linear-gradient(135deg, #0d1a15 0%, #0a1210 55%, #070a09 100%);
+  /* sheared parallelogram, same tilt as the poster's diagonal photo band */
+  clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+  box-shadow: 0 14px 30px rgba(8, 16, 13, 0.35);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+
+.promo-btn:hover,
+.promo-btn:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(8, 16, 13, 0.45), 0 0 26px -6px var(--brand-signage);
+}
+
+.promo-btn:focus-visible {
+  outline: 2px solid var(--brand-signage);
+  outline-offset: 4px;
+}
+
+.promo-btn__accent {
+  color: var(--brand-signage);
+}
+
+.promo-btn__arrow {
+  color: var(--brand-signage);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.promo-btn:hover .promo-btn__arrow,
+.promo-btn:focus-visible .promo-btn__arrow {
+  transform: translateX(5px);
+}
+
+/* ==========================================================================
    Footer
    ========================================================================== */
 
