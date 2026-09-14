@@ -1,0 +1,420 @@
+/* ==========================================================================
+   TenAV — base tokens
+   ========================================================================== */
+
+:root {
+  --bg: #ffffff;
+  --ink: #101418;
+  --ink-soft: #5b6472;
+  --line: #e4e7ec;
+  --header-h: 4.5rem;
+
+  --brand-av: #20c4f4;
+  --brand-signage: #6fc59f;
+  --brand-unify: #fdb913;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__inner {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.site-header__brand {
+  display: block;
+  text-decoration: none;
+}
+
+.site-header__logo {
+  display: block;
+  height: 1.6rem;
+  width: auto;
+}
+
+.site-header__logo path,
+.site-header__logo polygon {
+  fill: var(--ink);
+}
+
+.site-header__logo-accent {
+  fill: var(--brand-av) !important;
+}
+
+.site-header__nav {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2rem);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.site-header__nav a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  transition: color 0.2s ease;
+}
+
+.site-header__nav a:hover,
+.site-header__nav a:focus-visible {
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
+.hero {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 5rem) 1.5rem clamp(3rem, 7vw, 6rem);
+}
+
+.hero__intro {
+  max-width: 640px;
+  margin: 0 0 clamp(2rem, 4vw, 3rem);
+}
+
+.hero__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.hero__title {
+  margin: 0 0 0.75rem;
+  font-family: "Poppins", "Inter", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.hero__subtitle {
+  margin: 0;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---------- brand cards ---------- */
+
+.hero__cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.hero__card {
+  position: relative;
+  flex: 1 1 300px;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1 !important;
+  height: auto !important;
+  min-height: 0;
+  max-height: none;
+  border-radius: 18px;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  background: #11151a;
+  background-clip: padding-box;
+  border: 4px solid transparent;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s ease,
+    opacity 0.6s ease;
+}
+
+@supports not (aspect-ratio: 1 / 1) {
+  .hero__card::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+  }
+}
+
+.hero.hero--in-view .hero__card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero__card:hover,
+.hero__card:focus-visible,
+.hero__card.hero__card--active {
+  transform: translateY(-6px);
+  border-color: var(--brand);
+  box-shadow:
+    0 20px 44px rgba(0, 0, 0, 0.28),
+    0 0 32px -8px var(--brand);
+}
+
+.hero__card:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+}
+
+/* brand accent assignment, per card */
+.hero__card--av { --brand: var(--brand-av); }
+.hero__card--signage { --brand: var(--brand-signage); }
+.hero__card--unify { --brand: var(--brand-unify); }
+
+/* ---------- card "photo" backgrounds, built from CSS only ----------
+   Each brand gets a dark base + brand-colour glow + a subtle geometric
+   texture that echoes its theme (AV = beams/screens, Signage = vertical
+   panels, Unify = connected dot grid) instead of a bitmap image. */
+
+.hero__card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__card--av .hero__card-bg {
+  background:
+    radial-gradient(120% 90% at 25% 15%, rgba(32, 196, 244, 0.35), transparent 60%),
+    radial-gradient(90% 70% at 85% 90%, rgba(32, 196, 244, 0.18), transparent 55%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.05) 0 2px, transparent 2px 46px),
+    linear-gradient(160deg, #10202a 0%, #0b1116 55%, #070a0d 100%);
+}
+
+.hero__card--signage .hero__card-bg {
+  background:
+    radial-gradient(120% 90% at 20% 85%, rgba(111, 197, 159, 0.32), transparent 60%),
+    radial-gradient(90% 70% at 90% 10%, rgba(111, 197, 159, 0.16), transparent 55%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.045) 0 3px, transparent 3px 34px),
+    linear-gradient(160deg, #0f231b 0%, #0b1512 55%, #070a09 100%);
+}
+
+.hero__card--unify .hero__card-bg {
+  background:
+    radial-gradient(120% 90% at 80% 20%, rgba(253, 185, 19, 0.3), transparent 60%),
+    radial-gradient(90% 70% at 10% 90%, rgba(253, 185, 19, 0.15), transparent 55%),
+    radial-gradient(rgba(255, 255, 255, 0.07) 1.4px, transparent 1.6px),
+    linear-gradient(160deg, #241c0c 0%, #14100a 55%, #090807 100%);
+  background-size: auto, auto, 28px 28px, auto;
+}
+
+/* tall dark gradient at rest so the revealed text stays legible on hover */
+.hero__card-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.72) 35%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.1) 85%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  opacity: 0.45;
+  transition: opacity 0.3s ease;
+}
+
+.hero__card:hover .hero__card-bg::before,
+.hero__card:focus-visible .hero__card-bg::before,
+.hero__card.hero__card--active .hero__card-bg::before {
+  opacity: 1;
+}
+
+.hero__card-content {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+/* logo stays perfectly centred and lifts a few px on hover */
+.hero__card-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  max-width: calc(100% - 3.5rem);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero__card:hover .hero__card-logo,
+.hero__card:focus-visible .hero__card-logo,
+.hero__card.hero__card--active .hero__card-logo {
+  transform: translate(-50%, calc(-50% - 5px));
+}
+
+.hero__brand-logo {
+  display: block;
+  height: clamp(1.6rem, 3vw, 2.2rem);
+  width: auto;
+  max-width: 100%;
+}
+
+/* TenUnify's wordmark carries a small tick beneath it; nudge it down
+   slightly so it optically lines up with the tight-cropped marks */
+.hero__card--unify .hero__brand-logo {
+  transform: translateY(6%);
+}
+
+.hero__wordmark {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 575.41px;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+
+.hero__fill {
+  fill: #fff;
+}
+
+.hero__accent {
+  fill: var(--brand);
+  transition: fill 0.2s ease;
+}
+
+/* description + CTA live below the logo, anchored to the bottom of the
+   card, revealed only on hover/focus */
+.hero__card-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.85rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1.75rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero__card:hover .hero__card-text,
+.hero__card:focus-visible .hero__card-text,
+.hero__card.hero__card--active .hero__card-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero__card-desc {
+  margin: 0;
+  max-width: 260px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+.hero__card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  text-underline-offset: 4px;
+}
+
+.hero__card:hover .hero__card-cta,
+.hero__card:focus-visible .hero__card-cta,
+.hero__card.hero__card--active .hero__card-cta {
+  text-decoration: underline;
+  text-decoration-color: var(--brand);
+}
+
+.hero__card-arrow {
+  display: inline-block;
+  color: var(--brand);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero__card:hover .hero__card-arrow,
+.hero__card:focus-visible .hero__card-arrow,
+.hero__card.hero__card--active .hero__card-arrow {
+  transform: translateX(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__card {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hero__card-bg::before,
+  .hero__card-logo,
+  .hero__card-text,
+  .hero__card-arrow,
+  .hero__accent {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
