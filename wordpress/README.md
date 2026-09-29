@@ -32,7 +32,23 @@ It's the same code as before, with the same design and the same Capsule setup. T
    - an email at info@tenav.co.uk
    - a copy under **Enquiries** in WordPress
 
-Capsule is sent the same fields as before, and its redirect to `/thank-you/` is unchanged, so your Google Ads tracking works as it does today. If the email ever fails, the lead still goes to Capsule and the visitor still sees the thank-you message.
+When someone presses **Let's Chat**:
+1. The email copy is sent in the background.
+2. The visitor goes to Capsule, exactly as with Capsule's own form code.
+3. Capsule adds the lead and forwards them to your `/thank-you/` page. That page load is what Google Ads can count as a conversion.
+
+If Capsule decides to show an "I'm not a robot" check, the visitor sees it and can complete it.
+
+An earlier version sent to Capsule inside a hidden frame, so any check Capsule showed was invisible. The lead was lost even though the form said "Thank You". That in-page thank-you panel has now been removed, so put that wording on your `/thank-you/` page instead.
+
+If the email ever fails, the lead still goes to Capsule.
+
+### If leads still don't appear in Capsule
+
+- **Capsule settings:** in Capsule, check the website form integration is switched on, and check its CAPTCHA setting (never / suspicious only / always).
+- **Form key:** if you reset the form key in Capsule, copy the new `FORM_ID` value into this code.
+- **Existing contacts:** test with a new email address each time. If the email already belongs to a contact, look in that contact's history rather than for a new lead.
+- **Spam signs:** repeated "test" entries from the same connection can be treated as suspicious, which makes the CAPTCHA appear.
 
 ## Set up (about 5 minutes)
 

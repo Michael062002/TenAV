@@ -85,7 +85,7 @@
 
         <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:12px;line-height:1.5;color:#8386a3;margin:0 0 20px;">We typically respond within 2 business hours.</p>
 
-        <form id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" target="tenavCapsuleFrame">
+        <form id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8">
 
           <input type="hidden" name="FORM_ID" value="2b64108f-88dd-4747-b8be-6568cb50801d">
           <input type="hidden" name="COMPLETE_URL" value="https://tenav.co.uk/thank-you/">
@@ -137,22 +137,6 @@
 
         </form>
 
-        <iframe name="tenavCapsuleFrame" title="Form submission" style="display:none" aria-hidden="true"></iframe>
-
-        <div id="tenavSuccess" role="status" aria-live="polite" style="display:none;text-align:center;padding:20px 0;">
-
-          <h3 style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:20px;font-weight:700;color:#2e3192;margin:0 0 10px;">Thank You</h3>
-
-          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">Your enquiry has been successfully received.</p>
-
-          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">A dedicated account manager will review your request and contact you as soon as possible. We aim to respond within <strong style="color:#1c1d3d;">2 business hours</strong> and no later than one working day.</p>
-
-          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">If your enquiry is urgent, please call us on <a href="tel:+442033977360" style="color:#4d51d8;font-weight:600;text-decoration:none;">020 3397 7360</a>.</p>
-
-          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0;">We look forward to speaking with you.</p>
-
-        </div>
-
       </div>
 
     </div>
@@ -191,10 +175,8 @@
   if (!form) return;
 
   var submitBtn = form.querySelector('button[type="submit"]');
-  var successPanel = component.querySelector('#tenavSuccess');
-  var targetFrame = component.querySelector('iframe[name="tenavCapsuleFrame"]');
+  var submitLabel = submitBtn ? submitBtn.textContent : '';
   var honeypot = form.querySelector('#tenavWebsite');
-  var awaitingSubmit = false;
 
   // Emails a copy of each lead to info@tenav.co.uk through the site's own
   // TenAV Lead Form plugin (no outside service), which also saves it under
@@ -240,7 +222,7 @@
   // Never blocks or breaks the Capsule form if it fails.
   function notifyInbox(){
 
-    if (!window.fetch || !window.FormData) return;
+    if (!window.FormData) return;
 
     // Bots fill in the hidden spam trap; real visitors never see it.
     if (honeypot && honeypot.value) return;
@@ -256,25 +238,21 @@
     lead.append('project', fieldValue('NOTE'));
     lead.append('tenav_page', window.location.href);
 
+    // The browser moves on to Capsule straight after this, so use sendBeacon,
+    // which finishes sending in the background after the page has changed.
     try {
-      fetch(notifyUrl, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json'
-        },
-        body: lead,
-        credentials: 'same-origin',
-        // Finish sending even if the visitor closes the page straight away.
-        keepalive: true
-      }).then(function(res){
-        return res.json();
-      }).then(function(result){
-        if (!result || !result.success) {
-          console.warn('TenAV lead email not sent:', result && result.data);
-        }
-      }).catch(function(err){
-        console.warn('TenAV lead email request failed:', err);
-      });
+      if (navigator.sendBeacon && navigator.sendBeacon(notifyUrl, lead)) return;
+
+      if (window.fetch) {
+        fetch(notifyUrl, {
+          method: 'POST',
+          body: lead,
+          credentials: 'same-origin',
+          keepalive: true
+        }).catch(function(err){
+          console.warn('TenAV lead email request failed:', err);
+        });
+      }
     } catch (err) {}
 
   }
@@ -330,8 +308,6 @@
       return;
     }
 
-    awaitingSubmit = true;
-
     notifyInbox();
 
     if (submitBtn) {
@@ -341,20 +317,15 @@
 
   });
 
-  if (targetFrame && successPanel) {
+  // If the visitor comes back with the Back button, make the form usable again.
+  window.addEventListener('pageshow', function(e){
 
-    targetFrame.addEventListener('load', function(){
+    if (e.persisted && submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitLabel;
+    }
 
-      if (!awaitingSubmit) return;
-
-      awaitingSubmit = false;
-
-      form.style.display = 'none';
-      successPanel.style.display = 'block';
-
-    });
-
-  }
+  });
 
 })();
 </script>
