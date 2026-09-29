@@ -185,6 +185,17 @@
       border: 1px solid color-mix(in srgb, var(--error) 25%, transparent);
     }
     .form-alert a { color: inherit; }
+    .form-alert--notice {
+      color: #854d0e;
+      background: #fefce8;
+      border-color: #fde68a;
+    }
+    .form-alert-detail {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.8125rem;
+      opacity: 0.85;
+    }
 
     .lead-success {
       padding: 24px;
@@ -373,10 +384,31 @@
         buttonLabel.textContent = sending ? 'Sending…' : 'Send enquiry';
       }
 
-      function showAlert(html) {
-        alertBox.innerHTML = html;
+      // FormSubmit refuses pages opened as a file or inside a preview, so it only works from a real website
+      var isPreview = location.protocol !== 'http:' && location.protocol !== 'https:';
+      var PREVIEW_MESSAGE = 'Preview only: nothing will be sent from here. This form sends emails once it is on your website (a page address starting with https://). Opened as a file or in a preview window, the email service rejects it.';
+
+      function showAlert(kind, message, detail) {
+        alertBox.className = 'form-alert' + (kind === 'notice' ? ' form-alert--notice' : '');
+        alertBox.textContent = message;
+        if (kind === 'error') {
+          var link = document.createElement('a');
+          link.href = 'mailto:info@tenav.co.uk';
+          link.textContent = 'info@tenav.co.uk';
+          alertBox.appendChild(document.createTextNode(' Please try again, or email us directly at '));
+          alertBox.appendChild(link);
+          alertBox.appendChild(document.createTextNode('.'));
+        }
+        if (detail) {
+          var detailEl = document.createElement('span');
+          detailEl.className = 'form-alert-detail';
+          detailEl.textContent = 'Reason: ' + detail;
+          alertBox.appendChild(detailEl);
+        }
         alertBox.hidden = false;
       }
+
+      if (isPreview) showAlert('notice', PREVIEW_MESSAGE);
 
       function showSuccess() {
         var name = fields.firstName.value.trim();
@@ -390,7 +422,7 @@
 
       form.addEventListener('submit', function (event) {
         event.preventDefault();
-        alertBox.hidden = true;
+        if (!isPreview) alertBox.hidden = true;
 
         var firstInvalid = null;
         Object.keys(fields).forEach(function (key) {
@@ -401,6 +433,12 @@
         });
         if (firstInvalid) {
           firstInvalid.focus();
+          return;
+        }
+
+        if (isPreview) {
+          showAlert('notice', PREVIEW_MESSAGE);
+          alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
           return;
         }
 
@@ -429,7 +467,9 @@
           .then(function (response) {
             return response.json().catch(function () { return {}; }).then(function (data) {
               if (response.ok && String(data.success) === 'true') return data;
-              throw new Error(data.message || 'Request failed with status ' + response.status);
+              var failure = new Error(data.message || 'The email service returned an error (status ' + response.status + ').');
+              failure.fromService = true;
+              throw failure;
             });
           })
           .then(function () {
@@ -437,7 +477,10 @@
           })
           .catch(function (error) {
             console.error('Lead form submission failed:', error);
-            showAlert('Sorry, something went wrong sending your enquiry. Please try again, or email us directly at <a href="mailto:info@tenav.co.uk">info@tenav.co.uk</a>.');
+            var detail = error.fromService
+              ? error.message
+              : 'Could not connect to the email service (formsubmit.co). Check your internet connection, or whether something on this site is blocking it.';
+            showAlert('error', 'Sorry, your enquiry could not be sent.', detail);
             alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
           })
           .finally(function () {

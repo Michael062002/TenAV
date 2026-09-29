@@ -12,7 +12,9 @@ The site is static HTML, so the form uses [FormSubmit](https://formsubmit.co) to
 
 ## One-time setup (required)
 
-1. Put the page on the live site, open it and send a test enquiry.
+> **The form only sends from a real website.** FormSubmit rejects submissions from a page opened as a file on your computer or shown in a preview window. In that case the form shows a yellow "Preview only" notice. Upload it to your site before testing.
+
+1. Put the page on the live site and open it from its `https://` address. Send a test enquiry.
 2. FormSubmit emails info@tenav.co.uk asking you to **confirm the form**. Click the button in that email.
    - Until you confirm, submissions are **not delivered**.
    - Until then, the form shows an error with a link to email info@tenav.co.uk directly.
@@ -34,6 +36,17 @@ This stops scrapers from reading info@tenav.co.uk out of the form code. It also 
 - **Standalone page:** upload `index.html` as, for example, `/contact/index.html`.
 - **Inside an existing page:** copy the `<style>` block, the `<main class="lead-card">…</main>` block and the `<script>` block into the page.
 - **Website builder (Wix, Squarespace, WordPress, etc.):** use an "Embed HTML" / "Custom code" block and paste in the whole file. You can also host the file and load it in an `<iframe>`.
+
+## Troubleshooting
+
+When sending fails, the red error box shows the actual reason in small text underneath:
+
+| Reason shown | What to do |
+| --- | --- |
+| Yellow "Preview only" notice | The page isn't on a website yet. Upload it and test from the live `https://` page. |
+| "This form needs Activation…" | Find the FormSubmit email in the info@tenav.co.uk inbox and click **Activate Form**. Check the spam/junk folder too. |
+| "Could not connect to the email service" | Something is blocking formsubmit.co, such as an ad blocker, a strict company network or the site's security settings. Try another browser or network. |
+| Success message shows but no email arrives | Check spam/junk in info@tenav.co.uk. If it's there, mark it "not spam" and add the FormSubmit sender to your safe senders list. |
 
 ## Customising
 
