@@ -1,0 +1,303 @@
+/* TenAV Lead Form. Change the variables below to match the brand. */
+.tenav-lead {
+	--tenav-accent: #1d4ed8;
+	--tenav-accent-hover: #1e40af;
+	--tenav-text: #0f172a;
+	--tenav-muted: #475569;
+	--tenav-border: #cbd5e1;
+	--tenav-field-bg: #ffffff;
+	--tenav-card-bg: #ffffff;
+	--tenav-error: #b91c1c;
+	--tenav-error-bg: #fef2f2;
+	--tenav-success: #15803d;
+	--tenav-success-bg: #f0fdf4;
+	--tenav-radius: 10px;
+
+	box-sizing: border-box;
+	max-width: 640px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 40px;
+	color: var(--tenav-text);
+	background: var(--tenav-card-bg);
+	border-radius: 16px;
+	box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.08);
+	font-size: 16px;
+	line-height: 1.5;
+	text-align: left;
+}
+
+.tenav-lead *,
+.tenav-lead *::before,
+.tenav-lead *::after {
+	box-sizing: border-box;
+}
+
+.tenav-lead [hidden] {
+	display: none !important;
+}
+
+.tenav-lead .tenav-lead__title {
+	margin: 0 0 8px;
+	padding: 0;
+	color: var(--tenav-text);
+	font-size: 1.75rem;
+	line-height: 1.2;
+}
+
+.tenav-lead .tenav-lead__intro {
+	margin: 0 0 32px;
+	color: var(--tenav-muted);
+}
+
+.tenav-lead .tenav-lead__form {
+	margin: 0;
+}
+
+.tenav-lead .tenav-lead__grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+.tenav-lead .tenav-lead__field {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	margin: 0;
+}
+
+.tenav-lead .tenav-lead__field--full {
+	grid-column: 1 / -1;
+}
+
+.tenav-lead .tenav-lead__field label {
+	display: block;
+	margin: 0 0 6px;
+	color: var(--tenav-text);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.tenav-lead .tenav-lead__optional {
+	font-weight: 400;
+	color: var(--tenav-muted);
+}
+
+.tenav-lead .tenav-lead__field input,
+.tenav-lead .tenav-lead__field textarea {
+	display: block;
+	width: 100%;
+	max-width: none;
+	min-height: 48px;
+	margin: 0;
+	padding: 12px 14px;
+	color: var(--tenav-text);
+	background: var(--tenav-field-bg);
+	border: 1px solid var(--tenav-border);
+	border-radius: var(--tenav-radius);
+	box-shadow: none;
+	font: inherit;
+	font-size: 16px;
+	line-height: 1.5;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.tenav-lead .tenav-lead__field textarea {
+	min-height: 160px;
+	resize: vertical;
+}
+
+.tenav-lead .tenav-lead__field input:focus,
+.tenav-lead .tenav-lead__field textarea:focus {
+	outline: none;
+	border-color: var(--tenav-accent);
+	box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.25);
+}
+
+.tenav-lead .tenav-lead__field [aria-invalid="true"],
+.tenav-lead .tenav-lead__field [aria-invalid="true"]:focus {
+	border-color: var(--tenav-error);
+}
+
+.tenav-lead .tenav-lead__field [aria-invalid="true"]:focus {
+	box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.2);
+}
+
+.tenav-lead .tenav-lead__error {
+	margin: 6px 0 0;
+	color: var(--tenav-error);
+	font-size: 0.875rem;
+}
+
+.tenav-lead .tenav-lead__error:empty {
+	display: none;
+}
+
+/* Honeypot: hidden from people, tempting to bots */
+.tenav-lead .tenav-lead__hp {
+	position: absolute !important;
+	left: -10000px !important;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.tenav-lead .tenav-lead__footer {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-top: 28px;
+}
+
+.tenav-lead .tenav-lead__privacy {
+	margin: 0;
+	color: var(--tenav-muted);
+	font-size: 0.875rem;
+}
+
+.tenav-lead .tenav-lead__submit {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	min-height: 48px;
+	margin: 0;
+	padding: 12px 28px;
+	color: #fff;
+	background: var(--tenav-accent);
+	border: 0;
+	border-radius: var(--tenav-radius);
+	box-shadow: none;
+	font: inherit;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1.2;
+	letter-spacing: normal;
+	text-transform: none;
+	text-decoration: none;
+	cursor: pointer;
+	transition: background-color 0.15s ease;
+}
+
+.tenav-lead .tenav-lead__submit:hover {
+	color: #fff;
+	background: var(--tenav-accent-hover);
+}
+
+.tenav-lead .tenav-lead__submit:focus-visible {
+	outline: 3px solid rgba(29, 78, 216, 0.4);
+	outline-offset: 2px;
+}
+
+.tenav-lead .tenav-lead__submit[disabled] {
+	opacity: 0.7;
+	cursor: wait;
+}
+
+.tenav-lead .tenav-lead__spinner {
+	display: none;
+	width: 16px;
+	height: 16px;
+	border: 2px solid rgba(255, 255, 255, 0.4);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: tenav-lead-spin 0.7s linear infinite;
+}
+
+.tenav-lead .is-sending .tenav-lead__spinner {
+	display: inline-block;
+}
+
+@keyframes tenav-lead-spin {
+	to { transform: rotate(360deg); }
+}
+
+.tenav-lead .tenav-lead__alert {
+	margin: 0 0 24px;
+	padding: 12px 16px;
+	color: var(--tenav-error);
+	background: var(--tenav-error-bg);
+	border: 1px solid rgba(185, 28, 28, 0.25);
+	border-radius: var(--tenav-radius);
+	font-size: 0.9375rem;
+}
+
+.tenav-lead .tenav-lead__alert a {
+	color: inherit;
+}
+
+.tenav-lead .tenav-lead__alert-detail {
+	display: block;
+	margin-top: 6px;
+	font-size: 0.8125rem;
+	opacity: 0.85;
+}
+
+.tenav-lead .tenav-lead__success {
+	padding: 24px;
+	background: var(--tenav-success-bg);
+	border: 1px solid rgba(21, 128, 61, 0.25);
+	border-radius: var(--tenav-radius);
+}
+
+.tenav-lead .tenav-lead__success:focus {
+	outline: none;
+}
+
+.tenav-lead .tenav-lead__success-title {
+	margin: 0 0 6px;
+	padding: 0;
+	color: var(--tenav-success);
+	font-size: 1.25rem;
+	line-height: 1.3;
+}
+
+.tenav-lead .tenav-lead__success p {
+	margin: 0;
+}
+
+.tenav-lead .tenav-lead__admin-note {
+	margin-top: 12px !important;
+	padding: 10px 12px;
+	color: #854d0e;
+	background: #fefce8;
+	border: 1px solid #fde68a;
+	border-radius: 8px;
+	font-size: 0.875rem;
+}
+
+@media (max-width: 600px) {
+	.tenav-lead {
+		padding: 24px 20px;
+		border-radius: 12px;
+	}
+
+	.tenav-lead .tenav-lead__title {
+		font-size: 1.5rem;
+	}
+
+	.tenav-lead .tenav-lead__grid {
+		grid-template-columns: 1fr;
+		gap: 18px;
+	}
+
+	.tenav-lead .tenav-lead__submit {
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.tenav-lead .tenav-lead__spinner {
+		animation-duration: 2s;
+	}
+
+	.tenav-lead * {
+		transition: none !important;
+	}
+}
