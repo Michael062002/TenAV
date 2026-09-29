@@ -226,6 +226,7 @@
 
     el.style.borderColor = valid ? normalBorder : errorBorder;
     el.style.background = valid ? normalBg : errorBg;
+    el.setAttribute('aria-invalid', valid ? 'false' : 'true');
 
     return valid;
   }
@@ -250,9 +251,16 @@
       fetch(notifyUrl, {
         method: 'POST',
         body: data,
-        credentials: 'same-origin',
-        keepalive: true
-      }).catch(function(){});
+        credentials: 'same-origin'
+      }).then(function(res){
+        return res.text().then(function(text){
+          if (!res.ok || text.indexOf('"success":true') === -1) {
+            console.warn('TenAV lead email not sent (' + res.status + '): ' + text);
+          }
+        });
+      }).catch(function(err){
+        console.warn('TenAV lead email request failed:', err);
+      });
     } catch (err) {}
 
   }
@@ -267,7 +275,7 @@
 
     el.addEventListener('input', function(){
 
-      if (el.style.borderColor === errorBorder) {
+      if (el.getAttribute('aria-invalid') === 'true') {
         validateField(el);
       }
 
@@ -291,11 +299,11 @@
 
       e.preventDefault();
 
-      var firstError = form.querySelector('input[required], textarea[required]');
+      var firstError = null;
 
       Array.prototype.forEach.call(fields, function(el){
 
-        if (el.style.borderColor === errorBorder) {
+        if (!firstError && el.getAttribute('aria-invalid') === 'true') {
           firstError = el;
         }
 

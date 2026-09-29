@@ -8,6 +8,10 @@
  * Install: add this as a new snippet in the "Code Snippets" plugin
  * (set to "Run everywhere"), or paste it into the child theme's functions.php.
  * Leave out the opening "<?php" line if your snippet tool adds it for you.
+ *
+ * Test: while logged in as an administrator, visit
+ *   https://tenav.co.uk/wp-admin/admin-ajax.php?action=tenav_lead_test
+ * to send a test email and see whether WordPress could send it, and why not.
  */
 
 if ( ! defined( 'TENAV_LEAD_NOTIFY_TO' ) ) {
@@ -16,6 +20,25 @@ if ( ! defined( 'TENAV_LEAD_NOTIFY_TO' ) ) {
 
 add_action( 'wp_ajax_tenav_lead_notify', 'tenav_lead_notify' );
 add_action( 'wp_ajax_nopriv_tenav_lead_notify', 'tenav_lead_notify' );
+add_action( 'wp_ajax_tenav_lead_test', 'tenav_lead_test' );
+
+// Keep the last mail error so the test page can show it.
+add_action( 'wp_mail_failed', function ( $error ) {
+	set_transient( 'tenav_lead_last_error', $error->get_error_message(), DAY_IN_SECONDS );
+} );
+
+function tenav_lead_send( $subject, $body, $reply_to = '' ) {
+
+	$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
+
+	if ( $reply_to ) {
+		$headers[] = 'Reply-To: ' . $reply_to;
+	}
+
+	delete_transient( 'tenav_lead_last_error' );
+
+	return wp_mail( TENAV_LEAD_NOTIFY_TO, $subject, $body, $headers );
+}
 
 function tenav_lead_notify() {
 
@@ -40,7 +63,7 @@ function tenav_lead_notify() {
 		$value = ( 'NOTE' === $key ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value );
 
 		if ( '' === $value ) {
-			wp_send_json_error( array( 'message' => 'Missing field.' ), 400 );
+			wp_send_json_error( array( 'message' => 'Missing field: ' . $key ), 400 );
 		}
 
 		$lead[ $key ] = $value;
@@ -90,16 +113,47 @@ function tenav_lead_notify() {
 
 	$body .= 'Submitted at: ' . wp_date( 'd/m/Y H:i' ) . "\n";
 
-	$headers = array(
-		'Content-Type: text/plain; charset=UTF-8',
-		'Reply-To: ' . $lead['EMAIL'],
-	);
-
-	$sent = wp_mail( TENAV_LEAD_NOTIFY_TO, $subject, $body, $headers );
-
-	if ( $sent ) {
+	if ( tenav_lead_send( $subject, $body, $lead['EMAIL'] ) ) {
 		wp_send_json_success();
 	}
 
 	wp_send_json_error( array( 'message' => 'Email could not be sent.' ), 500 );
+}
+
+function tenav_lead_test() {
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( 'Please log in to WordPress as an administrator, then open this link again.' );
+	}
+
+	$sent  = tenav_lead_send(
+		'TenAV website – test lead email',
+		"This is a test from the TenAV contact form notification.\n\nIf you can read this, lead emails will reach this inbox.\n"
+	);
+	$error = get_transient( 'tenav_lead_last_error' );
+
+	header( 'Content-Type: text/plain; charset=UTF-8' );
+
+	echo "TenAV lead email test\n=====================\n\n";
+	echo 'Sending to: ' . TENAV_LEAD_NOTIFY_TO . "\n";
+	echo 'WordPress result: ' . ( $sent ? 'SENT (handed to the mail server)' : 'FAILED' ) . "\n";
+
+	if ( $error ) {
+		echo 'Error: ' . $error . "\n";
+	}
+
+	echo "\n";
+
+	if ( $sent ) {
+		echo "If it does not arrive within a few minutes (check Junk/Spam and any\n";
+		echo "quarantine in Microsoft 365 / Google Workspace), your hosting mail is\n";
+		echo "being blocked. Install the \"WP Mail SMTP\" plugin and connect it to the\n";
+		echo "info@tenav.co.uk mailbox provider, then run this test again.\n";
+	} else {
+		echo "WordPress could not send mail from this server. Install the\n";
+		echo "\"WP Mail SMTP\" plugin and connect it to your email provider, then\n";
+		echo "run this test again.\n";
+	}
+
+	exit;
 }
