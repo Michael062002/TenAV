@@ -196,10 +196,10 @@
   var honeypot = form.querySelector('#tenavWebsite');
   var awaitingSubmit = false;
 
-  // WordPress endpoint that emails a copy of each lead to info@tenav.co.uk
-  // (see tenav-lead-notify.php).
-  var notifyUrl = '/wp-admin/admin-ajax.php';
-  var notifyFields = ['FIRST_NAME', 'LAST_NAME', 'EMAIL', 'PHONE', 'ORGANISATION_NAME', 'NOTE'];
+  // Emails a copy of each lead to info@tenav.co.uk via FormSubmit (formsubmit.co).
+  // The first lead sent from the site triggers an "Activate Form" email to that
+  // inbox; leads are delivered once the button in that email has been clicked.
+  var notifyUrl = 'https://formsubmit.co/ajax/info@tenav.co.uk';
 
   var errorBorder = '#e5484d';
   var errorBg = '#fff6f6';
@@ -231,33 +231,52 @@
     return valid;
   }
 
+  function fieldValue(name){
+    var el = form.elements[name];
+    return el ? el.value.trim() : '';
+  }
+
   // Sends the lead to the inbox alongside the Capsule submission.
   // Never blocks or breaks the Capsule form if it fails.
   function notifyInbox(){
 
-    if (!window.fetch || !window.FormData) return;
+    if (!window.fetch) return;
 
-    var data = new FormData();
-    data.append('action', 'tenav_lead_notify');
-    data.append('website', honeypot ? honeypot.value : '');
-    data.append('PAGE_URL', window.location.href);
+    // Bots fill in the hidden spam trap; real visitors never see it.
+    if (honeypot && honeypot.value) return;
 
-    notifyFields.forEach(function(name){
-      var el = form.elements[name];
-      data.append(name, el ? el.value.trim() : '');
-    });
+    var name = fieldValue('FIRST_NAME') + ' ' + fieldValue('LAST_NAME');
+    var company = fieldValue('ORGANISATION_NAME');
+
+    var lead = {
+      _subject: 'New web lead: ' + name + ' (' + company + ')',
+      _template: 'table',
+      _replyto: fieldValue('EMAIL'),
+      Name: name,
+      Email: fieldValue('EMAIL'),
+      Phone: fieldValue('PHONE'),
+      Company: company,
+      Message: fieldValue('NOTE'),
+      Page: window.location.href
+    };
 
     try {
       fetch(notifyUrl, {
         method: 'POST',
-        body: data,
-        credentials: 'same-origin'
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(lead),
+        // FormSubmit recognises the website from the referrer, so always send
+        // the site address even if the site's own referrer policy is stricter.
+        referrerPolicy: 'strict-origin-when-cross-origin'
       }).then(function(res){
-        return res.text().then(function(text){
-          if (!res.ok || text.indexOf('"success":true') === -1) {
-            console.warn('TenAV lead email not sent (' + res.status + '): ' + text);
-          }
-        });
+        return res.json();
+      }).then(function(result){
+        if (!result || String(result.success) !== 'true') {
+          console.warn('TenAV lead email not sent: ' + (result && result.message));
+        }
       }).catch(function(err){
         console.warn('TenAV lead email request failed:', err);
       });
