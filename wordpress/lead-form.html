@@ -1,0 +1,148 @@
+<!--
+  TenAV lead form (plain HTML, no JavaScript)
+
+  Paste all of this into a "Custom HTML" block in WordPress.
+  The TenAV Lead Form plugin must be active: it emails each enquiry to info@tenav.co.uk
+  behind the scenes, but adds nothing to this page.
+
+  Optional thank-you page (handy for Google Ads conversion tracking):
+  put its address in the tenav_redirect field below, e.g. value="/thank-you/".
+  Leave it empty to show the thank-you message here instead.
+-->
+<style>
+  .tenav-lead {
+    --tenav-accent: #1d4ed8;
+    --tenav-accent-hover: #1e40af;
+    --tenav-text: #0f172a;
+    --tenav-muted: #475569;
+    --tenav-border: #cbd5e1;
+    --tenav-error: #b91c1c;
+    --tenav-radius: 10px;
+    box-sizing: border-box;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px;
+    color: var(--tenav-text);
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.08);
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+  }
+  .tenav-lead *, .tenav-lead *::before, .tenav-lead *::after { box-sizing: border-box; }
+  .tenav-lead .tenav-lead__title { margin: 0 0 8px; padding: 0; color: var(--tenav-text); font-size: 1.75rem; line-height: 1.2; }
+  .tenav-lead .tenav-lead__intro { margin: 0 0 32px; color: var(--tenav-muted); }
+  .tenav-lead .tenav-lead__form { margin: 0; }
+  .tenav-lead .tenav-lead__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .tenav-lead .tenav-lead__field { display: flex; flex-direction: column; min-width: 0; margin: 0; }
+  .tenav-lead .tenav-lead__field--full { grid-column: 1 / -1; }
+  .tenav-lead .tenav-lead__field label { display: block; margin: 0 0 6px; color: var(--tenav-text); font-size: 0.9375rem; font-weight: 600; line-height: 1.4; }
+  .tenav-lead .tenav-lead__optional { font-weight: 400; color: var(--tenav-muted); }
+  .tenav-lead .tenav-lead__field input,
+  .tenav-lead .tenav-lead__field textarea {
+    display: block; width: 100%; max-width: none; min-height: 48px; margin: 0; padding: 12px 14px;
+    color: var(--tenav-text); background: #fff; border: 1px solid var(--tenav-border); border-radius: var(--tenav-radius);
+    box-shadow: none; font: inherit; font-size: 16px; line-height: 1.5;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease; -webkit-appearance: none; appearance: none;
+  }
+  .tenav-lead .tenav-lead__field textarea { min-height: 160px; resize: vertical; }
+  .tenav-lead .tenav-lead__field input:focus,
+  .tenav-lead .tenav-lead__field textarea:focus { outline: none; border-color: var(--tenav-accent); box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.25); }
+  /* Red border on fields the visitor got wrong (after they've typed or tried to send) */
+  .tenav-lead .tenav-lead__field input:user-invalid,
+  .tenav-lead .tenav-lead__field textarea:user-invalid { border-color: var(--tenav-error); }
+  /* Honeypot: hidden from people, tempting to bots */
+  .tenav-lead .tenav-lead__hp { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }
+  .tenav-lead .tenav-lead__footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 28px; }
+  .tenav-lead .tenav-lead__privacy { margin: 0; color: var(--tenav-muted); font-size: 0.875rem; }
+  .tenav-lead .tenav-lead__submit {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin: 0; padding: 12px 28px;
+    color: #fff; background: var(--tenav-accent); border: 0; border-radius: var(--tenav-radius); box-shadow: none;
+    font: inherit; font-size: 16px; font-weight: 600; line-height: 1.2; letter-spacing: normal; text-transform: none; cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+  .tenav-lead .tenav-lead__submit:hover { color: #fff; background: var(--tenav-accent-hover); }
+  .tenav-lead .tenav-lead__submit:focus-visible { outline: 3px solid rgba(29, 78, 216, 0.4); outline-offset: 2px; }
+  /* Thank-you and error messages: hidden until the page address ends in #tenav-lead-sent or #tenav-lead-error */
+  .tenav-lead .tenav-lead__success,
+  .tenav-lead .tenav-lead__alert { display: none; margin: 0 0 24px; padding: 20px 24px; border-radius: var(--tenav-radius); }
+  .tenav-lead .tenav-lead__success { background: #f0fdf4; border: 1px solid rgba(21, 128, 61, 0.25); }
+  .tenav-lead .tenav-lead__success h3 { margin: 0 0 6px; padding: 0; color: #15803d; font-size: 1.25rem; line-height: 1.3; }
+  .tenav-lead .tenav-lead__success p { margin: 0; }
+  .tenav-lead .tenav-lead__alert { padding: 12px 16px; color: var(--tenav-error); background: #fef2f2; border: 1px solid rgba(185, 28, 28, 0.25); font-size: 0.9375rem; }
+  .tenav-lead .tenav-lead__alert a { color: inherit; }
+  #tenav-lead-sent:target, #tenav-lead-error:target { display: block; }
+  #tenav-lead-sent:target { margin-bottom: 0; }
+  #tenav-lead-sent:target ~ .tenav-lead__form { display: none; }
+  @media (max-width: 600px) {
+    .tenav-lead { padding: 24px 20px; border-radius: 12px; }
+    .tenav-lead .tenav-lead__title { font-size: 1.5rem; }
+    .tenav-lead .tenav-lead__grid { grid-template-columns: 1fr; gap: 18px; }
+    .tenav-lead .tenav-lead__submit { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .tenav-lead * { transition: none !important; } }
+</style>
+
+<div class="tenav-lead" id="tenav-lead">
+  <h2 class="tenav-lead__title">Start your project</h2>
+  <p class="tenav-lead__intro">Tell us a little about yourself and what you have in mind, and our team will get back to you.</p>
+
+  <div class="tenav-lead__success" id="tenav-lead-sent" role="status">
+    <h3>Thanks, we've got it</h3>
+    <p>Your enquiry has been sent to our team and we'll be in touch soon.</p>
+  </div>
+
+  <div class="tenav-lead__alert" id="tenav-lead-error" role="alert">
+    Sorry, your enquiry could not be sent. Please check the form and try again, or email us directly at <a href="mailto:info@tenav.co.uk">info@tenav.co.uk</a>.
+  </div>
+
+  <form class="tenav-lead__form" action="/wp-admin/admin-post.php" method="post">
+    <input type="hidden" name="action" value="tenav_lead">
+    <input type="hidden" name="tenav_redirect" value="">
+
+    <div class="tenav-lead__hp" aria-hidden="true">
+      <label for="tenav-lead-hp">Leave this field empty</label>
+      <input type="text" id="tenav-lead-hp" name="tenav_hp" tabindex="-1" autocomplete="off">
+    </div>
+
+    <div class="tenav-lead__grid">
+      <div class="tenav-lead__field">
+        <label for="tenav-lead-first-name">First name</label>
+        <input type="text" id="tenav-lead-first-name" name="first_name" autocomplete="given-name" maxlength="100" required>
+      </div>
+
+      <div class="tenav-lead__field">
+        <label for="tenav-lead-last-name">Last name</label>
+        <input type="text" id="tenav-lead-last-name" name="last_name" autocomplete="family-name" maxlength="100" required>
+      </div>
+
+      <div class="tenav-lead__field">
+        <label for="tenav-lead-email">Email</label>
+        <input type="email" id="tenav-lead-email" name="email" autocomplete="email" maxlength="254" required>
+      </div>
+
+      <div class="tenav-lead__field">
+        <label for="tenav-lead-phone">Phone <span class="tenav-lead__optional">(optional)</span></label>
+        <input type="tel" id="tenav-lead-phone" name="phone" autocomplete="tel" minlength="7" maxlength="30">
+      </div>
+
+      <div class="tenav-lead__field tenav-lead__field--full">
+        <label for="tenav-lead-company">Company name <span class="tenav-lead__optional">(optional)</span></label>
+        <input type="text" id="tenav-lead-company" name="company" autocomplete="organization" maxlength="150">
+      </div>
+
+      <div class="tenav-lead__field tenav-lead__field--full">
+        <label for="tenav-lead-project">Tell us about your project</label>
+        <textarea id="tenav-lead-project" name="project" maxlength="5000" required
+                  placeholder="What are you looking to achieve? Include the type of space, timescales and budget if you know them."></textarea>
+      </div>
+    </div>
+
+    <div class="tenav-lead__footer">
+      <p class="tenav-lead__privacy">We'll only use your details to respond to your enquiry.</p>
+      <button type="submit" class="tenav-lead__submit">Send enquiry</button>
+    </div>
+  </form>
+</div>

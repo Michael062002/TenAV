@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name:       TenAV Lead Form
- * Description:       Project enquiry form that emails each lead to info@tenav.co.uk and keeps a copy under Enquiries in the dashboard. Add it to a page with the [tenav_lead_form] shortcode.
- * Version:           1.0.0
+ * Description:       Project enquiry form that emails each lead to info@tenav.co.uk and keeps a copy under Enquiries in the dashboard. Add it to a page with the [tenav_lead_form] shortcode, or paste the plain HTML version (lead-form.html) into a Custom HTML block.
+ * Version:           1.1.0
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            TenAV
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TENAV_LEAD_FORM_VERSION', '1.0.0' );
+define( 'TENAV_LEAD_FORM_VERSION', '1.1.0' );
 
 // Where leads are emailed. Can be overridden in wp-config.php.
 if ( ! defined( 'TENAV_LEAD_FORM_RECIPIENT' ) ) {
@@ -225,7 +225,7 @@ function tenav_lead_form_shortcode( $atts ) {
 		<?php endif; ?>
 
 		<form class="tenav-lead__form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $sent ? ' hidden' : ''; ?>>
-			<div class="tenav-lead__alert" role="alert"<?php echo 'error' === $status ? '' : ' hidden'; ?>>
+			<div class="tenav-lead__alert" id="<?php echo esc_attr( $uid ); ?>-error" role="alert"<?php echo 'error' === $status ? '' : ' hidden'; ?>>
 				<?php if ( 'error' === $status ) : ?>
 					Sorry, your enquiry could not be sent. Please check the form and try again, or email us directly at <a href="mailto:<?php echo esc_attr( TENAV_LEAD_FORM_RECIPIENT ); ?>"><?php echo esc_html( TENAV_LEAD_FORM_RECIPIENT ); ?></a>.
 				<?php endif; ?>
@@ -280,7 +280,7 @@ function tenav_lead_form_shortcode( $atts ) {
 			</div>
 		</form>
 
-		<div class="tenav-lead__success" role="status" tabindex="-1"<?php echo $sent ? '' : ' hidden'; ?>>
+		<div class="tenav-lead__success" id="<?php echo esc_attr( $uid ); ?>-sent" role="status" tabindex="-1"<?php echo $sent ? '' : ' hidden'; ?>>
 			<h3 class="tenav-lead__success-title">Thanks, we've got it</h3>
 			<p>Your enquiry has been sent to our team and we'll be in touch soon.</p>
 		</div>
@@ -300,6 +300,10 @@ function tenav_lead_form_handle_submission() {
 	// phpcs:disable WordPress.Security.NonceVerification.Missing -- public form; a nonce would break on cached pages. Spam is handled by the honeypot, timing check and rate limit.
 	$wants_json = wp_is_json_request();
 	$page       = isset( $_POST['tenav_page'] ) ? wp_validate_redirect( esc_url_raw( wp_unslash( $_POST['tenav_page'] ) ), '' ) : '';
+	// The plain HTML version of the form doesn't send its page address, so use the page the visitor came from.
+	if ( ! $page ) {
+		$page = (string) wp_get_referer();
+	}
 
 	if ( 'POST' !== ( isset( $_SERVER['REQUEST_METHOD'] ) ? $_SERVER['REQUEST_METHOD'] : '' ) ) {
 		wp_safe_redirect( home_url( '/' ) );
@@ -502,8 +506,16 @@ function tenav_lead_form_respond( $ok, $wants_json, $page, $data = array(), $sta
 		wp_send_json_error( $data, $status );
 	}
 
-	$back = $page ? $page : wp_get_referer();
-	$back = $back ? remove_query_arg( 'tenav_lead', $back ) : home_url( '/' );
-	wp_safe_redirect( add_query_arg( 'tenav_lead', $ok ? 'sent' : 'error', $back ) . '#tenav-lead' );
+	// Optional thank-you page (same site only), e.g. for Google Ads conversion tracking.
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- see tenav_lead_form_handle_submission().
+	$thank_you = $ok && isset( $_POST['tenav_redirect'] ) ? wp_validate_redirect( esc_url_raw( wp_unslash( $_POST['tenav_redirect'] ) ), '' ) : '';
+	if ( $thank_you ) {
+		wp_safe_redirect( $thank_you );
+		exit;
+	}
+
+	// Back to the form. The #fragment lets the plain HTML version show its message with CSS alone.
+	$back = remove_query_arg( 'tenav_lead', $page ? $page : home_url( '/' ) );
+	wp_safe_redirect( add_query_arg( 'tenav_lead', $ok ? 'sent' : 'error', $back ) . ( $ok ? '#tenav-lead-sent' : '#tenav-lead-error' ) );
 	exit;
 }
