@@ -19,6 +19,21 @@ There are two parts:
 | `lead-form.html` | The form itself, as **plain HTML with no JavaScript**. You paste it into your page. |
 | `tenav-lead-form.zip` | A small plugin that sends the email behind the scenes. HTML on its own can't send email, so this does it. It adds nothing to your pages, so it won't affect your Google Ads tag or anything else in your site's header. |
 
+## Elementor contact widget (Capsule CRM + email)
+
+`elementor-contact-widget.html` is the TenAV contact section, with the "Request a Callback" form. Each lead goes to **Capsule CRM** and is also **emailed to info@tenav.co.uk**.
+
+It's the same code as before, with the same design and the same Capsule setup. The only change is that the email copy now goes through the TenAV Lead Form plugin instead of FormSubmit.
+
+1. Install and activate the plugin: step 1 of "Set up" below.
+2. Edit the page in Elementor, open the **HTML** widget, and replace its contents with everything in `elementor-contact-widget.html`. Click **Update**.
+3. Send a test enquiry. You should see it in three places:
+   - the lead in Capsule
+   - an email at info@tenav.co.uk
+   - a copy under **Enquiries** in WordPress
+
+Capsule is sent the same fields as before, and its redirect to `/thank-you/` is unchanged, so your Google Ads tracking works as it does today. If the email ever fails, the lead still goes to Capsule and the visitor still sees the thank-you message.
+
 ## Set up (about 5 minutes)
 
 1. **Install the plugin (one time).**
