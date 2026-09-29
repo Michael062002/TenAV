@@ -85,10 +85,10 @@
 
         <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:12px;line-height:1.5;color:#8386a3;margin:0 0 20px;">We typically respond within 2 business hours.</p>
 
-        <form id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8">
+        <form id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" target="tenavCapsuleFrame">
 
           <input type="hidden" name="FORM_ID" value="2b64108f-88dd-4747-b8be-6568cb50801d">
-          <input type="hidden" name="COMPLETE_URL" value="https://tenav.co.uk/thank-you/">
+          <input type="hidden" name="COMPLETE_URL" value="https://tenav.co.uk/wp-admin/admin-post.php?action=tenav_capsule_done">
           <input type="hidden" name="TAG" value="Prospect">
           <input type="hidden" name="TAG" value="Web lead">
           <input type="hidden" name="DATE_FORMAT" value="dd/MM/yy">
@@ -137,6 +137,30 @@
 
         </form>
 
+        <div id="tenavVerify" style="display:none;">
+
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 12px;">Almost done. Please complete the quick check below to send your enquiry.</p>
+
+          <iframe name="tenavCapsuleFrame" title="Enquiry verification" style="display:block;box-sizing:border-box;width:100%;height:520px;background:#ffffff;border:1.5px solid #e6e7f2;border-radius:10px;margin:0 0 8px;"></iframe>
+
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:12px;line-height:1.5;color:#8386a3;margin:0;">Can't see the check? <a href="#" id="tenavVerifyNewTab" style="color:#4d51d8;font-weight:600;text-decoration:none;">Open it in a new tab</a>.</p>
+
+        </div>
+
+        <div id="tenavSuccess" role="status" aria-live="polite" style="display:none;text-align:center;padding:20px 0;">
+
+          <h3 style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:20px;font-weight:700;color:#2e3192;margin:0 0 10px;">Thank You</h3>
+
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">Your enquiry has been successfully received.</p>
+
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">A dedicated account manager will review your request and contact you as soon as possible. We aim to respond within <strong style="color:#1c1d3d;">2 business hours</strong> and no later than one working day.</p>
+
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 10px;">If your enquiry is urgent, please call us on <a href="tel:+442033977360" style="color:#4d51d8;font-weight:600;text-decoration:none;">020 3397 7360</a>.</p>
+
+          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0;">We look forward to speaking with you.</p>
+
+        </div>
+
       </div>
 
     </div>
@@ -175,8 +199,20 @@
   if (!form) return;
 
   var submitBtn = form.querySelector('button[type="submit"]');
-  var submitLabel = submitBtn ? submitBtn.textContent : '';
+  var successPanel = component.querySelector('#tenavSuccess');
+  var verifyBox = component.querySelector('#tenavVerify');
+  var verifyNewTab = component.querySelector('#tenavVerifyNewTab');
+  var targetFrame = component.querySelector('iframe[name="tenavCapsuleFrame"]');
   var honeypot = form.querySelector('#tenavWebsite');
+  var awaitingSubmit = false;
+
+  // Capsule sends its frame back to this blank page on our own site once it has
+  // accepted the lead (provided by the TenAV Lead Form plugin). Using this site's
+  // exact address means the check below works on both www and non-www.
+  var completeField = form.elements['COMPLETE_URL'];
+  if (completeField) {
+    completeField.value = window.location.origin + '/wp-admin/admin-post.php?action=tenav_capsule_done';
+  }
 
   // Emails a copy of each lead to info@tenav.co.uk through the site's own
   // TenAV Lead Form plugin (no outside service), which also saves it under
@@ -222,7 +258,7 @@
   // Never blocks or breaks the Capsule form if it fails.
   function notifyInbox(){
 
-    if (!window.FormData) return;
+    if (!window.fetch || !window.FormData) return;
 
     // Bots fill in the hidden spam trap; real visitors never see it.
     if (honeypot && honeypot.value) return;
@@ -238,21 +274,33 @@
     lead.append('project', fieldValue('NOTE'));
     lead.append('tenav_page', window.location.href);
 
-    // The browser moves on to Capsule straight after this, so use sendBeacon,
-    // which finishes sending in the background after the page has changed.
     try {
-      if (navigator.sendBeacon && navigator.sendBeacon(notifyUrl, lead)) return;
-
-      if (window.fetch) {
-        fetch(notifyUrl, {
-          method: 'POST',
-          body: lead,
-          credentials: 'same-origin',
-          keepalive: true
-        }).catch(function(err){
-          console.warn('TenAV lead email request failed:', err);
+      fetch(notifyUrl, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: lead,
+        credentials: 'same-origin'
+      }).then(function(res){
+        return res.json().catch(function(){
+          throw new Error('The website returned an unexpected response (status ' + res.status + '). Is the TenAV Lead Form plugin active?');
         });
-      }
+      }).then(function(result){
+        if (!result || !result.success) {
+          console.warn('TenAV lead email not sent:', (result && result.data && result.data.message) || result);
+          return;
+        }
+        // Only shown to logged-in WordPress admins, when the email itself failed.
+        if (result.data && result.data.adminNotice && successPanel) {
+          var note = document.createElement('p');
+          note.style.cssText = "font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:13px;line-height:1.5;color:#854d0e;background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;margin:16px 0 0;text-align:left;";
+          note.textContent = result.data.adminNotice;
+          successPanel.appendChild(note);
+        }
+      }).catch(function(err){
+        console.warn('TenAV lead email request failed:', err);
+      });
     } catch (err) {}
 
   }
@@ -308,6 +356,8 @@
       return;
     }
 
+    awaitingSubmit = true;
+
     notifyInbox();
 
     if (submitBtn) {
@@ -317,15 +367,58 @@
 
   });
 
-  // If the visitor comes back with the Back button, make the form usable again.
-  window.addEventListener('pageshow', function(e){
+  function showThankYou(){
 
-    if (e.persisted && submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.textContent = submitLabel;
-    }
+    awaitingSubmit = false;
 
-  });
+    form.style.display = 'none';
+    if (verifyBox) verifyBox.style.display = 'none';
+    successPanel.style.display = 'block';
+
+  }
+
+  if (targetFrame && successPanel) {
+
+    targetFrame.addEventListener('load', function(){
+
+      if (!awaitingSubmit) return;
+
+      // Capsule only sends the frame back to our own site once it has accepted
+      // the lead. Pages still on Capsule's site can't be read from here.
+      var backOnOurSite = false;
+
+      try {
+        backOnOurSite = targetFrame.contentWindow.location.host === window.location.host;
+      } catch (err) {}
+
+      if (backOnOurSite) {
+        showThankYou();
+        return;
+      }
+
+      // Capsule wants something from the visitor first (usually its "not a
+      // robot" check), so show its page instead of losing the lead.
+      form.style.display = 'none';
+      if (verifyBox) verifyBox.style.display = 'block';
+
+    });
+
+  }
+
+  // Fallback if Capsule's check can't be shown inside the page.
+  if (verifyNewTab) {
+
+    verifyNewTab.addEventListener('click', function(e){
+
+      e.preventDefault();
+
+      form.target = '_blank';
+      form.submit();
+      form.target = 'tenavCapsuleFrame';
+
+    });
+
+  }
 
 })();
 </script>

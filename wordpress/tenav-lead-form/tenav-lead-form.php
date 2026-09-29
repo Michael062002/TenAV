@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       TenAV Lead Form
  * Description:       Project enquiry form that emails each lead to info@tenav.co.uk and keeps a copy under Enquiries in the dashboard. Add it to a page with the [tenav_lead_form] shortcode, or paste the plain HTML version (lead-form.html) into a Custom HTML block.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            TenAV
@@ -14,15 +14,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TENAV_LEAD_FORM_VERSION', '1.1.0' );
+define( 'TENAV_LEAD_FORM_VERSION', '1.2.0' );
 
 // Where leads are emailed. Can be overridden in wp-config.php.
 if ( ! defined( 'TENAV_LEAD_FORM_RECIPIENT' ) ) {
 	define( 'TENAV_LEAD_FORM_RECIPIENT', 'info@tenav.co.uk' );
 }
 
-// Submissions allowed per visitor IP address within the rate-limit window.
-define( 'TENAV_LEAD_FORM_RATE_LIMIT', 5 );
+// Submissions allowed per visitor IP address within the rate-limit window. Logged-in admins are exempt, so testing isn't blocked.
+define( 'TENAV_LEAD_FORM_RATE_LIMIT', 10 );
 define( 'TENAV_LEAD_FORM_RATE_WINDOW', 10 * MINUTE_IN_SECONDS );
 
 /**
@@ -296,6 +296,19 @@ function tenav_lead_form_shortcode( $atts ) {
 add_action( 'admin_post_nopriv_tenav_lead', 'tenav_lead_form_handle_submission' );
 add_action( 'admin_post_tenav_lead', 'tenav_lead_form_handle_submission' );
 
+// A blank page on this site for Capsule CRM to return its hidden frame to once it has accepted a lead
+// (the Elementor widget's COMPLETE_URL). The widget can then confirm the lead without loading /thank-you/.
+add_action( 'admin_post_nopriv_tenav_capsule_done', 'tenav_lead_form_capsule_done' );
+add_action( 'admin_post_tenav_capsule_done', 'tenav_lead_form_capsule_done' );
+
+function tenav_lead_form_capsule_done() {
+	nocache_headers();
+	header( 'Content-Type: text/html; charset=utf-8' );
+	header( 'X-Robots-Tag: noindex, nofollow' );
+	echo '<!doctype html><html><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Sent</title></head><body></body></html>';
+	exit;
+}
+
 function tenav_lead_form_handle_submission() {
 	// phpcs:disable WordPress.Security.NonceVerification.Missing -- public form; a nonce would break on cached pages. Spam is handled by the honeypot, timing check and rate limit.
 	$wants_json = wp_is_json_request();
@@ -318,7 +331,7 @@ function tenav_lead_form_handle_submission() {
 
 	$rate_key = 'tenav_lead_rl_' . md5( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
 	$attempts = (int) get_transient( $rate_key );
-	if ( $attempts >= TENAV_LEAD_FORM_RATE_LIMIT ) {
+	if ( $attempts >= TENAV_LEAD_FORM_RATE_LIMIT && ! current_user_can( 'manage_options' ) ) {
 		tenav_lead_form_respond(
 			false,
 			$wants_json,

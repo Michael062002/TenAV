@@ -21,34 +21,38 @@ There are two parts:
 
 ## Elementor contact widget (Capsule CRM + email)
 
-`elementor-contact-widget.html` is the TenAV contact section, with the "Request a Callback" form. Each lead goes to **Capsule CRM** and is also **emailed to info@tenav.co.uk**.
+`elementor-contact-widget.html` is the TenAV contact section with the "Request a Callback" form. When someone presses **Let's Chat**:
 
-It's the same code as before, with the same design and the same Capsule setup. The only change is that the email copy now goes through the TenAV Lead Form plugin instead of FormSubmit.
+1. Their details go to **Capsule CRM**, in the background. The visitor stays on the page.
+2. A copy is **emailed to info@tenav.co.uk**, and saved under **Enquiries** in WordPress.
+3. The **Thank You** message appears in the form once Capsule has confirmed it received the lead.
 
-1. Install and activate the plugin: step 1 of "Set up" below.
-2. Edit the page in Elementor, open the **HTML** widget, and replace its contents with everything in `elementor-contact-widget.html`. Click **Update**.
-3. Send a test enquiry. You should see it in three places:
-   - the lead in Capsule
-   - an email at info@tenav.co.uk
-   - a copy under **Enquiries** in WordPress
+Your `/thank-you/` page is not loaded at all. Capsule is pointed at a blank page provided by the plugin, just so the form can tell the lead arrived.
 
-When someone presses **Let's Chat**:
-1. The email copy is sent in the background.
-2. The visitor goes to Capsule, exactly as with Capsule's own form code.
-3. Capsule adds the lead and forwards them to your `/thank-you/` page. That page load is what Google Ads can count as a conversion.
+If Capsule decides to show its "I'm not a robot" check, the check appears inside the form for the visitor to complete, so the lead isn't lost.
 
-If Capsule decides to show an "I'm not a robot" check, the visitor sees it and can complete it.
+### Install
 
-An earlier version sent to Capsule inside a hidden frame, so any check Capsule showed was invisible. The lead was lost even though the form said "Thank You". That in-page thank-you panel has now been removed, so put that wording on your `/thank-you/` page instead.
+1. Upload `tenav-lead-form.zip` under **Plugins → Add New Plugin → Upload Plugin**. You need version 1.2.0 or later: if an older version is installed, choose **Replace current with uploaded**. Then **Activate**.
+2. In Elementor, replace everything in the HTML widget with the contents of `elementor-contact-widget.html`, then click **Update**.
+3. **Test while logged in to WordPress,** using a new email address. You should see the lead in Capsule, an email at info@, and a copy under **Enquiries**. If the email fails, a yellow note under the Thank You message tells you why. Only logged-in admins see that note.
 
-If the email ever fails, the lead still goes to Capsule.
+### If the email doesn't arrive at info@
 
-### If leads still don't appear in Capsule
+Look under **Enquiries** in the WordPress dashboard.
 
-- **Capsule settings:** in Capsule, check the website form integration is switched on, and check its CAPTCHA setting (never / suspicious only / always).
-- **Form key:** if you reset the form key in Capsule, copy the new `FORM_ID` value into this code.
-- **Existing contacts:** test with a new email address each time. If the email already belongs to a contact, look in that contact's history rather than for a new lead.
-- **Spam signs:** repeated "test" entries from the same connection can be treated as suspicious, which makes the CAPTCHA appear.
+- **The enquiry is there:** WordPress received it, but your web host isn't delivering its email. This is common, especially when sending to your own domain. Install the free **WP Mail SMTP** plugin and connect it to the account you use for tenav.co.uk (Microsoft 365, Google Workspace or your host's mailbox). Its **Email Test** tab confirms delivery.
+- **The enquiry isn't there:** the form couldn't reach the plugin. Check the plugin is active, then press **F12 → Console** on the contact page and submit again. The warning shown explains why.
+
+### If leads don't appear in Capsule
+
+- **Capsule settings:** check the website form integration is switched on in Capsule.
+- **Form key:** if you reset the form key, copy the new `FORM_ID` into this code.
+- **Existing contacts:** if the email address already belongs to a contact, look in that contact's history rather than for a new lead.
+
+### Google Ads
+
+`/thank-you/` no longer loads after an enquiry. If your Google Ads conversion is counted on that page, it will stop counting. The conversion can be fired when the Thank You message appears instead.
 
 ## Set up (about 5 minutes)
 
