@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Screen Types Showcase</title>
+<!-- TenAV signage types widget. Paste this whole block into an HTML / custom code block.
+     It inherits your page font (Poppins); Space Grotesk is only used for text on the mock screens. -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
@@ -15,18 +11,7 @@
    kiosk): an animated in-situ scene plus three benefit sub-headers each.
    Rolls on its own (pausing while off-screen); arrows step through it.
 
-   To embed: copy everything inside the style tag except the "demo page"
-   rules, the .ms section and the script. The font is inherited from the
-   page (Poppins). Brand colour: --ms-accent. Timing: DURATION in script.
    ====================================================================== */
-
-/* ---------- demo page only: mimics the section the widget sits in ---------- */
-body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", system-ui, sans-serif; color: #333; }
-.demo { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center; }
-.demo h2 { margin: 0 0 4px; color: #3a2f91; font-size: 26px; font-weight: 600; }
-.demo h3 { margin: 0 0 18px; color: #3a2f91; font-size: 24px; font-weight: 600; }
-.demo p { margin: 0 0 16px; font-size: 16px; line-height: 1.75; }
-@media (max-width: 880px) { .demo { grid-template-columns: 1fr; } }
 
 /* ---------- widget frame ---------- */
 .ms {
@@ -390,18 +375,6 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
   .ms .ms-progress i.run { animation-duration: var(--ms-dur) !important; }
 }
 </style>
-</head>
-<body>
-
-<!-- demo page only: the copy the widget sits beside -->
-<div class="demo">
-  <div>
-    <h2>The basics</h2>
-    <h3>What is digital signage?</h3>
-    <p>Digital signage uses commercial grade displays, such as LCD and LED screens, to deliver dynamic content to your audience, including employees, customers and visitors.</p>
-    <p>Unlike a printed poster, you can change it remotely, schedule it and run it 24/7. That might be a single digital display, a bank of digital screens or an LED video wall. It’s the same idea at a different scale.</p>
-    <p>That flexibility helps businesses communicate information, promote services, support wayfinding and create more engaging environments. It can be used across retail, hospitality, healthcare, education and corporate workplaces, among others.</p>
-  </div>
 
 <section class="ms" aria-label="Types of digital signage and their benefits">
   <div class="ms-stage">
@@ -644,9 +617,6 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
   </div>
 </section>
 
-</div>
-
-
 <script>
 (function () {
   var DURATION = 8000; // ms per media type
@@ -871,5 +841,3 @@ function kiosk(el) {
   go(0);
 })();
 </script>
-</body>
-</html>
