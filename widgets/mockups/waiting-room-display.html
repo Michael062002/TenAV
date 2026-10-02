@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <style>
 /* ------------------------------------------------------------------
-   TenAV mockup: digital display in a clinic waiting room.
+   TenAV mockup: digital display in a clinic reception.
    The same scene as in widgets/media-showcase.html, as a standalone
    image-style mockup. It plays on a loop by itself; no interactivity.
    ------------------------------------------------------------------ */
@@ -18,66 +18,75 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 .mk, .mk *, .mk *::before, .mk *::after { box-sizing: border-box; }
 .mk .ms-scene { position: absolute; inset: 0; overflow: hidden; container-type: inline-size; }
 
-.wr { background: #23403f; }
-.wr-ceiling { position: absolute; left: 0; right: 0; top: 0; height: 8%; background: linear-gradient(180deg, #4c5553, #6e7774); }
-.wr-ceiling i { position: absolute; top: 38%; width: 5%; height: 24%; border-radius: 50%; background: radial-gradient(#fff 40%, rgba(255,255,255,.2) 70%, transparent 72%); box-shadow: 0 0 2cqw 1cqw rgba(255,255,255,.25); }
-.wr-corridor { position: absolute; left: 0; top: 8%; width: 24%; bottom: 0; background: linear-gradient(180deg, #2a4a49 0%, #3d6a67 45%, #2b4645 64%, #5f7a76 64.5%, #2a3433 100%); }
-.wr-corridor::before { content: ""; position: absolute; left: 0; right: 0; top: 18%; height: 42%; background: linear-gradient(90deg, transparent 0 31%, #1f3534 31% 32%, transparent 32% 64%, #1f3534 64% 65%, transparent 65%), linear-gradient(180deg, rgba(160,220,215,.35), rgba(80,140,135,.2)); }
-.wr-exit { position: absolute; left: 18%; top: 22%; width: 14%; height: 2.6%; background: #28c76f; border-radius: 2px; box-shadow: 0 0 1cqw #28c76f; opacity: .8; }
-.wr-wall { position: absolute; left: 24%; right: 0; top: 8%; bottom: 0; background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 30%), linear-gradient(100deg, #5f9d97 0%, #7ab3ab 35%, #6aa59e 60%, #528c86 100%); box-shadow: inset 1.2cqw 0 2cqw rgba(0,0,0,.35); }
-.wr-grid { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(20,50,48,.55) 0 2px, transparent 2px) 0 0 / 33.33% 100%, linear-gradient(180deg, rgba(20,50,48,.55) 0 2px, transparent 2px) 0 0 / 100% 47%; }
-.wr-studs { position: absolute; inset: 0; background: radial-gradient(circle .35cqw, #d8e6e3 70%, transparent 75%) -.2cqw 2.5% / 33.33% 47%; opacity: .7; }
-.wr-sheen { position: absolute; inset: 0; background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.12) 24%, transparent 30%), linear-gradient(115deg, transparent 58%, rgba(255,255,255,.08) 62%, transparent 70%); }
-.wr-reflect { position: absolute; left: 6%; right: 6%; top: 56%; height: 24%; background: linear-gradient(90deg, transparent 0 8%, rgba(20,40,40,.25) 8% 9%, transparent 9% 40%, rgba(20,40,40,.25) 40% 41%, transparent 41%), linear-gradient(180deg, rgba(200,240,235,.18), transparent); filter: blur(2px); }
-.wr-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 13%; background: linear-gradient(180deg, #6f8784, #3b4b4a 60%, #2a3433); box-shadow: 0 -2px 0 rgba(255,255,255,.15); }
-.wr-tv { position: absolute; left: 36%; top: 13%; width: 58%; aspect-ratio: 16 / 9; background: #0d0f12; border-radius: .5cqw; padding: .7%; box-shadow: 0 1.6cqw 3cqw rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.12); }
-.wr-display { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: .2cqw; background: #fff; container-type: inline-size; }
-.wr-display::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(120deg, rgba(255,255,255,.18), transparent 35%); }
+.wr { background: #ebe7e0; }
+.wr-ceiling { position: absolute; left: 0; right: 0; top: 0; height: 7%; z-index: 1; background: linear-gradient(180deg, #f6f4f0, #e9e6e0); box-shadow: 0 .2cqw .6cqw rgba(0,0,0,.06); }
+.wr-ceiling i { position: absolute; bottom: 22%; width: 3.2%; height: 26%; margin-left: -1.6%; border-radius: 50%; background: radial-gradient(#fffdf6 45%, rgba(255,253,246,0) 72%); }
+.wr-wall { position: absolute; left: 0; right: 0; top: 7%; bottom: 20%; background:
+  radial-gradient(ellipse 9% 42% at 12% 0, rgba(255,247,230,.8), transparent 70%),
+  linear-gradient(90deg, rgba(120,110,95,.07) 1px, transparent 1px) 0 0 / 8% 100%,
+  linear-gradient(180deg, #f1ede6, #e2ddd4); }
+.wr-sign { position: absolute; left: 6.5%; top: 25%; display: flex; align-items: center; gap: 1.1cqw; color: #1d2b3a; font-size: 1.8cqw; line-height: 1.15; font-weight: 600; letter-spacing: .02em; filter: drop-shadow(.12cqw .18cqw .15cqw rgba(60,45,30,.28)); }
+.wr-sign svg { width: 3.4cqw; }
+.wr-slats { position: absolute; left: 33%; right: 3%; top: 7%; bottom: 20%; background:
+  radial-gradient(ellipse 16% 40% at 24% 0, rgba(255,236,205,.4), transparent 70%),
+  radial-gradient(ellipse 16% 40% at 76% 0, rgba(255,236,205,.35), transparent 70%),
+  linear-gradient(180deg, rgba(255,240,215,.08), rgba(40,22,8,.28)),
+  repeating-linear-gradient(90deg, #b98858 0 .9cqw, #a9794b .9cqw 1.05cqw, #4a2f1a 1.05cqw 1.35cqw);
+  box-shadow: inset 0 0 1.5cqw rgba(40,22,8,.35), .4cqw 0 1.2cqw rgba(40,25,10,.15); }
+.wr-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 20%; background: linear-gradient(180deg, #d9d2c6, #c4bbad); box-shadow: inset 0 .25cqw .4cqw rgba(60,45,30,.18); }
+.wr-floor::before { content: ""; position: absolute; left: 33%; right: 3%; top: 0; height: 55%; background: linear-gradient(180deg, rgba(110,72,40,.28), transparent); filter: blur(.6cqw); }
+.wr-tv { position: absolute; left: 42%; top: 15%; width: 44%; aspect-ratio: 16 / 9; background: #0b0c0f; border-radius: .25cqw; padding: .3%; box-shadow: 0 1.2cqw 2.6cqw rgba(30,18,8,.42), 0 0 0 1px rgba(0,0,0,.4); }
+.wr-display { position: relative; width: 100%; height: 100%; overflow: hidden; background: #fff; container-type: inline-size; }
+.wr-display::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(120deg, rgba(255,255,255,.14), transparent 35%); }
 .wr-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease; }
 .wr-slide.on { opacity: 1; }
-.wr-logo { position: absolute; left: 5%; top: 7%; z-index: 2; display: flex; align-items: center; gap: 1.2cqw; font-weight: 600; font-size: 3cqw; color: #1f2430; transition: color .4s; }
-.wr-logo svg { width: 4.2cqw; }
-.wr-logo .wr-heart { fill: #1f2430; transition: fill .4s; }
+.wr-logo { position: absolute; left: 5%; top: 7%; z-index: 2; display: flex; align-items: center; gap: 1.2cqw; font-weight: 600; font-size: 2.7cqw; color: #14243b; transition: color .4s; }
+.wr-logo svg { width: 3.8cqw; }
+.wr-logo .wr-heart { fill: #14243b; transition: fill .4s; }
 .wr-logo .wr-pulse { fill: none; stroke: #fff; stroke-width: 2.6; stroke-linejoin: round; }
 .wr-logo.is-light { color: #fff; }
 .wr-logo.is-light .wr-heart { fill: #fff; }
-.wr-logo.is-light .wr-pulse { stroke: #0b5470; }
-.wr-s1 { background: linear-gradient(135deg, #f7f9fa, #e7f0f1); }
-.wr-hello { position: absolute; left: 5%; top: 23%; width: 52%; color: #1f2430; }
-.wr-hello small { font-size: 2.3cqw; letter-spacing: .14em; text-transform: uppercase; color: #0f8aa3; font-weight: 600; }
-.wr-greet { margin: 1.5% 0 0; font-size: 7cqw; line-height: 1; font-weight: 700; letter-spacing: -.02em; }
-.wr-clock { font-size: 11cqw; font-weight: 300; line-height: 1.05; color: #0f8aa3; letter-spacing: -.02em; }
-.wr-msg { margin: 2% 0 0; font-size: 2.6cqw; line-height: 1.4; color: #4a5563; max-width: 92%; }
-.wr-cards { position: absolute; right: 5%; top: 9%; bottom: 9%; width: 36%; display: flex; flex-direction: column; gap: 2.4cqw; }
-.wr-card { background: #fff; border-radius: 2cqw; padding: 2.6cqw 3cqw; box-shadow: 0 1cqw 3cqw rgba(15,60,70,.12); font-size: 2.4cqw; color: #1f2430; }
-.wr-card-h { margin: 0 0 1.2cqw; font-size: 2cqw; letter-spacing: .14em; text-transform: uppercase; color: #6b7686; font-weight: 600; }
-.wr-row { display: flex; justify-content: space-between; padding: 1cqw 0; border-top: 1px solid #e7ecef; }
-.wr-row b { color: #0f8aa3; }
-.wr-card-teal { flex: 1; background: linear-gradient(135deg, #1aa3b8, #0b6f8a); color: #fff; }
-.wr-card-teal .wr-card-h { color: rgba(255,255,255,.8); }
-.wr-card-teal .wr-card-p { font-size: 2.6cqw; }
-.wr-card-teal b { display: block; font-size: 5cqw; line-height: 1.1; }
-.wr-s2 { background: linear-gradient(135deg, #0b3d55, #0b6f8a); color: #fff; }
+.wr-logo.is-light .wr-pulse { stroke: #12405a; }
+.wr-s1 { background: #f5f7f9; }
+.wr-hello { position: absolute; left: 5%; top: 25%; width: 52%; color: #14243b; }
+.wr-date { font-size: 2.1cqw; letter-spacing: .14em; text-transform: uppercase; color: #0f7c8c; font-weight: 600; }
+.wr-greet { margin-top: 1.5%; font-size: 6.4cqw; line-height: 1.02; font-weight: 600; letter-spacing: -.02em; }
+.wr-clock { margin-top: 1%; font-size: 10cqw; font-weight: 300; line-height: 1; color: #0f7c8c; letter-spacing: -.03em; }
+.wr-msg { margin-top: 3%; font-size: 2.3cqw; line-height: 1.45; color: #5b6676; max-width: 88%; }
+.wr-cards { position: absolute; right: 5%; top: 9%; bottom: 9%; width: 36%; display: flex; flex-direction: column; gap: 2cqw; }
+.wr-card { background: #fff; border: 1px solid #e2e7ec; border-radius: 1.6cqw; padding: 2.4cqw 2.8cqw; font-size: 2.2cqw; color: #14243b; }
+.wr-card-h { margin-bottom: 1cqw; font-size: 1.8cqw; letter-spacing: .14em; text-transform: uppercase; color: #7a8594; font-weight: 600; }
+.wr-row { display: flex; justify-content: space-between; padding: 1cqw 0; border-top: 1px solid #edf0f3; }
+.wr-row b { color: #0f7c8c; font-weight: 600; }
+.wr-card-teal { flex: 1; border-color: transparent; background: linear-gradient(135deg, #0f5f73, #0f7c8c); color: #fff; }
+.wr-card-teal .wr-card-h { color: rgba(255,255,255,.75); }
+.wr-card-teal .wr-card-p { font-size: 2.2cqw; opacity: .9; }
+.wr-card-teal b { display: block; font-size: 4.6cqw; font-weight: 600; line-height: 1.1; }
+.wr-s2 { background: linear-gradient(135deg, #0e2235, #114a63); color: #fff; }
 .wr-now { position: absolute; left: 5%; top: 24%; width: 52%; }
-.wr-now small { font-size: 2.4cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .8; }
-.wr-ticket { font-size: 15cqw; font-weight: 800; line-height: 1; margin: 1% 0; animation: wr-flash 1.2s ease-in-out 3; }
-.wr-room { font-size: 4cqw; font-weight: 600; display: flex; align-items: center; gap: 2cqw; }
-.wr-room b { background: #28c76f; color: #06321b; padding: .3cqw 2cqw; border-radius: .8cqw; }
-.wr-next { position: absolute; right: 5%; top: 24%; width: 33%; background: rgba(255,255,255,.1); border-radius: 1.5cqw; padding: 2.5cqw; }
-.wr-next-h { margin: 0 0 1.5cqw; font-size: 2.2cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .8; font-weight: 500; }
-.wr-row2 { display: flex; justify-content: space-between; font-size: 3cqw; padding: 1cqw 0; border-top: 1px solid rgba(255,255,255,.15); }
-.wr-wait { position: absolute; left: 0; right: 0; bottom: 0; padding: 2cqw 5%; background: rgba(0,0,0,.25); font-size: 2.4cqw; }
-.wr-seats { position: absolute; display: flex; align-items: flex-end; }
-.wr-front { left: 32%; right: -2%; bottom: 0; height: 27%; gap: 1%; }
-.wr-far { left: 3%; width: 19%; bottom: 13%; height: 9%; gap: 2%; opacity: .9; }
-.wr-seat { position: relative; flex: 1; height: 100%; }
-.wr-back { position: absolute; left: 4%; right: 4%; top: 0; height: 52%; border-radius: 1.2cqw 1.2cqw .4cqw .4cqw; background: linear-gradient(180deg, #4a4f57, #2c3036); box-shadow: inset 0 .3cqw 0 rgba(255,255,255,.12); }
-.wr-pan { position: absolute; left: 0; right: 0; top: 50%; height: 14%; border-radius: .4cqw .4cqw 1cqw 1cqw; background: linear-gradient(180deg, #3d4148, #1f2227); }
-.wr-arm { position: absolute; top: 36%; width: 4%; height: 32%; background: #9aa2a8; border-radius: .3cqw; }
-.wr-arm.l { left: -3%; } .wr-arm.r { right: -3%; }
-.wr-far .wr-arm { display: none; }
-.wr-leg { position: absolute; left: 45%; width: 10%; top: 64%; bottom: 0; background: linear-gradient(90deg, #6f777d, #b9c0c4, #6f777d); }
-.wr-beam { position: absolute; left: 0; right: 0; top: 66%; height: 4%; background: #8b9398; }
+.wr-now small { font-size: 2.2cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+.wr-ticket { font-size: 14cqw; font-weight: 600; line-height: 1; margin: 1.5% 0; letter-spacing: -.02em; animation: wr-flash 1.2s ease-in-out 3; }
+.wr-room { font-size: 3.6cqw; font-weight: 500; display: flex; align-items: center; gap: 2cqw; }
+.wr-room b { background: #2fbf71; color: #062a17; font-weight: 600; padding: .3cqw 2cqw; border-radius: .8cqw; }
+.wr-next { position: absolute; right: 5%; top: 24%; width: 33%; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: 1.5cqw; padding: 2.5cqw; }
+.wr-next-h { margin-bottom: 1.5cqw; font-size: 2cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .75; font-weight: 500; }
+.wr-row2 { display: flex; justify-content: space-between; font-size: 2.8cqw; padding: 1cqw 0; border-top: 1px solid rgba(255,255,255,.14); }
+.wr-wait { position: absolute; left: 0; right: 0; bottom: 0; padding: 2cqw 5%; background: rgba(0,0,0,.22); font-size: 2.2cqw; }
+/* furniture */
+.wr-sofa { position: absolute; left: 41%; width: 46%; bottom: 5%; height: 20%; }
+.wr-sofa::after { content: ""; position: absolute; left: 2%; right: 2%; bottom: -6%; height: 14%; background: radial-gradient(ellipse at center, rgba(40,28,15,.35), transparent 70%); }
+.wr-sofa i { position: absolute; display: block; }
+.wr-sofa-back { left: 5%; right: 5%; top: 0; height: 55%; border-radius: 1.4cqw 1.4cqw .5cqw .5cqw; background: linear-gradient(180deg, #8f99a3, #77818c); box-shadow: inset 0 .25cqw 0 rgba(255,255,255,.15); }
+.wr-sofa-seat { z-index: 1; left: 3%; right: 3%; top: 46%; height: 30%; border-radius: .9cqw; background: linear-gradient(90deg, transparent 33.2%, rgba(40,48,58,.35) 33.2% 33.5%, transparent 33.5% 66.5%, rgba(40,48,58,.35) 66.5% 66.8%, transparent 66.8%), linear-gradient(180deg, #a1abb5, #828c97); box-shadow: inset 0 .25cqw 0 rgba(255,255,255,.2), 0 .4cqw .6cqw rgba(30,30,40,.2); }
+.wr-sofa-arm { z-index: 2; top: 26%; width: 8%; height: 52%; border-radius: 1.2cqw 1.2cqw .6cqw .6cqw; background: linear-gradient(90deg, #7c8691, #98a2ad); }
+.wr-sofa-arm.l { left: 0; }
+.wr-sofa-arm.r { right: 0; transform: scaleX(-1); }
+.wr-sofa-leg { top: 76%; bottom: 0; width: 1.4%; background: #22201d; }
+.wr-sofa-leg.l { left: 8%; }
+.wr-sofa-leg.r { right: 8%; }
+.wr-plant { position: absolute; left: 30.5%; width: 9.5%; bottom: 5%; height: 37%; }
+.wr-plant svg { position: absolute; left: 0; bottom: 24%; width: 100%; height: 76%; }
+.wr-pot { position: absolute; left: 14%; right: 14%; bottom: 0; height: 28%; border-radius: .2cqw .2cqw .8cqw .8cqw; background: linear-gradient(90deg, #d4cec5, #f3f0eb 42%, #c9c2b8); box-shadow: 0 .6cqw 1cqw rgba(40,28,15,.25); }
 @keyframes wr-flash { 50% { opacity: .35; } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -87,11 +96,12 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 </head>
 <body>
 
-<figure class="mk" role="img" aria-label="Mockup: a wall-mounted digital display in a clinic waiting room, switching between a welcome screen and patient calling">
-<div class="ms-scene wr" data-scene="wr" data-caption="Clinic waiting room">
-  <div class="wr-ceiling"><i style="left:8%"></i><i style="left:34%"></i><i style="left:60%"></i><i style="left:86%"></i></div>
-  <div class="wr-corridor"><div class="wr-exit"></div></div>
-  <div class="wr-wall"><div class="wr-sheen"></div><div class="wr-reflect"></div><div class="wr-grid"></div><div class="wr-studs"></div></div>
+<figure class="mk" role="img" aria-label="Mockup: a digital display on an oak slat wall in a clinic reception, switching between a welcome screen and patient calling">
+<div class="ms-scene wr" data-scene="wr" data-caption="Clinic reception">
+  <div class="wr-ceiling"><i style="left:12%"></i><i style="left:37%"></i><i style="left:63%"></i><i style="left:88%"></i></div>
+  <div class="wr-wall"></div>
+  <div class="wr-sign"><svg viewBox="0 0 40 34"><path d="M20 32S2 21 2 10a9 9 0 0 1 18-2 9 9 0 0 1 18 2c0 11-18 22-18 22z" fill="#1d2b3a"/><path d="M6 16h8l3-5 4 10 3-5h10" fill="none" stroke="#efebe4" stroke-width="2.6" stroke-linejoin="round"/></svg><span>CarePoint<br>Health</span></div>
+  <div class="wr-slats"></div>
   <div class="wr-floor"></div>
   <div class="wr-tv"><div class="wr-display">
     <div class="wr-logo">
@@ -100,7 +110,7 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
     </div>
     <section class="wr-slide wr-s1 on">
       <div class="wr-hello">
-        <small class="wr-date">Thursday 2 October</small>
+        <div class="wr-date">Thursday 2 October</div>
         <div class="wr-greet">Good morning</div>
         <div class="wr-clock">09:41</div>
         <div class="wr-msg">Please check in at reception. We'll call you on this screen.</div>
@@ -129,8 +139,20 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
       <div class="wr-wait">Average wait today: <b>12 minutes</b> · Thank you for your patience</div>
     </section>
   </div></div>
-  <div class="wr-seats wr-far"></div>
-  <div class="wr-seats wr-front"></div>
+  <div class="wr-plant">
+    <svg viewBox="0 0 60 100" preserveAspectRatio="xMidYMax meet">
+      <path d="M24 100C16 78 10 52 8 22C18 46 26 72 30 100Z" fill="#2f5838"/>
+      <path d="M36 100C42 76 48 50 53 18C50 48 44 76 40 100Z" fill="#46774c"/>
+      <path d="M30 100C25 72 22 40 27 4C33 38 35 70 34 100Z" fill="#3c6844"/>
+      <path d="M28 100C22 84 18 66 17 44C24 62 29 80 32 100Z" fill="#567f4f"/>
+      <path d="M34 100C38 86 41 70 42 50C44 68 41 86 38 100Z" fill="#355f3d"/>
+      <path d="M22 100C14 88 6 74 1 52C10 68 18 84 27 100Z" fill="#3f6b45"/>
+      <path d="M40 100C48 88 55 74 59 56C54 72 48 86 44 100Z" fill="#2f5838"/>
+      <path d="M29.5 96C28.5 70 28 40 27.5 12M38 96C42 72 46 50 50 26" fill="none" stroke="#9db873" stroke-width=".8" opacity=".55"/>
+    </svg>
+    <i class="wr-pot"></i>
+  </div>
+  <div class="wr-sofa"><i class="wr-sofa-leg l"></i><i class="wr-sofa-leg r"></i><i class="wr-sofa-back"></i><i class="wr-sofa-seat"></i><i class="wr-sofa-arm l"></i><i class="wr-sofa-arm r"></i></div>
 </div>
 </figure>
 
@@ -141,11 +163,6 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
   function pad(n) { return (n < 10 ? "0" : "") + n; }
 
 function waitingRoom(el) {
-  [[".wr-front", 5], [".wr-far", 4]].forEach(function (r) {
-    var html = '<div class="wr-beam"></div>';
-    for (var i = 0; i < r[1]; i++) html += '<div class="wr-seat"><div class="wr-leg"></div><div class="wr-back"></div><div class="wr-pan"></div><div class="wr-arm l"></div><div class="wr-arm r"></div></div>';
-    el.querySelector(r[0]).innerHTML = html;
-  });
   var slides = el.querySelectorAll(".wr-slide"), logo = el.querySelector(".wr-logo"), ticket = el.querySelector(".wr-ticket"), T = [];
   function show(n) {
     for (var j = 0; j < slides.length; j++) slides[j].classList.toggle("on", j === n);

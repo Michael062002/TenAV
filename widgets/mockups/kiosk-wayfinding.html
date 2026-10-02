@@ -18,11 +18,11 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 .mk, .mk *, .mk *::before, .mk *::after { box-sizing: border-box; }
 .mk .ms-scene { position: absolute; inset: 0; overflow: hidden; container-type: inline-size; }
 
-.tk { background: linear-gradient(180deg, #eef0f0 0%, #e2e0da 52%, #cfcac1 100%); }
-.tk-bg { position: absolute; inset: -2%; filter: blur(.5cqw); }
+.tk { background: linear-gradient(180deg, #f2f3f2 0%, #e6e3dd 55%, #dcd7cf 100%); }
+.tk-bg { position: absolute; inset: -2%; filter: blur(.45cqw); }
 .tk-bg i { position: absolute; display: block; }
-.tk-person { border-radius: 40% 40% 12% 12%; }
-.tk-person::before { content: ""; position: absolute; left: 15%; width: 70%; aspect-ratio: 1; bottom: 100%; margin-bottom: 4%; border-radius: 50%; background: #c9a189; }
+.tk-person { border-radius: 40% 40% 12% 12%; opacity: .4; }
+.tk-person::before { content: ""; position: absolute; left: 15%; width: 70%; aspect-ratio: 1; bottom: 100%; margin-bottom: 4%; border-radius: 50%; background: inherit; }
 .tk-shadow { position: absolute; left: 47%; width: 42%; bottom: 1%; height: 7%; background: radial-gradient(ellipse at center, rgba(0,0,0,.38), transparent 68%); }
 .tk-totem { position: absolute; left: 54%; top: 5%; width: 28%; height: 89%; transform: perspective(150cqw) rotateY(-16deg); transform-style: preserve-3d; }
 .tk-totem::after { content: ""; position: absolute; top: 0; bottom: 0; right: 0; width: 4cqw; transform-origin: right center; transform: rotateY(-90deg); background: linear-gradient(180deg, #0d0e11, #1c1e23); border-radius: 0 2cqw .6cqw 0; }
@@ -41,7 +41,7 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 .tk-time { color: #8b97a8; font-weight: 500; }
 .tk-map { position: relative; flex: none; height: 44%; margin: 0 4cqw; border-radius: 3cqw; overflow: hidden; background: #121922; }
 .tk-map svg { display: block; width: 100%; height: 100%; }
-.tk-map .tk-sel { stroke: #3dd6ff; stroke-width: 2.5; filter: brightness(1.45); }
+.tk-map .tk-sel { fill: #1d5a6e; stroke: #3dd6ff; stroke-width: 2; }
 .tk-route { fill: none; stroke: #3dd6ff; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
 .tk-pulse { animation: tk-pulse 1.6s ease-out infinite; transform-box: fill-box; transform-origin: center; }
 .tk-floor { position: absolute; right: 3cqw; top: 3cqw; padding: 1cqw 2.4cqw; border-radius: 2cqw; background: rgba(15,20,27,.85); font-size: 3.4cqw; font-weight: 600; }
@@ -82,34 +82,29 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 <figure class="mk" role="img" aria-label="Mockup: a freestanding wayfinding kiosk in a shopping centre, demonstrating a search and a route on its map">
 <div class="ms-scene tk" data-scene="tk" data-caption="Shopping centre">
   <div class="tk-bg">
-    <i style="left:0;top:0;width:100%;height:11%;background:linear-gradient(180deg,#f7f9fa,#e3e9ec)"></i>
-    <i style="left:0;top:0;width:100%;height:11%;background:repeating-linear-gradient(90deg,transparent 0 9%,rgba(120,130,135,.5) 9% 9.6%)"></i>
-    <i style="left:0;top:11%;width:100%;height:3%;background:#c9c4ba"></i>
-    <i style="left:2%;top:14%;width:17%;height:17%;background:#3e4a5c"></i>
-    <i style="left:21%;top:14%;width:15%;height:17%;background:#ebe5d9"></i>
-    <i style="left:38%;top:14%;width:20%;height:17%;background:#b6513e"></i>
-    <i style="left:60%;top:14%;width:16%;height:17%;background:#e6dfd2"></i>
-    <i style="left:78%;top:14%;width:20%;height:17%;background:#2f6b5a"></i>
-    <i style="left:5%;top:15.5%;width:10%;height:2%;background:#fff;opacity:.8"></i>
-    <i style="left:42%;top:15.5%;width:12%;height:2%;background:#fff;opacity:.8"></i>
-    <i style="left:82%;top:15.5%;width:11%;height:2%;background:#fff;opacity:.8"></i>
-    <i style="left:0;top:31%;width:100%;height:6%;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.25));border-top:.5cqw solid #9b9790"></i>
-    <i style="left:0;top:37%;width:100%;height:3%;background:#bdb6ab"></i>
-    <i style="left:0;top:40%;width:22%;height:27%;background:linear-gradient(180deg,#f3ead8,#e0d2b8)"></i>
-    <i style="left:24%;top:40%;width:18%;height:27%;background:#d7d9dc"></i>
-    <i style="left:44%;top:40%;width:22%;height:27%;background:linear-gradient(180deg,#fbe3d3,#e8b99c)"></i>
-    <i style="left:68%;top:40%;width:14%;height:27%;background:#2c3440"></i>
-    <i style="left:84%;top:40%;width:16%;height:27%;background:linear-gradient(180deg,#e9f1ee,#c5d8d0)"></i>
-    <i style="left:3%;top:41.5%;width:12%;height:3%;background:#c0392b"></i>
-    <i style="left:47%;top:41.5%;width:10%;height:3%;background:#1f2430"></i>
-    <i style="left:86%;top:41.5%;width:9%;height:3%;background:#2f6b5a"></i>
-    <i style="left:0;top:67%;width:100%;height:35%;background:linear-gradient(180deg,#dcd7cf,#c4bfb5)"></i>
-    <i style="left:0;top:67%;width:100%;height:14%;background:linear-gradient(180deg,rgba(255,255,255,.35),transparent)"></i>
-    <i class="tk-person" style="left:14%;top:50%;height:19%;width:3.4%;background:#3b4250"></i>
-    <i class="tk-person" style="left:31%;top:52%;height:16%;width:2.8%;background:#9b4d3b"></i>
-    <i class="tk-person" style="left:90%;top:49%;height:20%;width:3.6%;background:#2d3a4f"></i>
-  </div>
-  <div class="tk-shadow"></div>
+    <i style="left:0;top:0;width:100%;height:9%;background:linear-gradient(180deg,#fbfcfc,#e7ecee)"></i>
+    <i style="left:0;top:0;width:100%;height:9%;background:repeating-linear-gradient(90deg,transparent 0 11.5%,rgba(140,150,156,.4) 11.5% 12%)"></i>
+    <i style="left:0;top:9%;width:100%;height:2.5%;background:#e4e1db;box-shadow:0 .4cqw .6cqw rgba(0,0,0,.06)"></i>
+    <i style="left:0;top:11.5%;width:100%;height:19%;background:linear-gradient(180deg,#d3dbde,#e6eaeb)"></i>
+    <i style="left:0;top:11.5%;width:100%;height:19%;background:repeating-linear-gradient(90deg,transparent 0 13.6%,rgba(60,68,76,.45) 13.6% 14%)"></i>
+    <i style="left:3%;top:15%;width:10%;height:13%;background:radial-gradient(ellipse at 50% 30%,rgba(255,236,206,.9),transparent 70%)"></i>
+    <i style="left:44%;top:15%;width:12%;height:13%;background:radial-gradient(ellipse at 50% 30%,rgba(255,236,206,.8),transparent 70%)"></i>
+    <i style="left:86%;top:15%;width:10%;height:13%;background:radial-gradient(ellipse at 50% 30%,rgba(255,236,206,.85),transparent 70%)"></i>
+    <i style="left:0;top:30.5%;width:100%;height:3%;background:#ebe8e2"></i>
+    <i style="left:0;top:33.5%;width:100%;height:6%;background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.3));border-top:.4cqw solid #9a9894"></i>
+    <i style="left:0;top:39.5%;width:100%;height:3%;background:#dcd8d1"></i>
+    <i style="left:0;top:42.5%;width:100%;height:25%;background:linear-gradient(180deg,#e9e1d2,#d5ccbd)"></i>
+    <i style="left:0;top:42.5%;width:100%;height:25%;background:repeating-linear-gradient(90deg,transparent 0 15.6%,rgba(48,54,62,.55) 15.6% 16.2%)"></i>
+    <i style="left:2%;top:44%;width:9%;height:2%;background:#3a4048"></i>
+    <i style="left:34%;top:44%;width:8%;height:2%;background:#3a4048"></i>
+    <i style="left:83%;top:44%;width:9%;height:2%;background:#3a4048"></i>
+    <i style="left:22%;top:9%;width:3.4%;height:59%;background:linear-gradient(90deg,#94704e,#c29a6e 40%,#8a6646)"></i>
+    <i style="left:74%;top:9%;width:3.4%;height:59%;background:linear-gradient(90deg,#94704e,#c29a6e 40%,#8a6646)"></i>
+    <i style="left:0;top:67.5%;width:100%;height:35%;background:linear-gradient(180deg,#ece8e2,#d9d4cc)"></i>
+    <i style="left:0;top:67.5%;width:100%;height:12%;background:linear-gradient(180deg,rgba(150,120,90,.16),transparent)"></i>
+    <i class="tk-person" style="left:12%;top:49%;height:19%;width:3%;background:#4a505a"></i>
+    <i class="tk-person" style="left:36%;top:51%;height:17%;width:2.6%;background:#6b5d55"></i>
+  </div>  <div class="tk-shadow"></div>
   <div class="tk-totem">
     <div class="tk-body">
       <div class="tk-cap"><span></span></div>
@@ -147,8 +142,8 @@ function kiosk(el) {
   var q = el.querySelector(".tk-q"), search = el.querySelector(".tk-search"), chips = el.querySelectorAll(".tk-chips span");
   var label = el.querySelector(".tk-label"), results = el.querySelector(".tk-results"), dest = el.querySelector(".tk-dest"), touch = el.querySelector(".tk-touch");
   // map: shops as [id, x, y, w, h, colour]
-  var SHOPS = [["A",14,14,54,44,"#3b5b7a"],["B",72,14,58,44,"#6a4b6e"],["C",14,62,116,46,"#2f5f55"],["D",170,14,116,44,"#7a6236"],["E",170,62,56,46,"#7a4a3a"],["F",230,62,56,46,"#3e4f80"],
-               ["G",14,146,58,46,"#4f6a3a"],["H",76,146,54,46,"#8a5a2e"],["I",14,196,116,46,"#5a3f6e"],["J",170,146,56,96,"#2f6070"],["K",230,146,56,46,"#6e3f4f"],["L",230,196,56,46,"#4a4a5e"]];
+  var SHOPS = [["A",14,14,54,44,"#2c3746"],["B",72,14,58,44,"#313d4d"],["C",14,62,116,46,"#2a3543"],["D",170,14,116,44,"#344152"],["E",170,62,56,46,"#2e3a49"],["F",230,62,56,46,"#2a3543"],
+               ["G",14,146,58,46,"#313d4d"],["H",76,146,54,46,"#2c3746"],["I",14,196,116,46,"#344152"],["J",170,146,56,96,"#2e3a49"],["K",230,146,56,46,"#2c3746"],["L",230,196,56,46,"#313d4d"]];
   var PLACES = {
     "Café Nova":             { c: "#c98a3f", tag: "Food & drink", m: "2 min", shop: "H", d: "M30 127H103V144" },
     "Café Bloom":            { c: "#d07a9a", tag: "Food & drink", m: "4 min", shop: "E", d: "M30 127H198V110" },

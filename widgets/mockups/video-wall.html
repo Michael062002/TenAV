@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <style>
 /* ------------------------------------------------------------------
-   TenAV mockup: bank of screens (3x3 video wall) in a retail showroom.
+   TenAV mockup: bank of screens (3x3 video wall) in a brand showroom.
    The same scene as in widgets/media-showcase.html, as a standalone
    image-style mockup. It plays on a loop by itself; no interactivity.
    ------------------------------------------------------------------ */
@@ -18,18 +18,21 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 .mk, .mk *, .mk *::before, .mk *::after { box-sizing: border-box; }
 .mk .ms-scene { position: absolute; inset: 0; overflow: hidden; container-type: inline-size; }
 
-.vw { background: linear-gradient(180deg, #77736d 0%, #67635d 75%); }
-.vw-wash { position: absolute; left: 0; right: 0; top: 0; bottom: 22%; background: radial-gradient(ellipse 14% 60% at 14% 4%, rgba(255,236,200,.3), transparent 70%), radial-gradient(ellipse 14% 60% at 38% 4%, rgba(255,236,200,.24), transparent 70%), radial-gradient(ellipse 14% 60% at 62% 4%, rgba(255,236,200,.24), transparent 70%), radial-gradient(ellipse 14% 60% at 86% 4%, rgba(255,236,200,.3), transparent 70%); }
-.vw-holes { position: absolute; left: 0; right: 0; top: 0; bottom: 22%; background: radial-gradient(circle .3cqw, rgba(40,36,32,.5) 55%, transparent 70%) 6.25% 12.5% / 12.5% 25%, linear-gradient(90deg, rgba(0,0,0,.07) 1px, transparent 1px) 6.25% 0 / 25% 100%, linear-gradient(180deg, rgba(0,0,0,.07) 1px, transparent 1px) 0 12.5% / 100% 50%; }
-.vw-rail { position: absolute; left: 6%; right: 6%; top: 3.5%; height: .8%; background: #1b1b1d; border-radius: 2px; }
-.vw-rail i { position: absolute; top: 100%; width: 2.4%; height: 300%; background: linear-gradient(90deg, #2c2c2f, #131315); border-radius: .3cqw; transform: translateX(-50%) rotate(10deg); transform-origin: top; }
-.vw-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 22%; background: linear-gradient(180deg, #57534e, #33312e); box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
-.vw-floor::before { content: ""; position: absolute; left: 16%; right: 16%; top: 0; height: 55%; background: linear-gradient(180deg, rgba(255,150,90,.24), transparent); filter: blur(1.4cqw); }
-.vw-array { position: absolute; left: 19%; width: 62%; top: 13%; aspect-ratio: 16 / 9; background: #0b0b0d; padding: .45%; border-radius: .3cqw; box-shadow: 0 0 6cqw rgba(255,160,100,.18), 0 2.4cqw 4cqw rgba(0,0,0,.5); }
+.vw { background: #2a2b2f; }
+.vw-wall { position: absolute; left: 0; right: 0; top: 0; bottom: 20%; background:
+  radial-gradient(ellipse 20% 70% at 18% 0, rgba(255,232,200,.16), transparent 70%),
+  radial-gradient(ellipse 20% 70% at 50% 0, rgba(255,232,200,.12), transparent 70%),
+  radial-gradient(ellipse 20% 70% at 82% 0, rgba(255,232,200,.16), transparent 70%),
+  linear-gradient(90deg, rgba(0,0,0,.22) 1px, transparent 1px) 0 0 / 12.5% 100%,
+  linear-gradient(180deg, #3a3c41, #2b2c30); }
+.vw-slot { position: absolute; left: 8%; right: 8%; top: 0; height: .7%; background: #fff4e2; box-shadow: 0 0 2cqw .5cqw rgba(255,238,210,.45); }
+.vw-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 20%; background: linear-gradient(180deg, #303135, #1d1e21); box-shadow: inset 0 1px 0 rgba(255,255,255,.06); }
+.vw-floor::before { content: ""; position: absolute; left: 17%; right: 17%; top: 0; height: 70%; background: linear-gradient(180deg, rgba(240,170,120,.2), transparent); filter: blur(1.2cqw); }
+.vw-array { position: absolute; left: 17%; width: 66%; top: 11%; aspect-ratio: 16 / 9; background: #000; border-radius: .12cqw; box-shadow: 0 0 0 .1cqw #0b0b0d, 0 0 7cqw rgba(240,170,120,.12), 0 2cqw 4cqw rgba(0,0,0,.45); }
 .vw-screen { position: relative; width: 100%; height: 100%; overflow: hidden; background: #0e0e10; container-type: inline-size; }
 .vw-bezels { position: absolute; inset: 0; z-index: 2; pointer-events: none; background:
-  linear-gradient(90deg, transparent calc(33.333% - 1.5px), #050506 calc(33.333% - 1.5px) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px) calc(66.666% - 1.5px), #050506 calc(66.666% - 1.5px) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)),
-  linear-gradient(180deg, transparent calc(33.333% - 1.5px), #050506 calc(33.333% - 1.5px) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px) calc(66.666% - 1.5px), #050506 calc(66.666% - 1.5px) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)); }
+  linear-gradient(90deg, transparent calc(33.333% - .5px), rgba(6,6,8,.75) calc(33.333% - .5px) calc(33.333% + .5px), transparent calc(33.333% + .5px) calc(66.666% - .5px), rgba(6,6,8,.75) calc(66.666% - .5px) calc(66.666% + .5px), transparent calc(66.666% + .5px)),
+  linear-gradient(180deg, transparent calc(33.333% - .5px), rgba(6,6,8,.75) calc(33.333% - .5px) calc(33.333% + .5px), transparent calc(33.333% + .5px) calc(66.666% - .5px), rgba(6,6,8,.75) calc(66.666% - .5px) calc(66.666% + .5px), transparent calc(66.666% + .5px)); }
 /* one image across all nine panels: a layered sunset landscape */
 .vw-hero { position: absolute; inset: 0; transition: opacity .6s ease .45s; }
 .vw.is-split .vw-hero { opacity: 0; transition-delay: 0s; }
@@ -50,44 +53,48 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 .vw.is-split .vw-tile { opacity: 1; transform: none; }
 .vw-tile b { font: 700 5cqw/1 "Space Grotesk", sans-serif; letter-spacing: -.02em; }
 .vw-tile small { font-size: 1.35cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .85; font-weight: 600; }
-.vw-t-clock { background: #1b1d22; }
+.vw-t-clock { background: #141b26; }
 .vw-t-clock span { opacity: .7; }
-.vw-t-weather { background: linear-gradient(160deg, #2f6fae, #6fb3e6); flex-direction: row; align-items: center; gap: 1.6cqw; }
+.vw-t-weather { background: linear-gradient(160deg, #1f3550, #2d5476); flex-direction: row; align-items: center; gap: 1.6cqw; }
 .vw-t-weather svg { width: 7cqw; flex: none; }
-.vw-t-chart { background: #11151c; justify-content: space-between; }
+.vw-t-chart { background: #141b26; justify-content: space-between; }
 .vw-bars { display: flex; align-items: flex-end; gap: .8cqw; height: 9cqw; }
-.vw-bars i { flex: 1; height: 0; border-radius: .3cqw .3cqw 0 0; background: linear-gradient(180deg, #ffb36b, #d9644e); transition: height .8s cubic-bezier(.2,.7,.2,1); transition-delay: calc(.5s + var(--k) * 70ms); }
+.vw-bars i { flex: 1; height: 0; border-radius: .3cqw .3cqw 0 0; background: linear-gradient(180deg, #f2b27c, #d9744f); transition: height .8s cubic-bezier(.2,.7,.2,1); transition-delay: calc(.5s + var(--k) * 70ms); }
 .vw.is-split .vw-bars i { height: var(--h); }
-.vw-t-social { background: #fff; color: #15171c; }
+.vw-t-social { background: #f4f1ec; color: #141b26; }
 .vw-who { display: flex; align-items: center; gap: 1cqw; }
 .vw-who i { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; background: linear-gradient(135deg, #c47a6c, #2f4a4f); }
 .vw-who b { font-family: inherit; font-size: 1.5cqw; line-height: 1; font-weight: 600; letter-spacing: 0; }
 .vw-post { margin: .4cqw 0; font-size: 1.75cqw; line-height: 1.3; font-weight: 500; }
 .vw-t-social em { font-style: normal; color: #f5a524; font-size: 1.5cqw; letter-spacing: .1em; }
-.vw-t-product { background: #f3ede4; color: #1c2836; }
+.vw-t-product { background: #e9e2d6; color: #141b26; }
 .vw-t-product small { color: #c4573a; opacity: 1; }
 .vw-t-product b { font-size: 3.6cqw; }
 .vw-price { font-size: 2.4cqw; font-weight: 600; }
 .vw-sw { display: flex; gap: .7cqw; margin-top: .6cqw; }
 .vw-sw i { width: 1.8cqw; height: 1.8cqw; border-radius: 50%; box-shadow: 0 0 0 .2cqw #fff, 0 0 0 .3cqw rgba(0,0,0,.12); }
-.vw-t-event { background: linear-gradient(135deg, #1f4d52, #2f6b5a); }
+.vw-t-event { background: #24434b; }
 .vw-t-event b { font-size: 3.6cqw; }
 .vw-t-qr { background: #fff; color: #111; flex-direction: row; align-items: center; gap: 1.6cqw; font-size: 1.6cqw; font-weight: 600; line-height: 1.25; }
 .vw-qr { width: 11cqw; aspect-ratio: 1; flex: none; }
 .vw-qr svg { display: block; width: 100%; height: 100%; }
-.vw-t-promo { background: #0b0b0c; }
-.vw-t-promo b { color: #ffb36b; font-size: 6cqw; }
-.vw-t-video { background: linear-gradient(120deg, #c47a6c, #f2a66e, #12304a); background-size: 300% 300%; animation: vw-pan 6s ease-in-out infinite alternate; justify-content: flex-end; }
+.vw-t-promo { background: #141b26; }
+.vw-t-promo b { color: #f2b27c; font-size: 6cqw; }
+.vw-t-video { background: linear-gradient(120deg, #9c5f6e, #e0956a, #12304a); background-size: 300% 300%; animation: vw-pan 6s ease-in-out infinite alternate; justify-content: flex-end; }
 .vw-t-video svg { position: absolute; left: 50%; top: 42%; width: 5cqw; transform: translate(-50%, -50%); }
 .vw-t-video span { font-weight: 600; font-size: 1.6cqw; margin-bottom: 1.4cqw; }
 .vw-scrub { position: absolute; left: 2.4cqw; right: 2.4cqw; bottom: 1.4cqw; height: .4cqw; border-radius: 1cqw; overflow: hidden; background: rgba(255,255,255,.35); }
 .vw-scrub::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; animation: vw-scrub 9s linear infinite; }
-/* display plinths with stock on them */
-.vw-plinth { position: absolute; bottom: 5%; width: 15%; height: 15%; background: linear-gradient(90deg, #e2dfda, #f6f5f2 50%, #d6d2cc); box-shadow: 0 1.4cqw 2cqw rgba(0,0,0,.35); }
-.vw-plinth::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 1.2cqw; background: #fbfaf8; }
-.vw-plinth svg { position: absolute; left: 10%; width: 80%; bottom: calc(100% + .9cqw); filter: drop-shadow(0 .8cqw .6cqw rgba(0,0,0,.3)); }
-.vw-plinth.l { left: 5%; }
-.vw-plinth.r { right: 5%; height: 11%; }
+/* low timber console under the wall */
+.vw-console { position: absolute; left: 25%; right: 25%; bottom: 7%; height: 12%; }
+.vw-console::after { content: ""; position: absolute; left: -4%; right: -4%; bottom: -10%; height: 20%; background: radial-gradient(ellipse at center, rgba(0,0,0,.5), transparent 70%); }
+.vw-console i { position: absolute; display: block; }
+.vw-top { z-index: 1; left: 0; right: 0; top: 0; height: 12%; border-radius: .15cqw; background: linear-gradient(180deg, #d0a679, #a8784b); }
+.vw-body { left: 1%; right: 1%; top: 12%; height: 62%; background: linear-gradient(90deg, transparent 33.1%, rgba(255,255,255,.07) 33.1% 33.3%, transparent 33.3% 66.6%, rgba(255,255,255,.07) 66.6% 66.8%, transparent 66.8%), linear-gradient(180deg, #2c2825, #1c1917); }
+.vw-leg { top: 74%; bottom: 0; width: 1%; background: #0e0e10; }
+.vw-leg.l { left: 6%; }
+.vw-leg.r { right: 6%; }
+.vw-decor { position: absolute; left: 0; right: 0; bottom: 100%; height: 160%; width: 100%; }
 @keyframes vw-drift { to { transform: translateX(var(--dx)); } }
 @keyframes vw-breathe { 50% { transform: scale(1.06); } }
 @keyframes vw-pan { to { background-position: 100% 100%; } }
@@ -100,11 +107,10 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 </head>
 <body>
 
-<figure class="mk" role="img" aria-label="Mockup: a three-by-three video wall in a retail showroom, switching between one sunset landscape across all nine screens and nine separate content tiles">
-<div class="ms-scene vw" data-scene="vw" data-caption="Retail showroom">
-  <div class="vw-wash"></div>
-  <div class="vw-holes"></div>
-  <div class="vw-rail"><i style="left:12%"></i><i style="left:37%"></i><i style="left:63%"></i><i style="left:88%"></i></div>
+<figure class="mk" role="img" aria-label="Mockup: a three-by-three video wall above a timber console in a brand showroom, switching between one sunset landscape across all nine screens and nine separate content tiles">
+<div class="ms-scene vw" data-scene="vw" data-caption="Brand showroom">
+  <div class="vw-wall"></div>
+  <div class="vw-slot"></div>
   <div class="vw-floor"></div>
   <div class="vw-array"><div class="vw-screen">
     <div class="vw-hero">
@@ -137,8 +143,14 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
     </div>
     <div class="vw-bezels"></div>
   </div></div>
-  <div class="vw-plinth l"><svg viewBox="0 0 100 46"><rect x="8" y="30" width="84" height="14" rx="3" fill="#2f4a4f"/><rect x="12" y="17" width="76" height="14" rx="3" fill="#e8e0d2"/><rect x="16" y="4" width="68" height="14" rx="3" fill="#c47a6c"/></svg></div>
-  <div class="vw-plinth r"><svg viewBox="0 0 100 60"><rect x="8" y="22" width="84" height="36" rx="2" fill="#b98a5e"/><rect x="8" y="31" width="84" height="5" fill="#1c2836"/><rect x="22" y="2" width="56" height="21" rx="2" fill="#caa173"/><rect x="22" y="8" width="56" height="4" fill="#1c2836"/></svg></div>
+  <div class="vw-console">
+    <svg class="vw-decor" viewBox="0 0 200 20" preserveAspectRatio="xMidYMax meet">
+      <defs><linearGradient id="vw-vase" x1="0" x2="1"><stop offset="0" stop-color="#bdb5a8"/><stop offset=".45" stop-color="#ece7df"/><stop offset="1" stop-color="#b3ab9e"/></linearGradient></defs>
+      <path d="M34 20C30 17 29 13 31 10C32 8 33 6 33 3H39C39 6 40 8 41 10C43 13 42 17 38 20Z" fill="url(#vw-vase)"/>
+      <rect x="150" y="16" width="26" height="4" rx=".6" fill="#e6dfd2"/><rect x="152" y="12.5" width="22" height="3.5" rx=".6" fill="#33475a"/><rect x="151" y="9.5" width="24" height="3" rx=".6" fill="#b9875a"/>
+    </svg>
+    <i class="vw-leg l"></i><i class="vw-leg r"></i><i class="vw-body"></i><i class="vw-top"></i>
+  </div>
 </div>
 </figure>
 
