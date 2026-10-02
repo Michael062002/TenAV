@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Display Types Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ------------------------------------------------------------------
+     TenAV display types showcase widget
+     Three slides: a single digital display, a bank of screens (video
+     wall) and an LED wall. Copy the <style>, the <div class="tav-types">
+     block and the <script> into any page. Edit the stats in SLIDES.
+     ------------------------------------------------------------------ */
+  :root {
+    --tav-radius: 22px;
+    --tav-text: #1f2430;
+    --tav-muted: #5b6170;
+    --tav-up: #1f9d55;
+    --tav-page: #eef0f6;
+    --tav-dur: 6s;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: var(--tav-page);
+    font-family: "Poppins", system-ui, sans-serif;
+  }
+
+  .tav-types {
+    position: relative;
+    width: min(520px, calc(100vw - 32px));
+    aspect-ratio: 52 / 65;
+    margin: 24px 16px 24px 56px;
+  }
+  @media (max-width: 600px) { .tav-types { margin: 24px 16px; } }
+
+  .tav-frame {
+    position: absolute; inset: 0;
+    border-radius: var(--tav-radius);
+    overflow: hidden;
+    background: #111;
+    box-shadow: 0 30px 60px -20px rgba(20, 20, 40, .4);
+  }
+  .tav-slide {
+    position: absolute; inset: 0;
+    opacity: 0; transition: opacity .8s ease;
+    container-type: inline-size;
+  }
+  .tav-slide.on { opacity: 1; }
+
+  /* product chip, top-left */
+  .tav-chip {
+    position: absolute; left: 20px; top: 20px; z-index: 3;
+    padding: 7px 14px; border-radius: 999px;
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    font-size: 13px; font-weight: 600; color: var(--tav-text);
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 6px 16px rgba(0,0,0,.15);
+    transition: opacity .35s ease;
+  }
+  .tav-chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #e0242c; box-shadow: 0 0 0 3px rgba(224,36,44,.2); }
+  .tav-types.swap .tav-chip { opacity: 0; }
+
+  /* =========== 1. SINGLE DIGITAL DISPLAY — reception =========== */
+  .s-single {
+    background:
+      radial-gradient(ellipse 50% 30% at 50% 22%, rgba(255,255,255,.55), transparent 70%),
+      repeating-linear-gradient(90deg, #b88a5a 0 3.2%, #a87a4c 3.2% 3.6%),
+      #b88a5a;
+  }
+  .s-single::before { /* soft ceiling light falloff */
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,.25), transparent 30%, transparent 60%, rgba(0,0,0,.2));
+  }
+  .s-single .floor {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 22%;
+    background: linear-gradient(180deg, #d9d4cc, #b9b2a7);
+  }
+  .s-single .desk {
+    position: absolute; left: 14%; right: 14%; bottom: 13%; height: 22%;
+    background: linear-gradient(180deg, #fbfbfa, #e7e5e1);
+    border-radius: 6px 6px 2px 2px;
+    box-shadow: 0 18px 26px rgba(0,0,0,.25), inset 0 6px 0 #ffffff;
+  }
+  .s-single .desk::after { /* logo strip on desk */
+    content: ""; position: absolute; left: 38%; right: 38%; top: 40%; height: 10%;
+    background: #2b2f38; border-radius: 2px; opacity: .8;
+  }
+  .s-single .plant {
+    position: absolute; right: 5%; bottom: 13%; width: 15%; height: 34%;
+    background:
+      radial-gradient(ellipse 38% 26% at 30% 30%, #4f8a4a 98%, transparent),
+      radial-gradient(ellipse 36% 28% at 70% 26%, #3f7a3c 98%, transparent),
+      radial-gradient(ellipse 40% 26% at 50% 50%, #5b9a54 98%, transparent),
+      linear-gradient(#0000 70%, #2f2f33 70% 100%);
+    background-repeat: no-repeat;
+  }
+  .s-single .screen {
+    position: absolute; left: 50%; top: 22%; width: 74%;
+    aspect-ratio: 16 / 9; transform: translateX(-50%);
+    background: #101216; border-radius: 6px; padding: 1.3%;
+    box-shadow: 0 22px 40px rgba(40,20,0,.45), 0 0 0 1px rgba(255,255,255,.1);
+  }
+  .s-single .content {
+    position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 2px;
+    background: linear-gradient(135deg, #0d3b66 0%, #145da0 55%, #1b84d6 100%);
+    color: #fff;
+  }
+  .s-single .panel {
+    position: absolute; inset: 0; padding: 6% 7%;
+    display: flex; flex-direction: column; justify-content: center;
+    animation: tav-alt 8s infinite;
+  }
+  .s-single .panel.b { animation-delay: -4s; background: linear-gradient(135deg, #1b1f2a, #3a2f5c); }
+  .s-single .kicker { font-size: 2.2cqw; letter-spacing: .25em; text-transform: uppercase; opacity: .8; }
+  .s-single .big { font-size: 5.6cqw; font-weight: 700; line-height: 1.1; margin-top: 1.5%; }
+  .s-single .meta { display: flex; gap: 6%; margin-top: 4%; font-size: 2.2cqw; opacity: .9; }
+  .s-single .meta b { display: block; font-size: 3.6cqw; font-weight: 600; }
+  .s-single .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 12%; background: rgba(0,0,0,.3);
+    display: flex; align-items: center; padding: 0 4%; font-size: 1.9cqw; gap: 3%; }
+  .s-single .bar i { width: 1.4cqw; height: 1.4cqw; border-radius: 50%; background: #3ddc84; }
+
+  @keyframes tav-alt { 0%, 45% { opacity: 1; } 50%, 95% { opacity: 0; } 100% { opacity: 1; } }
+
+  /* =========== 2. BANK OF SCREENS — video wall =========== */
+  .s-wall {
+    background:
+      radial-gradient(circle 4px at 20% 5%, #fff 60%, transparent 70%),
+      radial-gradient(circle 4px at 50% 5%, #fff 60%, transparent 70%),
+      radial-gradient(circle 4px at 80% 5%, #fff 60%, transparent 70%),
+      radial-gradient(ellipse 14% 30% at 20% 6%, rgba(255,255,255,.12), transparent),
+      radial-gradient(ellipse 14% 30% at 50% 6%, rgba(255,255,255,.12), transparent),
+      radial-gradient(ellipse 14% 30% at 80% 6%, rgba(255,255,255,.12), transparent),
+      linear-gradient(180deg, #2a2d34, #1d1f24 70%);
+  }
+  .s-wall .floor {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 24%;
+    background: linear-gradient(180deg, #3a3d44, #17181c);
+  }
+  .s-wall .wall {
+    position: absolute; left: 7%; right: 7%; top: 22%;
+    aspect-ratio: 16 / 9.6;
+    padding: .8%; background: #0b0c0f; border-radius: 3px;
+    box-shadow: 0 0 60px rgba(255,90,140,.25), 0 24px 40px rgba(0,0,0,.6);
+  }
+  .s-wall .content {
+    position: relative; width: 100%; height: 100%; overflow: hidden;
+    background: linear-gradient(120deg, #ff3d7f, #ff8a3d 35%, #ffd23d 55%, #3dd6ff 80%, #7a3dff);
+    background-size: 300% 300%;
+    animation: tav-pan 10s ease-in-out infinite alternate;
+    display: grid; place-items: center; text-align: center; color: #fff;
+  }
+  .s-wall .content .txt { text-shadow: 0 4px 18px rgba(0,0,0,.3); }
+  .s-wall .content .k { font-size: 3cqw; font-weight: 600; letter-spacing: .3em; text-transform: uppercase; }
+  .s-wall .content .h { font-size: 12cqw; font-weight: 800; line-height: 1.02; letter-spacing: -.02em; }
+  .s-wall .content .s { font-size: 3.2cqw; font-weight: 500; margin-top: 2%; }
+  .s-wall .content .orb {
+    position: absolute; width: 30%; aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.7), rgba(255,255,255,0) 60%);
+    animation: tav-float 7s ease-in-out infinite;
+  }
+  .s-wall .content .orb.o2 { width: 18%; right: 6%; top: 8%; animation-delay: -3s; }
+  .s-wall .content .orb.o1 { left: 4%; bottom: 4%; }
+  /* bezels: a 3 x 3 grid of thin dark lines over the content */
+  .s-wall .bezels {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, transparent calc(33.333% - 2px), #0b0c0f calc(33.333% - 2px) calc(33.333% + 2px), transparent calc(33.333% + 2px) calc(66.666% - 2px), #0b0c0f calc(66.666% - 2px) calc(66.666% + 2px), transparent calc(66.666% + 2px)),
+      linear-gradient(180deg, transparent calc(33.333% - 2px), #0b0c0f calc(33.333% - 2px) calc(33.333% + 2px), transparent calc(33.333% + 2px) calc(66.666% - 2px), #0b0c0f calc(66.666% - 2px) calc(66.666% + 2px), transparent calc(66.666% + 2px));
+  }
+  .s-wall .bezels::after { /* tiny per-panel tone differences */
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.03) 33.3%, transparent 33.3% 66.6%, rgba(0,0,0,.04) 66.6%),
+      linear-gradient(180deg, rgba(0,0,0,.03) 33.3%, transparent 33.3% 66.6%, rgba(255,255,255,.03) 66.6%);
+  }
+  .s-wall .reflect {
+    position: absolute; left: 7%; right: 7%; bottom: 4%; height: 14%;
+    background: linear-gradient(120deg, #ff3d7f, #ffd23d, #3dd6ff);
+    filter: blur(22px); opacity: .25;
+  }
+
+  @keyframes tav-pan { to { background-position: 100% 100%; } }
+  @keyframes tav-float { 50% { transform: translate(8%, -10%); } }
+
+  /* =========== 3. LED WALL — event / auditorium =========== */
+  .s-led {
+    background: radial-gradient(ellipse 90% 60% at 50% 30%, #2b1747, #0b0714 75%);
+  }
+  .s-led .led {
+    position: absolute; left: 3%; right: 3%; top: 9%; height: 52%;
+    border-radius: 2px; overflow: hidden;
+    box-shadow: 0 0 80px rgba(120,80,255,.55), 0 0 160px rgba(0,200,255,.25);
+  }
+  .s-led .content {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, #00e0ff 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, #ff2fb3 0, transparent 45%),
+      radial-gradient(circle at 60% 20%, #7a4dff 0, transparent 50%),
+      #120a2a;
+    background-size: 200% 200%;
+    animation: tav-pan 8s ease-in-out infinite alternate;
+    display: grid; place-items: center; text-align: center; color: #fff;
+  }
+  .s-led .content .ring {
+    position: absolute; width: 60%; aspect-ratio: 1; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.35);
+    animation: tav-ring 4s ease-out infinite;
+  }
+  .s-led .content .ring.r2 { animation-delay: -2s; }
+  .s-led .content .k { font-size: 2.8cqw; letter-spacing: .4em; text-transform: uppercase; font-weight: 600; opacity: .9; }
+  .s-led .content .h { font-size: 11cqw; font-weight: 800; line-height: 1; letter-spacing: .02em; }
+  .s-led .content .s { font-size: 3cqw; margin-top: 2%; opacity: .9; }
+  .s-led .content .live {
+    display: inline-flex; align-items: center; gap: .8cqw; margin-bottom: 2%;
+    font-size: 2.4cqw; font-weight: 700; letter-spacing: .15em;
+    padding: .6cqw 1.6cqw; border-radius: 99px; background: #e0242c;
+  }
+  .s-led .content .live::before { content: ""; width: 1.2cqw; height: 1.2cqw; border-radius: 50%; background: #fff; animation: tav-blink 1s steps(2) infinite; }
+  .s-led .pixels { /* LED dot pitch + panel seams */
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(circle, transparent 45%, rgba(0,0,0,.45) 75%) 0 0 / 4px 4px,
+      linear-gradient(90deg, transparent calc(100% - 1px), rgba(0,0,0,.35) calc(100% - 1px)) 0 0 / 12.5% 100%,
+      linear-gradient(180deg, transparent calc(100% - 1px), rgba(0,0,0,.35) calc(100% - 1px)) 0 0 / 100% 25%;
+  }
+  .s-led .stage {
+    position: absolute; left: 0; right: 0; top: 61%; height: 7%;
+    background: linear-gradient(180deg, #1b1230, #0d0919);
+    box-shadow: inset 0 2px 0 rgba(160,120,255,.5);
+  }
+  .s-led .glow { /* light spill on the stage */
+    position: absolute; left: 10%; right: 10%; top: 61%; height: 10%;
+    background: linear-gradient(90deg, #00e0ff, #7a4dff, #ff2fb3);
+    filter: blur(24px); opacity: .35;
+  }
+  .s-led .crowd {
+    position: absolute; left: -4%; right: -4%; bottom: 0; height: 34%;
+    --h: #07050c;
+    background:
+      radial-gradient(circle 6.4cqw at 5% 46%, var(--h) 98%, transparent),
+      radial-gradient(circle 7cqw at 18% 36%, var(--h) 98%, transparent),
+      radial-gradient(circle 6.4cqw at 31% 48%, var(--h) 98%, transparent),
+      radial-gradient(circle 7.2cqw at 45% 34%, var(--h) 98%, transparent),
+      radial-gradient(circle 6.6cqw at 59% 44%, var(--h) 98%, transparent),
+      radial-gradient(circle 7cqw at 72% 36%, var(--h) 98%, transparent),
+      radial-gradient(circle 6.4cqw at 85% 48%, var(--h) 98%, transparent),
+      radial-gradient(circle 6.8cqw at 98% 38%, var(--h) 98%, transparent),
+      radial-gradient(ellipse 60% 30% at 50% 62%, var(--h) 98%, transparent),
+      linear-gradient(transparent 60%, var(--h) 60%);
+  }
+  .s-led .crowd::after { /* rim light from the wall on the heads */
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(122,77,255,.18), transparent 40%);
+    mix-blend-mode: screen; pointer-events: none;
+  }
+  .s-led .crowd::before { /* raised phone */
+    content: ""; position: absolute; left: 64%; top: 4%; width: 3.6%; height: 20%;
+    background: #0e0b16; border-radius: 3px; border: 2px solid #1a1528;
+    box-shadow: inset 0 0 0 3px #39d1ff, 0 0 12px rgba(57,209,255,.6);
+    z-index: 1;
+  }
+
+  @keyframes tav-ring { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+  @keyframes tav-blink { 50% { opacity: .2; } }
+
+  /* =========== stat card =========== */
+  .tav-stat {
+    position: absolute; left: -56px; bottom: 9%; z-index: 3;
+    display: flex; align-items: center; gap: 28px;
+    padding: 18px 18px 18px 22px; min-width: 230px;
+    background: rgba(255,255,255,.75);
+    backdrop-filter: blur(14px) saturate(1.3);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    border: 1px solid rgba(255,255,255,.8);
+    border-radius: 14px;
+    box-shadow: 0 16px 36px -12px rgba(30,30,50,.35);
+  }
+  @media (max-width: 600px) { .tav-stat { left: 12px; min-width: 0; gap: 16px; padding: 12px 14px; } }
+  .tav-stat-text { transition: opacity .35s ease, transform .35s ease; }
+  .tav-types.swap .tav-stat-text { opacity: 0; transform: translateY(6px); }
+  .tav-stat-value {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 30px; font-weight: 600; color: var(--tav-text); line-height: 1.1;
+  }
+  .tav-stat-value svg { width: 22px; height: 22px; color: var(--tav-up); }
+  .tav-stat-label { font-size: 14px; color: var(--tav-muted); margin-top: 2px; }
+  .tav-avatar {
+    width: 68px; height: 68px; flex: none; border-radius: 50%;
+    background: linear-gradient(160deg, #5cc6e8, #2b8fc4);
+    border: 3px solid #fff; box-shadow: 0 6px 14px rgba(0,0,0,.15);
+    overflow: hidden; display: grid; place-items: end center;
+  }
+  .tav-avatar svg { width: 82%; }
+
+  /* =========== progress bars =========== */
+  .tav-dots { position: absolute; right: 26px; bottom: 22px; z-index: 3; display: flex; gap: 6px; }
+  .tav-dots button {
+    width: 32px; height: 4px; padding: 0; border: 0; border-radius: 2px; cursor: pointer;
+    background: rgba(255,255,255,.4); position: relative; overflow: hidden;
+  }
+  .tav-dots button::after {
+    content: ""; position: absolute; inset: 0; background: #fff;
+    transform: scaleX(0); transform-origin: left;
+  }
+  .tav-dots button.done::after { transform: scaleX(1); opacity: .55; }
+  .tav-dots button.on::after { animation: tav-fill var(--tav-dur) linear forwards; }
+  .tav-types.paused .tav-dots button.on::after { animation-play-state: paused; }
+  .tav-dots button:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  @keyframes tav-fill { to { transform: scaleX(1); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tav-types *, .tav-types *::before, .tav-types *::after { animation: none !important; transition: none !important; }
+    .s-single .panel.b { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="tav-types" aria-roledescription="carousel" aria-label="Display types: single display, video wall and LED wall">
+  <div class="tav-frame">
+
+    <!-- 1. Single digital display -->
+    <div class="tav-slide s-single" aria-label="Single digital display in a reception">
+      <div class="floor"></div>
+      <div class="screen"><div class="content">
+        <div class="panel a">
+          <div class="kicker">Welcome to</div>
+          <div class="big">Northgate House</div>
+          <div class="meta"><span><b>09:41</b>Friday</span><span><b>18°C</b>Sunny</span><span><b>Floor 3</b>Meeting suite</span></div>
+        </div>
+        <div class="panel b">
+          <div class="kicker">Today at 12:30</div>
+          <div class="big">Product launch<br>keynote</div>
+          <div class="meta"><span><b>Atrium</b>Ground floor</span><span><b>Open</b>All staff</span></div>
+        </div>
+        <div class="bar"><i></i>Visitors, please sign in at reception</div>
+      </div></div>
+      <div class="desk"></div>
+      <div class="plant"></div>
+    </div>
+
+    <!-- 2. Bank of digital screens -->
+    <div class="tav-slide s-wall" aria-label="Three by three video wall in a showroom">
+      <div class="floor"></div>
+      <div class="reflect"></div>
+      <div class="wall"><div class="content">
+        <div class="orb o1"></div><div class="orb o2"></div>
+        <div class="txt">
+          <div class="k">Summer event</div>
+          <div class="h">UP TO<br>50% OFF</div>
+          <div class="s">In store &amp; online this weekend</div>
+        </div>
+        <div class="bezels"></div>
+      </div></div>
+    </div>
+
+    <!-- 3. LED wall -->
+    <div class="tav-slide s-led" aria-label="LED wall at a live event">
+      <div class="glow"></div>
+      <div class="led"><div class="content">
+        <div class="ring"></div><div class="ring r2"></div>
+        <div>
+          <div class="live">LIVE</div>
+          <div class="k">Main stage</div>
+          <div class="h">TECH SUMMIT</div>
+          <div class="s">Keynote starting now</div>
+        </div>
+      </div><div class="pixels"></div></div>
+      <div class="stage"></div>
+      <div class="crowd"></div>
+    </div>
+
+  </div>
+
+  <div class="tav-chip">Single digital display</div>
+
+  <div class="tav-stat">
+    <div class="tav-stat-text">
+      <div class="tav-stat-value">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+        <span class="tav-stat-num">80%</span>
+      </div>
+      <div class="tav-stat-label">message recall</div>
+    </div>
+    <div class="tav-avatar" aria-hidden="true">
+      <svg viewBox="0 0 64 60">
+        <circle cx="32" cy="22" r="12" fill="#e9b796"/>
+        <path d="M20 18c0-9 7-13 13-13s12 4 11 13c-3-4-8-5-12-5s-9 1-12 5z" fill="#3a2a22"/>
+        <path d="M6 60c2-14 12-21 26-21s24 7 26 21z" fill="#3c5f8f"/>
+        <path d="M26 39l6 10 6-10z" fill="#f2f2f2"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="tav-dots" role="tablist" aria-label="Choose display type"></div>
+</div>
+
+<script>
+(function () {
+  /* ---- Edit chip text and stats here (one entry per slide, in order) ---- */
+  var DURATION = 6000;
+  var SLIDES = [
+    { chip: "Single digital display", stat: "80%",  label: "message recall" },
+    { chip: "Video wall",             stat: "3x3",  label: "screens, one seamless image" },
+    { chip: "LED wall",               stat: "4K+",  label: "seamless, any size" }
+  ];
+  /* ---------------------------------------------------------------------- */
+
+  var root = document.currentScript.previousElementSibling;
+  var slides = root.querySelectorAll(".tav-slide");
+  var dots = root.querySelector(".tav-dots");
+  var chip = root.querySelector(".tav-chip");
+  var num = root.querySelector(".tav-stat-num");
+  var label = root.querySelector(".tav-stat-label");
+  root.style.setProperty("--tav-dur", DURATION + "ms");
+
+  SLIDES.forEach(function (s, i) {
+    var b = document.createElement("button");
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-label", s.chip);
+    b.addEventListener("click", function () { go(i); });
+    dots.appendChild(b);
+  });
+
+  var current = -1, timer = null, remaining = DURATION, startedAt = 0;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function go(i) {
+    if (i === current) return;
+    current = i;
+    var s = SLIDES[i];
+    [].forEach.call(slides, function (el, j) {
+      el.classList.toggle("on", j === i);
+      el.setAttribute("aria-hidden", j !== i);
+    });
+    [].forEach.call(dots.children, function (d, j) {
+      d.classList.remove("on");
+      d.classList.toggle("done", j < i);
+      d.setAttribute("aria-selected", j === i);
+      void d.offsetWidth; // restart the fill animation
+      if (j === i) d.classList.add("on");
+    });
+    root.classList.add("swap");
+    setTimeout(function () {
+      chip.textContent = s.chip;
+      num.textContent = s.stat;
+      label.textContent = s.label;
+      root.classList.remove("swap");
+    }, reduced ? 0 : 300);
+    schedule(DURATION);
+  }
+
+  function schedule(ms) {
+    clearTimeout(timer);
+    remaining = ms; startedAt = Date.now();
+    if (!root.classList.contains("paused")) {
+      timer = setTimeout(function () { go((current + 1) % SLIDES.length); }, ms);
+    }
+  }
+
+  root.addEventListener("mouseenter", function () {
+    root.classList.add("paused");
+    clearTimeout(timer);
+    remaining -= Date.now() - startedAt;
+  });
+  root.addEventListener("mouseleave", function () {
+    root.classList.remove("paused");
+    schedule(Math.max(remaining, 300));
+  });
+
+  go(0);
+})();
+</script>
+</body>
+</html>
