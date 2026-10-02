@@ -13,7 +13,7 @@
    Sits beside the "What is digital signage?" copy. Rolls through four
    formats (single display, bank of screens, LED video wall, wayfinding
    kiosk): an animated in-situ scene plus three benefit sub-headers each.
-   No controls. It rolls on its own and only pauses while off-screen.
+   Rolls on its own (pausing while off-screen); arrows step through it.
 
    To embed: copy everything inside the style tag except the "demo page"
    rules, the .ms section and the script. The font is inherited from the
@@ -48,18 +48,6 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 .ms h3, .ms h4, .ms p { margin: 0; padding: 0; }
 .ms-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* step labels across the top (indicator only, not clickable) */
-.ms .ms-track { margin: 0 0 12px; padding: 2px 4px 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.ms .ms-track li { position: relative; padding-bottom: 10px; font-size: 12.5px; line-height: 1.3; font-weight: 500; color: var(--ms-muted); transition: color .3s; }
-.ms-track li b { display: block; font-size: 11px; font-weight: 600; letter-spacing: .08em; opacity: .55; }
-.ms-track li::before, .ms-track li::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: 2px; background: var(--ms-line); }
-.ms-track li::after { background: var(--ms-accent); transform: scaleX(0); transform-origin: left; }
-.ms-track li.is-done::after { transform: scaleX(1); opacity: .3; }
-.ms-track li.is-active { color: var(--ms-accent); font-weight: 600; }
-.ms-track li.is-active b { opacity: 1; }
-.ms-track li.is-active::after { animation: ms-fill var(--ms-dur) linear forwards; }
-.ms.is-paused .ms-track li.is-active::after { animation-play-state: paused; }
-@keyframes ms-fill { to { transform: scaleX(1); } }
 
 /* stage */
 .ms-stage { position: relative; overflow: hidden; border-radius: 14px; background: #07080a; isolation: isolate; }
@@ -78,8 +66,32 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 .ms-corners i:nth-child(4) { bottom: var(--ms-o); right: var(--ms-o); border-left: 0; border-top: 0; border-bottom-right-radius: 5px; }
 .ms-caption { position: absolute; top: calc(var(--ms-o) + 10px); left: calc(var(--ms-o) + 12px); z-index: 4; display: flex; align-items: center; gap: 7px; padding: 6px 10px 6px 9px; border-radius: 7px; background: rgba(12, 12, 20, .7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); font-size: 11px; line-height: 1; font-weight: 500; letter-spacing: .04em; color: #fff; }
 .ms-caption::before { content: ""; width: 7px; height: 7px; border-radius: 2px; background: #8f84ff; }
-.ms-caption span { transition: opacity .3s; }
-.ms-caption.swap span { opacity: 0; }
+.ms-caption b { font-weight: 600; }
+.ms-caption span { opacity: .7; }
+.ms-caption b, .ms-caption span { transition: opacity .3s; }
+.ms-caption.swap b, .ms-caption.swap span { opacity: 0; }
+
+/* arrows + counter (bottom right of the stage) */
+.ms-nav { position: absolute; right: calc(var(--ms-o) + 10px); bottom: calc(var(--ms-o) + 10px); z-index: 5; display: flex; align-items: center; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(12, 12, 20, .7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); color: #fff; }
+.ms .ms-nav button { all: unset; box-sizing: border-box; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; color: #fff; transition: background .2s; }
+.ms .ms-nav button:hover { background: rgba(255, 255, 255, .16); }
+.ms .ms-nav button:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+.ms-nav svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.ms-count { min-width: 44px; text-align: center; font-size: 11px; line-height: 1; font-weight: 500; letter-spacing: .06em; opacity: .75; font-variant-numeric: tabular-nums; }
+.ms-count b { font-weight: 600; opacity: 1; color: #fff; }
+
+/* thin progress line along the bottom of the stage */
+.ms-progress { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; height: 3px; background: rgba(255, 255, 255, .18); }
+.ms-progress i { display: block; height: 100%; background: #fff; transform: scaleX(0); transform-origin: left; }
+.ms-progress i.run { animation: ms-fill var(--ms-dur) linear forwards; }
+.ms.is-paused .ms-progress i.run { animation-play-state: paused; }
+@keyframes ms-fill { to { transform: scaleX(1); } }
+
+/* going backwards wipes the other way */
+.ms-stage.is-back .ms-scene.is-active { animation-name: ms-wipe-back; }
+.ms-stage.is-back .ms-scan.go { animation-name: ms-scan-back; }
+@keyframes ms-wipe-back { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes ms-scan-back { from { left: 0; opacity: 1; } 85% { opacity: 1; } to { left: 100%; opacity: 0; } }
 
 /* benefit sub-headers */
 .ms-slides { display: grid; margin-top: 16px; }
@@ -97,11 +109,12 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 .ms .ms-benefits p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ms-muted); }
 
 @container ms (max-width: 470px) {
-  .ms .ms-track li { font-size: 11px; }
   .ms .ms-benefits { grid-template-columns: 1fr; gap: 12px; }
   .ms-benefits li { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
   .ms-ic { margin: 0; }
-  .ms-caption { top: auto; bottom: calc(var(--ms-o) + 6px); font-size: 10px; padding: 5px 8px 5px 7px; }
+  .ms-caption { font-size: 10px; padding: 5px 8px 5px 7px; }
+  .ms .ms-nav button { width: 26px; height: 26px; }
+  .ms-count { min-width: 38px; font-size: 10px; }
 }
 
 /* ==== scene:wr ==== digital display in a clinic reception */
@@ -374,7 +387,7 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 
 @media (prefers-reduced-motion: reduce) {
   .ms *, .ms *::before, .ms *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0s !important; }
-  .ms .ms-track li.is-active::after { animation-duration: var(--ms-dur) !important; }
+  .ms .ms-progress i.run { animation-duration: var(--ms-dur) !important; }
 }
 </style>
 </head>
@@ -391,13 +404,10 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
   </div>
 
 <section class="ms" aria-label="Types of digital signage and their benefits">
-  <ol class="ms-track" aria-hidden="true">
-    <li><b>01</b>Single display</li><li><b>02</b>Bank of screens</li><li><b>03</b>LED video wall</li><li><b>04</b>Wayfinding kiosk</li>
-  </ol>
-  <div class="ms-stage" aria-hidden="true">
+  <div class="ms-stage">
 
 <!-- scene:wr -->
-<div class="ms-scene wr" data-scene="wr" data-caption="Clinic reception">
+<div class="ms-scene wr" aria-hidden="true" data-scene="wr" data-type="Single display" data-caption="Clinic reception">
   <div class="wr-ceiling"><i style="left:12%"></i><i style="left:37%"></i><i style="left:63%"></i><i style="left:88%"></i></div>
   <div class="wr-wall"></div>
   <div class="wr-sign"><svg viewBox="0 0 40 34"><path d="M20 32S2 21 2 10a9 9 0 0 1 18-2 9 9 0 0 1 18 2c0 11-18 22-18 22z" fill="#1d2b3a"/><path d="M6 16h8l3-5 4 10 3-5h10" fill="none" stroke="#efebe4" stroke-width="2.6" stroke-linejoin="round"/></svg><span>CarePoint<br>Health</span></div>
@@ -457,7 +467,7 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 <!-- /scene:wr -->
 
 <!-- scene:vw -->
-<div class="ms-scene vw" data-scene="vw" data-caption="Brand showroom">
+<div class="ms-scene vw" aria-hidden="true" data-scene="vw" data-type="Bank of screens" data-caption="Brand showroom">
   <div class="vw-wall"></div>
   <div class="vw-slot"></div>
   <div class="vw-floor"></div>
@@ -504,7 +514,7 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 <!-- /scene:vw -->
 
 <!-- scene:lw -->
-<div class="ms-scene lw" data-scene="lw" data-caption="Corporate lobby">
+<div class="ms-scene lw" aria-hidden="true" data-scene="lw" data-type="LED video wall" data-caption="Corporate lobby">
   <div class="lw-plane lw-ceiling"></div>
   <div class="lw-plane lw-floor"></div>
   <div class="lw-mirror lw-l"><i></i></div>
@@ -524,7 +534,7 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 <!-- /scene:lw -->
 
 <!-- scene:tk -->
-<div class="ms-scene tk" data-scene="tk" data-caption="Shopping centre">
+<div class="ms-scene tk" aria-hidden="true" data-scene="tk" data-type="Wayfinding kiosk" data-caption="Shopping centre">
   <div class="tk-bg">
     <i style="left:0;top:0;width:100%;height:9%;background:linear-gradient(180deg,#fbfcfc,#e7ecee)"></i>
     <i style="left:0;top:0;width:100%;height:9%;background:repeating-linear-gradient(90deg,transparent 0 11.5%,rgba(140,150,156,.4) 11.5% 12%)"></i>
@@ -575,12 +585,18 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 </div>
 <!-- /scene:tk -->
 
-    <div class="ms-scan"></div>
-    <div class="ms-corners"><i></i><i></i><i></i><i></i></div>
-    <div class="ms-caption"><span></span></div>
+    <div aria-hidden="true" class="ms-scan"></div>
+    <div aria-hidden="true" class="ms-corners"><i></i><i></i><i></i><i></i></div>
+    <div aria-hidden="true" class="ms-caption"><b></b><span></span></div>
+    <div aria-hidden="true" class="ms-progress"><i></i></div>
+    <div class="ms-nav">
+      <button type="button" class="ms-prev" aria-label="Previous screen type"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <span class="ms-count" aria-hidden="true"><b>01</b> / 04</span>
+      <button type="button" class="ms-next" aria-label="Next screen type"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
   </div>
 
-  <div class="ms-slides">
+  <div class="ms-slides" aria-live="off">
     <article class="ms-slide">
       <h3 class="ms-sr">Single digital display</h3>
       <ul class="ms-benefits">
@@ -790,38 +806,43 @@ function kiosk(el) {
 }
 /* ==== /scene:tk ==== */
 
-  // ---------- carousel (auto-rolling, no controls) ----------
+  // ---------- carousel (auto-rolling, with prev/next arrows) ----------
   var FACTORIES = { wr: waitingRoom, vw: videoWall, lw: ledWall, tk: kiosk };
-  var scenes = root.querySelectorAll(".ms-scene"), copies = root.querySelectorAll(".ms-slide"), track = root.querySelectorAll(".ms-track li");
-  var caption = root.querySelector(".ms-caption"), scan = root.querySelector(".ms-scan");
+  var scenes = root.querySelectorAll(".ms-scene"), copies = root.querySelectorAll(".ms-slide"), stage = root.querySelector(".ms-stage");
+  var caption = root.querySelector(".ms-caption"), scan = root.querySelector(".ms-scan"), bar = root.querySelector(".ms-progress i");
+  var count = root.querySelector(".ms-count b"), slidesBox = root.querySelector(".ms-slides");
   var ctrl = [].map.call(scenes, function (s) { return FACTORIES[s.dataset.scene](s); });
   var current = -1, timer = null, startedAt = 0, remaining = DURATION, running = true;
   root.style.setProperty("--ms-dur", DURATION + "ms");
 
   function restart(node, cls) { node.classList.remove(cls); void node.offsetWidth; node.classList.add(cls); }
-  function go(i) {
+  function go(i, back) {
     var prev = current;
+    stage.classList.toggle("is-back", !!back);
     if (prev >= 0) ctrl[prev].leave();
     current = i;
     for (var j = 0; j < scenes.length; j++) {
       scenes[j].classList.remove("is-active", "is-prev");
       copies[j].classList.toggle("is-active", j === i);
-      track[j].classList.remove("is-active");
-      track[j].classList.toggle("is-done", j < i);
     }
     if (prev >= 0 && prev !== i) scenes[prev].classList.add("is-prev");
     restart(scenes[i], "is-active");
-    restart(track[i], "is-active");
+    restart(bar, "run");
     restart(scan, "go");
+    count.textContent = pad(i + 1);
     caption.classList.add("swap");
-    setTimeout(function () { caption.firstChild.textContent = scenes[i].dataset.caption; caption.classList.remove("swap"); }, reduced ? 0 : 300);
+    setTimeout(function () {
+      caption.querySelector("b").textContent = scenes[i].dataset.type;
+      caption.querySelector("span").textContent = "· " + scenes[i].dataset.caption;
+      caption.classList.remove("swap");
+    }, reduced ? 0 : 300);
     setTimeout(function () { if (prev >= 0 && current === i) scenes[prev].classList.remove("is-prev"); }, 950);
     ctrl[i].enter();
     schedule(DURATION);
   }
   function schedule(ms) {
     clearTimeout(timer); remaining = ms; startedAt = Date.now();
-    timer = setTimeout(function () { go((current + 1) % scenes.length); }, ms);
+    timer = setTimeout(function () { slidesBox.setAttribute("aria-live", "off"); go((current + 1) % scenes.length); }, ms);
   }
   // pause while the widget is off-screen or the tab is hidden, to save battery and keep the story in order
   var inView = true;
@@ -839,6 +860,13 @@ function kiosk(el) {
     new IntersectionObserver(function (entries) { inView = entries[0].isIntersecting; update(); }, { threshold: .2 }).observe(root);
   }
   document.addEventListener("visibilitychange", update);
+  // arrows: step manually; the timer restarts from the new slide
+  function step(d) {
+    slidesBox.setAttribute("aria-live", "polite"); // announce changes the visitor asked for
+    go((current + d + scenes.length) % scenes.length, d < 0);
+  }
+  root.querySelector(".ms-prev").addEventListener("click", function () { step(-1); });
+  root.querySelector(".ms-next").addEventListener("click", function () { step(1); });
   go(0);
 })();
 </script>
