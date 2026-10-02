@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Waiting Room Display Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ------------------------------------------------------------------
+     TenAV mockup: wall-mounted display in a clinic waiting area.
+     The screen rotates three slides (brand message, patient calling,
+     health notice). Edit the slide HTML inside .wr-display.
+     ------------------------------------------------------------------ */
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #eef0f6; font-family: "Poppins", system-ui, sans-serif; }
+
+  .wr-scene {
+    position: relative; overflow: hidden; margin: 24px 16px;
+    width: min(1100px, calc(100vw - 32px)); aspect-ratio: 16 / 9.6;
+    border-radius: 22px; box-shadow: 0 30px 60px -20px rgba(20,40,40,.35);
+    container-type: inline-size;
+    background: #23403f;
+  }
+
+  /* ceiling */
+  .wr-ceiling {
+    position: absolute; left: 0; right: 0; top: 0; height: 9%;
+    background: linear-gradient(180deg, #4c5553, #6e7774);
+  }
+  .wr-ceiling i { position: absolute; top: 40%; width: 4.2%; height: 22%; border-radius: 50%; background: radial-gradient(#fff 40%, rgba(255,255,255,.2) 70%, transparent 72%); box-shadow: 0 0 2cqw 1cqw rgba(255,255,255,.25); }
+
+  /* recessed corridor on the left */
+  .wr-corridor {
+    position: absolute; left: 0; top: 9%; width: 28%; bottom: 0;
+    background:
+      linear-gradient(180deg, #2a4a49 0%, #3d6a67 45%, #2b4645 62%, #4c6a66 62.5%, #24302f 100%);
+  }
+  .wr-corridor::before { /* far glass panels */
+    content: ""; position: absolute; left: 0; right: 0; top: 18%; height: 40%;
+    background:
+      linear-gradient(90deg, transparent 0 31%, #1f3534 31% 32%, transparent 32% 64%, #1f3534 64% 65%, transparent 65%),
+      linear-gradient(180deg, rgba(160,220,215,.35), rgba(80,140,135,.2));
+  }
+  .wr-corridor .exit { position: absolute; left: 18%; top: 22%; width: 12%; height: 3%; background: #28c76f; border-radius: 2px; box-shadow: 0 0 1cqw #28c76f; opacity: .8; }
+  .wr-corridor .row { position: absolute; left: 8%; width: 70%; top: 52%; height: 9%; }
+
+  /* main glass wall */
+  .wr-wall {
+    position: absolute; left: 28%; right: 0; top: 9%; bottom: 0;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,0) 30%),
+      linear-gradient(100deg, #5f9d97 0%, #7ab3ab 35%, #6aa59e 60%, #528c86 100%);
+    box-shadow: inset 1.2cqw 0 2cqw rgba(0,0,0,.35);
+  }
+  .wr-wall .grid { /* panel joints */
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, rgba(20,50,48,.55) 0 2px, transparent 2px) 0 0 / 33.33% 100%,
+      linear-gradient(180deg, rgba(20,50,48,.55) 0 2px, transparent 2px) 0 0 / 100% 47%;
+  }
+  .wr-wall .studs { /* fixing bolts at panel corners */
+    position: absolute; inset: 0;
+    background: radial-gradient(circle .35cqw, #d8e6e3 70%, transparent 75%) -.2cqw 2.5% / 33.33% 47%;
+    opacity: .7;
+  }
+  .wr-wall .sheen { /* reflections in the glass */
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(115deg, transparent 20%, rgba(255,255,255,.12) 24%, transparent 30%),
+      linear-gradient(115deg, transparent 58%, rgba(255,255,255,.08) 62%, transparent 70%);
+  }
+  .wr-wall .reflect { /* faint reflection of the room below the screen */
+    position: absolute; left: 6%; right: 6%; top: 52%; height: 26%;
+    background:
+      linear-gradient(90deg, transparent 0 8%, rgba(20,40,40,.25) 8% 9%, transparent 9% 40%, rgba(20,40,40,.25) 40% 41%, transparent 41%),
+      linear-gradient(180deg, rgba(200,240,235,.18), transparent);
+    filter: blur(2px);
+  }
+
+  /* floor */
+  .wr-floor {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 13%;
+    background: linear-gradient(180deg, #6f8784, #3b4b4a 60%, #2a3433);
+    box-shadow: 0 -2px 0 rgba(255,255,255,.15);
+  }
+  .wr-floor::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(122,179,171,.35), transparent 60%); }
+
+  /* the display */
+  .wr-tv {
+    position: absolute; left: 41%; top: 13.5%; width: 52%; aspect-ratio: 16 / 9;
+    background: #0d0f12; border-radius: .5cqw; padding: .7%;
+    box-shadow: 0 1.6cqw 3cqw rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.12);
+  }
+  .wr-display { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: .2cqw; background: #fff; container-type: inline-size; }
+  .wr-display::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(120deg, rgba(255,255,255,.18), transparent 35%); }
+  .wr-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease; }
+  .wr-slide.on { opacity: 1; }
+  .wr-logo { position: absolute; left: 5%; top: 7%; display: flex; align-items: center; gap: 1.2cqw; font-weight: 600; font-size: 3cqw; color: #1f2430; z-index: 2; }
+  .wr-logo svg { width: 4.2cqw; }
+
+  /* slide 1: brand message */
+  .s1 { background: linear-gradient(90deg, #f6f8f9 0 44%, transparent 44%), linear-gradient(135deg, #1aa3b8, #0b6f8a); }
+  .s1 h2 { position: absolute; left: 5%; top: 30%; margin: 0; font-size: 6.6cqw; line-height: 1; font-weight: 800; color: #0f8aa3; letter-spacing: -.01em; }
+  .s1 h2 span { color: #1f2430; }
+  .s1 .plus { position: absolute; font-weight: 800; color: #1aa3b8; }
+  .s1 .art { position: absolute; left: 48%; right: 4%; top: 10%; bottom: 10%; border: .5cqw solid rgba(255,255,255,.85); border-radius: 22% 6% 22% 6%; overflow: hidden; background: linear-gradient(160deg, #dff4f7, #b9e3ea); }
+  .s1 .art svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .s1 .ecg { fill: none; stroke: #e0244b; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 600; animation: wr-ecg 3s linear infinite; }
+  .s1 .dots { position: absolute; right: 2%; top: 5%; width: 8%; aspect-ratio: 1; background: radial-gradient(circle, rgba(255,255,255,.8) 1.5px, transparent 2px) 0 0 / 25% 25%; }
+
+  /* slide 2: patient calling */
+  .s2 { background: linear-gradient(135deg, #0b3d55, #0b6f8a); color: #fff; }
+  .s2 .now { position: absolute; left: 5%; top: 24%; width: 52%; }
+  .s2 .now small { font-size: 2.4cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .8; }
+  .s2 .ticket { font-size: 15cqw; font-weight: 800; line-height: 1; margin: 1% 0; animation: wr-flash 1.2s ease-in-out 3; }
+  .s2 .room { font-size: 4cqw; font-weight: 600; display: flex; align-items: center; gap: 2cqw; }
+  .s2 .room b { background: #28c76f; color: #06321b; padding: .3cqw 2cqw; border-radius: .8cqw; }
+  .s2 .next { position: absolute; right: 5%; top: 24%; width: 33%; background: rgba(255,255,255,.1); border-radius: 1.5cqw; padding: 2.5cqw; }
+  .s2 .next h3 { margin: 0 0 1.5cqw; font-size: 2.2cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .8; font-weight: 500; }
+  .s2 .next div { display: flex; justify-content: space-between; font-size: 3cqw; padding: 1cqw 0; border-top: 1px solid rgba(255,255,255,.15); }
+  .s2 .wait { position: absolute; left: 0; right: 0; bottom: 0; padding: 2cqw 5%; background: rgba(0,0,0,.25); font-size: 2.4cqw; }
+
+  /* slide 3: notice */
+  .s3 { background: linear-gradient(135deg, #fff6e9, #ffe2c2); }
+  .s3 .icon { position: absolute; left: 6%; top: 28%; width: 22%; aspect-ratio: 1; border-radius: 50%; background: #ff8a3d; display: grid; place-items: center; box-shadow: 0 1.5cqw 3cqw rgba(255,138,61,.4); }
+  .s3 .icon svg { width: 55%; }
+  .s3 .txt { position: absolute; left: 34%; right: 5%; top: 27%; color: #3a2a1a; }
+  .s3 .txt small { font-size: 2.4cqw; letter-spacing: .2em; text-transform: uppercase; color: #c25f1d; font-weight: 600; }
+  .s3 .txt h2 { margin: 1% 0 2%; font-size: 6.4cqw; line-height: 1.05; font-weight: 800; }
+  .s3 .txt p { margin: 0; font-size: 3cqw; }
+
+  .wr-progress { position: absolute; left: 5%; bottom: 5%; display: flex; gap: .8cqw; z-index: 2; }
+  .wr-progress i { width: 1.2cqw; height: 1.2cqw; border-radius: 50%; background: rgba(120,130,140,.45); }
+  .wr-progress i.on { background: #1aa3b8; }
+
+  /* beam seating */
+  .wr-seats { position: absolute; display: flex; align-items: flex-end; }
+  .wr-seats.front { left: 38%; right: -2%; bottom: 0; height: 30%; gap: 1%; }
+  .seat { position: relative; flex: 1; height: 100%; }
+  .seat .back { position: absolute; left: 4%; right: 4%; top: 0; height: 52%; border-radius: 1.2cqw 1.2cqw .4cqw .4cqw; background: linear-gradient(180deg, #4a4f57, #2c3036); box-shadow: inset 0 .3cqw 0 rgba(255,255,255,.12); }
+  .seat .pan { position: absolute; left: 0; right: 0; top: 50%; height: 14%; border-radius: .4cqw .4cqw 1cqw 1cqw; background: linear-gradient(180deg, #3d4148, #1f2227); }
+  .seat .arm { position: absolute; top: 36%; width: 4%; height: 32%; background: #9aa2a8; border-radius: .3cqw; }
+  .seat .arm.l { left: -3%; } .seat .arm.r { right: -3%; }
+  .seat .leg { position: absolute; left: 45%; width: 10%; top: 64%; bottom: 0; background: linear-gradient(90deg, #6f777d, #b9c0c4, #6f777d); }
+  .wr-seats .beam { position: absolute; left: 0; right: 0; top: 66%; height: 4%; background: #8b9398; }
+  .wr-seats.far { left: 4%; width: 22%; bottom: 13%; height: 11%; gap: 2%; opacity: .9; }
+  .wr-seats.far .seat .arm { display: none; }
+
+  @keyframes wr-ecg { from { stroke-dashoffset: 600; } to { stroke-dashoffset: 0; } }
+  @keyframes wr-flash { 50% { opacity: .35; } }
+  @media (prefers-reduced-motion: reduce) { .wr-scene * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<figure class="wr-scene" aria-label="Mockup: wall-mounted digital display in a clinic waiting area">
+  <div class="wr-ceiling" aria-hidden="true">
+    <i style="left:10%"></i><i style="left:36%"></i><i style="left:62%"></i><i style="left:86%"></i>
+  </div>
+  <div class="wr-corridor" aria-hidden="true">
+    <div class="exit"></div>
+  </div>
+  <div class="wr-wall" aria-hidden="true">
+    <div class="sheen"></div><div class="reflect"></div><div class="grid"></div><div class="studs"></div>
+  </div>
+  <div class="wr-floor" aria-hidden="true"></div>
+
+  <div class="wr-tv">
+    <div class="wr-display" aria-live="polite">
+      <div class="wr-logo">
+        <svg viewBox="0 0 40 34"><path d="M20 32S2 21 2 10a9 9 0 0 1 18-2 9 9 0 0 1 18 2c0 11-18 22-18 22z" fill="#1f2430"/><path d="M6 16h8l3-5 4 10 3-5h10" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/></svg>
+        <span class="wr-brand">CarePoint Health</span>
+      </div>
+
+      <section class="wr-slide s1 on">
+        <h2>YOUR<br>HEALTH<br><span>IS OUR</span><br>PRIORITY</h2>
+        <div class="plus" style="left:30%;top:20%;font-size:5cqw">+</div>
+        <div class="plus" style="left:38%;bottom:8%;font-size:3.5cqw;opacity:.6">+</div>
+        <div class="dots"></div>
+        <div class="art">
+          <svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect x="0" y="0" width="300" height="200" fill="url(#g1)"/>
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e9f8fa"/><stop offset="1" stop-color="#bfe6ec"/></linearGradient></defs>
+            <!-- shelves in the background -->
+            <g opacity=".45"><rect x="20" y="30" width="80" height="4" fill="#7fb7c2"/><rect x="20" y="70" width="80" height="4" fill="#7fb7c2"/>
+            <rect x="26" y="12" width="10" height="18" rx="2" fill="#4aa3c0"/><rect x="40" y="16" width="8" height="14" rx="2" fill="#9fd3de"/><rect x="54" y="52" width="10" height="18" rx="2" fill="#4aa3c0"/><rect x="70" y="56" width="12" height="14" rx="2" fill="#fff"/></g>
+            <!-- clinician illustration -->
+            <circle cx="190" cy="78" r="26" fill="#f1c4a5"/>
+            <path d="M163 74c-2-24 16-36 30-34 20 2 32 18 26 40-6-12-18-18-30-18-10 0-18 4-26 12z" fill="#4a2f25"/>
+            <path d="M120 200c4-46 34-76 70-76s66 30 70 76z" fill="#2fb7a6"/>
+            <path d="M176 124l14 26 14-26z" fill="#f1c4a5"/>
+            <circle cx="181" cy="80" r="2.4" fill="#3a2a22"/><circle cx="199" cy="80" r="2.4" fill="#3a2a22"/><path d="M182 91q8 7 16 0" fill="none" stroke="#b5654a" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M158 132c-8 18-6 34 4 44M222 132c8 18 6 34-4 44" fill="none" stroke="#1f2430" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="162" cy="178" r="5" fill="#9aa3ad"/>
+            <rect x="200" y="150" width="20" height="14" rx="2" fill="#fff" opacity=".9"/>
+            <path class="ecg" d="M10 186h60l8-14 10 26 8-34 10 22h40"/>
+          </svg>
+        </div>
+      </section>
+
+      <section class="wr-slide s2">
+        <div class="now">
+          <small>Now calling</small>
+          <div class="ticket">A042</div>
+          <div class="room">Please go to <b>Room 3</b></div>
+        </div>
+        <div class="next">
+          <h3>Up next</h3>
+          <div><span>A043</span><span>Room 1</span></div>
+          <div><span>B017</span><span>Nurse</span></div>
+          <div><span>A044</span><span>Room 3</span></div>
+        </div>
+        <div class="wait">Average wait today: <b>12 minutes</b> · Thank you for your patience</div>
+      </section>
+
+      <section class="wr-slide s3">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M17 3l4 4M19 5l-9 9M14 6l4 4M8 12l4 4M6 14l-3 3 4 4 3-3M10 14l-4 4"/></svg></div>
+        <div class="txt">
+          <small>Seasonal notice</small>
+          <h2>Flu jabs now available</h2>
+          <p>Ask at reception — no appointment needed for over 65s.</p>
+        </div>
+      </section>
+
+      <div class="wr-progress"><i class="on"></i><i></i><i></i></div>
+    </div>
+  </div>
+
+  <div class="wr-seats far" aria-hidden="true"></div>
+  <div class="wr-seats front" aria-hidden="true"></div>
+</figure>
+
+<script>
+(function () {
+  var DURATION = 5000;
+  var root = document.currentScript.previousElementSibling;
+
+  // build the rows of beam seating
+  [[".wr-seats.front", 5], [".wr-seats.far", 4]].forEach(function (r) {
+    var row = root.querySelector(r[0]), html = '<div class="beam"></div>';
+    for (var i = 0; i < r[1]; i++) html += '<div class="seat"><div class="leg"></div><div class="back"></div><div class="pan"></div><div class="arm l"></div><div class="arm r"></div></div>';
+    row.innerHTML = html;
+  });
+
+  // rotate the on-screen slides
+  var slides = root.querySelectorAll(".wr-slide"), dots = root.querySelectorAll(".wr-progress i");
+  var logo = root.querySelector(".wr-logo"), n = 0;
+  function show(i) {
+    [].forEach.call(slides, function (s, j) { s.classList.toggle("on", j === i); });
+    [].forEach.call(dots, function (d, j) { d.classList.toggle("on", j === i); });
+    logo.style.color = i === 1 ? "#fff" : "#1f2430";
+    logo.querySelector("path").setAttribute("fill", i === 1 ? "#fff" : "#1f2430");
+    logo.querySelectorAll("path")[1].setAttribute("stroke", i === 1 ? "#0b5470" : "#fff");
+    // restart the ticket flash each time the calling slide appears
+    var t = slides[1].querySelector(".ticket"); t.style.animation = "none"; void t.offsetWidth; t.style.animation = "";
+  }
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setInterval(function () { n = (n + 1) % slides.length; show(n); }, DURATION);
+  }
+})();
+</script>
+</body>
+</html>

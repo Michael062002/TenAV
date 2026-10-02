@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curved LED Wall Mockup</title>
+<style>
+  /* ------------------------------------------------------------------
+     TenAV mockup: curved LED wall in a corporate lobby.
+     Everything is drawn on one canvas: the room, the curved wall
+     (projected in perspective), its floor reflection and the people.
+     Tweak the numbers in SCENE to reshape the room.
+     ------------------------------------------------------------------ */
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #eef0f6; font-family: system-ui, sans-serif; }
+  .lw-scene {
+    position: relative; overflow: hidden; margin: 24px 16px;
+    width: min(1100px, calc(100vw - 32px)); aspect-ratio: 16 / 9;
+    border-radius: 22px; box-shadow: 0 30px 60px -20px rgba(20,20,40,.35);
+    background: #d9d6cf;
+  }
+  .lw-scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+
+<figure class="lw-scene" role="img" aria-label="Mockup: a curved LED wall showing a night-time city skyline in a bright corporate lobby, with people looking at it">
+  <canvas></canvas>
+</figure>
+
+<script>
+(function () {
+  var SCENE = {
+    eye: 1.6,                 // camera height (m)
+    focal: 0.5,               // focal length as a fraction of canvas width
+    centerX: 0.5, horizon: 0.5,
+    // wall curve in plan view (x, z in metres): left end, right end, bow
+    left: [-8.6, 12.8], right: [3.4, 3.7], sag: 1.5,
+    ledBottom: 0.3, ledTop: 3.9, ceiling: 5.4,
+    wallFrom: -0.06, wallTo: 1.14, // how far the cream wall runs past the screen
+    people: [ // x, z, height, type, facing
+      [-6.4, 11.4, 1.78, "m"], [-5.2, 10.6, 1.66, "f"],
+      [-2.0, 6.9, 1.8, "m"], [-1.25, 6.7, 1.65, "f"], [0.15, 6.7, 1.68, "f"]
+    ]
+  };
+
+  var root = document.currentScript.previousElementSibling;
+  var canvas = root.querySelector("canvas"), ctx = canvas.getContext("2d");
+  var W, H, F, CX, HY, bg, people, refl, rc;
+
+  // ---------- geometry ----------
+  function plan(t) { // quadratic Bezier for the wall in plan view
+    var L = SCENE.left, R = SCENE.right;
+    var mx = (L[0] + R[0]) / 2, mz = (L[1] + R[1]) / 2;
+    var dx = R[0] - L[0], dz = R[1] - L[1], len = Math.hypot(dx, dz);
+    var nx = -dz / len, nz = dx / len;                 // normal
+    if (nx * -mx + nz * -mz > 0) { nx = -nx; nz = -nz; } // point away from camera
+    var c = [mx + nx * SCENE.sag * 2, mz + nz * SCENE.sag * 2];
+    var a = (1 - t) * (1 - t), b = 2 * t * (1 - t), d = t * t;
+    return [a * L[0] + b * c[0] + d * R[0], a * L[1] + b * c[1] + d * R[1], nx, nz];
+  }
+  function proj(x, y, z) { z = Math.max(z, .4); return [CX + F * x / z, HY - F * (y - SCENE.eye) / z]; } // clamp: never project points behind the camera
+
+  // ---------- content shown on the LED wall (drawn flat) ----------
+  var CW = 2400, CH = 600;
+  var content = document.createElement("canvas"); content.width = CW; content.height = CH;
+  var cc = content.getContext("2d");
+  var flipped = document.createElement("canvas"); flipped.width = CW; flipped.height = CH;
+  var fc = flipped.getContext("2d");
+  var city = document.createElement("canvas"); city.width = CW; city.height = CH;
+  var seed = 7; function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+
+  (function drawCity() {
+    var g = city.getContext("2d");
+    var sky = g.createLinearGradient(0, 0, 0, CH);
+    sky.addColorStop(0, "#07142f"); sky.addColorStop(.45, "#1d4a8c"); sky.addColorStop(.75, "#4a7fc0"); sky.addColorStop(1, "#0d1b33");
+    g.fillStyle = sky; g.fillRect(0, 0, CW, CH);
+    var sun = g.createRadialGradient(CW * .08, CH * .72, 0, CW * .08, CH * .72, CW * .3);
+    sun.addColorStop(0, "rgba(255,150,100,.95)"); sun.addColorStop(.4, "rgba(240,120,140,.45)"); sun.addColorStop(1, "rgba(240,120,140,0)");
+    g.fillStyle = sun; g.fillRect(0, 0, CW, CH);
+    for (var i = 0; i < 140; i++) { g.fillStyle = "rgba(255,255,255," + rnd() * .6 + ")"; g.fillRect(rnd() * CW, rnd() * CH * .4, 2, 2); }
+    // three layers of buildings, back to front
+    [[.62, "#1a2c55", .3], [.7, "#0f1d3d", .55], [.8, "#08122a", .9]].forEach(function (layer) {
+      var x = 0;
+      while (x < CW) {
+        var w = 30 + rnd() * 70, centre = 1 - Math.abs(x / CW - .48) * 1.4;
+        var h = CH * (.12 + rnd() * .25 + Math.max(0, centre) * rnd() * .45 * layer[2]);
+        var top = CH * layer[0] - h + CH * .2;
+        g.fillStyle = layer[1]; g.fillRect(x, top, w, CH - top);
+        if (rnd() > .7) { g.fillRect(x + w * .4, top - h * .15, w * .2, h * .15); } // spire
+        for (var wy = top + 8; wy < CH; wy += 9) for (var wx = x + 5; wx < x + w - 4; wx += 8) {
+          if (rnd() > .62) { g.fillStyle = rnd() > .3 ? "rgba(255,220,150," + (.4 + rnd() * .5) * layer[2] + ")" : "rgba(120,220,255," + .7 * layer[2] + ")"; g.fillRect(wx, wy, 3, 4); }
+        }
+        x += w + 2 + rnd() * 8;
+      }
+    });
+  })();
+
+  var streaks = [];
+  for (var i = 0; i < 26; i++) streaks.push({ y: .35 + rnd() * .6, bend: (rnd() - .5) * .5, speed: .04 + rnd() * .08, off: rnd(), len: .15 + rnd() * .3, hue: rnd() > .25 ? 190 + rnd() * 20 : 320, w: 1 + rnd() * 3 });
+  var sparks = [];
+  for (i = 0; i < 70; i++) sparks.push({ x: rnd(), y: rnd() * .7, s: 1 + rnd() * 3, v: .01 + rnd() * .03, p: rnd() * 6 });
+
+  function drawContent(t) {
+    cc.globalCompositeOperation = "source-over";
+    cc.drawImage(city, 0, 0);
+    cc.globalCompositeOperation = "lighter";
+    streaks.forEach(function (s) {
+      var head = ((t * s.speed + s.off) % 1.4) - .2, tail = head - s.len;
+      cc.beginPath();
+      for (var k = 0; k <= 20; k++) {
+        var u = tail + (head - tail) * k / 20, x = u * CW;
+        var y = (s.y - u * .35 + Math.sin(u * 3 + s.bend * 6) * s.bend * .2) * CH;
+        k ? cc.lineTo(x, y) : cc.moveTo(x, y);
+      }
+      cc.strokeStyle = "hsla(" + s.hue + ",100%,60%,.18)"; cc.lineWidth = s.w * 6; cc.stroke();
+      cc.strokeStyle = "hsla(" + s.hue + ",100%,80%,.9)"; cc.lineWidth = s.w; cc.stroke();
+    });
+    sparks.forEach(function (p) {
+      var a = .4 + .6 * Math.abs(Math.sin(t * 1.5 + p.p));
+      cc.fillStyle = "rgba(160,230,255," + a + ")";
+      cc.beginPath(); cc.arc(((p.x + t * p.v) % 1) * CW, p.y * CH, p.s, 0, 7); cc.fill();
+    });
+    cc.globalCompositeOperation = "source-over";
+    fc.setTransform(1, 0, 0, -1, 0, CH); fc.drawImage(content, 0, 0);
+  }
+
+  // ---------- static room layer ----------
+  function drawRoom() {
+    bg = document.createElement("canvas"); bg.width = W; bg.height = H;
+    var g = bg.getContext("2d");
+    var ceil = g.createLinearGradient(0, 0, 0, HY); ceil.addColorStop(0, "#d8d6d1"); ceil.addColorStop(1, "#ecebe7");
+    g.fillStyle = ceil; g.fillRect(0, 0, W, HY);
+    var floor = g.createLinearGradient(0, HY, 0, H); floor.addColorStop(0, "#d6d3cd"); floor.addColorStop(1, "#a9a49b");
+    g.fillStyle = floor; g.fillRect(0, HY, W, H - HY);
+    // marble veins
+    g.strokeStyle = "rgba(255,255,255,.18)"; g.lineWidth = 1;
+    for (var i = 0; i < 40; i++) { var y = HY + rnd() * (H - HY), x = rnd() * W; g.beginPath(); g.moveTo(x, y); g.bezierCurveTo(x + 60, y + 10, x + 120, y - 6, x + 200, y + 14); g.stroke(); }
+
+    // far windows on the left (glass facade with mullions)
+    var zf = 18, top = proj(0, SCENE.ceiling, zf)[1], bot = proj(0, 0, zf)[1], wallLeft = proj.apply(null, wallPt(SCENE.wallFrom, 0))[0];
+    var win = g.createLinearGradient(0, top, 0, bot); win.addColorStop(0, "#f7fafc"); win.addColorStop(.6, "#e3ecf1"); win.addColorStop(1, "#cfd8dc");
+    g.fillStyle = win; g.fillRect(0, top, wallLeft + 2, bot - top);
+    g.fillStyle = "#9aa2a8";
+    for (var mx = -18; mx < 0; mx += 2.2) { var px = proj(mx, 0, zf)[0]; if (px < wallLeft) g.fillRect(px, top, Math.max(2, F * .08 / zf), bot - top); }
+    g.fillRect(0, proj(0, 3.4, zf)[1], wallLeft, 2);
+    // revolving door
+    var dx = proj(-14, 0, zf)[0], dw = F * 2.6 / zf, dt = proj(0, 2.6, zf)[1];
+    g.fillStyle = "rgba(160,170,175,.5)"; g.fillRect(dx, dt, dw, bot - dt);
+    g.fillStyle = "#8d959b"; g.fillRect(dx - 2, dt - 6, dw + 4, 6); g.fillRect(dx + dw / 2 - 1, dt, 2, bot - dt);
+
+    // ceiling light strips
+    [-2.4, 2.4].forEach(function (lx) {
+      var a = proj(lx - .12, SCENE.ceiling, 2.6), b = proj(lx + .12, SCENE.ceiling, 2.6), c = proj(lx + .12, SCENE.ceiling, 15), d = proj(lx - .12, SCENE.ceiling, 15);
+      g.fillStyle = "rgba(255,255,255,.95)"; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.lineTo(c[0], c[1]); g.lineTo(d[0], d[1]); g.fill();
+    });
+
+    // curved back wall with panel joints
+    var N = 260;
+    for (i = 0; i < N; i++) {
+      var t0 = SCENE.wallFrom + (SCENE.wallTo - SCENE.wallFrom) * i / N, t1 = SCENE.wallFrom + (SCENE.wallTo - SCENE.wallFrom) * (i + 1) / N;
+      var p0b = proj.apply(null, wallPt(t0, 0)), p0t = proj.apply(null, wallPt(t0, SCENE.ceiling));
+      var p1b = proj.apply(null, wallPt(t1, 0)), p1t = proj.apply(null, wallPt(t1, SCENE.ceiling));
+      var shade = 236 - Math.round((t0 - SCENE.wallFrom) * 14);
+      g.fillStyle = "rgb(" + shade + "," + (shade - 6) + "," + (shade - 18) + ")";
+      g.beginPath(); g.moveTo(p0t[0], p0t[1]); g.lineTo(p1t[0] + .5, p1t[1]); g.lineTo(p1b[0] + .5, p1b[1]); g.lineTo(p0b[0], p0b[1]); g.fill();
+    }
+    g.strokeStyle = "rgba(150,140,120,.35)"; g.lineWidth = 1;
+    for (var tt = SCENE.wallFrom; tt <= SCENE.wallTo; tt += .045) {
+      var a1 = proj.apply(null, wallPt(tt, 0)), a2 = proj.apply(null, wallPt(tt, SCENE.ceiling));
+      g.beginPath(); g.moveTo(a1[0], a1[1]); g.lineTo(a2[0], a2[1]); g.stroke();
+    }
+    [1.2, 2.4, 3.6, 4.8].forEach(function (hy) {
+      g.beginPath();
+      for (var k = 0; k <= 80; k++) { var p = proj.apply(null, wallPt(SCENE.wallFrom + (SCENE.wallTo - SCENE.wallFrom) * k / 80, hy)); k ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]); }
+      g.stroke();
+    });
+    // cove light along the top of the wall
+    g.strokeStyle = "rgba(255,248,230,.9)"; g.lineWidth = Math.max(2, W / 500);
+    g.beginPath();
+    for (k = 0; k <= 80; k++) { var q = proj.apply(null, wallPt(SCENE.wallFrom + (SCENE.wallTo - SCENE.wallFrom) * k / 80, SCENE.ceiling - .05)); k ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); }
+    g.stroke();
+
+    // LED casing (drawn once; the picture is drawn over it each frame)
+    strip(g, -0.012, 1, SCENE.ledBottom - .1, SCENE.ledTop + .08, "#0b0c10");
+    // end cap: the casing's depth on the near end
+    var e = plan(1), d1 = .32;
+    var ct = proj(e[0], SCENE.ledTop + .08, e[1]), cb = proj(e[0], SCENE.ledBottom - .1, e[1]);
+    var nt = proj(e[0] - e[2] * d1, SCENE.ledTop + .08, e[1] - e[3] * d1), nb = proj(e[0] - e[2] * d1, SCENE.ledBottom - .1, e[1] - e[3] * d1);
+    g.fillStyle = "#16171c"; g.beginPath(); g.moveTo(ct[0], ct[1]); g.lineTo(nt[0], nt[1]); g.lineTo(nb[0], nb[1]); g.lineTo(cb[0], cb[1]); g.fill();
+    // shadow on the floor under the wall
+    g.globalAlpha = .25; strip(g, 0, 1, -.001, 0, "#000"); g.globalAlpha = 1;
+  }
+
+  function wallPt(t, y) { var p = plan(t); return [p[0], y, p[1]]; }
+  function strip(g, from, to, y0, y1, color) {
+    g.fillStyle = color; g.beginPath();
+    var k, n = 120;
+    for (k = 0; k <= n; k++) { var p = proj.apply(null, wallPt(from + (to - from) * k / n, y1)); k ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]); }
+    for (k = n; k >= 0; k--) { p = proj.apply(null, wallPt(from + (to - from) * k / n, y0)); g.lineTo(p[0], p[1]); }
+    g.fill();
+  }
+
+  // ---------- people (silhouettes) ----------
+  function drawPeople() {
+    people = document.createElement("canvas"); people.width = W; people.height = H;
+    var g = people.getContext("2d");
+    SCENE.people.slice().sort(function (a, b) { return b[1] - a[1]; }).forEach(function (p) {
+      var feet = proj(p[0], 0, p[1]), h = F * p[2] / p[1];
+      g.save(); g.globalAlpha = .16; g.translate(feet[0], feet[1]); g.scale(1, -.9); person(g, h, p[3]); g.restore(); // reflection
+      g.save(); g.translate(feet[0], feet[1]); person(g, h, p[3]); g.restore();
+    });
+  }
+  function person(g, h, type) {
+    var suit = type === "m" ? "#1d2433" : "#22252e", skin = "#c99a7c";
+    g.fillStyle = "rgba(0,0,0,.18)"; g.beginPath(); g.ellipse(0, 0, h * .16, h * .02, 0, 0, 7); g.fill();
+    if (type === "m") {
+      g.fillStyle = "#14161c"; g.fillRect(-h * .075, -h * .48, h * .065, h * .47); g.fillRect(h * .01, -h * .48, h * .065, h * .47); // legs
+      g.fillRect(-h * .085, -h * .02, h * .08, h * .02); g.fillRect(h * .01, -h * .02, h * .085, h * .02);                      // shoes
+    } else {
+      g.fillStyle = skin; g.fillRect(-h * .05, -h * .3, h * .035, h * .28); g.fillRect(h * .015, -h * .3, h * .035, h * .28);
+      g.fillStyle = "#111"; g.fillRect(-h * .06, -h * .02, h * .05, h * .02); g.fillRect(h * .01, -h * .02, h * .05, h * .02);
+      g.fillStyle = suit; g.beginPath(); g.moveTo(-h * .09, -h * .52); g.lineTo(h * .09, -h * .52); g.lineTo(h * .1, -h * .3); g.lineTo(-h * .1, -h * .3); g.fill();
+    }
+    // torso with rounded shoulders
+    g.fillStyle = suit; g.beginPath();
+    g.moveTo(-h * .1, -h * .46); g.lineTo(-h * .13, -h * .78); g.quadraticCurveTo(-h * .12, -h * .83, -h * .05, -h * .835);
+    g.lineTo(h * .05, -h * .835); g.quadraticCurveTo(h * .12, -h * .83, h * .13, -h * .78); g.lineTo(h * .1, -h * .46); g.fill();
+    g.fillStyle = "#e9edf2"; g.beginPath(); g.moveTo(-h * .03, -h * .83); g.lineTo(h * .03, -h * .83); g.lineTo(0, -h * .72); g.fill(); // shirt
+    g.fillStyle = suit; g.fillRect(-h * .15, -h * .78, h * .04, h * .32); g.fillRect(h * .11, -h * .78, h * .04, h * .32); // arms
+    g.fillStyle = skin; g.fillRect(-h * .025, -h * .87, h * .05, h * .05);                                                // neck
+    g.beginPath(); g.ellipse(0, -h * .92, h * .055, h * .07, 0, 0, 7); g.fill();                                           // head
+    g.fillStyle = type === "m" ? "#1b1410" : "#2a1c14";
+    g.beginPath(); g.ellipse(0, -h * .955, h * .058, h * .04, 0, Math.PI, 0); g.fill();
+    if (type === "f") { g.beginPath(); g.ellipse(0, -h * .88, h * .07, h * .1, 0, Math.PI * 1.05, -Math.PI * .05); g.fill(); g.fillRect(-h * .068, -h * .9, h * .03, h * .12); g.fillRect(h * .038, -h * .9, h * .03, h * .12); }
+  }
+
+  // ---------- per-frame: map the content onto the curve ----------
+  var t0 = SCENE.ledBottom, t1 = SCENE.ledTop;
+  function frame(time) {
+    var t = time / 1000;
+    drawContent(t);
+    ctx.drawImage(bg, 0, 0);
+    rc.clearRect(0, 0, W, H);
+    var N = Math.round(W / 3), prev = null;
+    for (var i = 0; i <= N; i++) {
+      var u = i / N, p = plan(u);
+      var top = proj(p[0], t1, p[1]), bot = proj(p[0], t0, p[1]);
+      var rt = proj(p[0], -t1, p[1]), rb = proj(p[0], -t0, p[1]);
+      if (prev) {
+        var x = prev[0], w = top[0] - prev[0] + .8, sx = (i - 1) / N * CW, sw = CW / N + .5;
+        ctx.drawImage(content, sx, 0, sw, CH, x, top[1], w, bot[1] - top[1]);
+        rc.drawImage(flipped, sx, 0, sw, CH, x, rb[1], w, rt[1] - rb[1]);
+      }
+      prev = top;
+    }
+    ctx.globalAlpha = .16; ctx.drawImage(refl, 0, 0); ctx.globalAlpha = 1;
+    // fade the reflection out towards the viewer
+    var fade = ctx.createLinearGradient(0, HY + H * .12, 0, H);
+    fade.addColorStop(0, "rgba(190,186,178,0)"); fade.addColorStop(1, "rgba(170,165,156,.9)");
+    ctx.fillStyle = fade; ctx.fillRect(0, HY + H * .12, W, H);
+    ctx.drawImage(people, 0, 0);
+    if (!reduced) requestAnimationFrame(frame);
+  }
+
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.width = Math.round(root.clientWidth * dpr);
+    H = canvas.height = Math.round(root.clientHeight * dpr);
+    F = W * SCENE.focal; CX = W * SCENE.centerX; HY = H * SCENE.horizon;
+    refl = document.createElement("canvas"); refl.width = W; refl.height = H; rc = refl.getContext("2d");
+    seed = 11; drawRoom(); drawPeople();
+    if (reduced) frame(0);
+  }
+  window.addEventListener("resize", resize);
+  resize();
+  if (!reduced) requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

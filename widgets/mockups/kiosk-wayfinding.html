@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wayfinding Kiosk Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ------------------------------------------------------------------
+     TenAV mockup: interactive wayfinding kiosk in a shopping centre.
+     The screen UI is live: it demos itself, and visitors can click the
+     tabs, shops and floors. Edit FLOORS in the script to change shops.
+     ------------------------------------------------------------------ */
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #eef0f6; font-family: "Poppins", system-ui, sans-serif; }
+
+  .tk-scene {
+    position: relative; overflow: hidden;
+    width: min(1100px, calc(100vw - 32px)); aspect-ratio: 16 / 9;
+    border-radius: 22px; box-shadow: 0 30px 60px -20px rgba(20,20,40,.35);
+    container-type: inline-size;
+    background: linear-gradient(180deg, #e4e3df 0%, #d8d6d1 60%, #cfccc6 100%);
+  }
+  /* blurred shopping-centre background */
+  .tk-bg { position: absolute; inset: 0; }
+  .tk-bg .panels { /* wall panels, left */
+    position: absolute; left: 0; top: 0; width: 46%; height: 100%;
+    background:
+      linear-gradient(90deg, transparent 49.6%, rgba(0,0,0,.12) 49.6% 50.2%, transparent 50.2%) 0 0 / 50% 100%,
+      linear-gradient(180deg, transparent 47%, rgba(0,0,0,.1) 47% 47.6%, transparent 47.6%),
+      linear-gradient(90deg, #d9d9d6, #cfcfcc);
+  }
+  .tk-bg .mall { /* out-of-focus shops, right */
+    position: absolute; left: 42%; right: 0; top: 0; bottom: 0;
+    background: linear-gradient(180deg, #f2efe8, #e5e1d8 55%, #d2cdc2);
+    filter: blur(10px);
+  }
+  .tk-bg .mall i { position: absolute; border-radius: 4px; }
+  .tk-bg .floorline { position: absolute; left: 0; right: 0; bottom: 0; height: 30%; background: linear-gradient(180deg, #d6d2ca, #bfbab0); filter: blur(2px); }
+
+  /* kiosk */
+  .tk-kiosk {
+    position: absolute; left: 6%; top: 16%; width: 58%;
+    transform: perspective(120cqw) rotateX(30deg) rotateY(14deg) rotateZ(-4deg);
+    transform-origin: 50% 100%;
+  }
+  .tk-bezel {
+    position: relative; aspect-ratio: 16 / 9.4;
+    background: linear-gradient(160deg, #f1f0ee, #d9d8d5 60%, #c9c8c4);
+    border-radius: 3.2cqw; padding: 3.4% 3.6% 4.2%;
+    box-shadow: 0 2.5cqw 4cqw -1cqw rgba(0,0,0,.35), inset 0 -.5cqw 1cqw rgba(0,0,0,.08), inset 0 .3cqw 0 #fff;
+  }
+  .tk-screen {
+    position: relative; width: 100%; height: 100%; overflow: hidden;
+    background: #fff; border-radius: .4cqw;
+    box-shadow: 0 0 0 .5cqw #111, inset 0 0 0 1px #000;
+    container-type: inline-size;
+  }
+  .tk-screen::after { /* glass glare */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255,255,255,.28) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 70%, rgba(255,255,255,.12) 100%);
+  }
+  .tk-stand {
+    position: absolute; left: 10%; right: 24%; bottom: -78%; height: 80%;
+    background: linear-gradient(90deg, #cfceca, #e8e7e4 40%, #c2c1bd);
+    clip-path: polygon(18% 0, 82% 0, 74% 100%, 26% 100%);
+    z-index: -1;
+  }
+
+  /* ---------- the kiosk UI ---------- */
+  .ui { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 22%; grid-template-rows: 1fr 17%; font-size: 1.7cqw; color: #1f2430; }
+  .ui button { font: inherit; border: 0; cursor: pointer; color: inherit; background: none; padding: 0; }
+  .map { position: relative; background: #fbfaf5; }
+  .map svg { position: absolute; inset: 3% 3% 2% 3%; width: 94%; height: 95%; }
+  .map .shop { cursor: pointer; transition: opacity .3s, filter .3s; }
+  .map .shop:hover { filter: brightness(1.08); }
+  .map.picking .shop:not(.sel) { opacity: .35; }
+  .map text { font-family: "Poppins", sans-serif; font-weight: 600; pointer-events: none; }
+  .map .route { fill: none; stroke: #e0242c; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 8 7; animation: tk-dash 1s linear infinite; }
+  .map .pin circle.pulse { animation: tk-pulse 1.6s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+  .map .amen { opacity: 0; transition: opacity .3s; }
+  .map.show-amen .amen { opacity: 1; }
+  .floor-tag { position: absolute; left: 3%; top: 4%; font-weight: 700; font-size: 1.1em; background: #1f2430; color: #fff; padding: .2em .7em; border-radius: .3em; }
+
+  .side { grid-row: 1 / 3; grid-column: 2; background: linear-gradient(180deg, #1aa3e0, #0f87c7); color: #fff; text-align: center; padding: 8% 6%; display: flex; flex-direction: column; align-items: center; gap: 4%; }
+  .side .time { font-size: 2.6em; font-weight: 600; line-height: 1; border-top: 2px solid rgba(255,255,255,.6); padding-top: 8%; width: 100%; }
+  .side .time small { font-size: .35em; vertical-align: top; }
+  .side .date { font-size: .78em; background: rgba(255,255,255,.2); border-radius: .3em; padding: .15em .6em; letter-spacing: .05em; }
+  .side .hours { font-size: .8em; line-height: 1.4; border-top: 1px solid rgba(255,255,255,.4); padding-top: 6%; width: 100%; }
+  .side .help { font-size: .75em; opacity: .9; }
+  .side .you { margin-top: auto; width: 46%; aspect-ratio: 1; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 0 0 .3em rgba(255,255,255,.35); }
+  .side .you svg { width: 55%; }
+
+  .tabs { grid-column: 1; display: grid; grid-template-columns: 1.2fr 1.1fr 1.2fr 1fr; }
+  .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .2em; color: #fff !important; font-weight: 600; font-size: .95em; position: relative; transition: filter .2s; }
+  .tab .ic { display: flex; gap: .35em; font-size: 1.15em; opacity: .95; }
+  .tab .ic svg { width: 1.3em; height: 1.3em; }
+  .tab.on::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: .3em; background: #fff; }
+  .tab:hover { filter: brightness(1.08); }
+  .ui .t-shop { background: #3d8fc4; } .ui .t-amen { background: #e0533f; } .ui .t-cust { background: #f2b51f; } .ui .t-floor { background: #7fd0f2; }
+  .floors { display: flex; gap: .3em; }
+  .floors b { width: 1.6em; height: 1.6em; display: grid; place-items: center; border: 2px solid #fff; border-radius: .3em; font-size: .8em; cursor: pointer; }
+  .floors b.on { background: #fff; color: #3d8fc4; }
+
+  .panel {
+    position: absolute; right: 3%; top: 6%; width: 36%; max-height: 78%; overflow: hidden;
+    background: #fff; border-radius: .6em; box-shadow: 0 .6em 1.6em rgba(0,0,0,.18);
+    font-size: .85em; opacity: 0; transform: translateY(.6em); transition: opacity .3s, transform .3s; pointer-events: none;
+  }
+  .panel.on { opacity: 1; transform: none; pointer-events: auto; }
+  .panel h4 { margin: 0; padding: .6em .9em; color: #fff; font-size: 1em; }
+  .panel ul { list-style: none; margin: 0; padding: .3em 0; }
+  .panel li { display: flex; align-items: center; gap: .6em; padding: .35em .9em; cursor: pointer; }
+  .panel li:hover, .panel li.sel { background: #eef5fb; }
+  .panel li i { width: .9em; height: .9em; border-radius: .2em; flex: none; }
+  .panel li span { margin-left: auto; color: #8a8f99; font-size: .85em; }
+
+  /* demo touch ripple */
+  .touch { position: absolute; width: 4cqw; aspect-ratio: 1; margin: -2cqw 0 0 -2cqw; border-radius: 50%; border: .35cqw solid rgba(31,36,48,.55); background: rgba(255,255,255,.35); pointer-events: none; opacity: 0; }
+  .touch.go { animation: tk-touch .8s ease-out; }
+
+  @keyframes tk-dash { to { stroke-dashoffset: -15; } }
+  @keyframes tk-pulse { from { transform: scale(.6); opacity: .8; } to { transform: scale(2.2); opacity: 0; } }
+  @keyframes tk-touch { 0% { opacity: 0; transform: scale(.4); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(1.4); } }
+  @media (prefers-reduced-motion: reduce) { .tk-scene * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<figure class="tk-scene" aria-label="Mockup: interactive wayfinding kiosk in a shopping centre" style="margin:24px 16px">
+  <div class="tk-bg" aria-hidden="true">
+    <div class="mall">
+      <i style="left:0;top:4%;width:100%;height:4%;background:#fff"></i>
+      <i style="left:0;top:30%;width:100%;height:3%;background:#bcb6aa"></i>
+      <i style="left:4%;top:10%;width:14%;height:18%;background:#c94b3d"></i>
+      <i style="left:22%;top:10%;width:18%;height:18%;background:#e8e4da"></i>
+      <i style="left:44%;top:10%;width:12%;height:18%;background:#7d8fa3"></i>
+      <i style="left:60%;top:10%;width:20%;height:18%;background:#e2c14a"></i>
+      <i style="left:84%;top:10%;width:14%;height:18%;background:#4d7f68"></i>
+      <i style="left:2%;top:38%;width:20%;height:26%;background:#e2c14a"></i>
+      <i style="left:26%;top:38%;width:16%;height:26%;background:#d06a4c"></i>
+      <i style="left:46%;top:38%;width:22%;height:26%;background:#f4f1ea"></i>
+      <i style="left:72%;top:38%;width:26%;height:26%;background:#5d7ea0"></i>
+      <i style="left:36%;top:50%;width:3.2%;height:30%;background:#3b3f47;border-radius:40% 40% 10% 10%"></i>
+      <i style="left:58%;top:52%;width:3%;height:27%;background:#8a4b3a;border-radius:40% 40% 10% 10%"></i>
+      <i style="left:80%;top:49%;width:3.4%;height:32%;background:#2f4a6b;border-radius:40% 40% 10% 10%"></i>
+    </div>
+    <div class="panels"></div>
+    <div class="floorline"></div>
+  </div>
+
+  <div class="tk-kiosk">
+    <div class="tk-stand"></div>
+    <div class="tk-bezel">
+      <div class="tk-screen">
+        <div class="ui">
+          <div class="map">
+            <svg viewBox="0 0 600 340" aria-label="Centre map"></svg>
+            <div class="floor-tag">G</div>
+            <div class="panel p-shop"><h4 style="background:#3d8fc4">Shop finder A–Z</h4><ul></ul></div>
+            <div class="panel p-cust"><h4 style="background:#f2b51f">Customer services</h4><ul>
+              <li><i style="background:#f2b51f"></i>Gift cards<span>Desk G</span></li>
+              <li><i style="background:#f2b51f"></i>Lost property<span>Desk G</span></li>
+              <li><i style="background:#f2b51f"></i>Mobility scooters<span>Level 1</span></li>
+              <li><i style="background:#f2b51f"></i>Car park payment<span>LG</span></li>
+              <li><i style="background:#f2b51f"></i>Free Wi-Fi<span>Everywhere</span></li>
+            </ul></div>
+            <div class="touch"></div>
+          </div>
+          <aside class="side">
+            <div class="time"><span class="clock">11:00</span><small class="ampm">AM</small></div>
+            <div class="date">THURSDAY</div>
+            <div class="hours">Centre open<br><b>9am – 9pm</b></div>
+            <div class="help">Need help? Dial 0 from<br>any help point</div>
+            <div class="you" title="You are here"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z" fill="#e0242c"/><circle cx="12" cy="9" r="2.6" fill="#fff"/></svg></div>
+          </aside>
+          <nav class="tabs">
+            <button class="tab t-shop" data-tab="shop"><span class="ic"><b>A–Z</b><svg viewBox="0 0 24 24" fill="#fff"><path d="M3 4h2l2.4 10h10.2L20 7H7" stroke="#fff" stroke-width="2" fill="none"/><circle cx="9" cy="19" r="1.6"/><circle cx="17" cy="19" r="1.6"/></svg></span>Shop Finder</button>
+            <button class="tab t-amen" data-tab="amen"><span class="ic"><svg viewBox="0 0 24 24" fill="#fff"><circle cx="7" cy="5" r="2"/><path d="M5 8h4v6H8v7H6v-7H5z"/><circle cx="17" cy="5" r="2"/><path d="M15 8h4l1.5 7H19v6h-4v-6h-1.5z"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 9l3-3 3 3M9 15l3 3 3-3"/></svg></span>Amenities</button>
+            <button class="tab t-cust" data-tab="cust"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16v.5"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 12h18M12 8v12M8 8c-2-3 2-5 4 0 2-5 6-3 4 0"/></svg></span>Customer Services</button>
+            <div class="tab t-floor" data-tab="floor"><span class="floors"></span>Select Floor</div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</figure>
+
+<script>
+(function () {
+  /* ---- Shops per floor: slot is one of the eight map spaces (0-7),
+          span 2 makes an anchor store that fills two spaces ---- */
+  var FLOORS = {
+    LG: [ { n: "FreshMart", c: "#f2b51f", slot: 0, span: 2 }, { n: "Car Park", c: "#b9bec8", slot: 2, span: 2 },
+          { n: "Key Cut", c: "#7fd0f2", slot: 4 }, { n: "Pharmacy", c: "#4caf7a", slot: 5 }, { n: "Click & Collect", c: "#e0533f", slot: 6, span: 2 } ],
+    G:  [ { n: "Urban Threads", c: "#e0533f", slot: 0 }, { n: "Bloom", c: "#e48bc4", slot: 1 }, { n: "Northside Dept. Store", c: "#f2b51f", slot: 2, span: 2 },
+          { n: "TechHub", c: "#3d8fc4", slot: 4 }, { n: "Stride Shoes", c: "#7b6fd6", slot: 5 }, { n: "Café Nova", c: "#4caf7a", slot: 6 }, { n: "Opticians", c: "#7fd0f2", slot: 7 } ],
+    1:  [ { n: "Home & Co", c: "#4caf7a", slot: 0, span: 2 }, { n: "Kids World", c: "#e48bc4", slot: 2 }, { n: "Sports Pro", c: "#3d8fc4", slot: 3 },
+          { n: "Bookshelf", c: "#f2b51f", slot: 4 }, { n: "Jewellers", c: "#7b6fd6", slot: 5 }, { n: "Toy Box", c: "#e0533f", slot: 6, span: 2 } ],
+    2:  [ { n: "Food Court", c: "#e0533f", slot: 0, span: 2 }, { n: "Cinema", c: "#1f2430", slot: 2, span: 2 },
+          { n: "Bowling", c: "#7b6fd6", slot: 4 }, { n: "Noodle Bar", c: "#f2b51f", slot: 5 }, { n: "Gym", c: "#3d8fc4", slot: 6, span: 2 } ]
+  };
+  /* ----------------------------------------------------------------- */
+
+  var root = document.currentScript.previousElementSibling;
+  var svg = root.querySelector(".map svg"), map = root.querySelector(".map");
+  var NS = "http://www.w3.org/2000/svg";
+  var SLOTS = [ [40,30], [165,30], [335,30], [460,30], [40,205], [165,205], [335,205], [460,205] ];
+  var W = 115, H = 105, PIN = [70, 172];
+  var floor = "G", selected = null;
+
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(e); return e;
+  }
+
+  function drawMap() {
+    svg.innerHTML = "";
+    el("rect", { x: 25, y: 18, width: 560, height: 305, rx: 18, fill: "#e8e8ee", stroke: "#cfd2da", "stroke-width": 2 });
+    el("rect", { x: 30, y: 147, width: 550, height: 50, rx: 10, fill: "#d3d7e0" });            // main mall
+    el("rect", { x: 283, y: 25, width: 44, height: 290, rx: 10, fill: "#d3d7e0" });            // cross mall
+    el("circle", { cx: 305, cy: 172, r: 34, fill: "#c6cbd6" });                                // atrium
+    el("circle", { cx: 305, cy: 172, r: 18, fill: "#b4bac7" });
+    FLOORS[floor].forEach(function (s, i) {
+      var p = SLOTS[s.slot], w = s.span === 2 ? W * 2 + 10 : W;
+      var g = el("g", { class: "shop", "data-i": i, tabindex: 0, role: "button", "aria-label": s.n });
+      el("rect", { x: p[0], y: p[1], width: w, height: H, rx: 6, fill: s.c }, g);
+      var dark = s.c === "#1f2430";
+      var t = el("text", { x: p[0] + w / 2, y: p[1] + H / 2 + 5, "text-anchor": "middle", "font-size": s.n.length > 14 ? 11 : 13, fill: dark || s.c === "#3d8fc4" || s.c === "#7b6fd6" ? "#fff" : "#1f2430" }, g);
+      t.textContent = s.n;
+      g.addEventListener("click", function () { user(); pick(i); });
+    });
+    // amenities (shown on the Amenities tab)
+    [["WC", 548, 172, "#e0533f"], ["Lift", 305, 300, "#e0533f"], ["ATM", 305, 44, "#e0533f"], ["WC", 128, 172, "#e0533f"]].forEach(function (a) {
+      var g = el("g", { class: "amen" });
+      el("circle", { cx: a[1], cy: a[2], r: 14, fill: a[3], stroke: "#fff", "stroke-width": 2 }, g);
+      el("text", { x: a[1], y: a[2] + 4, "text-anchor": "middle", "font-size": 9, fill: "#fff" }, g).textContent = a[0];
+    });
+    el("path", { class: "route", d: "" });
+    var pin = el("g", { class: "pin" });
+    el("circle", { class: "pulse", cx: PIN[0], cy: PIN[1], r: 10, fill: "#e0242c", opacity: .5 }, pin);
+    el("circle", { cx: PIN[0], cy: PIN[1], r: 8, fill: "#e0242c", stroke: "#fff", "stroke-width": 3 }, pin);
+    root.querySelector(".floor-tag").textContent = floor === "1" || floor === "2" ? "Level " + floor : floor;
+    buildList();
+  }
+
+  function pick(i) {
+    selected = i;
+    var s = FLOORS[floor][i], p = SLOTS[s.slot], w = s.span === 2 ? W * 2 + 10 : W;
+    var doorX = p[0] + w / 2, doorY = p[1] < 147 ? p[1] + H : p[1];
+    svg.querySelector(".route").setAttribute("d", "M" + PIN[0] + " " + PIN[1] + " H" + doorX + " V" + doorY);
+    map.classList.add("picking");
+    [].forEach.call(svg.querySelectorAll(".shop"), function (g) { g.classList.toggle("sel", +g.dataset.i === i); });
+    [].forEach.call(root.querySelectorAll(".p-shop li"), function (li) { li.classList.toggle("sel", +li.dataset.i === i); });
+  }
+
+  function clearPick() {
+    selected = null; map.classList.remove("picking");
+    var r = svg.querySelector(".route"); if (r) r.setAttribute("d", "");
+  }
+
+  function buildList() {
+    var ul = root.querySelector(".p-shop ul"); ul.innerHTML = "";
+    FLOORS[floor].map(function (s, i) { return [s, i]; })
+      .sort(function (a, b) { return a[0].n.localeCompare(b[0].n); })
+      .forEach(function (x) {
+        var li = document.createElement("li"); li.dataset.i = x[1];
+        li.innerHTML = '<i style="background:' + x[0].c + '"></i>' + x[0].n + '<span>' + (floor === "1" || floor === "2" ? "L" + floor : floor) + '</span>';
+        li.addEventListener("click", function () { user(); pick(x[1]); });
+        ul.appendChild(li);
+      });
+  }
+
+  function setTab(t) {
+    [].forEach.call(root.querySelectorAll(".tab"), function (b) { b.classList.toggle("on", b.dataset.tab === t); });
+    root.querySelector(".p-shop").classList.toggle("on", t === "shop");
+    root.querySelector(".p-cust").classList.toggle("on", t === "cust");
+    map.classList.toggle("show-amen", t === "amen");
+    if (t !== "shop") clearPick();
+  }
+
+  function setFloor(f) {
+    floor = f; drawMap(); clearPick();
+    [].forEach.call(root.querySelectorAll(".floors b"), function (b) { b.classList.toggle("on", b.textContent === f); });
+  }
+
+  var floorsEl = root.querySelector(".floors");
+  Object.keys(FLOORS).sort(function (a, b) { return order(a) - order(b); }).forEach(function (f) {
+    var b = document.createElement("b"); b.textContent = f; b.setAttribute("role", "button");
+    b.addEventListener("click", function () { user(); setTab("floor"); setFloor(f); });
+    floorsEl.appendChild(b);
+  });
+  function order(f) { return { LG: -1, G: 0 }[f] !== undefined ? { LG: -1, G: 0 }[f] : +f; }
+  [].forEach.call(root.querySelectorAll("button.tab"), function (b) { b.addEventListener("click", function () { user(); setTab(b.dataset.tab); }); });
+
+  // live clock
+  var days = ["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY","SATURDAY"];
+  function tick() {
+    var d = new Date(), h = d.getHours(), m = d.getMinutes();
+    root.querySelector(".clock").textContent = ((h % 12) || 12) + ":" + (m < 10 ? "0" : "") + m;
+    root.querySelector(".ampm").textContent = h < 12 ? "AM" : "PM";
+    root.querySelector(".date").textContent = days[d.getDay()];
+  }
+  tick(); setInterval(tick, 10000);
+
+  // self-running demo with touch ripples; pauses for 15s after a real tap
+  var touch = root.querySelector(".touch"), idleUntil = 0;
+  function user() { idleUntil = Date.now() + 15000; }
+  function tap(target) {
+    var a = map.getBoundingClientRect(), b = target.getBoundingClientRect();
+    touch.style.left = (b.left + b.width / 2 - a.left) / a.width * 100 + "%";
+    touch.style.top = (b.top + b.height / 2 - a.top) / a.height * 100 + "%";
+    touch.classList.remove("go"); void touch.offsetWidth; touch.classList.add("go");
+  }
+  var steps = [
+    function () { setFloor("G"); setTab("shop"); },
+    function () { var li = root.querySelector('.p-shop li[data-i="4"]'); tap(li); pick(4); },
+    function () { var li = root.querySelector('.p-shop li[data-i="1"]'); tap(li); pick(1); },
+    function () { setTab("amen"); },
+    function () { setTab("floor"); setFloor("1"); },
+    function () { setTab("shop"); var li = root.querySelector('.p-shop li[data-i="3"]'); tap(li); pick(3); },
+    function () { setTab("cust"); }
+  ];
+  var step = 0;
+  setFloor("G"); setTab("shop");
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    setInterval(function () {
+      if (Date.now() < idleUntil) return;
+      steps[step](); step = (step + 1) % steps.length;
+    }, 2600);
+  }
+})();
+</script>
+</body>
+</html>
