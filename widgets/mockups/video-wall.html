@@ -6,7 +6,7 @@
 <title>Video Wall Mockup</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ------------------------------------------------------------------
    TenAV mockup: bank of screens (3x3 video wall) in a brand showroom.
@@ -45,13 +45,13 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding
 .vw-glow { transform-box: fill-box; transform-origin: center; animation: vw-breathe 6s ease-in-out infinite; }
 .vw-copy { position: absolute; left: 6%; top: 12%; color: #fff; text-shadow: 0 .3cqw 1.6cqw rgba(10,20,40,.35); }
 .vw-copy small { display: block; font-size: 1.9cqw; letter-spacing: .28em; text-transform: uppercase; color: #ffd59a; font-weight: 600; }
-.vw-copy b { display: block; margin: 1.6cqw 0 1.4cqw; font: 700 6.4cqw/1.02 "Space Grotesk", sans-serif; letter-spacing: -.02em; }
+.vw-copy b { display: block; margin: 1.6cqw 0 1.4cqw; font: 600 5.6cqw/1.1 "Poppins", sans-serif; letter-spacing: -.01em; }
 .vw-copy span { font-size: 2.2cqw; opacity: .9; }
 /* nine separate sources */
 .vw-tiles { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); }
 .vw-tile { position: relative; overflow: hidden; padding: 2cqw 2.4cqw; display: flex; flex-direction: column; justify-content: center; gap: .5cqw; font-size: 1.7cqw; color: #fff; opacity: 0; transform: scale(.92); transition: opacity .45s ease, transform .6s cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--i) * 90ms); }
 .vw.is-split .vw-tile { opacity: 1; transform: none; }
-.vw-tile b { font: 700 5cqw/1 "Space Grotesk", sans-serif; letter-spacing: -.02em; }
+.vw-tile b { font: 600 4.6cqw/1.05 "Poppins", sans-serif; letter-spacing: -.01em; }
 .vw-tile small { font-size: 1.35cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .85; font-weight: 600; }
 .vw-t-clock { background: #141b26; }
 .vw-t-clock span { opacity: .7; }
