@@ -175,20 +175,27 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 .vw-rail { position: absolute; left: 6%; right: 6%; top: 3.5%; height: .8%; background: #1b1b1d; border-radius: 2px; }
 .vw-rail i { position: absolute; top: 100%; width: 2.4%; height: 300%; background: linear-gradient(90deg, #2c2c2f, #131315); border-radius: .3cqw; transform: translateX(-50%) rotate(10deg); transform-origin: top; }
 .vw-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 22%; background: linear-gradient(180deg, #57534e, #33312e); box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
-.vw-floor::before { content: ""; position: absolute; left: 16%; right: 16%; top: 0; height: 55%; background: linear-gradient(180deg, rgba(198,255,61,.22), transparent); filter: blur(1.4cqw); }
-.vw-array { position: absolute; left: 19%; width: 62%; top: 13%; aspect-ratio: 16 / 9; background: #0b0b0d; padding: .45%; border-radius: .3cqw; box-shadow: 0 0 6cqw rgba(198,255,61,.14), 0 2.4cqw 4cqw rgba(0,0,0,.5); }
+.vw-floor::before { content: ""; position: absolute; left: 16%; right: 16%; top: 0; height: 55%; background: linear-gradient(180deg, rgba(255,150,90,.24), transparent); filter: blur(1.4cqw); }
+.vw-array { position: absolute; left: 19%; width: 62%; top: 13%; aspect-ratio: 16 / 9; background: #0b0b0d; padding: .45%; border-radius: .3cqw; box-shadow: 0 0 6cqw rgba(255,160,100,.18), 0 2.4cqw 4cqw rgba(0,0,0,.5); }
 .vw-screen { position: relative; width: 100%; height: 100%; overflow: hidden; background: #0e0e10; container-type: inline-size; }
 .vw-bezels { position: absolute; inset: 0; z-index: 2; pointer-events: none; background:
   linear-gradient(90deg, transparent calc(33.333% - 1.5px), #050506 calc(33.333% - 1.5px) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px) calc(66.666% - 1.5px), #050506 calc(66.666% - 1.5px) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)),
   linear-gradient(180deg, transparent calc(33.333% - 1.5px), #050506 calc(33.333% - 1.5px) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px) calc(66.666% - 1.5px), #050506 calc(66.666% - 1.5px) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)); }
-.vw-hero { position: absolute; inset: 0; background: radial-gradient(circle at 70% 50%, #1f2611, #0b0c08 70%); transition: opacity .6s ease .45s; }
+/* one image across all nine panels: a layered sunset landscape */
+.vw-hero { position: absolute; inset: 0; transition: opacity .6s ease .45s; }
 .vw.is-split .vw-hero { opacity: 0; transition-delay: 0s; }
-.vw-orb { position: absolute; left: 54%; top: 9%; width: 42cqw; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e3ff8a, #c6ff3d 45%, #7fb51a); box-shadow: 0 0 8cqw rgba(198,255,61,.35); animation: vw-breathe 6s ease-in-out infinite; }
-.vw-shoe { position: absolute; left: 44%; top: 20%; width: 56cqw; transform: rotate(-12deg); filter: drop-shadow(0 3cqw 2cqw rgba(0,0,0,.45)); animation: vw-float 5s ease-in-out infinite; }
-.vw-copy { position: absolute; left: 6%; top: 22%; color: #fff; }
-.vw-copy small { display: block; font-size: 2.4cqw; letter-spacing: .3em; text-transform: uppercase; color: #c6ff3d; font-weight: 600; }
-.vw-copy b { display: block; margin: 1.5cqw 0; font: 700 12cqw/.95 "Space Grotesk", sans-serif; letter-spacing: -.03em; }
-.vw-copy span { font-size: 2.6cqw; opacity: .8; }
+.vw-land { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.vw-ridge { animation: vw-drift 16s ease-in-out infinite alternate; }
+.vw-r1 { --dx: -18px; animation-duration: 22s; }
+.vw-r2 { --dx: -34px; animation-duration: 18s; }
+.vw-r3 { --dx: -54px; animation-duration: 14s; }
+.vw-r4 { --dx: -80px; animation-duration: 11s; }
+.vw-glow { transform-box: fill-box; transform-origin: center; animation: vw-breathe 6s ease-in-out infinite; }
+.vw-copy { position: absolute; left: 6%; top: 12%; color: #fff; text-shadow: 0 .3cqw 1.6cqw rgba(10,20,40,.35); }
+.vw-copy small { display: block; font-size: 1.9cqw; letter-spacing: .28em; text-transform: uppercase; color: #ffd59a; font-weight: 600; }
+.vw-copy b { display: block; margin: 1.6cqw 0 1.4cqw; font: 700 6.4cqw/1.02 "Space Grotesk", sans-serif; letter-spacing: -.02em; }
+.vw-copy span { font-size: 2.2cqw; opacity: .9; }
+/* nine separate sources */
 .vw-tiles { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); }
 .vw-tile { position: relative; overflow: hidden; padding: 2cqw 2.4cqw; display: flex; flex-direction: column; justify-content: center; gap: .5cqw; font-size: 1.7cqw; color: #fff; opacity: 0; transform: scale(.92); transition: opacity .45s ease, transform .6s cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--i) * 90ms); }
 .vw.is-split .vw-tile { opacity: 1; transform: none; }
@@ -200,43 +207,97 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
 .vw-t-weather svg { width: 7cqw; flex: none; }
 .vw-t-chart { background: #11151c; justify-content: space-between; }
 .vw-bars { display: flex; align-items: flex-end; gap: .8cqw; height: 9cqw; }
-.vw-bars i { flex: 1; height: 0; border-radius: .3cqw .3cqw 0 0; background: linear-gradient(180deg, #c6ff3d, #7fb51a); transition: height .8s cubic-bezier(.2,.7,.2,1); transition-delay: calc(.5s + var(--k) * 70ms); }
+.vw-bars i { flex: 1; height: 0; border-radius: .3cqw .3cqw 0 0; background: linear-gradient(180deg, #ffb36b, #d9644e); transition: height .8s cubic-bezier(.2,.7,.2,1); transition-delay: calc(.5s + var(--k) * 70ms); }
 .vw.is-split .vw-bars i { height: var(--h); }
 .vw-t-social { background: #fff; color: #15171c; }
 .vw-who { display: flex; align-items: center; gap: 1cqw; }
-.vw-who i { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; background: linear-gradient(135deg, #ff8a3d, #c6ff3d); }
+.vw-who i { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; background: linear-gradient(135deg, #c47a6c, #2f4a4f); }
 .vw-who b { font-family: inherit; font-size: 1.5cqw; line-height: 1; font-weight: 600; letter-spacing: 0; }
 .vw-post { margin: .4cqw 0; font-size: 1.75cqw; line-height: 1.3; font-weight: 500; }
 .vw-t-social em { font-style: normal; color: #f5a524; font-size: 1.5cqw; letter-spacing: .1em; }
-.vw-t-product { background: radial-gradient(circle at 50% 45%, #e3ff8a, #c6ff3d 60%, #9ad11f); align-items: center; color: #111; }
-.vw-t-product svg { width: 66%; transform: rotate(-8deg); filter: drop-shadow(0 1cqw .8cqw rgba(0,0,0,.25)); }
-.vw-t-product b { font-size: 2cqw; letter-spacing: .12em; }
-.vw-t-event { background: linear-gradient(135deg, #5b2ee0, #9a5cff); }
+.vw-t-product { background: #f3ede4; color: #1c2836; }
+.vw-t-product small { color: #c4573a; opacity: 1; }
+.vw-t-product b { font-size: 3.6cqw; }
+.vw-price { font-size: 2.4cqw; font-weight: 600; }
+.vw-sw { display: flex; gap: .7cqw; margin-top: .6cqw; }
+.vw-sw i { width: 1.8cqw; height: 1.8cqw; border-radius: 50%; box-shadow: 0 0 0 .2cqw #fff, 0 0 0 .3cqw rgba(0,0,0,.12); }
+.vw-t-event { background: linear-gradient(135deg, #1f4d52, #2f6b5a); }
 .vw-t-event b { font-size: 3.6cqw; }
 .vw-t-qr { background: #fff; color: #111; flex-direction: row; align-items: center; gap: 1.6cqw; font-size: 1.6cqw; font-weight: 600; line-height: 1.25; }
 .vw-qr { width: 11cqw; aspect-ratio: 1; flex: none; }
 .vw-qr svg { display: block; width: 100%; height: 100%; }
 .vw-t-promo { background: #0b0b0c; }
-.vw-t-promo b { color: #c6ff3d; font-size: 6cqw; }
-.vw-t-video { background: linear-gradient(120deg, #ff5f6d, #ffc371, #47c6ff); background-size: 300% 300%; animation: vw-pan 6s ease-in-out infinite alternate; justify-content: flex-end; }
+.vw-t-promo b { color: #ffb36b; font-size: 6cqw; }
+.vw-t-video { background: linear-gradient(120deg, #c47a6c, #f2a66e, #12304a); background-size: 300% 300%; animation: vw-pan 6s ease-in-out infinite alternate; justify-content: flex-end; }
 .vw-t-video svg { position: absolute; left: 50%; top: 42%; width: 5cqw; transform: translate(-50%, -50%); }
 .vw-t-video span { font-weight: 600; font-size: 1.6cqw; margin-bottom: 1.4cqw; }
 .vw-scrub { position: absolute; left: 2.4cqw; right: 2.4cqw; bottom: 1.4cqw; height: .4cqw; border-radius: 1cqw; overflow: hidden; background: rgba(255,255,255,.35); }
 .vw-scrub::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; animation: vw-scrub 9s linear infinite; }
+/* display plinths with stock on them */
 .vw-plinth { position: absolute; bottom: 5%; width: 15%; height: 15%; background: linear-gradient(90deg, #e2dfda, #f6f5f2 50%, #d6d2cc); box-shadow: 0 1.4cqw 2cqw rgba(0,0,0,.35); }
 .vw-plinth::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 1.2cqw; background: #fbfaf8; }
-.vw-plinth svg { position: absolute; left: 8%; width: 84%; bottom: calc(100% + .8cqw); filter: drop-shadow(0 .8cqw .6cqw rgba(0,0,0,.3)); }
+.vw-plinth svg { position: absolute; left: 10%; width: 80%; bottom: calc(100% + .9cqw); filter: drop-shadow(0 .8cqw .6cqw rgba(0,0,0,.3)); }
 .vw-plinth.l { left: 5%; }
 .vw-plinth.r { right: 5%; height: 11%; }
-@keyframes vw-breathe { 50% { transform: scale(1.05); } }
-@keyframes vw-float { 50% { transform: rotate(-9deg) translateY(-3%); } }
+@keyframes vw-drift { to { transform: translateX(var(--dx)); } }
+@keyframes vw-breathe { 50% { transform: scale(1.06); } }
 @keyframes vw-pan { to { background-position: 100% 100%; } }
 @keyframes vw-scrub { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 /* ==== /scene:vw ==== */
 
-/* ==== scene:lw ==== curved LED video wall in a corporate lobby (canvas) */
-.lw { background: #d9d6cf; }
-.lw canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* ==== scene:lw ==== LED video wall wrapping the corner of a corporate lobby */
+/* Room geometry (scene units): corner at x 50, eye level y 32, ceiling y 12, floor y 44.
+   Every plane uses the same perspective about the corner at eye level, so they line up. */
+.lw { background: linear-gradient(180deg, #e9e7e2 0%, #dcd9d2 51%, #cdc8bf 51%, #bdb7ad 100%); }
+.lw-plane { position: absolute; left: 50cqw; top: 32cqw; width: 66cqw; height: 66cqw; transform-origin: 0 0; }
+.lw-ceiling { transform: perspective(110cqw) translateY(-20cqw) rotateX(90deg) rotateZ(45deg);
+  background: radial-gradient(circle .8cqw, #fff 45%, rgba(255,255,255,.35) 65%, transparent 72%) 4cqw 4cqw / 11cqw 11cqw, linear-gradient(135deg, #f1f0ec, #e2e0da); }
+.lw-floor { transform: perspective(110cqw) translateY(12cqw) rotateX(90deg) rotateZ(45deg);
+  background: linear-gradient(90deg, rgba(90,80,70,.14) 1px, transparent 1px) 0 0 / 5.6cqw 5.6cqw, linear-gradient(180deg, rgba(90,80,70,.14) 1px, transparent 1px) 0 0 / 5.6cqw 5.6cqw, linear-gradient(135deg, #cdc8bf, #ddd9d2 60%, #d3cec6); }
+.lw-wall, .lw-mirror { position: absolute; width: 60cqw; height: 32cqw; overflow: hidden; }
+.lw-wall { top: 12cqw; }
+.lw-wall.lw-l { left: -10cqw; transform-origin: 60cqw 20cqw; transform: perspective(110cqw) rotateY(45deg);
+  background: linear-gradient(90deg, rgba(110,100,85,.2) 1px, transparent 1px) 0 0 / 6cqw 100%, linear-gradient(180deg, rgba(110,100,85,.16) 1px, transparent 1px) 0 0 / 100% 10.67cqw, linear-gradient(90deg, #ece8e0, #d4cec3); }
+.lw-wall.lw-r { left: 50cqw; transform-origin: 0 20cqw; transform: perspective(110cqw) rotateY(-45deg);
+  background: linear-gradient(90deg, rgba(110,100,85,.2) 1px, transparent 1px) 0 0 / 6cqw 100%, linear-gradient(180deg, rgba(110,100,85,.16) 1px, transparent 1px) 0 0 / 100% 10.67cqw, linear-gradient(90deg, #c9c2b6, #e6e1d8); }
+.lw-wall::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2cqw; background: linear-gradient(180deg, rgba(255,250,236,.95), rgba(255,250,236,0)); }
+.lw-wall::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1cqw; background: linear-gradient(0deg, rgba(60,50,40,.22), transparent); }
+.lw-led { position: absolute; top: 12%; height: 60%; width: 40cqw; overflow: hidden; background: #05070f; border: .3cqw solid #0b0c10; box-shadow: 0 0 4cqw .6cqw rgba(108,77,255,.3); }
+.lw-l .lw-led { right: 0; border-right: 0; }
+.lw-r .lw-led { left: 0; border-left: 0; }
+/* the picture: one feed, twice as wide as each half, so it flows round the corner */
+.lw-feed { position: absolute; top: 0; bottom: 0; left: 0; width: 200%; background: radial-gradient(ellipse 60% 90% at 50% 120%, #1a1450, #05070f 70%); }
+.lw-r .lw-feed { left: -100%; }
+.lw-blob { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
+.lw-b1 { left: 4%; top: -40%; width: 26cqw; height: 22cqw; background: radial-gradient(closest-side, rgba(108,77,255,.95), transparent); animation: lw-a 13s ease-in-out infinite alternate; }
+.lw-b2 { left: 34%; top: 15%; width: 30cqw; height: 20cqw; background: radial-gradient(closest-side, rgba(31,209,255,.85), transparent); animation: lw-b 17s ease-in-out infinite alternate; }
+.lw-b3 { left: 60%; top: -35%; width: 26cqw; height: 22cqw; background: radial-gradient(closest-side, rgba(255,63,164,.8), transparent); animation: lw-a 15s ease-in-out infinite alternate-reverse; }
+.lw-b4 { left: 80%; top: 25%; width: 20cqw; height: 17cqw; background: radial-gradient(closest-side, rgba(79,107,255,.9), transparent); animation: lw-b 12s ease-in-out infinite alternate-reverse; }
+.lw-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lw-lines path { fill: none; stroke: rgba(170,225,255,.7); stroke-width: 1.3; vector-effect: non-scaling-stroke; stroke-dasharray: 140 520; animation: lw-flow 6s linear infinite; }
+.lw-lines path:nth-child(2) { stroke: rgba(255,150,220,.6); animation-duration: 8s; }
+.lw-lines path:nth-child(3) { stroke: rgba(150,140,255,.7); animation-duration: 7s; animation-delay: -3s; }
+.lw-lines path:nth-child(4) { stroke: rgba(170,225,255,.35); animation-duration: 10s; animation-delay: -5s; }
+.lw-sweep { position: absolute; top: 0; bottom: 0; left: -20%; width: 20%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent); animation: lw-sweep 9s ease-in-out infinite; }
+.lw-msg { position: absolute; left: 0; right: 0; top: 50%; text-align: center; color: #fff; transform: translateY(-50%); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.7,.2,1); text-shadow: 0 0 2cqw rgba(108,77,255,.6); }
+.lw-msg small { display: block; font-size: 1.1cqw; letter-spacing: .4em; text-transform: uppercase; font-weight: 600; color: #b9c6ff; }
+.lw-msg b { display: block; margin-top: .9cqw; font: 700 4.4cqw/1 "Space Grotesk", sans-serif; letter-spacing: -.01em; }
+.lw-m2 { opacity: 0; transform: translateY(-30%); }
+.lw.is-m2 .lw-m1 { opacity: 0; transform: translateY(-70%); }
+.lw.is-m2 .lw-m2 { opacity: 1; transform: translateY(-50%); }
+.lw-seams { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.35) 1px, transparent 1px) 0 0 / 6.25% 100%, linear-gradient(180deg, rgba(0,0,0,.35) 1px, transparent 1px) 0 0 / 100% 25%; opacity: .45; }
+/* the wall's reflection in the polished floor */
+.lw-mirror { top: 44cqw; opacity: .45; }
+.lw-mirror.lw-l { left: -10cqw; transform-origin: 60cqw -12cqw; transform: perspective(110cqw) rotateY(45deg); }
+.lw-mirror.lw-r { left: 50cqw; transform-origin: 0 -12cqw; transform: perspective(110cqw) rotateY(-45deg); }
+.lw-mirror::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6cqw; background: linear-gradient(180deg, rgba(140,120,255,.3), transparent); }
+.lw-mirror i { position: absolute; top: 9cqw; height: 19.2cqw; width: 40cqw; background: linear-gradient(90deg, #6c4dff, #1fd1ff 45%, #ff3fa4 75%, #4f6bff); -webkit-mask-image: linear-gradient(180deg, #000, transparent 60%); mask-image: linear-gradient(180deg, #000, transparent 60%); filter: blur(1.1cqw); opacity: .55; }
+.lw-mirror.lw-l i { right: 0; }
+.lw-mirror.lw-r i { left: 0; background: linear-gradient(90deg, #1fd1ff, #ff3fa4 40%, #4f6bff); }
+@keyframes lw-a { to { transform: translate(14%, 30%) scale(1.15); } }
+@keyframes lw-b { to { transform: translate(-16%, -24%) scale(.9); } }
+@keyframes lw-flow { to { stroke-dashoffset: -660; } }
+@keyframes lw-sweep { to { transform: translateX(600%); } }
 /* ==== /scene:lw ==== */
 
 /* ==== scene:tk ==== wayfinding totem kiosk in a shopping centre */
@@ -374,44 +435,57 @@ body { margin: 0; padding: 48px 16px; background: #fff; font-family: "Poppins", 
   <div class="vw-floor"></div>
   <div class="vw-array"><div class="vw-screen">
     <div class="vw-hero">
-      <div class="vw-orb"></div>
-      <svg class="vw-shoe" viewBox="0 0 200 110"><use href="#vw-shoe"/></svg>
-      <div class="vw-copy"><small>New season</small><b>DROP 04</b><span>In store now · Stride</span></div>
+      <svg class="vw-land" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="vw-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#12304a"/><stop offset=".48" stop-color="#9c5f6e"/><stop offset=".7" stop-color="#f2a66e"/><stop offset="1" stop-color="#f7c98a"/></linearGradient>
+          <radialGradient id="vw-sun"><stop offset="0" stop-color="#fff4d8"/><stop offset=".3" stop-color="#ffd59a" stop-opacity=".9"/><stop offset="1" stop-color="#ffb070" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="1600" height="900" fill="url(#vw-sky)"/>
+        <circle class="vw-glow" cx="1090" cy="520" r="300" fill="url(#vw-sun)"/>
+        <circle cx="1090" cy="520" r="78" fill="#fff3d4"/>
+        <path class="vw-ridge vw-r1" d="M-120 600C40 540 180 500 320 530S560 430 700 450 940 540 1080 510 1300 410 1440 440 1640 520 1720 500V900H-120Z" fill="#c47a6c"/>
+        <path class="vw-ridge vw-r2" d="M-120 650C60 600 220 640 380 600S640 640 800 610 1060 560 1200 600 1500 640 1720 610V900H-120Z" fill="#8a5560"/>
+        <path class="vw-ridge vw-r3" d="M-120 720C80 670 300 720 480 690S760 650 940 690 1260 720 1440 680 1640 690 1720 700V900H-120Z" fill="#4a3a52"/>
+        <path class="vw-ridge vw-r4" d="M-120 800C120 760 380 800 620 775S1000 740 1240 780 1560 790 1720 770V900H-120Z" fill="#1c2836"/>
+        <path d="M940 330q14-12 28 0q14-12 28 0M1012 292q10-9 20 0q10-9 20 0" fill="none" stroke="#3b2a33" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <div class="vw-copy"><small>Northfell · Autumn / Winter</small><b>Built for the<br>long way round</b><span>New season outerwear, in store now</span></div>
     </div>
     <div class="vw-tiles">
       <div class="vw-tile vw-t-clock" style="--i:0"><small>Store time</small><b class="vw-time">10:24</b><span class="vw-date">Thursday 2 October</span></div>
       <div class="vw-tile vw-t-weather" style="--i:1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#ffd54a"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="#ffd54a" stroke-width="2" stroke-linecap="round"/></svg><div><b>18°</b><br><span>Sunny spells</span></div></div>
       <div class="vw-tile vw-t-chart" style="--i:2"><small>Footfall today</small><div class="vw-bars"><i style="--h:35%;--k:0"></i><i style="--h:52%;--k:1"></i><i style="--h:44%;--k:2"></i><i style="--h:70%;--k:3"></i><i style="--h:92%;--k:4"></i><i style="--h:64%;--k:5"></i><i style="--h:78%;--k:6"></i></div></div>
-      <div class="vw-tile vw-t-social" style="--i:1"><div class="vw-who"><i></i><b>@stride.store</b></div><div class="vw-post">“Drop 04 is unreal. Comfiest pair I own.”</div><em>★★★★★</em></div>
-      <div class="vw-tile vw-t-product" style="--i:2"><svg viewBox="0 0 200 110"><use href="#vw-shoe"/></svg><b>DROP 04</b></div>
-      <div class="vw-tile vw-t-event" style="--i:3"><small>Live tonight</small><b>Custom lab</b><span>18:00 · Level 1</span></div>
-      <div class="vw-tile vw-t-qr" style="--i:2"><div class="vw-qr"></div><span>Scan to shop<br>the drop</span></div>
+      <div class="vw-tile vw-t-social" style="--i:1"><div class="vw-who"><i></i><b>@northfell</b></div><div class="vw-post">“Kept me bone dry on the whole Snowdon walk.”</div><em>★★★★★</em></div>
+      <div class="vw-tile vw-t-product" style="--i:2"><small>New · Waterproof</small><b>Ridge Jacket</b><span class="vw-price">£149</span><div class="vw-sw"><i style="background:#c47a6c"></i><i style="background:#2f4a4f"></i><i style="background:#e8e0d2"></i><i style="background:#1c2836"></i><i style="background:#d9a441"></i></div></div>
+      <div class="vw-tile vw-t-event" style="--i:3"><small>Kit talk tonight</small><b>Wild camping</b><span>18:00 · Level 1</span></div>
+      <div class="vw-tile vw-t-qr" style="--i:2"><div class="vw-qr"></div><span>Scan to shop<br>the collection</span></div>
       <div class="vw-tile vw-t-promo" style="--i:3"><small>Members</small><b>−20%</b><span>This weekend only</span></div>
-      <div class="vw-tile vw-t-video" style="--i:4"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,.35)"/><path d="M10 8l6 4-6 4z" fill="#fff"/></svg><span>Behind the drop</span><i class="vw-scrub"></i></div>
+      <div class="vw-tile vw-t-video" style="--i:4"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,.35)"/><path d="M10 8l6 4-6 4z" fill="#fff"/></svg><span>Behind the collection</span><i class="vw-scrub"></i></div>
     </div>
     <div class="vw-bezels"></div>
   </div></div>
-  <div class="vw-plinth l"><svg viewBox="0 0 200 110"><use href="#vw-shoe"/></svg></div>
-  <div class="vw-plinth r"><svg viewBox="0 0 100 46"><rect x="8" y="30" width="84" height="14" rx="3" fill="#2b2b2b"/><rect x="12" y="17" width="76" height="14" rx="3" fill="#f4f4f1"/><rect x="16" y="4" width="68" height="14" rx="3" fill="#c6ff3d"/></svg></div>
-  <svg width="0" height="0" style="position:absolute">
-    <defs>
-      <g id="vw-shoe">
-        <path d="M14 80C14 60 26 46 44 44L70 41C78 58 104 62 124 60C150 58 178 66 186 82V90H14Z" fill="#f4f4f1"/>
-        <path d="M14 80C14 64 22 52 34 48L40 88H14Z" fill="#1d1d1f"/>
-        <path d="M148 62C166 64 180 72 186 82V88H140C141 78 144 69 148 62Z" fill="#1d1d1f"/>
-        <path d="M14 86H186V92H14Z" fill="#c6ff3d"/>
-        <path d="M14 92H186V96C186 101 182 104 176 104H22C17 104 14 101 14 96Z" fill="#111"/>
-        <g stroke="#1d1d1f" stroke-width="3" stroke-linecap="round"><path d="M84 47L95 58"/><path d="M94 44L105 56"/><path d="M104 42L113 54"/></g>
-        <circle cx="60" cy="68" r="7" fill="none" stroke="#c6ff3d" stroke-width="3.5"/>
-      </g>
-    </defs>
-  </svg>
+  <div class="vw-plinth l"><svg viewBox="0 0 100 46"><rect x="8" y="30" width="84" height="14" rx="3" fill="#2f4a4f"/><rect x="12" y="17" width="76" height="14" rx="3" fill="#e8e0d2"/><rect x="16" y="4" width="68" height="14" rx="3" fill="#c47a6c"/></svg></div>
+  <div class="vw-plinth r"><svg viewBox="0 0 100 60"><rect x="8" y="22" width="84" height="36" rx="2" fill="#b98a5e"/><rect x="8" y="31" width="84" height="5" fill="#1c2836"/><rect x="22" y="2" width="56" height="21" rx="2" fill="#caa173"/><rect x="22" y="8" width="56" height="4" fill="#1c2836"/></svg></div>
 </div>
 <!-- /scene:vw -->
 
 <!-- scene:lw -->
 <div class="ms-scene lw" data-scene="lw" data-caption="Corporate lobby">
-  <canvas></canvas>
+  <div class="lw-plane lw-ceiling"></div>
+  <div class="lw-plane lw-floor"></div>
+  <div class="lw-mirror lw-l"><i></i></div>
+  <div class="lw-mirror lw-r"><i></i></div>
+  <div class="lw-wall lw-l">
+    <div class="lw-led"><div class="lw-feed">
+      <i class="lw-blob lw-b1"></i><i class="lw-blob lw-b2"></i><i class="lw-blob lw-b3"></i><i class="lw-blob lw-b4"></i>
+      <svg class="lw-lines" viewBox="0 0 800 200" preserveAspectRatio="none"><path d="M0 150C150 90 260 170 400 110S650 60 800 120"/><path d="M0 172C170 122 300 192 420 142S660 92 800 152"/><path d="M0 118C140 68 280 138 400 78S640 38 800 88"/><path d="M0 60C180 100 300 30 440 70S680 130 800 60"/></svg>
+      <i class="lw-sweep"></i>
+      <div class="lw-msg lw-m1"><small>Northgate Group</small><b>Building what's next</b></div>
+      <div class="lw-msg lw-m2"><small>Innovation Week · Day 2</small><b>Keynote 10:00 · Atrium</b></div>
+      <i class="lw-seams"></i>
+    </div></div>
+  </div>
+  <div class="lw-wall lw-r"><div class="lw-led"></div></div>
 </div>
 <!-- /scene:lw -->
 
@@ -591,214 +665,12 @@ function videoWall(el) {
 
 /* ==== scene:lw ==== */
 function ledWall(el) {
-  var S = {
-    eye: 1.6, focal: .5, centerX: .5, horizon: .5,
-    left: [-8.6, 12.8], right: [3.4, 3.7], sag: 1.5,   // wall curve in plan view (metres)
-    ledBottom: .3, ledTop: 3.9, ceiling: 5.4, wallFrom: -.06, wallTo: 1.14,
-    people: [[-6.4, 11.4, 1.78, "m"], [-5.2, 10.6, 1.66, "f"], [-2, 6.9, 1.8, "m"], [-1.25, 6.7, 1.65, "f"], [.15, 6.7, 1.68, "f"]]
-  };
-  var canvas = el.querySelector("canvas"), ctx = canvas.getContext("2d");
-  var W = 0, H, F, CX, HY, bg, people, refl, rc, on = false, raf = 0;
-  var seed = 7;
-  function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
-
-  function plan(t) { // quadratic Bezier for the wall in plan view
-    var L = S.left, R = S.right, mx = (L[0] + R[0]) / 2, mz = (L[1] + R[1]) / 2;
-    var dx = R[0] - L[0], dz = R[1] - L[1], len = Math.hypot(dx, dz), nx = -dz / len, nz = dx / len;
-    if (nx * -mx + nz * -mz > 0) { nx = -nx; nz = -nz; }
-    var c = [mx + nx * S.sag * 2, mz + nz * S.sag * 2], a = (1 - t) * (1 - t), b = 2 * t * (1 - t), d = t * t;
-    return [a * L[0] + b * c[0] + d * R[0], a * L[1] + b * c[1] + d * R[1], nx, nz];
-  }
-  function proj(x, y, z) { z = Math.max(z, .4); return [CX + F * x / z, HY - F * (y - S.eye) / z]; }
-  function wallPt(t, y) { var p = plan(t); return [p[0], y, p[1]]; }
-  function P(t, y) { return proj.apply(null, wallPt(t, y)); }
-
-  // content shown on the wall, drawn flat then projected onto the curve
-  var CW = 2400, CH = 600;
-  var content = document.createElement("canvas"); content.width = CW; content.height = CH;
-  var cc = content.getContext("2d");
-  var flipped = document.createElement("canvas"); flipped.width = CW; flipped.height = CH;
-  var fc = flipped.getContext("2d");
-  var city = document.createElement("canvas"); city.width = CW; city.height = CH;
-  (function () {
-    var g = city.getContext("2d"), sky = g.createLinearGradient(0, 0, 0, CH);
-    sky.addColorStop(0, "#07142f"); sky.addColorStop(.45, "#1d4a8c"); sky.addColorStop(.75, "#4a7fc0"); sky.addColorStop(1, "#0d1b33");
-    g.fillStyle = sky; g.fillRect(0, 0, CW, CH);
-    var sun = g.createRadialGradient(CW * .08, CH * .72, 0, CW * .08, CH * .72, CW * .3);
-    sun.addColorStop(0, "rgba(255,150,100,.95)"); sun.addColorStop(.4, "rgba(240,120,140,.45)"); sun.addColorStop(1, "rgba(240,120,140,0)");
-    g.fillStyle = sun; g.fillRect(0, 0, CW, CH);
-    for (var i = 0; i < 140; i++) { g.fillStyle = "rgba(255,255,255," + rnd() * .6 + ")"; g.fillRect(rnd() * CW, rnd() * CH * .4, 2, 2); }
-    [[.62, "#1a2c55", .3], [.7, "#0f1d3d", .55], [.8, "#08122a", .9]].forEach(function (layer) {
-      var x = 0;
-      while (x < CW) {
-        var w = 30 + rnd() * 70, centre = 1 - Math.abs(x / CW - .26) * 1.6;
-        var h = CH * (.1 + rnd() * .22 + Math.max(0, centre) * rnd() * .45 * layer[2]), top = CH * layer[0] - h + CH * .2;
-        g.fillStyle = layer[1]; g.fillRect(x, top, w, CH - top);
-        if (rnd() > .7) g.fillRect(x + w * .4, top - h * .15, w * .2, h * .15);
-        for (var wy = top + 8; wy < CH; wy += 9) for (var wx = x + 5; wx < x + w - 4; wx += 8) {
-          if (rnd() > .62) { g.fillStyle = rnd() > .3 ? "rgba(255,220,150," + (.4 + rnd() * .5) * layer[2] + ")" : "rgba(120,220,255," + .7 * layer[2] + ")"; g.fillRect(wx, wy, 3, 4); }
-        }
-        x += w + 2 + rnd() * 8;
-      }
-    });
-  })();
-  var streaks = [], sparks = [], i;
-  for (i = 0; i < 26; i++) streaks.push({ y: .35 + rnd() * .6, bend: (rnd() - .5) * .5, speed: .04 + rnd() * .08, off: rnd(), len: .15 + rnd() * .3, hue: rnd() > .25 ? 190 + rnd() * 20 : 320, w: 1 + rnd() * 3 });
-  for (i = 0; i < 70; i++) sparks.push({ x: rnd(), y: rnd() * .7, s: 1 + rnd() * 3, v: .01 + rnd() * .03, p: rnd() * 6 });
-
-  function drawContent(t) {
-    cc.globalCompositeOperation = "source-over";
-    cc.drawImage(city, 0, 0);
-    cc.globalCompositeOperation = "lighter";
-    streaks.forEach(function (s) {
-      var head = ((t * s.speed + s.off) % 1.4) - .2, tail = head - s.len;
-      cc.beginPath();
-      for (var k = 0; k <= 20; k++) {
-        var u = tail + (head - tail) * k / 20, x = u * CW, y = (s.y - u * .35 + Math.sin(u * 3 + s.bend * 6) * s.bend * .2) * CH;
-        k ? cc.lineTo(x, y) : cc.moveTo(x, y);
-      }
-      cc.strokeStyle = "hsla(" + s.hue + ",100%,60%,.18)"; cc.lineWidth = s.w * 6; cc.stroke();
-      cc.strokeStyle = "hsla(" + s.hue + ",100%,80%,.9)"; cc.lineWidth = s.w; cc.stroke();
-    });
-    sparks.forEach(function (p) {
-      cc.fillStyle = "rgba(160,230,255," + (.4 + .6 * Math.abs(Math.sin(t * 1.5 + p.p))) + ")";
-      cc.beginPath(); cc.arc(((p.x + t * p.v) % 1) * CW, p.y * CH, p.s, 0, 7); cc.fill();
-    });
-    cc.globalCompositeOperation = "source-over";
-    cc.shadowColor = "rgba(0,10,40,.6)"; cc.shadowBlur = 14;
-    cc.fillStyle = "#3dd6ff"; cc.fillRect(CW * .5, CH * .15, 60, 5);
-    cc.fillStyle = "rgba(255,255,255,.8)"; cc.font = "600 26px 'Space Grotesk', sans-serif"; cc.fillText("NORTHGATE GROUP", CW * .5, CH * .15 + 44);
-    cc.fillStyle = "#fff"; cc.font = "700 80px 'Space Grotesk', sans-serif"; cc.fillText("Building smarter cities", CW * .5, CH * .15 + 128);
-    cc.shadowBlur = 0;
-    fc.setTransform(1, 0, 0, -1, 0, CH); fc.drawImage(content, 0, 0);
-  }
-
-  function strip(g, from, to, y0, y1, color) {
-    var k, n = 120, p;
-    g.fillStyle = color; g.beginPath();
-    for (k = 0; k <= n; k++) { p = P(from + (to - from) * k / n, y1); k ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]); }
-    for (k = n; k >= 0; k--) { p = P(from + (to - from) * k / n, y0); g.lineTo(p[0], p[1]); }
-    g.fill();
-  }
-  function drawRoom() {
-    bg = document.createElement("canvas"); bg.width = W; bg.height = H;
-    var g = bg.getContext("2d"), i, k, p;
-    var ceil = g.createLinearGradient(0, 0, 0, HY); ceil.addColorStop(0, "#d8d6d1"); ceil.addColorStop(1, "#ecebe7");
-    g.fillStyle = ceil; g.fillRect(0, 0, W, HY);
-    var floor = g.createLinearGradient(0, HY, 0, H); floor.addColorStop(0, "#d6d3cd"); floor.addColorStop(1, "#a9a49b");
-    g.fillStyle = floor; g.fillRect(0, HY, W, H - HY);
-    g.strokeStyle = "rgba(255,255,255,.18)"; g.lineWidth = 1;
-    for (i = 0; i < 40; i++) { var vy = HY + rnd() * (H - HY), vx = rnd() * W; g.beginPath(); g.moveTo(vx, vy); g.bezierCurveTo(vx + 60, vy + 10, vx + 120, vy - 6, vx + 200, vy + 14); g.stroke(); }
-    // glass facade on the left
-    var zf = 18, top = proj(0, S.ceiling, zf)[1], bot = proj(0, 0, zf)[1], wallLeft = P(S.wallFrom, 0)[0];
-    var win = g.createLinearGradient(0, top, 0, bot); win.addColorStop(0, "#f7fafc"); win.addColorStop(.6, "#e3ecf1"); win.addColorStop(1, "#cfd8dc");
-    g.fillStyle = win; g.fillRect(0, top, wallLeft + 2, bot - top);
-    g.fillStyle = "#9aa2a8";
-    for (var mx = -18; mx < 0; mx += 2.2) { var px = proj(mx, 0, zf)[0]; if (px < wallLeft) g.fillRect(px, top, Math.max(2, F * .08 / zf), bot - top); }
-    g.fillRect(0, proj(0, 3.4, zf)[1], wallLeft, 2);
-    var dx = proj(-14, 0, zf)[0], dw = F * 2.6 / zf, dt = proj(0, 2.6, zf)[1];
-    g.fillStyle = "rgba(160,170,175,.5)"; g.fillRect(dx, dt, dw, bot - dt);
-    g.fillStyle = "#8d959b"; g.fillRect(dx - 2, dt - 6, dw + 4, 6); g.fillRect(dx + dw / 2 - 1, dt, 2, bot - dt);
-    // ceiling light strips
-    [-2.4, 2.4].forEach(function (lx) {
-      var a = proj(lx - .12, S.ceiling, 2.6), b = proj(lx + .12, S.ceiling, 2.6), c = proj(lx + .12, S.ceiling, 15), d = proj(lx - .12, S.ceiling, 15);
-      g.fillStyle = "rgba(255,255,255,.95)"; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.lineTo(c[0], c[1]); g.lineTo(d[0], d[1]); g.fill();
-    });
-    // curved back wall with panel joints
-    var N = 260;
-    for (i = 0; i < N; i++) {
-      var t0 = S.wallFrom + (S.wallTo - S.wallFrom) * i / N, t1 = S.wallFrom + (S.wallTo - S.wallFrom) * (i + 1) / N;
-      var p0b = P(t0, 0), p0t = P(t0, S.ceiling), p1b = P(t1, 0), p1t = P(t1, S.ceiling), shade = 236 - Math.round((t0 - S.wallFrom) * 14);
-      g.fillStyle = "rgb(" + shade + "," + (shade - 6) + "," + (shade - 18) + ")";
-      g.beginPath(); g.moveTo(p0t[0], p0t[1]); g.lineTo(p1t[0] + .5, p1t[1]); g.lineTo(p1b[0] + .5, p1b[1]); g.lineTo(p0b[0], p0b[1]); g.fill();
-    }
-    g.strokeStyle = "rgba(150,140,120,.35)"; g.lineWidth = 1;
-    for (var tt = S.wallFrom; tt <= S.wallTo; tt += .045) { var a1 = P(tt, 0), a2 = P(tt, S.ceiling); g.beginPath(); g.moveTo(a1[0], a1[1]); g.lineTo(a2[0], a2[1]); g.stroke(); }
-    [1.2, 2.4, 3.6, 4.8].forEach(function (hy) {
-      g.beginPath();
-      for (var k = 0; k <= 80; k++) { var p = P(S.wallFrom + (S.wallTo - S.wallFrom) * k / 80, hy); k ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]); }
-      g.stroke();
-    });
-    g.strokeStyle = "rgba(255,248,230,.9)"; g.lineWidth = Math.max(2, W / 500); g.beginPath();
-    for (k = 0; k <= 80; k++) { p = P(S.wallFrom + (S.wallTo - S.wallFrom) * k / 80, S.ceiling - .05); k ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]); }
-    g.stroke();
-    // LED casing and its near end cap
-    strip(g, -.012, 1, S.ledBottom - .1, S.ledTop + .08, "#0b0c10");
-    var e = plan(1), d1 = .32;
-    var ct = proj(e[0], S.ledTop + .08, e[1]), cb = proj(e[0], S.ledBottom - .1, e[1]);
-    var nt = proj(e[0] - e[2] * d1, S.ledTop + .08, e[1] - e[3] * d1), nb = proj(e[0] - e[2] * d1, S.ledBottom - .1, e[1] - e[3] * d1);
-    g.fillStyle = "#16171c"; g.beginPath(); g.moveTo(ct[0], ct[1]); g.lineTo(nt[0], nt[1]); g.lineTo(nb[0], nb[1]); g.lineTo(cb[0], cb[1]); g.fill();
-    g.globalAlpha = .25; strip(g, 0, 1, -.001, 0, "#000"); g.globalAlpha = 1;
-  }
-
-  function person(g, h, type) {
-    var suit = type === "m" ? "#1d2433" : "#22252e", skin = "#c99a7c";
-    g.fillStyle = "rgba(0,0,0,.18)"; g.beginPath(); g.ellipse(0, 0, h * .16, h * .02, 0, 0, 7); g.fill();
-    if (type === "m") {
-      g.fillStyle = "#14161c"; g.fillRect(-h * .075, -h * .48, h * .065, h * .47); g.fillRect(h * .01, -h * .48, h * .065, h * .47);
-      g.fillRect(-h * .085, -h * .02, h * .08, h * .02); g.fillRect(h * .01, -h * .02, h * .085, h * .02);
-    } else {
-      g.fillStyle = skin; g.fillRect(-h * .05, -h * .3, h * .035, h * .28); g.fillRect(h * .015, -h * .3, h * .035, h * .28);
-      g.fillStyle = "#111"; g.fillRect(-h * .06, -h * .02, h * .05, h * .02); g.fillRect(h * .01, -h * .02, h * .05, h * .02);
-      g.fillStyle = suit; g.beginPath(); g.moveTo(-h * .09, -h * .52); g.lineTo(h * .09, -h * .52); g.lineTo(h * .1, -h * .3); g.lineTo(-h * .1, -h * .3); g.fill();
-    }
-    g.fillStyle = suit; g.beginPath();
-    g.moveTo(-h * .1, -h * .46); g.lineTo(-h * .13, -h * .78); g.quadraticCurveTo(-h * .12, -h * .83, -h * .05, -h * .835);
-    g.lineTo(h * .05, -h * .835); g.quadraticCurveTo(h * .12, -h * .83, h * .13, -h * .78); g.lineTo(h * .1, -h * .46); g.fill();
-    g.fillStyle = "#e9edf2"; g.beginPath(); g.moveTo(-h * .03, -h * .83); g.lineTo(h * .03, -h * .83); g.lineTo(0, -h * .72); g.fill();
-    g.fillStyle = suit; g.fillRect(-h * .15, -h * .78, h * .04, h * .32); g.fillRect(h * .11, -h * .78, h * .04, h * .32);
-    g.fillStyle = skin; g.fillRect(-h * .025, -h * .87, h * .05, h * .05);
-    g.beginPath(); g.ellipse(0, -h * .92, h * .055, h * .07, 0, 0, 7); g.fill();
-    g.fillStyle = type === "m" ? "#1b1410" : "#2a1c14";
-    g.beginPath(); g.ellipse(0, -h * .955, h * .058, h * .04, 0, Math.PI, 0); g.fill();
-    if (type === "f") { g.beginPath(); g.ellipse(0, -h * .88, h * .07, h * .1, 0, Math.PI * 1.05, -Math.PI * .05); g.fill(); g.fillRect(-h * .068, -h * .9, h * .03, h * .12); g.fillRect(h * .038, -h * .9, h * .03, h * .12); }
-  }
-  function drawPeople() {
-    people = document.createElement("canvas"); people.width = W; people.height = H;
-    var g = people.getContext("2d");
-    S.people.slice().sort(function (a, b) { return b[1] - a[1]; }).forEach(function (p) {
-      var feet = proj(p[0], 0, p[1]), h = F * p[2] / p[1];
-      g.save(); g.globalAlpha = .16; g.translate(feet[0], feet[1]); g.scale(1, -.9); person(g, h, p[3]); g.restore();
-      g.save(); g.translate(feet[0], feet[1]); person(g, h, p[3]); g.restore();
-    });
-  }
-
-  function frame(time) {
-    if (!W) return;
-    drawContent(time / 1000);
-    ctx.drawImage(bg, 0, 0);
-    rc.clearRect(0, 0, W, H);
-    var N = Math.round(W / 3), prev = null;
-    for (var i = 0; i <= N; i++) {
-      var p = plan(i / N), top = proj(p[0], S.ledTop, p[1]), bot = proj(p[0], S.ledBottom, p[1]);
-      var rt = proj(p[0], -S.ledTop, p[1]), rb = proj(p[0], -S.ledBottom, p[1]);
-      if (prev) {
-        var x = prev[0], w = top[0] - prev[0] + .8, sx = (i - 1) / N * CW, sw = CW / N + .5;
-        ctx.drawImage(content, sx, 0, sw, CH, x, top[1], w, bot[1] - top[1]);
-        rc.drawImage(flipped, sx, 0, sw, CH, x, rb[1], w, rt[1] - rb[1]);
-      }
-      prev = top;
-    }
-    ctx.globalAlpha = .16; ctx.drawImage(refl, 0, 0); ctx.globalAlpha = 1;
-    var fade = ctx.createLinearGradient(0, HY + H * .12, 0, H);
-    fade.addColorStop(0, "rgba(190,186,178,0)"); fade.addColorStop(1, "rgba(170,165,156,.9)");
-    ctx.fillStyle = fade; ctx.fillRect(0, HY + H * .12, W, H);
-    ctx.drawImage(people, 0, 0);
-  }
-  function resize() {
-    var dpr = Math.min(window.devicePixelRatio || 1, 2), w = el.clientWidth, h = el.clientHeight;
-    if (!w || !h) return;
-    W = canvas.width = Math.round(w * dpr); H = canvas.height = Math.round(h * dpr);
-    F = W * S.focal; CX = W * S.centerX; HY = H * S.horizon;
-    refl = document.createElement("canvas"); refl.width = W; refl.height = H; rc = refl.getContext("2d");
-    seed = 11; drawRoom(); drawPeople(); frame(performance.now());
-  }
-  new ResizeObserver(resize).observe(el);
-  if (document.fonts) document.fonts.ready.then(function () { if (W) frame(performance.now()); });
-  function loop(t) { if (!on) return; frame(t); raf = requestAnimationFrame(loop); }
+  // one feed drives both halves of the wall, so the picture runs unbroken round the corner
+  el.querySelector(".lw-r .lw-led").innerHTML = el.querySelector(".lw-l .lw-led").innerHTML;
+  var T = [];
   return {
-    enter: function () { on = true; cancelAnimationFrame(raf); if (reduced) { frame(0); return; } raf = requestAnimationFrame(loop); },
-    leave: function () { on = false; cancelAnimationFrame(raf); }
+    enter: function () { el.classList.remove("is-m2"); T.push(setTimeout(function () { el.classList.add("is-m2"); }, 4200)); },
+    leave: function () { T.forEach(clearTimeout); T = []; }
   };
 }
 /* ==== /scene:lw ==== */

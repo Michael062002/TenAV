@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LED Wall Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ------------------------------------------------------------------
+   TenAV mockup: LED video wall wrapping the corner of a corporate lobby.
+   The same scene as in widgets/media-showcase.html, as a standalone
+   image-style mockup. It plays on a loop by itself; no interactivity.
+   ------------------------------------------------------------------ */
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; box-sizing: border-box; background: #eef0f6; font-family: "Poppins", system-ui, sans-serif; }
+.mk { position: relative; margin: 0; width: min(1100px, 100%); aspect-ratio: 16 / 10; overflow: hidden; border-radius: 22px; box-shadow: 0 30px 60px -20px rgba(20,20,40,.35); }
+.mk, .mk *, .mk *::before, .mk *::after { box-sizing: border-box; }
+.mk .ms-scene { position: absolute; inset: 0; overflow: hidden; container-type: inline-size; }
+
+/* Room geometry (scene units): corner at x 50, eye level y 32, ceiling y 12, floor y 44.
+   Every plane uses the same perspective about the corner at eye level, so they line up. */
+.lw { background: linear-gradient(180deg, #e9e7e2 0%, #dcd9d2 51%, #cdc8bf 51%, #bdb7ad 100%); }
+.lw-plane { position: absolute; left: 50cqw; top: 32cqw; width: 66cqw; height: 66cqw; transform-origin: 0 0; }
+.lw-ceiling { transform: perspective(110cqw) translateY(-20cqw) rotateX(90deg) rotateZ(45deg);
+  background: radial-gradient(circle .8cqw, #fff 45%, rgba(255,255,255,.35) 65%, transparent 72%) 4cqw 4cqw / 11cqw 11cqw, linear-gradient(135deg, #f1f0ec, #e2e0da); }
+.lw-floor { transform: perspective(110cqw) translateY(12cqw) rotateX(90deg) rotateZ(45deg);
+  background: linear-gradient(90deg, rgba(90,80,70,.14) 1px, transparent 1px) 0 0 / 5.6cqw 5.6cqw, linear-gradient(180deg, rgba(90,80,70,.14) 1px, transparent 1px) 0 0 / 5.6cqw 5.6cqw, linear-gradient(135deg, #cdc8bf, #ddd9d2 60%, #d3cec6); }
+.lw-wall, .lw-mirror { position: absolute; width: 60cqw; height: 32cqw; overflow: hidden; }
+.lw-wall { top: 12cqw; }
+.lw-wall.lw-l { left: -10cqw; transform-origin: 60cqw 20cqw; transform: perspective(110cqw) rotateY(45deg);
+  background: linear-gradient(90deg, rgba(110,100,85,.2) 1px, transparent 1px) 0 0 / 6cqw 100%, linear-gradient(180deg, rgba(110,100,85,.16) 1px, transparent 1px) 0 0 / 100% 10.67cqw, linear-gradient(90deg, #ece8e0, #d4cec3); }
+.lw-wall.lw-r { left: 50cqw; transform-origin: 0 20cqw; transform: perspective(110cqw) rotateY(-45deg);
+  background: linear-gradient(90deg, rgba(110,100,85,.2) 1px, transparent 1px) 0 0 / 6cqw 100%, linear-gradient(180deg, rgba(110,100,85,.16) 1px, transparent 1px) 0 0 / 100% 10.67cqw, linear-gradient(90deg, #c9c2b6, #e6e1d8); }
+.lw-wall::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2cqw; background: linear-gradient(180deg, rgba(255,250,236,.95), rgba(255,250,236,0)); }
+.lw-wall::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1cqw; background: linear-gradient(0deg, rgba(60,50,40,.22), transparent); }
+.lw-led { position: absolute; top: 12%; height: 60%; width: 40cqw; overflow: hidden; background: #05070f; border: .3cqw solid #0b0c10; box-shadow: 0 0 4cqw .6cqw rgba(108,77,255,.3); }
+.lw-l .lw-led { right: 0; border-right: 0; }
+.lw-r .lw-led { left: 0; border-left: 0; }
+/* the picture: one feed, twice as wide as each half, so it flows round the corner */
+.lw-feed { position: absolute; top: 0; bottom: 0; left: 0; width: 200%; background: radial-gradient(ellipse 60% 90% at 50% 120%, #1a1450, #05070f 70%); }
+.lw-r .lw-feed { left: -100%; }
+.lw-blob { position: absolute; border-radius: 50%; mix-blend-mode: screen; }
+.lw-b1 { left: 4%; top: -40%; width: 26cqw; height: 22cqw; background: radial-gradient(closest-side, rgba(108,77,255,.95), transparent); animation: lw-a 13s ease-in-out infinite alternate; }
+.lw-b2 { left: 34%; top: 15%; width: 30cqw; height: 20cqw; background: radial-gradient(closest-side, rgba(31,209,255,.85), transparent); animation: lw-b 17s ease-in-out infinite alternate; }
+.lw-b3 { left: 60%; top: -35%; width: 26cqw; height: 22cqw; background: radial-gradient(closest-side, rgba(255,63,164,.8), transparent); animation: lw-a 15s ease-in-out infinite alternate-reverse; }
+.lw-b4 { left: 80%; top: 25%; width: 20cqw; height: 17cqw; background: radial-gradient(closest-side, rgba(79,107,255,.9), transparent); animation: lw-b 12s ease-in-out infinite alternate-reverse; }
+.lw-lines { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lw-lines path { fill: none; stroke: rgba(170,225,255,.7); stroke-width: 1.3; vector-effect: non-scaling-stroke; stroke-dasharray: 140 520; animation: lw-flow 6s linear infinite; }
+.lw-lines path:nth-child(2) { stroke: rgba(255,150,220,.6); animation-duration: 8s; }
+.lw-lines path:nth-child(3) { stroke: rgba(150,140,255,.7); animation-duration: 7s; animation-delay: -3s; }
+.lw-lines path:nth-child(4) { stroke: rgba(170,225,255,.35); animation-duration: 10s; animation-delay: -5s; }
+.lw-sweep { position: absolute; top: 0; bottom: 0; left: -20%; width: 20%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.1), transparent); animation: lw-sweep 9s ease-in-out infinite; }
+.lw-msg { position: absolute; left: 0; right: 0; top: 50%; text-align: center; color: #fff; transform: translateY(-50%); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.7,.2,1); text-shadow: 0 0 2cqw rgba(108,77,255,.6); }
+.lw-msg small { display: block; font-size: 1.1cqw; letter-spacing: .4em; text-transform: uppercase; font-weight: 600; color: #b9c6ff; }
+.lw-msg b { display: block; margin-top: .9cqw; font: 700 4.4cqw/1 "Space Grotesk", sans-serif; letter-spacing: -.01em; }
+.lw-m2 { opacity: 0; transform: translateY(-30%); }
+.lw.is-m2 .lw-m1 { opacity: 0; transform: translateY(-70%); }
+.lw.is-m2 .lw-m2 { opacity: 1; transform: translateY(-50%); }
+.lw-seams { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.35) 1px, transparent 1px) 0 0 / 6.25% 100%, linear-gradient(180deg, rgba(0,0,0,.35) 1px, transparent 1px) 0 0 / 100% 25%; opacity: .45; }
+/* the wall's reflection in the polished floor */
+.lw-mirror { top: 44cqw; opacity: .45; }
+.lw-mirror.lw-l { left: -10cqw; transform-origin: 60cqw -12cqw; transform: perspective(110cqw) rotateY(45deg); }
+.lw-mirror.lw-r { left: 50cqw; transform-origin: 0 -12cqw; transform: perspective(110cqw) rotateY(-45deg); }
+.lw-mirror::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6cqw; background: linear-gradient(180deg, rgba(140,120,255,.3), transparent); }
+.lw-mirror i { position: absolute; top: 9cqw; height: 19.2cqw; width: 40cqw; background: linear-gradient(90deg, #6c4dff, #1fd1ff 45%, #ff3fa4 75%, #4f6bff); -webkit-mask-image: linear-gradient(180deg, #000, transparent 60%); mask-image: linear-gradient(180deg, #000, transparent 60%); filter: blur(1.1cqw); opacity: .55; }
+.lw-mirror.lw-l i { right: 0; }
+.lw-mirror.lw-r i { left: 0; background: linear-gradient(90deg, #1fd1ff, #ff3fa4 40%, #4f6bff); }
+@keyframes lw-a { to { transform: translate(14%, 30%) scale(1.15); } }
+@keyframes lw-b { to { transform: translate(-16%, -24%) scale(.9); } }
+@keyframes lw-flow { to { stroke-dashoffset: -660; } }
+@keyframes lw-sweep { to { transform: translateX(600%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mk *, .mk *::before, .mk *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0s !important; }
+}
+</style>
+</head>
+<body>
+
+<figure class="mk" role="img" aria-label="Mockup: an LED video wall wrapping around the corner of a bright corporate lobby, with flowing colour and a headline that runs unbroken across the corner">
+<div class="ms-scene lw" data-scene="lw" data-caption="Corporate lobby">
+  <div class="lw-plane lw-ceiling"></div>
+  <div class="lw-plane lw-floor"></div>
+  <div class="lw-mirror lw-l"><i></i></div>
+  <div class="lw-mirror lw-r"><i></i></div>
+  <div class="lw-wall lw-l">
+    <div class="lw-led"><div class="lw-feed">
+      <i class="lw-blob lw-b1"></i><i class="lw-blob lw-b2"></i><i class="lw-blob lw-b3"></i><i class="lw-blob lw-b4"></i>
+      <svg class="lw-lines" viewBox="0 0 800 200" preserveAspectRatio="none"><path d="M0 150C150 90 260 170 400 110S650 60 800 120"/><path d="M0 172C170 122 300 192 420 142S660 92 800 152"/><path d="M0 118C140 68 280 138 400 78S640 38 800 88"/><path d="M0 60C180 100 300 30 440 70S680 130 800 60"/></svg>
+      <i class="lw-sweep"></i>
+      <div class="lw-msg lw-m1"><small>Northgate Group</small><b>Building what's next</b></div>
+      <div class="lw-msg lw-m2"><small>Innovation Week · Day 2</small><b>Keynote 10:00 · Atrium</b></div>
+      <i class="lw-seams"></i>
+    </div></div>
+  </div>
+  <div class="lw-wall lw-r"><div class="lw-led"></div></div>
+</div>
+</figure>
+
+<script>
+(function () {
+  var root = document.querySelector(".mk .ms-scene");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+function ledWall(el) {
+  // one feed drives both halves of the wall, so the picture runs unbroken round the corner
+  el.querySelector(".lw-r .lw-led").innerHTML = el.querySelector(".lw-l .lw-led").innerHTML;
+  var T = [];
+  return {
+    enter: function () { el.classList.remove("is-m2"); T.push(setTimeout(function () { el.classList.add("is-m2"); }, 4200)); },
+    leave: function () { T.forEach(clearTimeout); T = []; }
+  };
+}
+
+  var scene = ledWall(root);
+  scene.enter();
+  setInterval(function () { scene.leave(); scene.enter(); }, 8000); // replay the sequence
+})();
+</script>
+</body>
+</html>
