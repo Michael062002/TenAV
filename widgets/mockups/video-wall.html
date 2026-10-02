@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Video Wall Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* ------------------------------------------------------------------
+   TenAV mockup: bank of screens (3x3 video wall) in a retail showroom.
+   The same scene as in widgets/media-showcase.html, as a standalone
+   image-style mockup. It plays on a loop by itself; no interactivity.
+   ------------------------------------------------------------------ */
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; box-sizing: border-box; background: #eef0f6; font-family: "Poppins", system-ui, sans-serif; }
+.mk { position: relative; margin: 0; width: min(1100px, 100%); aspect-ratio: 16 / 10; overflow: hidden; border-radius: 22px; box-shadow: 0 30px 60px -20px rgba(20,20,40,.35); }
+.mk, .mk *, .mk *::before, .mk *::after { box-sizing: border-box; }
+.mk .ms-scene { position: absolute; inset: 0; overflow: hidden; container-type: inline-size; }
+
+.vw { background: linear-gradient(180deg, #77736d 0%, #67635d 75%); }
+.vw-wash { position: absolute; left: 0; right: 0; top: 0; bottom: 22%; background: radial-gradient(ellipse 14% 60% at 14% 4%, rgba(255,236,200,.3), transparent 70%), radial-gradient(ellipse 14% 60% at 38% 4%, rgba(255,236,200,.24), transparent 70%), radial-gradient(ellipse 14% 60% at 62% 4%, rgba(255,236,200,.24), transparent 70%), radial-gradient(ellipse 14% 60% at 86% 4%, rgba(255,236,200,.3), transparent 70%); }
+.vw-holes { position: absolute; left: 0; right: 0; top: 0; bottom: 22%; background: radial-gradient(circle .3cqw, rgba(40,36,32,.5) 55%, transparent 70%) 6.25% 12.5% / 12.5% 25%, linear-gradient(90deg, rgba(0,0,0,.07) 1px, transparent 1px) 6.25% 0 / 25% 100%, linear-gradient(180deg, rgba(0,0,0,.07) 1px, transparent 1px) 0 12.5% / 100% 50%; }
+.vw-rail { position: absolute; left: 6%; right: 6%; top: 3.5%; height: .8%; background: #1b1b1d; border-radius: 2px; }
+.vw-rail i { position: absolute; top: 100%; width: 2.4%; height: 300%; background: linear-gradient(90deg, #2c2c2f, #131315); border-radius: .3cqw; transform: translateX(-50%) rotate(10deg); transform-origin: top; }
+.vw-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 22%; background: linear-gradient(180deg, #57534e, #33312e); box-shadow: inset 0 1px 0 rgba(255,255,255,.12); }
+.vw-floor::before { content: ""; position: absolute; left: 16%; right: 16%; top: 0; height: 55%; background: linear-gradient(180deg, rgba(198,255,61,.22), transparent); filter: blur(1.4cqw); }
+.vw-array { position: absolute; left: 19%; width: 62%; top: 13%; aspect-ratio: 16 / 9; background: #0b0b0d; padding: .45%; border-radius: .3cqw; box-shadow: 0 0 6cqw rgba(198,255,61,.14), 0 2.4cqw 4cqw rgba(0,0,0,.5); }
+.vw-screen { position: relative; width: 100%; height: 100%; overflow: hidden; background: #0e0e10; container-type: inline-size; }
+.vw-bezels { position: absolute; inset: 0; z-index: 2; pointer-events: none; background:
+  linear-gradient(90deg, transparent calc(33.333% - 1.5px), #050506 calc(33.333% - 1.5px) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px) calc(66.666% - 1.5px), #050506 calc(66.666% - 1.5px) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)),
+  linear-gradient(180deg, transparent calc(33.333% - 1.5px), #050506 calc(33.333% - 1.5px) calc(33.333% + 1.5px), transparent calc(33.333% + 1.5px) calc(66.666% - 1.5px), #050506 calc(66.666% - 1.5px) calc(66.666% + 1.5px), transparent calc(66.666% + 1.5px)); }
+.vw-hero { position: absolute; inset: 0; background: radial-gradient(circle at 70% 50%, #1f2611, #0b0c08 70%); transition: opacity .6s ease .45s; }
+.vw.is-split .vw-hero { opacity: 0; transition-delay: 0s; }
+.vw-orb { position: absolute; left: 54%; top: 9%; width: 42cqw; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e3ff8a, #c6ff3d 45%, #7fb51a); box-shadow: 0 0 8cqw rgba(198,255,61,.35); animation: vw-breathe 6s ease-in-out infinite; }
+.vw-shoe { position: absolute; left: 44%; top: 20%; width: 56cqw; transform: rotate(-12deg); filter: drop-shadow(0 3cqw 2cqw rgba(0,0,0,.45)); animation: vw-float 5s ease-in-out infinite; }
+.vw-copy { position: absolute; left: 6%; top: 22%; color: #fff; }
+.vw-copy small { display: block; font-size: 2.4cqw; letter-spacing: .3em; text-transform: uppercase; color: #c6ff3d; font-weight: 600; }
+.vw-copy b { display: block; margin: 1.5cqw 0; font: 700 12cqw/.95 "Space Grotesk", sans-serif; letter-spacing: -.03em; }
+.vw-copy span { font-size: 2.6cqw; opacity: .8; }
+.vw-tiles { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); }
+.vw-tile { position: relative; overflow: hidden; padding: 2cqw 2.4cqw; display: flex; flex-direction: column; justify-content: center; gap: .5cqw; font-size: 1.7cqw; color: #fff; opacity: 0; transform: scale(.92); transition: opacity .45s ease, transform .6s cubic-bezier(.2,.7,.2,1); transition-delay: calc(var(--i) * 90ms); }
+.vw.is-split .vw-tile { opacity: 1; transform: none; }
+.vw-tile b { font: 700 5cqw/1 "Space Grotesk", sans-serif; letter-spacing: -.02em; }
+.vw-tile small { font-size: 1.35cqw; letter-spacing: .2em; text-transform: uppercase; opacity: .85; font-weight: 600; }
+.vw-t-clock { background: #1b1d22; }
+.vw-t-clock span { opacity: .7; }
+.vw-t-weather { background: linear-gradient(160deg, #2f6fae, #6fb3e6); flex-direction: row; align-items: center; gap: 1.6cqw; }
+.vw-t-weather svg { width: 7cqw; flex: none; }
+.vw-t-chart { background: #11151c; justify-content: space-between; }
+.vw-bars { display: flex; align-items: flex-end; gap: .8cqw; height: 9cqw; }
+.vw-bars i { flex: 1; height: 0; border-radius: .3cqw .3cqw 0 0; background: linear-gradient(180deg, #c6ff3d, #7fb51a); transition: height .8s cubic-bezier(.2,.7,.2,1); transition-delay: calc(.5s + var(--k) * 70ms); }
+.vw.is-split .vw-bars i { height: var(--h); }
+.vw-t-social { background: #fff; color: #15171c; }
+.vw-who { display: flex; align-items: center; gap: 1cqw; }
+.vw-who i { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; background: linear-gradient(135deg, #ff8a3d, #c6ff3d); }
+.vw-who b { font-family: inherit; font-size: 1.5cqw; line-height: 1; font-weight: 600; letter-spacing: 0; }
+.vw-post { margin: .4cqw 0; font-size: 1.75cqw; line-height: 1.3; font-weight: 500; }
+.vw-t-social em { font-style: normal; color: #f5a524; font-size: 1.5cqw; letter-spacing: .1em; }
+.vw-t-product { background: radial-gradient(circle at 50% 45%, #e3ff8a, #c6ff3d 60%, #9ad11f); align-items: center; color: #111; }
+.vw-t-product svg { width: 66%; transform: rotate(-8deg); filter: drop-shadow(0 1cqw .8cqw rgba(0,0,0,.25)); }
+.vw-t-product b { font-size: 2cqw; letter-spacing: .12em; }
+.vw-t-event { background: linear-gradient(135deg, #5b2ee0, #9a5cff); }
+.vw-t-event b { font-size: 3.6cqw; }
+.vw-t-qr { background: #fff; color: #111; flex-direction: row; align-items: center; gap: 1.6cqw; font-size: 1.6cqw; font-weight: 600; line-height: 1.25; }
+.vw-qr { width: 11cqw; aspect-ratio: 1; flex: none; }
+.vw-qr svg { display: block; width: 100%; height: 100%; }
+.vw-t-promo { background: #0b0b0c; }
+.vw-t-promo b { color: #c6ff3d; font-size: 6cqw; }
+.vw-t-video { background: linear-gradient(120deg, #ff5f6d, #ffc371, #47c6ff); background-size: 300% 300%; animation: vw-pan 6s ease-in-out infinite alternate; justify-content: flex-end; }
+.vw-t-video svg { position: absolute; left: 50%; top: 42%; width: 5cqw; transform: translate(-50%, -50%); }
+.vw-t-video span { font-weight: 600; font-size: 1.6cqw; margin-bottom: 1.4cqw; }
+.vw-scrub { position: absolute; left: 2.4cqw; right: 2.4cqw; bottom: 1.4cqw; height: .4cqw; border-radius: 1cqw; overflow: hidden; background: rgba(255,255,255,.35); }
+.vw-scrub::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; animation: vw-scrub 9s linear infinite; }
+.vw-plinth { position: absolute; bottom: 5%; width: 15%; height: 15%; background: linear-gradient(90deg, #e2dfda, #f6f5f2 50%, #d6d2cc); box-shadow: 0 1.4cqw 2cqw rgba(0,0,0,.35); }
+.vw-plinth::before { content: ""; position: absolute; left: 0; right: 0; bottom: 100%; height: 1.2cqw; background: #fbfaf8; }
+.vw-plinth svg { position: absolute; left: 8%; width: 84%; bottom: calc(100% + .8cqw); filter: drop-shadow(0 .8cqw .6cqw rgba(0,0,0,.3)); }
+.vw-plinth.l { left: 5%; }
+.vw-plinth.r { right: 5%; height: 11%; }
+@keyframes vw-breathe { 50% { transform: scale(1.05); } }
+@keyframes vw-float { 50% { transform: rotate(-9deg) translateY(-3%); } }
+@keyframes vw-pan { to { background-position: 100% 100%; } }
+@keyframes vw-scrub { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mk *, .mk *::before, .mk *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; transition-delay: 0s !important; }
+}
+</style>
+</head>
+<body>
+
+<figure class="mk" role="img" aria-label="Mockup: a three-by-three video wall in a retail showroom, switching between one full-wall image and nine separate content tiles">
+<div class="ms-scene vw" data-scene="vw" data-caption="Retail showroom">
+  <div class="vw-wash"></div>
+  <div class="vw-holes"></div>
+  <div class="vw-rail"><i style="left:12%"></i><i style="left:37%"></i><i style="left:63%"></i><i style="left:88%"></i></div>
+  <div class="vw-floor"></div>
+  <div class="vw-array"><div class="vw-screen">
+    <div class="vw-hero">
+      <div class="vw-orb"></div>
+      <svg class="vw-shoe" viewBox="0 0 200 110"><use href="#vw-shoe"/></svg>
+      <div class="vw-copy"><small>New season</small><b>DROP 04</b><span>In store now · Stride</span></div>
+    </div>
+    <div class="vw-tiles">
+      <div class="vw-tile vw-t-clock" style="--i:0"><small>Store time</small><b class="vw-time">10:24</b><span class="vw-date">Thursday 2 October</span></div>
+      <div class="vw-tile vw-t-weather" style="--i:1"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#ffd54a"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="#ffd54a" stroke-width="2" stroke-linecap="round"/></svg><div><b>18°</b><br><span>Sunny spells</span></div></div>
+      <div class="vw-tile vw-t-chart" style="--i:2"><small>Footfall today</small><div class="vw-bars"><i style="--h:35%;--k:0"></i><i style="--h:52%;--k:1"></i><i style="--h:44%;--k:2"></i><i style="--h:70%;--k:3"></i><i style="--h:92%;--k:4"></i><i style="--h:64%;--k:5"></i><i style="--h:78%;--k:6"></i></div></div>
+      <div class="vw-tile vw-t-social" style="--i:1"><div class="vw-who"><i></i><b>@stride.store</b></div><div class="vw-post">“Drop 04 is unreal. Comfiest pair I own.”</div><em>★★★★★</em></div>
+      <div class="vw-tile vw-t-product" style="--i:2"><svg viewBox="0 0 200 110"><use href="#vw-shoe"/></svg><b>DROP 04</b></div>
+      <div class="vw-tile vw-t-event" style="--i:3"><small>Live tonight</small><b>Custom lab</b><span>18:00 · Level 1</span></div>
+      <div class="vw-tile vw-t-qr" style="--i:2"><div class="vw-qr"></div><span>Scan to shop<br>the drop</span></div>
+      <div class="vw-tile vw-t-promo" style="--i:3"><small>Members</small><b>−20%</b><span>This weekend only</span></div>
+      <div class="vw-tile vw-t-video" style="--i:4"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,.35)"/><path d="M10 8l6 4-6 4z" fill="#fff"/></svg><span>Behind the drop</span><i class="vw-scrub"></i></div>
+    </div>
+    <div class="vw-bezels"></div>
+  </div></div>
+  <div class="vw-plinth l"><svg viewBox="0 0 200 110"><use href="#vw-shoe"/></svg></div>
+  <div class="vw-plinth r"><svg viewBox="0 0 100 46"><rect x="8" y="30" width="84" height="14" rx="3" fill="#2b2b2b"/><rect x="12" y="17" width="76" height="14" rx="3" fill="#f4f4f1"/><rect x="16" y="4" width="68" height="14" rx="3" fill="#c6ff3d"/></svg></div>
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <g id="vw-shoe">
+        <path d="M14 80C14 60 26 46 44 44L70 41C78 58 104 62 124 60C150 58 178 66 186 82V90H14Z" fill="#f4f4f1"/>
+        <path d="M14 80C14 64 22 52 34 48L40 88H14Z" fill="#1d1d1f"/>
+        <path d="M148 62C166 64 180 72 186 82V88H140C141 78 144 69 148 62Z" fill="#1d1d1f"/>
+        <path d="M14 86H186V92H14Z" fill="#c6ff3d"/>
+        <path d="M14 92H186V96C186 101 182 104 176 104H22C17 104 14 101 14 96Z" fill="#111"/>
+        <g stroke="#1d1d1f" stroke-width="3" stroke-linecap="round"><path d="M84 47L95 58"/><path d="M94 44L105 56"/><path d="M104 42L113 54"/></g>
+        <circle cx="60" cy="68" r="7" fill="none" stroke="#c6ff3d" stroke-width="3.5"/>
+      </g>
+    </defs>
+  </svg>
+</div>
+</figure>
+
+<script>
+(function () {
+  var root = document.querySelector(".mk .ms-scene");
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+function videoWall(el) {
+  // a decorative QR-style code (not scannable)
+  var seed = 3, n = 17, s = '<svg viewBox="0 0 ' + n + ' ' + n + '" shape-rendering="crispEdges"><rect width="' + n + '" height="' + n + '" fill="#fff"/>';
+  function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  function finder(x, y) { return '<rect x="' + x + '" y="' + y + '" width="5" height="5" fill="#111"/><rect x="' + (x + 1) + '" y="' + (y + 1) + '" width="3" height="3" fill="#fff"/><rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="1" height="1" fill="#111"/>'; }
+  for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) {
+    var inFinder = (x < 6 && y < 6) || (x > n - 7 && y < 6) || (x < 6 && y > n - 7);
+    if (!inFinder && rnd() > .5) s += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="#111"/>';
+  }
+  el.querySelector(".vw-qr").innerHTML = s + finder(0, 0) + finder(n - 5, 0) + finder(0, n - 5) + "</svg>";
+  var T = [];
+  function clock() {
+    var d = new Date();
+    el.querySelector(".vw-time").textContent = pad(d.getHours()) + ":" + pad(d.getMinutes());
+    el.querySelector(".vw-date").textContent = d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+  }
+  return {
+    enter: function () {
+      clock(); el.classList.remove("is-split");
+      T.push(setTimeout(function () { el.classList.add("is-split"); }, 3000));    // one image -> many sources
+      T.push(setTimeout(function () { el.classList.remove("is-split"); }, 6800)); // and back again
+    },
+    leave: function () { T.forEach(clearTimeout); T = []; }
+  };
+}
+
+  var scene = videoWall(root);
+  scene.enter();
+  setInterval(function () { scene.leave(); scene.enter(); }, 8000); // replay the sequence
+})();
+</script>
+</body>
+</html>
