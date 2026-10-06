@@ -88,7 +88,7 @@
         <form id="tenavForm" action="https://service.capsulecrm.com/service/newlead" method="post" accept-charset="UTF-8" target="tenavCapsuleFrame">
 
           <input type="hidden" name="FORM_ID" value="2b64108f-88dd-4747-b8be-6568cb50801d">
-          <input type="hidden" name="COMPLETE_URL" value="https://tenav.co.uk/wp-admin/admin-post.php?action=tenav_capsule_done">
+          <input type="hidden" name="COMPLETE_URL" value="https://tenav.co.uk/?tenav_endpoint=capsule_done">
           <input type="hidden" name="TAG" value="Prospect">
           <input type="hidden" name="TAG" value="Web lead">
           <input type="hidden" name="DATE_FORMAT" value="dd/MM/yy">
@@ -139,7 +139,7 @@
 
         <div id="tenavVerify" style="display:none;">
 
-          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 12px;">Almost done. Please complete the quick check below to send your enquiry.</p>
+          <p id="tenavVerifyText" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 12px;">Almost done. Please complete the quick check below to send your enquiry.</p>
 
           <iframe name="tenavCapsuleFrame" title="Enquiry verification" style="display:block;box-sizing:border-box;width:100%;height:520px;background:#ffffff;border:1.5px solid #e6e7f2;border-radius:10px;margin:0 0 8px;"></iframe>
 
@@ -202,6 +202,7 @@
   var successPanel = component.querySelector('#tenavSuccess');
   var verifyBox = component.querySelector('#tenavVerify');
   var verifyNewTab = component.querySelector('#tenavVerifyNewTab');
+  var verifyText = component.querySelector('#tenavVerifyText');
   var targetFrame = component.querySelector('iframe[name="tenavCapsuleFrame"]');
   var honeypot = form.querySelector('#tenavWebsite');
   var awaitingSubmit = false;
@@ -209,15 +210,36 @@
   // Capsule sends its frame back to this blank page on our own site once it has
   // accepted the lead (provided by the TenAV Lead Form plugin). Using this site's
   // exact address means the check below works on both www and non-www.
+  // Not under /wp-admin/: plugins can send logged-out visitors from there to the
+  // WordPress login screen, so only logged-in admins would ever see Thank You.
   var completeField = form.elements['COMPLETE_URL'];
   if (completeField) {
-    completeField.value = window.location.origin + '/wp-admin/admin-post.php?action=tenav_capsule_done';
+    completeField.value = window.location.origin + '/?tenav_endpoint=capsule_done';
   }
 
   // Emails a copy of each lead to info@tenav.co.uk through the site's own
   // TenAV Lead Form plugin (no outside service), which also saves it under
-  // Enquiries in the WordPress dashboard. The plugin must be active.
-  var notifyUrl = '/wp-admin/admin-post.php';
+  // Enquiries in the WordPress dashboard. Needs plugin version 1.3.0 or later.
+  var notifyUrl = '/?tenav_endpoint=lead';
+
+  // Tells Google Tag Manager a lead went through, once per page view: as soon
+  // as either the website or Capsule confirms it. In GTM, a Custom Event
+  // trigger on "tenav_lead_submitted" fires the Google Ads and GA4 tags.
+  var leadTracked = false;
+
+  function trackLead(confirmedBy){
+
+    if (leadTracked) return;
+    leadTracked = true;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'tenav_lead_submitted',
+      form_id: 'tenavForm',
+      lead_confirmed_by: confirmedBy
+    });
+
+  }
 
   var errorBorder = '#e5484d';
   var errorBg = '#fff6f6';
@@ -265,7 +287,6 @@
 
     // Field names the plugin expects, filled from the Capsule fields.
     var lead = new FormData();
-    lead.append('action', 'tenav_lead');
     lead.append('first_name', fieldValue('FIRST_NAME'));
     lead.append('last_name', fieldValue('LAST_NAME'));
     lead.append('email', fieldValue('EMAIL'));
@@ -284,13 +305,15 @@
         credentials: 'same-origin'
       }).then(function(res){
         return res.json().catch(function(){
-          throw new Error('The website returned an unexpected response (status ' + res.status + '). Is the TenAV Lead Form plugin active?');
+          throw new Error('The website returned an unexpected response (status ' + res.status + '). Is the TenAV Lead Form plugin (version 1.3.0 or later) active?');
         });
       }).then(function(result){
         if (!result || !result.success) {
           console.warn('TenAV lead email not sent:', (result && result.data && result.data.message) || result);
           return;
         }
+        // Saved under Enquiries and emailed to info@, so it counts as a lead.
+        trackLead('website');
         // Only shown to logged-in WordPress admins, when the email itself failed.
         if (result.data && result.data.adminNotice && successPanel) {
           var note = document.createElement('p');
@@ -373,9 +396,22 @@
 
     form.style.display = 'none';
     if (verifyBox) verifyBox.style.display = 'none';
-    successPanel.style.display = 'block';
+    if (successPanel) successPanel.style.display = 'block';
+
+    trackLead('capsule');
 
   }
+
+  // Capsule's confirmation page on our site leaves a note when it loads. This
+  // catches it when Capsule's check was completed in a new tab, where the
+  // frame below never comes back to our site.
+  window.addEventListener('storage', function(e){
+
+    if (e.key === 'tenavCapsuleDone' && awaitingSubmit) {
+      showThankYou();
+    }
+
+  });
 
   if (targetFrame && successPanel) {
 
@@ -415,6 +451,10 @@
       form.target = '_blank';
       form.submit();
       form.target = 'tenavCapsuleFrame';
+
+      if (verifyText) {
+        verifyText.textContent = 'Please complete the check in the new tab. This page will confirm once your enquiry has been sent.';
+      }
 
     });
 

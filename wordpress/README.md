@@ -29,13 +29,18 @@ There are two parts:
 
 Your `/thank-you/` page is not loaded at all. Capsule is pointed at a blank page provided by the plugin, just so the form can tell the lead arrived.
 
-If Capsule decides to show its "I'm not a robot" check, the check appears inside the form for the visitor to complete, so the lead isn't lost.
+If Capsule decides to show its "I'm not a robot" check, the check appears inside the form for the visitor to complete, so the lead isn't lost. If the visitor opens the check in a new tab instead, the contact page still shows Thank You once they complete it.
+
+The form only talks to addresses on your home page (`/?tenav_endpoint=lead` and `/?tenav_endpoint=capsule_done`), never to `/wp-admin/`. Plugins can send logged-out visitors from `/wp-admin/` to the WordPress login screen. Easy Google Fonts did this on tenav.co.uk, so only logged-in admins' test leads got through.
 
 ### Install
 
-1. Upload `tenav-lead-form.zip` under **Plugins → Add New Plugin → Upload Plugin**. You need version 1.2.0 or later: if an older version is installed, choose **Replace current with uploaded**. Then **Activate**.
+1. Upload `tenav-lead-form.zip` under **Plugins → Add New Plugin → Upload Plugin**. You need version 1.3.0 or later: if an older version is installed, choose **Replace current with uploaded**. Then **Activate**.
 2. In Elementor, replace everything in the HTML widget with the contents of `elementor-contact-widget.html`, then click **Update**.
-3. **Test while logged in to WordPress,** using a new email address. You should see the lead in Capsule, an email at info@, and a copy under **Enquiries**. If the email fails, a yellow note under the Thank You message tells you why. Only logged-in admins see that note.
+3. Clear any page cache (your caching plugin, host or Cloudflare).
+4. **Test in a private/Incognito window,** so you are logged out like a real visitor. Use a new email address. You should see the Thank You message, the lead in Capsule, an email at info@, and a copy under **Enquiries**. Testing while logged in to WordPress can hide problems that only affect visitors.
+   - Quick check: open `https://tenav.co.uk/?tenav_endpoint=capsule_done` in the private window. It should say "Thank You", not show the WordPress login screen.
+   - If you also test while logged in and the email fails, a yellow note under the Thank You message tells you why. Only logged-in admins see that note.
 
 ### If the email doesn't arrive at info@
 
@@ -50,9 +55,23 @@ Look under **Enquiries** in the WordPress dashboard.
 - **Form key:** if you reset the form key, copy the new `FORM_ID` into this code.
 - **Existing contacts:** if the email address already belongs to a contact, look in that contact's history rather than for a new lead.
 
-### Google Ads
+### Google Ads and GA4 (Google Tag Manager)
 
-`/thank-you/` no longer loads after an enquiry. If your Google Ads conversion is counted on that page, it will stop counting. The conversion can be fired when the Thank You message appears instead.
+When a lead goes through, the form sends this event to Google Tag Manager:
+
+```js
+{ event: 'tenav_lead_submitted', form_id: 'tenavForm', lead_confirmed_by: 'website' /* or 'capsule' */ }
+```
+
+It is sent once per page view, as soon as either your website (email sent and saved under Enquiries) or Capsule confirms the lead. It is still sent when Capsule's check is completed in a new tab, and never for a form that fails validation.
+
+Set up GTM (container `GTM-PFK5GG7`) to use it:
+
+1. **Triggers → New → Custom Event.** Event name: `tenav_lead_submitted`. Fires on: All Custom Events. Name it **TenAV lead submitted**. Save.
+2. Open the Google Ads tag **Submit lead form** (`AW-1019138282/4uhsCLSK6vEaEOqh--UD`). Remove the Element Visibility trigger on `#tenavSuccess > p:nth-child(2)` and add **TenAV lead submitted**. Save.
+3. Open the GA4 event tag `contact_form_submit`. Remove its trigger for the old HubSpot form (`hsForm_e3b3dfe7-9a69-4c79-93a0-06ca07b1cbf5`) and add **TenAV lead submitted**. Save.
+4. If nothing else uses the old Element Visibility and HubSpot triggers, delete them. Keeping them on the same tags would count leads twice.
+5. **Preview**, open the contact page, send a test enquiry and check that `tenav_lead_submitted` appears and both tags fire once. Then **Submit → Publish**.
 
 ## Set up (about 5 minutes)
 
@@ -116,7 +135,7 @@ If you'd rather not paste HTML, add a **Shortcode** block containing `[tenav_lea
 ## Spam protection
 
 - A hidden trap field that bots fill in.
-- A limit of 5 enquiries per visitor every 10 minutes.
+- A limit of 10 enquiries per visitor every 10 minutes.
 - The shortcode version also rejects forms submitted too fast for a person.
 
 Spam is dropped silently.

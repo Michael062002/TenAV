@@ -73,6 +73,10 @@
 			form.hidden = true;
 			successBox.hidden = false;
 			successBox.focus();
+
+			// For Google Tag Manager: a Custom Event trigger on "tenav_lead_submitted" fires the conversion tags
+			window.dataLayer = window.dataLayer || [];
+			window.dataLayer.push({ event: 'tenav_lead_submitted', form_id: root.id, lead_confirmed_by: 'website' });
 		}
 
 		function setSending(sending) {

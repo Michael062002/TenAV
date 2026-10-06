@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       TenAV Lead Form
  * Description:       Project enquiry form that emails each lead to info@tenav.co.uk and keeps a copy under Enquiries in the dashboard. Add it to a page with the [tenav_lead_form] shortcode, or paste the plain HTML version (lead-form.html) into a Custom HTML block.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            TenAV
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TENAV_LEAD_FORM_VERSION', '1.2.0' );
+define( 'TENAV_LEAD_FORM_VERSION', '1.3.0' );
 
 // Where leads are emailed. Can be overridden in wp-config.php.
 if ( ! defined( 'TENAV_LEAD_FORM_RECIPIENT' ) ) {
@@ -224,7 +224,7 @@ function tenav_lead_form_shortcode( $atts ) {
 			<p class="tenav-lead__intro"><?php echo esc_html( $atts['intro'] ); ?></p>
 		<?php endif; ?>
 
-		<form class="tenav-lead__form" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post"<?php echo $sent ? ' hidden' : ''; ?>>
+		<form class="tenav-lead__form" action="<?php echo esc_url( home_url( '/?tenav_endpoint=lead' ) ); ?>" method="post"<?php echo $sent ? ' hidden' : ''; ?>>
 			<div class="tenav-lead__alert" id="<?php echo esc_attr( $uid ); ?>-error" role="alert"<?php echo 'error' === $status ? '' : ' hidden'; ?>>
 				<?php if ( 'error' === $status ) : ?>
 					Sorry, your enquiry could not be sent. Please check the form and try again, or email us directly at <a href="mailto:<?php echo esc_attr( TENAV_LEAD_FORM_RECIPIENT ); ?>"><?php echo esc_html( TENAV_LEAD_FORM_RECIPIENT ); ?></a>.
@@ -291,21 +291,91 @@ function tenav_lead_form_shortcode( $atts ) {
 
 /* -------------------------------------------------------------------------
  * Submission handling.
+ *
+ * The forms post to /?tenav_endpoint=lead and Capsule returns to
+ * /?tenav_endpoint=capsule_done, never to /wp-admin/. Other plugins can send
+ * logged-out visitors from /wp-admin/ to the login screen (Easy Google Fonts did
+ * on tenav.co.uk), which silently lost every lead except an admin's own tests.
  * ---------------------------------------------------------------------- */
 
+add_action( 'wp_loaded', 'tenav_lead_form_route_request' );
+
+function tenav_lead_form_route_request() {
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- routing only; the handlers do their own checks.
+	if ( isset( $_GET['tenav_endpoint'] ) ) {
+		$endpoint = sanitize_key( wp_unslash( $_GET['tenav_endpoint'] ) );
+	} elseif ( is_admin() && isset( $GLOBALS['pagenow'], $_REQUEST['action'] ) && 'admin-post.php' === $GLOBALS['pagenow'] ) {
+		// Forms pasted before version 1.3.0 still use admin-post.php. Answer them here, before
+		// admin_init, which is where other plugins redirect logged-out visitors to the login screen.
+		$endpoint = array_search( sanitize_key( wp_unslash( $_REQUEST['action'] ) ), array( 'lead' => 'tenav_lead', 'capsule_done' => 'tenav_capsule_done' ), true );
+	} else {
+		return;
+	}
+	// phpcs:enable
+
+	if ( 'lead' !== $endpoint && 'capsule_done' !== $endpoint ) {
+		return;
+	}
+
+	// Never cache these responses.
+	if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+		define( 'DONOTCACHEPAGE', true );
+	}
+
+	if ( 'lead' === $endpoint ) {
+		tenav_lead_form_handle_submission();
+	} else {
+		tenav_lead_form_capsule_done();
+	}
+}
+
+// Fallback for the old admin-post.php addresses, if the request isn't caught above.
 add_action( 'admin_post_nopriv_tenav_lead', 'tenav_lead_form_handle_submission' );
 add_action( 'admin_post_tenav_lead', 'tenav_lead_form_handle_submission' );
-
-// A blank page on this site for Capsule CRM to return its hidden frame to once it has accepted a lead
-// (the Elementor widget's COMPLETE_URL). The widget can then confirm the lead without loading /thank-you/.
 add_action( 'admin_post_nopriv_tenav_capsule_done', 'tenav_lead_form_capsule_done' );
 add_action( 'admin_post_tenav_capsule_done', 'tenav_lead_form_capsule_done' );
 
+/**
+ * The page Capsule CRM returns to once it has accepted a lead (the Elementor widget's COMPLETE_URL).
+ *
+ * Inside the widget's hidden frame it stays blank, and the widget shows its Thank You message.
+ * When the visitor completed Capsule's check in a new tab, it thanks them there and leaves a note
+ * in localStorage, which tells the contact page in the original tab that the lead went through.
+ */
 function tenav_lead_form_capsule_done() {
 	nocache_headers();
 	header( 'Content-Type: text/html; charset=utf-8' );
 	header( 'X-Robots-Tag: noindex, nofollow' );
-	echo '<!doctype html><html><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Sent</title></head><body></body></html>';
+	?>
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Enquiry sent</title>
+<style>
+	body { margin: 0; background: #fff; font-family: 'Poppins', 'Segoe UI', Arial, sans-serif; }
+	.tenav-done { display: none; max-width: 480px; margin: 15vh auto 0; padding: 0 24px; text-align: center; }
+	.is-tab .tenav-done { display: block; }
+	h1 { margin: 0 0 12px; font-size: 22px; color: #2e3192; }
+	p { margin: 0 0 16px; font-size: 15px; line-height: 1.6; color: #5c5f7a; }
+	a { color: #4d51d8; font-weight: 600; text-decoration: none; }
+</style>
+<script>
+	try { window.localStorage.setItem('tenavCapsuleDone', String(Date.now())); } catch (e) {}
+	if (window.top === window.self) document.documentElement.className = 'is-tab';
+</script>
+</head>
+<body>
+	<div class="tenav-done">
+		<h1>Thank You</h1>
+		<p>Your enquiry has been successfully received. You can close this tab.</p>
+		<p><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Back to <?php echo esc_html( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ); ?></a></p>
+	</div>
+</body>
+</html>
+	<?php
 	exit;
 }
 
