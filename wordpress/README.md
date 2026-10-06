@@ -29,13 +29,15 @@ There are two parts:
 
 Your `/thank-you/` page is not loaded at all. Capsule is pointed at a blank page provided by the plugin, just so the form can tell the lead arrived.
 
-If Capsule decides to show its "I'm not a robot" check, the check appears inside the form for the visitor to complete, so the lead isn't lost. If the visitor opens the check in a new tab instead, the contact page still shows Thank You once they complete it.
+If Capsule decides to show its "I'm not a robot" check, the check appears inside the form for the visitor to complete, so the lead isn't lost. If the visitor opens the check in a new tab instead, the contact page still shows Thank You once they complete it. Each tab keeps track of its own enquiry, and the widget can appear more than once on a page.
+
+If Capsule is down or shows an error, the visitor sees Capsule's error in the check box. The email to info@, the copy under Enquiries and the Google Ads/GA4 conversion are still recorded.
 
 The form only talks to addresses on your home page (`/?tenav_endpoint=lead` and `/?tenav_endpoint=capsule_done`), never to `/wp-admin/`. Plugins can send logged-out visitors from `/wp-admin/` to the WordPress login screen. Easy Google Fonts did this on tenav.co.uk, so only logged-in admins' test leads got through.
 
 ### Install
 
-1. Upload `tenav-lead-form.zip` under **Plugins → Add New Plugin → Upload Plugin**. You need version 1.3.0 or later: if an older version is installed, choose **Replace current with uploaded**. Then **Activate**.
+1. Upload `tenav-lead-form.zip` under **Plugins → Add New Plugin → Upload Plugin**. You need version 1.3.1 or later: if an older version is installed, choose **Replace current with uploaded**. Then **Activate**.
 2. In Elementor, replace everything in the HTML widget with the contents of `elementor-contact-widget.html`, then click **Update**.
 3. Clear any page cache (your caching plugin, host or Cloudflare).
 4. **Test in a private/Incognito window,** so you are logged out like a real visitor. Use a new email address. You should see the Thank You message, the lead in Capsule, an email at info@, and a copy under **Enquiries**. Testing while logged in to WordPress can hide problems that only affect visitors.
@@ -48,6 +50,14 @@ Look under **Enquiries** in the WordPress dashboard.
 
 - **The enquiry is there:** WordPress received it, but your web host isn't delivering its email. This is common, especially when sending to your own domain. Install the free **WP Mail SMTP** plugin and connect it to the account you use for tenav.co.uk (Microsoft 365, Google Workspace or your host's mailbox). Its **Email Test** tab confirms delivery.
 - **The enquiry isn't there:** the form couldn't reach the plugin. Check the plugin is active, then press **F12 → Console** on the contact page and submit again. The warning shown explains why.
+
+### If the Thank You message never appears
+
+Open `https://tenav.co.uk/?tenav_endpoint=capsule_done` in a private/Incognito window.
+
+- **You see the WordPress login screen or your homepage:** the plugin isn't active or is older than 1.3.1, or a page cache is serving the homepage for that address. Update the plugin, then exclude addresses containing `tenav_endpoint` from your caching plugin, host cache or Cloudflare cache rules.
+- **You see "Thank You":** check whether your host, `.htaccess` or Cloudflare adds `X-Frame-Options: DENY` or `Content-Security-Policy: frame-ancestors 'none'` to every page. That stops the page loading inside the form. Change it to `SAMEORIGIN` (or `frame-ancestors 'self'`). If a WordPress plugin adds the header, the TenAV plugin already overrides it for this page.
+- **A plugin delays or combines JavaScript** (for example WP Rocket "Delay JavaScript execution", LiteSpeed Cache or Autoptimize): exclude the contact page from that setting if the form behaves differently from a private-window test with the setting off.
 
 ### If leads don't appear in Capsule
 

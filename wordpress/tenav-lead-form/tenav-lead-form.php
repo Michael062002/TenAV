@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       TenAV Lead Form
  * Description:       Project enquiry form that emails each lead to info@tenav.co.uk and keeps a copy under Enquiries in the dashboard. Add it to a page with the [tenav_lead_form] shortcode, or paste the plain HTML version (lead-form.html) into a Custom HTML block.
- * Version:           1.3.0
+ * Version:           1.3.1
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            TenAV
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TENAV_LEAD_FORM_VERSION', '1.3.0' );
+define( 'TENAV_LEAD_FORM_VERSION', '1.3.1' );
 
 // Where leads are emailed. Can be overridden in wp-config.php.
 if ( ! defined( 'TENAV_LEAD_FORM_RECIPIENT' ) ) {
@@ -302,8 +302,9 @@ add_action( 'wp_loaded', 'tenav_lead_form_route_request' );
 
 function tenav_lead_form_route_request() {
 	// phpcs:disable WordPress.Security.NonceVerification.Recommended -- routing only; the handlers do their own checks.
-	if ( isset( $_GET['tenav_endpoint'] ) ) {
-		$endpoint = sanitize_key( wp_unslash( $_GET['tenav_endpoint'] ) );
+	if ( isset( $_GET['tenav_endpoint'] ) && is_string( $_GET['tenav_endpoint'] ) ) {
+		// Capsule may tack its own "?..." onto the address it returns to, so only read up to there.
+		$endpoint = sanitize_key( strtok( wp_unslash( $_GET['tenav_endpoint'] ), '?' ) );
 	} elseif ( is_admin() && isset( $GLOBALS['pagenow'], $_REQUEST['action'] ) && 'admin-post.php' === $GLOBALS['pagenow'] ) {
 		// Forms pasted before version 1.3.0 still use admin-post.php. Answer them here, before
 		// admin_init, which is where other plugins redirect logged-out visitors to the login screen.
@@ -346,6 +347,12 @@ function tenav_lead_form_capsule_done() {
 	nocache_headers();
 	header( 'Content-Type: text/html; charset=utf-8' );
 	header( 'X-Robots-Tag: noindex, nofollow' );
+	// The widget loads this page in a frame on the same site. Replace any "never frame this page"
+	// header a security plugin has already set (one set by the web server itself can't be changed here).
+	header_remove( 'X-Frame-Options' );
+	header_remove( 'Content-Security-Policy' );
+	header( 'X-Frame-Options: SAMEORIGIN' );
+	header( "Content-Security-Policy: frame-ancestors 'self'" );
 	?>
 <!doctype html>
 <html lang="en-GB">
@@ -363,7 +370,9 @@ function tenav_lead_form_capsule_done() {
 	a { color: #4d51d8; font-weight: 600; text-decoration: none; }
 </style>
 <script>
-	try { window.localStorage.setItem('tenavCapsuleDone', String(Date.now())); } catch (e) {}
+	// The note starts with the enquiry's reference from the widget. Read it by pattern, as Capsule may add "?..." after it.
+	var ref = (/[?&]tenav_ref=([a-z0-9]+)/i.exec(window.location.search) || ['', ''])[1];
+	try { window.localStorage.setItem('tenavCapsuleDone', ref + ':' + Date.now()); } catch (e) {}
 	if (window.top === window.self) document.documentElement.className = 'is-tab';
 </script>
 </head>

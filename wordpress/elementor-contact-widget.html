@@ -104,11 +104,11 @@
           <div style="display:flex;flex-wrap:wrap;gap:12px;margin:0 0 12px;box-sizing:border-box;">
 
             <div style="flex:1 1 180px;min-width:0;box-sizing:border-box;">
-              <input type="text" id="tenavFirstName" name="FIRST_NAME" placeholder="First Name" aria-label="First Name" autocomplete="given-name" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
+              <input type="text" id="tenavFirstName" maxlength="100" name="FIRST_NAME" placeholder="First Name" aria-label="First Name" autocomplete="given-name" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
             </div>
 
             <div style="flex:1 1 180px;min-width:0;box-sizing:border-box;">
-              <input type="text" id="tenavLastName" name="LAST_NAME" placeholder="Last Name" aria-label="Last Name" autocomplete="family-name" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
+              <input type="text" id="tenavLastName" maxlength="100" name="LAST_NAME" placeholder="Last Name" aria-label="Last Name" autocomplete="family-name" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
             </div>
 
           </div>
@@ -116,21 +116,21 @@
           <div style="display:flex;flex-wrap:wrap;gap:12px;margin:0 0 12px;box-sizing:border-box;">
 
             <div style="flex:1 1 180px;min-width:0;box-sizing:border-box;">
-              <input type="email" id="tenavEmail" name="EMAIL" placeholder="Email Address" aria-label="Email Address" autocomplete="email" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
+              <input type="email" id="tenavEmail" maxlength="254" name="EMAIL" placeholder="Email Address" aria-label="Email Address" autocomplete="email" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
             </div>
 
             <div style="flex:1 1 180px;min-width:0;box-sizing:border-box;">
-              <input type="tel" id="tenavPhone" name="PHONE" placeholder="Phone Number" aria-label="Phone Number" autocomplete="tel" inputmode="tel" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
+              <input type="tel" id="tenavPhone" maxlength="30" name="PHONE" placeholder="Phone Number" aria-label="Phone Number" autocomplete="tel" inputmode="tel" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
             </div>
 
           </div>
 
           <div style="margin:0 0 12px;box-sizing:border-box;">
-            <input type="text" id="tenavCompany" name="ORGANISATION_NAME" placeholder="Company Name" aria-label="Company Name" autocomplete="organization" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
+            <input type="text" id="tenavCompany" maxlength="150" name="ORGANISATION_NAME" placeholder="Company Name" aria-label="Company Name" autocomplete="organization" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;">
           </div>
 
           <div style="margin:0 0 12px;box-sizing:border-box;">
-            <textarea id="tenavMessage" name="NOTE" placeholder="Tell us about your project..." aria-label="Tell us about your project" rows="3" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;line-height:1.5;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;resize:vertical;min-height:64px;"></textarea>
+            <textarea id="tenavMessage" maxlength="5000" name="NOTE" placeholder="Tell us about your project..." aria-label="Tell us about your project" rows="3" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;line-height:1.5;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;resize:vertical;min-height:64px;"></textarea>
           </div>
 
           <button type="submit" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;background:#29abe2;color:#ffffff;text-align:center;padding:14px 20px;font-size:15px;font-weight:600;border-radius:10px;border:none;cursor:pointer;margin:0;">Let's Chat</button>
@@ -192,8 +192,15 @@
 <script>
 (function(){
 
-  var component = document.querySelector('.tenav-contact-component');
-  if (!component) return;
+  // Work on this copy of the widget (the one just before this script), so the
+  // page can hold more than one copy.
+  var component = null;
+  for (var prev = document.currentScript; prev && !component; prev = prev.previousElementSibling) {
+    if (prev.classList && prev.classList.contains('tenav-contact-component')) component = prev;
+  }
+  component = component || document.querySelector('.tenav-contact-component');
+  if (!component || component.getAttribute('data-tenav-ready')) return;
+  component.setAttribute('data-tenav-ready', 'true');
 
   var form = component.querySelector('#tenavForm');
   if (!form) return;
@@ -207,19 +214,37 @@
   var honeypot = form.querySelector('#tenavWebsite');
   var awaitingSubmit = false;
 
+  // A frame name of its own, so a second copy of the widget doesn't post into
+  // this one's frame. Browsers only see a new name when it's set on the frame's
+  // window; if that isn't possible, the original name is kept.
+  var frameName = form.target;
+  if (targetFrame) {
+    try {
+      var uniqueName = 'tenavCapsuleFrame-' + Math.random().toString(36).slice(2, 8);
+      targetFrame.contentWindow.name = uniqueName;
+      targetFrame.name = uniqueName;
+      form.target = frameName = uniqueName;
+    } catch (err) {}
+  }
+
+  // Identifies this enquiry on the page Capsule returns to, so another open tab
+  // can't be mistaken for it.
+  var submissionId = '';
+
   // Capsule sends its frame back to this blank page on our own site once it has
   // accepted the lead (provided by the TenAV Lead Form plugin). Using this site's
   // exact address means the check below works on both www and non-www.
   // Not under /wp-admin/: plugins can send logged-out visitors from there to the
   // WordPress login screen, so only logged-in admins would ever see Thank You.
   var completeField = form.elements['COMPLETE_URL'];
+  var completeUrl = window.location.origin + '/?tenav_endpoint=capsule_done';
   if (completeField) {
-    completeField.value = window.location.origin + '/?tenav_endpoint=capsule_done';
+    completeField.value = completeUrl;
   }
 
   // Emails a copy of each lead to info@tenav.co.uk through the site's own
   // TenAV Lead Form plugin (no outside service), which also saves it under
-  // Enquiries in the WordPress dashboard. Needs plugin version 1.3.0 or later.
+  // Enquiries in the WordPress dashboard. Needs plugin version 1.3.1 or later.
   var notifyUrl = '/?tenav_endpoint=lead';
 
   // Tells Google Tag Manager a lead went through, once per page view: as soon
@@ -247,7 +272,8 @@
   var normalBg = '#fbfbfe';
 
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  var phonePattern = /^\+?[0-9\s]{7,20}$/;
+  // Digits with optional +, spaces, brackets, dots and dashes, e.g. +44 (0)20 3397 7360.
+  var phonePattern = /^\+?[0-9\s().-]{7,30}$/;
 
   function validateField(el){
 
@@ -260,7 +286,7 @@
       valid = false;
     }
 
-    if (valid && el.type === 'tel' && !phonePattern.test(value)) {
+    if (valid && el.type === 'tel' && !(phonePattern.test(value) && value.replace(/\D/g, '').length >= 7)) {
       valid = false;
     }
 
@@ -302,10 +328,12 @@
           'Accept': 'application/json'
         },
         body: lead,
-        credentials: 'same-origin'
+        credentials: 'same-origin',
+        // Finish sending even if the visitor closes the page straight away.
+        keepalive: true
       }).then(function(res){
         return res.json().catch(function(){
-          throw new Error('The website returned an unexpected response (status ' + res.status + '). Is the TenAV Lead Form plugin (version 1.3.0 or later) active?');
+          throw new Error('The website returned an unexpected response (status ' + res.status + '). Is the TenAV Lead Form plugin (version 1.3.1 or later) active?');
         });
       }).then(function(result){
         if (!result || !result.success) {
@@ -381,6 +409,11 @@
 
     awaitingSubmit = true;
 
+    submissionId = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    if (completeField) {
+      completeField.value = completeUrl + '&tenav_ref=' + submissionId;
+    }
+
     notifyInbox();
 
     if (submitBtn) {
@@ -407,9 +440,13 @@
   // frame below never comes back to our site.
   window.addEventListener('storage', function(e){
 
-    if (e.key === 'tenavCapsuleDone' && awaitingSubmit) {
-      showThankYou();
-    }
+    if (e.key !== 'tenavCapsuleDone' || !awaitingSubmit) return;
+
+    // The note starts with the enquiry's reference: only act on our own.
+    var ref = String(e.newValue || '').split(':')[0];
+    if (ref && ref !== submissionId) return;
+
+    showThankYou();
 
   });
 
@@ -450,7 +487,7 @@
 
       form.target = '_blank';
       form.submit();
-      form.target = 'tenavCapsuleFrame';
+      form.target = frameName;
 
       if (verifyText) {
         verifyText.textContent = 'Please complete the check in the new tab. This page will confirm once your enquiry has been sent.';
