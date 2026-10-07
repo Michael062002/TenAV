@@ -45,6 +45,14 @@
 .tenav-contact-component button {
   line-height: normal;
 }
+
+/* Phones: let Capsule's check use the card's side padding too. */
+@media (max-width: 600px) {
+  .tenav-contact-component #tenavVerify iframe {
+    width: calc(100% + 64px) !important;
+    margin-left: -32px !important;
+  }
+}
 </style>
 
 <div class="tenav-contact-component" aria-label="Contact TenAV" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;background:transparent;padding:0 24px 64px;box-sizing:border-box;">
@@ -133,17 +141,19 @@
             <textarea id="tenavMessage" maxlength="5000" name="NOTE" placeholder="Tell us about your project..." aria-label="Tell us about your project" rows="3" required="" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;font-size:15px;line-height:1.5;color:#1c1d3d;background:#fbfbfe;border:1.5px solid #e6e7f2;border-radius:10px;padding:12px 14px;margin:0;outline:none;resize:vertical;min-height:64px;"></textarea>
           </div>
 
+          <p id="tenavFormError" role="alert" style="display:none;font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:13px;line-height:1.5;color:#b42318;margin:0 0 12px;">Please check the fields outlined in red. Phone numbers can use digits, spaces, +, ( ), - and . only.</p>
+
           <button type="submit" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;background:#29abe2;color:#ffffff;text-align:center;padding:14px 20px;font-size:15px;font-weight:600;border-radius:10px;border:none;cursor:pointer;margin:0;">Let's Chat</button>
 
         </form>
 
         <div id="tenavVerify" style="display:none;">
 
-          <p id="tenavVerifyText" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 12px;">Almost done. Please complete the quick check below to send your enquiry.</p>
+          <p id="tenavVerifyText" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.65;color:#5c5f7a;margin:0 0 12px;">Almost done. Please complete the quick check in the box below to send your enquiry.</p>
 
-          <iframe name="tenavCapsuleFrame" title="Enquiry verification" style="display:block;box-sizing:border-box;width:100%;height:520px;background:#ffffff;border:1.5px solid #e6e7f2;border-radius:10px;margin:0 0 8px;"></iframe>
+          <a href="#" id="tenavVerifyNewTab" style="font-family:'Poppins','Segoe UI',Arial,sans-serif;display:block;box-sizing:border-box;width:100%;background:#ffffff;color:#2e3192;border:1.5px solid #29abe2;text-align:center;padding:12px 20px;font-size:14px;font-weight:600;border-radius:10px;text-decoration:none;margin:0 0 12px;">Check not showing, doesn't fit, or says it has expired? Open it in a new tab</a>
 
-          <p style="font-family:'Poppins','Segoe UI',Arial,sans-serif;font-size:12px;line-height:1.5;color:#8386a3;margin:0;">Can't see the check? <a href="#" id="tenavVerifyNewTab" style="color:#4d51d8;font-weight:600;text-decoration:none;">Open it in a new tab</a>.</p>
+          <iframe name="tenavCapsuleFrame" title="Enquiry verification" style="display:block;box-sizing:border-box;width:100%;height:520px;background:#ffffff;border:1.5px solid #e6e7f2;border-radius:10px;margin:0;"></iframe>
 
         </div>
 
@@ -198,7 +208,7 @@
   for (var prev = document.currentScript; prev && !component; prev = prev.previousElementSibling) {
     if (prev.classList && prev.classList.contains('tenav-contact-component')) component = prev;
   }
-  component = component || document.querySelector('.tenav-contact-component');
+  component = component || document.querySelector('.tenav-contact-component:not([data-tenav-ready])');
   if (!component || component.getAttribute('data-tenav-ready')) return;
   component.setAttribute('data-tenav-ready', 'true');
 
@@ -213,6 +223,9 @@
   var targetFrame = component.querySelector('iframe[name="tenavCapsuleFrame"]');
   var honeypot = form.querySelector('#tenavWebsite');
   var awaitingSubmit = false;
+  var slowTimer = null;
+  var newTabOpened = false;
+  var formError = form.querySelector('#tenavFormError');
 
   // A frame name of its own, so a second copy of the widget doesn't post into
   // this one's frame. Browsers only see a new name when it's set on the frame's
@@ -255,13 +268,15 @@
   function trackLead(confirmedBy){
 
     if (leadTracked) return;
+    if (honeypot && honeypot.value) return;
     leadTracked = true;
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'tenav_lead_submitted',
       form_id: 'tenavForm',
-      lead_confirmed_by: confirmedBy
+      lead_confirmed_by: confirmedBy,
+      lead_id: submissionId
     });
 
   }
@@ -316,7 +331,7 @@
     lead.append('first_name', fieldValue('FIRST_NAME'));
     lead.append('last_name', fieldValue('LAST_NAME'));
     lead.append('email', fieldValue('EMAIL'));
-    lead.append('phone', fieldValue('PHONE'));
+    lead.append('phone', fieldValue('PHONE').replace(/\s+/g, ' '));
     lead.append('company', fieldValue('ORGANISATION_NAME'));
     lead.append('project', fieldValue('NOTE'));
     lead.append('tenav_page', window.location.href);
@@ -386,6 +401,8 @@
 
     });
 
+    if (formError) formError.style.display = allValid ? 'none' : 'block';
+
     if (!allValid) {
 
       e.preventDefault();
@@ -416,6 +433,14 @@
 
     notifyInbox();
 
+    clearTimeout(slowTimer);
+    slowTimer = setTimeout(function(){
+      if (!awaitingSubmit || (verifyBox && verifyBox.style.display === 'block')) return;
+      form.style.display = 'none';
+      if (verifyText) verifyText.textContent = 'This is taking longer than usual. If nothing appears below in a few seconds, open it in a new tab, or call us on 020 3397 7360.';
+      if (verifyBox) verifyBox.style.display = 'block';
+    }, 20000);
+
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
@@ -426,6 +451,7 @@
   function showThankYou(){
 
     awaitingSubmit = false;
+    clearTimeout(slowTimer);
 
     form.style.display = 'none';
     if (verifyBox) verifyBox.style.display = 'none';
@@ -442,13 +468,25 @@
 
     if (e.key !== 'tenavCapsuleDone' || !awaitingSubmit) return;
 
-    // The note starts with the enquiry's reference: only act on our own.
+    // The note starts with the enquiry's reference: only act on our own. A note
+    // without one (Capsule set to a fixed return address) only counts once the
+    // visitor has opened the check in a new tab.
     var ref = String(e.newValue || '').split(':')[0];
-    if (ref && ref !== submissionId) return;
+    if (ref ? ref !== submissionId : !newTabOpened) return;
 
     showThankYou();
 
   });
+
+  function checkNoteOnReturn(){
+    if (!awaitingSubmit || !newTabOpened) return;
+    var note = '';
+    try { note = window.localStorage.getItem('tenavCapsuleDone') || ''; } catch (err) { return; }
+    if (submissionId && note.split(':')[0] === submissionId) showThankYou();
+  }
+  document.addEventListener('visibilitychange', function(){ if (document.visibilityState === 'visible') checkNoteOnReturn(); });
+  window.addEventListener('focus', checkNoteOnReturn);
+  window.addEventListener('pageshow', checkNoteOnReturn);
 
   if (targetFrame && successPanel) {
 
@@ -485,12 +523,13 @@
 
       e.preventDefault();
 
+      newTabOpened = true;
       form.target = '_blank';
       form.submit();
       form.target = frameName;
 
       if (verifyText) {
-        verifyText.textContent = 'Please complete the check in the new tab. This page will confirm once your enquiry has been sent.';
+        verifyText.textContent = 'Please complete the check in the new tab. This page will confirm once your enquiry has been sent. If no new tab opened, complete the check in the box below instead.';
       }
 
     });

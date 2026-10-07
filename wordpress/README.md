@@ -1,5 +1,7 @@
 # TenAV lead form for WordPress
 
+**For tenav.co.uk you only need the section "Elementor contact widget (Capsule CRM + email)".** "Set up (about 5 minutes)", "Google Ads conversion tracking (optional)" and "Alternative: shortcode" describe a different, plain version of the form: don't paste `lead-form.html` anywhere on the live site.
+
 A project enquiry form that asks for:
 - first name
 - last name
@@ -29,7 +31,7 @@ There are two parts:
 
 Your `/thank-you/` page is not loaded at all. Capsule is pointed at a blank page provided by the plugin, just so the form can tell the lead arrived.
 
-If Capsule decides to show its "I'm not a robot" check, the check appears inside the form for the visitor to complete, so the lead isn't lost. If the visitor opens the check in a new tab instead, the contact page still shows Thank You once they complete it. Each tab keeps track of its own enquiry, and the widget can appear more than once on a page.
+If Capsule decides to show its "I'm not a robot" check, the check appears inside the form for the visitor to complete, so the lead isn't lost. A button above it opens the check in a new tab, for when it doesn't load or fit (phones, blocked third-party cookies); the contact page still shows Thank You once it's completed there. Each tab keeps track of its own enquiry, and the widget can appear more than once on a page. If Capsule hasn't answered after 20 seconds, the visitor is offered the new-tab button and the phone number.
 
 If Capsule is down or shows an error, the visitor sees Capsule's error in the check box. The email to info@, the copy under Enquiries and the Google Ads/GA4 conversion are still recorded.
 
@@ -37,11 +39,13 @@ The form only talks to addresses on your home page (`/?tenav_endpoint=lead` and 
 
 ### Install
 
-1. Upload `tenav-lead-form.zip` under **Plugins → Add New Plugin → Upload Plugin**. You need version 1.3.1 or later: if an older version is installed, choose **Replace current with uploaded**. Then **Activate**.
-2. In Elementor, replace everything in the HTML widget with the contents of `elementor-contact-widget.html`, then click **Update**.
-3. Clear any page cache (your caching plugin, host or Cloudflare).
-4. **Test in a private/Incognito window,** so you are logged out like a real visitor. Use a new email address. You should see the Thank You message, the lead in Capsule, an email at info@, and a copy under **Enquiries**. Testing while logged in to WordPress can hide problems that only affect visitors.
-   - Quick check: open `https://tenav.co.uk/?tenav_endpoint=capsule_done` in the private window. It should say "Thank You", not show the WordPress login screen.
+1. Upload `tenav-lead-form.zip` under **Plugins → Add Plugin → Upload Plugin** (called **Add New Plugin** before WordPress 6.8) and click **Install Now**. WordPress shows **This plugin is already installed** and a Current/Uploaded table. Check Uploaded shows 1.3.1, then click **Replace current with uploaded**. The plugin stays active; only if an **Activate Plugin** button appears, click it. Don't go back to an older version: those are the ones that lost visitors' leads.
+2. Quick check, before any test enquiry: open `https://tenav.co.uk/?tenav_endpoint=capsule_done` in a private window. It should say "Thank You", not show the login screen or your homepage. Then close that window.
+3. In Elementor, replace everything in the HTML widget with the contents of `elementor-contact-widget.html`, then click **Publish** (older Elementor: **Update**). Do this as an Administrator, then reload the editor and check the code still contains `<script` and `FORM_ID`: if they're gone, the account can't save scripts (look for `DISALLOW_UNFILTERED_HTML` in `wp-config.php`). Replace every copy of the form, on every page or template. Don't press Let's Chat inside the editor: it emails info@ and saves an Enquiry.
+4. Clear Elementor's cache (**Elementor → Tools → General → Clear Files & Data**; older versions: **Regenerate Files & Data**), then any page cache (caching plugin, host or Cloudflare).
+5. **Test in a private/Incognito window,** so you are logged out like a real visitor. Use a new email address. You should see the Thank You message, the lead in Capsule, an email at info@, and a copy under **Enquiries**. Testing while logged in to WordPress can hide problems that only affect visitors.
+   - On the first test, open **F12 → Network** before submitting. The `newlead` request should be status 302, with a `location` starting with your site's address and `/?tenav_endpoint=capsule_done&tenav_ref=`. If it points to `/thank-you/` or another page, set Capsule's completion redirect (if it has one) to `https://tenav.co.uk/?tenav_endpoint=capsule_done`.
+   - Once, set Capsule's CAPTCHA to "Always" and test from an iPhone (Safari) and a Chrome Incognito window: the check should work in the form or through the new-tab button, and the contact should arrive in Capsule. Then set it back.
    - If you also test while logged in and the email fails, a yellow note under the Thank You message tells you why. Only logged-in admins see that note.
 
 ### If the email doesn't arrive at info@
@@ -49,39 +53,47 @@ The form only talks to addresses on your home page (`/?tenav_endpoint=lead` and 
 Look under **Enquiries** in the WordPress dashboard.
 
 - **The enquiry is there:** WordPress received it, but your web host isn't delivering its email. This is common, especially when sending to your own domain. Install the free **WP Mail SMTP** plugin and connect it to the account you use for tenav.co.uk (Microsoft 365, Google Workspace or your host's mailbox). Its **Email Test** tab confirms delivery.
-- **The enquiry isn't there:** the form couldn't reach the plugin. Check the plugin is active, then press **F12 → Console** on the contact page and submit again. The warning shown explains why.
+- **The enquiry isn't there:** the form couldn't reach the plugin. Check the plugin is active, then press **F12 → Console** on the contact page and submit again. The warning shown explains why:
+  - "You have sent several enquiries in a short time": the spam limit (10 accepted enquiries per connection; the 10-minute timer restarts with each one). Wait 10 minutes, or test logged in as an admin, who is exempt.
+  - "unexpected response (status 403)" or "(status 503)": a firewall (Cloudflare WAF, Wordfence or the host's) blocked the request. Allow requests to `?tenav_endpoint=lead`.
+  - "unexpected response (status 200) … Is the TenAV Lead Form plugin … active?": the plugin is missing or older than 1.3.1, or a cache answered.
 
 ### If the Thank You message never appears
 
-Open `https://tenav.co.uk/?tenav_endpoint=capsule_done` in a private/Incognito window.
+Close every tab showing the contact page, then open `https://tenav.co.uk/?tenav_endpoint=capsule_done` in a new private/Incognito window.
 
-- **You see the WordPress login screen or your homepage:** the plugin isn't active or is older than 1.3.1, or a page cache is serving the homepage for that address. Update the plugin, then exclude addresses containing `tenav_endpoint` from your caching plugin, host cache or Cloudflare cache rules.
-- **You see "Thank You":** check whether your host, `.htaccess` or Cloudflare adds `X-Frame-Options: DENY` or `Content-Security-Policy: frame-ancestors 'none'` to every page. That stops the page loading inside the form. Change it to `SAMEORIGIN` (or `frame-ancestors 'self'`). If a WordPress plugin adds the header, the TenAV plugin already overrides it for this page.
+- **You see the WordPress login screen:** the plugin isn't active or is older than 1.3.1. Update it.
+- **You see your homepage:** a page cache is ignoring the query string. The in-page Thank You still works, but a check finished in a new tab won't update the contact page. Exclude addresses containing `tenav_endpoint` from your caching plugin, host cache or Cloudflare cache rules.
+- **You see "Thank You", but the form never shows it:** on the contact page press **F12 → Network**, tick **Preserve log**, send a test, and click the request for `?tenav_endpoint=capsule_done`. If its response headers include `content-security-policy` with `frame-ancestors 'none'` (or a list without your own site), your host, `.htaccess` or Cloudflare adds it: remove it for addresses containing `tenav_endpoint`, or change it to `frame-ancestors 'self'`. `x-frame-options: DENY` is harmless here, because the plugin's own `frame-ancestors 'self'` takes priority. Capsule still received these leads, so check Capsule before asking visitors to resend.
 - **A plugin delays or combines JavaScript** (for example WP Rocket "Delay JavaScript execution", LiteSpeed Cache or Autoptimize): exclude the contact page from that setting if the form behaves differently from a private-window test with the setting off.
 
 ### If leads don't appear in Capsule
 
 - **Capsule settings:** check the website form integration is switched on in Capsule.
 - **Form key:** if you reset the form key, copy the new `FORM_ID` into this code.
-- **Existing contacts:** if the email address already belongs to a contact, look in that contact's history rather than for a new lead.
+- **Completion redirect:** if Capsule's form settings have one, it must be `https://tenav.co.uk/?tenav_endpoint=capsule_done`, not `/thank-you/`.
+- **Existing contacts:** if the email address is already in Capsule, Capsule may add the enquiry to that contact or create a second contact. Search Capsule for the email address and check both. Use a brand-new email address for each test.
 
 ### Google Ads and GA4 (Google Tag Manager)
 
 When a lead goes through, the form sends this event to Google Tag Manager:
 
 ```js
-{ event: 'tenav_lead_submitted', form_id: 'tenavForm', lead_confirmed_by: 'website' /* or 'capsule' */ }
+{ event: 'tenav_lead_submitted', form_id: 'tenavForm', lead_confirmed_by: 'website' /* or 'capsule' */, lead_id: 'muy61prxiigpzl' }
 ```
 
-It is sent once per page view, as soon as either your website (email sent and saved under Enquiries) or Capsule confirms the lead. It is still sent when Capsule's check is completed in a new tab, and never for a form that fails validation.
+It is sent once per page view, as soon as either your website (email sent and saved under Enquiries) or Capsule confirms the lead. It is still sent when Capsule's check is completed in a new tab, and never for a form that fails validation or a bot caught by the spam trap. `lead_id` is unique per enquiry. `lead_confirmed_by` only says which system answered first: to check both received a lead, look in Capsule and Enquiries.
 
-Set up GTM (container `GTM-PFK5GG7`) to use it:
+Change GTM only after every copy of the form runs this code: the old code sends no `tenav_lead_submitted` event. Set up GTM (container `GTM-PFK5GG7`) to use it:
 
-1. **Triggers → New → Custom Event.** Event name: `tenav_lead_submitted`. Fires on: All Custom Events. Name it **TenAV lead submitted**. Save.
-2. Open the Google Ads tag **Submit lead form** (`AW-1019138282/4uhsCLSK6vEaEOqh--UD`). Remove the Element Visibility trigger on `#tenavSuccess > p:nth-child(2)` and add **TenAV lead submitted**. Save.
-3. Open the GA4 event tag `contact_form_submit`. Remove its trigger for the old HubSpot form (`hsForm_e3b3dfe7-9a69-4c79-93a0-06ca07b1cbf5`) and add **TenAV lead submitted**. Save.
-4. If nothing else uses the old Element Visibility and HubSpot triggers, delete them. Keeping them on the same tags would count leads twice.
-5. **Preview**, open the contact page, send a test enquiry and check that `tenav_lead_submitted` appears and both tags fire once. Then **Submit → Publish**.
+1. **Triggers → New → Custom Event.** Event name: `tenav_lead_submitted`. Fires on: All Custom Events (don't filter on `form_id`). Name it **TenAV lead submitted**. Save.
+2. Open the Google Ads tag **Submit lead form** (`AW-1019138282/4uhsCLSK6vEaEOqh--UD`). Remove the Element Visibility trigger on `#tenavSuccess > p:nth-child(2)` and add **TenAV lead submitted**. Optional: create a Data Layer Variable for `lead_id` and put it in the tag's **Transaction ID**, so Google Ads drops duplicates. Save.
+3. Open the GA4 event tag `contact_form_submit`. Remove its trigger for the old HubSpot form (`hsForm_e3b3dfe7-9a69-4c79-93a0-06ca07b1cbf5`) and add **TenAV lead submitted**. Replace any built-in `{{Form …}}` variables in its parameters. Save.
+4. Read the **Firing Triggers** column under Tags. Switch every tag still on the old Element Visibility or HubSpot trigger (including any Microsoft Ads, Meta or LinkedIn tags) to **TenAV lead submitted**, then delete the two old triggers. Keeping an old trigger on a tag either counts leads twice or misses leads.
+5. **Preview**, accept the cookie banner, send a test enquiry, and check that `tenav_lead_submitted` appears and both tags fire once. Then **Submit → Publish and Create Version** with a version name. To undo: **Versions →** previous version **→ ⋮ → Publish**.
+6. In Google Ads (**Goals → Conversions → Summary**), set **Submit lead form** to Count **One** and **Primary**. In every goal, set any other action that measures the same enquiry (for example `contact_form_submit` imported from GA4) to **Secondary**, or each lead counts twice. View the contact page's source: `4uhsCLSK6vEaEOqh--UD` should not appear (only GTM sends it), and the GTM snippet should end `'dataLayer','GTM-PFK5GG7')`.
+
+Google Ads and GA4 will show fewer leads than Enquiries, because visitors who decline cookies aren't counted.
 
 ## Set up (about 5 minutes)
 
